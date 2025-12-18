@@ -1,15 +1,14 @@
 ---
 description: "Prompt that helps with implementation of Widget creation process."
+argument-hint: [instructionsFilePath]
 allowed-tools: Bash, Glob, Grep, Read, Edit, Write, NotebookEdit, TodoWrite, BashOutput, AskUserQuestion, Skill, SlashCommand, mcp__kentico.docs.mcp__*
 ---
 
 You are tasked with the process of creating a new widget following given instructions.
 
-## User Input
+## Input Parameters
 
-When started, you have been provided with the path to the file, which contains instructions on how to create the given widget. You must follow these during implementation.
-
-!In case the user didn't provide any instructions file, ask them to provide it before proceeding!
+- **Instructions File Path:** `$instructionsFilePath` - The path to the file that contains instructions on how to create the widget. You must follow these during implementation.
 
 ## Steps to follow
 

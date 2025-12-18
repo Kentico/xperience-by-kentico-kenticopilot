@@ -1,5 +1,6 @@
 ---
 description: "Prompt that helps with preparation of Widget creation process."
+argument-hint: [userInputFolderPath]
 tools:
   [
     "edit",
@@ -14,11 +15,9 @@ tools:
 
 You are tasked with the process of creating a new prompt for generating a new widget.
 
-## User Input
+## Input Parameters
 
-When started, you have been provided with the path to the folder, which contains user input files. These files contain requirements and design for the new widget. You must follow these when creating the final prompt.
-
-!In case the user didn't provide any path, ask them to provide it before proceeding!
+- **User Input Folder Path:** `$userInputFolderPath` - The path to the folder that contains user input files with requirements and design for the new widget. You must follow these when creating the final prompt.
 
 ## Steps to follow
 

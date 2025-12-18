@@ -1,6 +1,6 @@
 ---
 description: "Ensure migrated page visually matches the original KX13 page"
-argument-hint: "pageName legacyPageUrl newPageUrl"
+argument-hint: [pageName] [legacyPageUrl] [newPageUrl]
 allowed-tools: Bash, Glob, Grep, Read, Edit, Write, NotebookEdit, WebFetch, TodoWrite, WebSearch, BashOutput, AskUserQuestion, Skill, SlashCommand, mcp__kentico.docs.mcp__*, mcp__playwright-mcp__*
 ---
 
@@ -8,9 +8,9 @@ You are tasked with ensuring that the migrated page visually matches the origina
 
 ## Input Parameters
 
-- **Page Name:** `${input:pageName}` - The name/path of the page being matched (e.g., 'home', 'doctors').
-- **Legacy Page URL:** `${input:legacyPageUrl}` - The URL of the page in the KX13 project (e.g., 'https://localhost:5001/en-us/home').
-- **New Page URL:** `${input:newPageUrl}` - The URL of the page in the XbyK project (e.g., 'http://localhost:60444/en-us/home').
+- **Page Name:** `$pageName` - The name/path of the page being matched (e.g., 'home', 'doctors').
+- **Legacy Page URL:** `$legacyPageUrl` - The URL of the page in the KX13 project (e.g., 'https://localhost:5001/en-us/home').
+- **New Page URL:** `$newPageUrl` - The URL of the page in the XbyK project (e.g., 'http://localhost:60444/en-us/home').
 
 ## Structure of the projects
 

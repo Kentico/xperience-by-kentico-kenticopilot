@@ -1,15 +1,23 @@
 ---
 description: "Prompt that helps with preparation of Widget creation process."
-tools: ["edit", "search", "runCommands", "kentico.docs.mcp/*", "problems", "fetch", "todos"]
+argument-hint: "userInputFolderPath"
+tools:
+  [
+    "edit",
+    "search",
+    "runCommands",
+    "kentico.docs.mcp/*",
+    "problems",
+    "fetch",
+    "todos",
+  ]
 ---
 
 You are tasked with the process of creating a new prompt for generating a new widget.
 
-## User Input
+## Input Parameters
 
-When started, you have been provided with the path to the folder, which contains user input files. These files contain requirements and design for the new widget. You must follow these when creating the final prompt.
-
-!In case the user didn't provide any path, ask them to provide it before proceeding!
+- **User Input Folder Path:** `${input:userInputFolderPath}` - The path to the folder that contains user input files with requirements and design for the new widget. You must follow these when creating the final prompt.
 
 ## Steps to follow
 
@@ -17,7 +25,7 @@ When started, you have been provided with the path to the folder, which contains
 
 - Next, read all remaining files in the `./instructions/` folder.
 
-- Then, check all requirements and design files in the user-input folder, whose path the user has provided to you.
+- Then, check all requirements and design files in the user-input folder, on path `${input:userInputFolderPath}`.
 
 - Check the current state of the project for resources you will need for creation of the widget. If you find already present widgets, follow their patterns and conventions.
 

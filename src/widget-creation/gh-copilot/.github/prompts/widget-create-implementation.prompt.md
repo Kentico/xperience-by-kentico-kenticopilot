@@ -1,19 +1,19 @@
 ---
 description: "Prompt that helps with implementation of Widget creation process."
-tools: ["edit", "search", "runCommands", "kentico.docs.mcp/*", "problems", "todos"]
+argument-hint: "instructionsFilePath"
+tools:
+  ["edit", "search", "runCommands", "kentico.docs.mcp/*", "problems", "todos"]
 ---
 
 You are tasked with the process of creating a new widget following given instructions.
 
-## User Input
+## Input Parameters
 
-When started, you have been provided with the path to the file, which contains instructions on how to create the given widget. You must follow these during implementation.
-
-!In case the user didn't provide any instructions file, ask them to provide it before proceeding!
+- **Instructions File Path:** `${input:instructionsFilePath}` - The path to the file that contains instructions on how to create the widget. You must follow these during implementation.
 
 ## Steps to follow
 
-- First, read the instructions file provided to you in the user input.
+- First, read the instructions file `${input:instructionsFilePath}`.
 
 - Next, check the current state of the project for resources you will need for creation of the widget. If you find already present widgets, follow their patterns and conventions.
 

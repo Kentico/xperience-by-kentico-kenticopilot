@@ -1,6 +1,6 @@
 ---
 description: "Migrate shared component from KX13 to XbyK project"
-argument-hint: "componentName legacyPageUrl"
+argument-hint: [componentName] [legacyPageUrl]
 allowed-tools: Bash, Glob, Grep, Read, Edit, Write, NotebookEdit, WebFetch, TodoWrite, WebSearch, BashOutput, AskUserQuestion, Skill, SlashCommand, mcp__kentico.docs.mcp__*, mcp__playwright-mcp__*
 ---
 
@@ -8,8 +8,8 @@ You are tasked with process of migrating the shared component from the legacy pr
 
 ## Input Parameters
 
-- **Component Name:** `${input:componentName}` - The name of the shared component to migrate (e.g., 'breadcrumbs', 'header').
-- **Legacy Page URL:** `${input:legacyPageUrl}` - The URL of the page in the KX13 project that contains the component (e.g., 'https://localhost:5001/en-us/breadcrumbs').
+- **Component Name:** `$componentName` - The name of the shared component to migrate (e.g., 'breadcrumbs', 'header').
+- **Legacy Page URL:** `$legacyPageUrl` - The URL of the page in the KX13 project that contains the component (e.g., 'https://localhost:5001/en-us/breadcrumbs').
 
 ## Structure of the projects
 

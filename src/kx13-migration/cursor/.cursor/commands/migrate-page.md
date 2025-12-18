@@ -1,6 +1,6 @@
 ---
 description: "Migrate page from KX13 to XbyK project"
-argument-hint: "pageName legacyPageUrl"
+argument-hint: [pageName] [legacyPageUrl]
 tools:
   [
     "edit",
@@ -18,8 +18,8 @@ You are tasked with process of migrating the page from the legacy project to the
 
 ## Input Parameters
 
-- **Page Name:** `${input:pageName}` - The name of the page to migrate (e.g., 'home', 'doctors').
-- **Legacy Page URL:** `${input:legacyPageUrl}` - The URL of the page in the KX13 project (e.g., 'https://localhost:5001/en-us/home').
+- **Page Name:** `$pageName` - The name of the page to migrate (e.g., 'home', 'doctors').
+- **Legacy Page URL:** `$legacyPageUrl` - The URL of the page in the KX13 project (e.g., 'https://localhost:5001/en-us/home').
 
 ## Structure of the projects
 
