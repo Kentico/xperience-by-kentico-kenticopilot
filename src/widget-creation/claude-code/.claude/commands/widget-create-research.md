@@ -13,7 +13,7 @@ When started, you have been provided with the path to the folder, which contains
 
 ## Steps to follow
 
-- First, check all documentation links in the `./instructions/docs.instructions.md` file using Kentico Docs MCP.
+- First, check all documentation links in the `./instructions/docs.md` file using Kentico Docs MCP.
 
 - Next, read all remaining files in the `./instructions/` folder.
 
@@ -21,4 +21,4 @@ When started, you have been provided with the path to the folder, which contains
 
 - Check the current state of the project for resources you will need for creation of the widget. If you find already present widgets, follow their patterns and conventions.
 
-- Finally, create a new instructions file in the user-input folder that will allow you to generate a new widget. Use `./create-instructions/CREATION_TEMPLATE.instructions.md` as a base and fill in all the parts in brackets. Other parts of the file must stay the same as in the template.
+- Finally, create a new instructions file in the user-input folder that will allow you to generate a new widget. Use `./create-instructions/CREATION_TEMPLATE.md` as a base and fill in all the parts in brackets. Other parts of the file must stay the same as in the template.

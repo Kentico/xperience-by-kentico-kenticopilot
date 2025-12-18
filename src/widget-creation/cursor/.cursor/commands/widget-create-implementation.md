@@ -1,6 +1,7 @@
 ---
 description: "Prompt that helps with implementation of Widget creation process."
-tools: ["edit", "search", "runCommands", "kentico.docs.mcp/*", "problems", "todos"]
+tools:
+  ["edit", "search", "runCommands", "kentico.docs.mcp/*", "problems", "todos"]
 ---
 
 You are tasked with the process of creating a new widget following given instructions.
