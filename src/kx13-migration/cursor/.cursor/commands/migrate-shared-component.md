@@ -3,16 +3,14 @@ description: "Migrate shared component from KX13 to XbyK project"
 argument-hint: "componentName legacyPageUrl"
 tools:
   [
-    "vscode",
-    "execute",
-    "read",
     "edit",
     "search",
-    "web/fetch",
+    "runCommands",
     "kentico.docs.mcp/*",
     "playwright-mcp/*",
-    "agent",
-    "todo",
+    "problems",
+    "fetch",
+    "todos",
   ]
 ---
 
@@ -25,7 +23,7 @@ You are tasked with process of migrating the shared component from the legacy pr
 
 ## Structure of the projects
 
-Look at the file `../instructions/projects-structure.instructions.md` to understand the structure of both the legacy and new project.
+Look at the file `../instructions/projects-structure.md` to understand the structure of both the legacy and new project.
 
 ## Important
 

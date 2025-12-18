@@ -51,7 +51,7 @@ When migrating page, ensure that everything that was fetched dynamically from da
 
 1. Read all documentation links mentioned above.
 2. Check out how the legacy page looks like using the provided URL `${input:legacyPageUrl}` and identify all parts it consists of.
-3. Go through pages in the legacy project and identify the provided page **${input:pageName}**.
+3. Go through pages in the legacy project and identify the provided page `${input:pageName}`.
 4. When you know the page, research from which sections and widgets this page consists of or which it uses.
 5. If present, check how other widgets and sections are implemented in the new project.
 6. Migrate all the page builder widgets and sections identified in previous steps together with all their dependencies.
