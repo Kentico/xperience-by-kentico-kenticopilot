@@ -1,7 +1,7 @@
 ---
 description: "Migrate shared component from KX13 to XbyK project"
 argument-hint: "componentName legacyPageUrl"
-allowed-tools: Bash, Glob, Grep, Read, Edit, Write, NotebookEdit, WebFetch, TodoWrite, WebSearch, BashOutput, AskUserQuestion, Skill, SlashCommand, "kentico.docs.mcp/*", "playwright-mcp/*"
+allowed-tools: Bash, Glob, Grep, Read, Edit, Write, NotebookEdit, WebFetch, TodoWrite, WebSearch, BashOutput, AskUserQuestion, Skill, SlashCommand, mcp__kentico.docs.mcp__*, mcp__playwright-mcp__*
 ---
 
 You are tasked with process of migrating the shared component from the legacy project to the new one.

@@ -1,7 +1,7 @@
 ---
 description: "Ensure migrated page visually matches the original KX13 page"
 argument-hint: "pageName legacyPageUrl newPageUrl"
-allowed-tools: Bash, Glob, Grep, Read, Edit, Write, NotebookEdit, WebFetch, TodoWrite, WebSearch, BashOutput, AskUserQuestion, Skill, SlashCommand, "kentico.docs.mcp/*", "playwright-mcp/*"
+allowed-tools: Bash, Glob, Grep, Read, Edit, Write, NotebookEdit, WebFetch, TodoWrite, WebSearch, BashOutput, AskUserQuestion, Skill, SlashCommand, mcp__kentico.docs.mcp__*, mcp__playwright-mcp__*
 ---
 
 You are tasked with ensuring that the migrated page visually matches the original legacy page.

@@ -1,6 +1,6 @@
 ---
 description: "Migrate global code from KX13 to XbyK project."
-allowed-tools: Bash, Glob, Grep, Read, Edit, Write, NotebookEdit, WebFetch, TodoWrite, WebSearch, BashOutput, AskUserQuestion, Skill, SlashCommand, "kentico.docs.mcp/*"
+allowed-tools: Bash, Glob, Grep, Read, Edit, Write, NotebookEdit, WebFetch, TodoWrite, WebSearch, BashOutput, AskUserQuestion, Skill, SlashCommand, mcp__kentico.docs.mcp__*
 ---
 
 You are tasked with process of migrating global code from Kentico Xperience 13 project to Xperience by Kentico project.
