@@ -22,7 +22,7 @@ The page migration from KX13 to XbyK has been completed in the previous step. Th
 
 ## Important Principles
 
-1. **Dynamic content** - When migrating page, ensure that everything that was fetched dynamically from database will still be dynamically fetched from database. Nothing can be statically hardcoded in the new project if it was dynamic in the legacy project.
+1. **Dynamic content** - When migrating a page, ensure that everything that was fetched dynamically from the database will still be dynamically fetched from the database. Nothing can be statically hardcoded in the new project if it was dynamic in the legacy project.
 2. **Pixel-perfect matching** - The goal is to make the pages visually identical, including layout, spacing, colors, fonts, and responsive behavior.
 3. **Preserve functionality** - While fixing visual issues, ensure all functionality remains intact.
 
@@ -72,6 +72,6 @@ When done, provide user with this exact output (without any additional text, but
 Page visual match adjustment has been successfully completed.
 
 **Next steps:**
-- Review the changes to ensure everything is looking as expected.
-- Continue with the next prompt for migration of pages.
+- Review the changes to ensure everything looks as expected.
+- Continue migrating other pages by repeatedly running /migrate-page-widgets and /migrate-page.
 ```

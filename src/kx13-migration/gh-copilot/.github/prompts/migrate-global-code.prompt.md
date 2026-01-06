@@ -13,16 +13,16 @@ tools:
   ]
 ---
 
-You are tasked with process of migrating global code from Kentico Xperience 13 project to Xperience by Kentico project.
+You are tasked with the process of migrating global code from a Kentico Xperience 13 project to an Xperience by Kentico project.
 
 ## Structure of the projects
 
-Look at the file `../instructions/projects-structure.instructions.md` to understand the structure of both the legacy and new project.
+Look at the file `../instructions/projects-structure.instructions.md` to understand the structure of both the source and new project.
 
 ## Migration Steps
 
-1. Check out the structure of both the legacy and new project.
-2. Use Kentico docs MCP to read following page: https://docs.kentico.com/guides/architecture/upgrade-from-kx13/upgrade-walkthrough/adjust-global-code (note that this guide is written for a sample project and that there will be some differences between the sample project and the project you are migrating)
+1. Check out the structure of both the source and new project.
+2. Use Kentico Docs MCP to read the following page: https://docs.kentico.com/guides/architecture/upgrade-from-kx13/upgrade-walkthrough/adjust-global-code (note that this guide is written for a sample project and that there will be some differences between the sample project and the project you are migrating)
 3. Create a new project for generated code files (named {ProjectName}.Entities).
    1. Configure given project as described in the documentation.
    2. **CRITICAL:** Ensure the .csproj file contains the following (without this, content item reference fields will fail to populate):
@@ -54,11 +54,11 @@ When done, provide user with this exact output (without any additional text):
 
 ```
 # Migration Complete
-Global code migration from the legacy project to the new one has been successfully completed.
+Global code migration from the source project to the new one has been successfully completed.
 
 **Next steps:**
-- Update channel configuration to use correct url with port (the one project launches with).
-    Link: https://docs.kentico.com/guides/architecture/upgrade-from-kx13/upgrade-walkthrough/adjust-global-code#adjust-system-url
-- Review the changes to ensure everything is looking as expected.
-- Continue with the next prompt for migration of pages.
+- Update your channel configuration to include the port of the local XbyK instance (the one the project launches with).
+    Follow these steps: https://docs.kentico.com/guides/architecture/upgrade-from-kx13/upgrade-walkthrough/adjust-global-code#adjust-system-url
+- Review the changes to ensure everything looks as expected.
+- Continue with the /migrate-page-widgets prompt to migrate Page Builder widgets used by the specified page.
 ```

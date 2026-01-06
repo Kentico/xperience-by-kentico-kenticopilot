@@ -2,7 +2,7 @@
 
 ## Add Kentico Docs MCP server
 
-Run the following commands in terminal to add MCP servers to your Claude MCP configuration:
+Run the following commands in the terminal to add MCP servers to your Claude MCP configuration:
 
 ```bash
 claude mcp add-json kentico.docs.mcp '{"type": "http", "url": "https://docs.kentico.com/mcp"}'

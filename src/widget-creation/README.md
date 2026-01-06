@@ -79,9 +79,9 @@ If your project already contains widgets, the prompt also mimics their implement
 
 These files provide context to the AI about Xperience by Kentico:
 
-- `base-pagebuilder.instructions.md` - Core Page Builder concepts and APIs
-- `docs.instructions.md` - Links to relevant Xperience documentation
-- `example-widgets.instructions.md` - Examples of existing widget patterns
+- `base-pagebuilder.md` - Core Page Builder concepts and APIs
+- `docs.md` - Links to relevant Xperience documentation
+- `example-widgets.md` - Examples of existing widget patterns
 
 ### Prompts/Commands
 
@@ -90,7 +90,7 @@ These files provide context to the AI about Xperience by Kentico:
 
 ### Template
 
-- `CREATION_TEMPLATE.instructions.md` - Template for generating widget implementation instructions
+- `CREATION_TEMPLATE.md` - Template for generating widget implementation instructions
 
 ## Best practices for usage
 
