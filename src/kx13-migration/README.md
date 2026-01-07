@@ -8,16 +8,6 @@ AI-assistant prompts for migrating the **codebase** of Kentico Xperience 13 proj
 - Xperience by Kentico project (target) connected to a database migrated using the [Kentico Migration Tool](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool). The prompts were tested on a fresh Xperience by Kentico project created using the `kentico-xperience-mvc` [project template](https://docs.kentico.com/x/DQKQC).
 - AI coding assistant installed (for example: GitHub Copilot, Cursor, Claude Code).
 
-## Workflow
-
-These prompts provide step-by-step AI assistance for migrating an existing Kentico Xperience 13 project codebase to Xperience by Kentico:
-
-1. **Global code migration** - Sets up the new project structure, generates code files, and migrates shared code (localization, styles, services).
-2. **Page widgets migration** - Migrates Page Builder widgets and sections used by a specific page to the target project.
-3. **Page migration** - Migrates individual pages and their logic, including controllers, views, and components.
-4. **Visual matching** - Ensures migrated pages visually match the original KX13 pages.
-5. **Shared component migration** - Migrates reusable components (layouts, headers, breadcrumbs, etc.).
-
 ## Usage
 
 ### 1. Set up project structure
@@ -39,9 +29,40 @@ Copy the appropriate files for your AI assistant. Note that the files also add t
 
 ### 3. Run the migration prompts
 
-Execute the prompts in sequence. Each prompt builds on the work of the previous step.
+The prompts are divided into three main groups:
 
-#### Step 1: Migrate global code
+#### Global
+- [**migrate-global-code**](#migrate-global-code) – Sets up the target XbyK project structure, generates code files, and migrates shared code (localization, styles, business logic, etc.).
+
+#### Component
+- [**migrate-shared-component**](#migrate-shared-component) – Migrates reusable components (layouts, headers, breadcrumbs, etc.).
+
+#### Page
+- [**migrate-page-widgets**](#migrate-page-widgets) – Migrates Page Builder widgets and sections used by the specified page.
+- [**migrate-page**](#migrate-page-logic) – Migrates the specified page and related business and presentation logic, including controllers, views, and dependencies.
+- [**migrate-page-visual**](#ensure-page-visual-match) – Ensures migrated pages visually match the original KX13 pages. Used in case the page migration prompts result in visual discrepancies.
+
+In a general workflow, you migrate in waves:
+
+1. Global code to seed the target project with initial logic (using the [*migrate-global-code*](#migrate-global-code) prompt).
+2. Shared components to ensure consistent visuals for pages (using the [*migrate-shared-component*](#migrate-shared-component) prompt).
+3. Individual pages with distinct logic and dependencies.
+    1. First, migrate the page's Page Builder dependencies using [*migrate-page-widgets*](#migrate-page-widgets). Skip this step for pages that don't use Page Builder. 
+    2. Then, migrate the business and presentation logic using [*migrate-page*](#migrate-page-logic).
+    3. If the migration results in some visual issues, use [*migrate-page-visual*](#ensure-page-visual-match).
+    4. Repeat for each page with distinct logic and dependencies.
+
+## Best practices
+
+- Run prompts in sequence. Each prompt builds on the work done in the previous step. For example, the full sequence to migrate a page is: *migrate-page-widgets* → *migrate-page* → *migrate-page-visual*, repeating as necessary until all pages are converted. You can also omit prompts based on the requirements of the page being converted. If a page doesn't use Page Builder features, you can skip the *migrate-page-widgets* prompt.
+- Have both the source KX13 and target XbyK applications running -- the agent visits both applications to compare migration progress.
+- After runnign a prompt, review all generated code before proceeding to the next step.
+- Use the visual matching prompt to fix styling discrepancies.
+- Thoroughly test all migrated functionality.
+
+## Prompt reference
+
+### Migrate global code
 
 Prompt name: **migrate-global-code**
 
@@ -58,7 +79,25 @@ Migrates global code, generates code files, and sets up the project foundation. 
 /migrate-global-code
 ```
 
-#### Step 2: Migrate page widgets
+### Migrate shared component
+
+Prompt name: **migrate-shared-component**
+Parameters:
+  - *componentName*: The name of the shared element to migrate. For example: header, footer, navigation menu, sidebar.
+  - *legacyPageUrl*: The URL of the page in the source project
+
+Migrates reusable components like headers, footers, and navigation elements. The prompt locates the specified element in the source project and migrates it together with all dependencies (views, layouts, logic, etc.).
+
+**VS Code GitHub Copilot example:**
+
+```
+/migrate-shared-component
+
+componentName: breadcrumbs
+legacyPageUrl: https://localhost:5001/en-us/home
+```
+
+### Migrate page widgets
 
 Prompt name: **migrate-page-widgets**  
 Parameters: 
@@ -78,7 +117,7 @@ pageName: home
 legacyPageUrl: https://localhost:5001/en-us/home
 ```
 
-#### Step 3: Migrate page logic
+### Migrate page logic
 
 Prompt name: **migrate-page**  
 Parameters:
@@ -96,7 +135,7 @@ pageName: home
 legacyPageUrl: https://localhost:5001/en-us/home
 ```
 
-#### Step 4: Visual matching (optional)
+### Ensure page visual match
 
 Prompt name: **migrate-page-visual**  
 Parameters:
@@ -115,50 +154,6 @@ pageName: home
 legacyPageUrl: https://localhost:5001/en-us/home
 newPageUrl: http://localhost:60444/en-us/home
 ```
-
-#### Step 5: Migrate shared components
-
-Prompt name: **migrate-shared-component**
-Parameters:
-  - *componentName*: The name of the shared element to migrate. For example: header, footer, navigation menu, sidebar.
-  - *legacyPageUrl*: The URL of the page in the source project
-
-Migrates reusable components like headers, footers, and navigation elements. The prompt locates the specified element in the source project and migrates it together with all dependencies (views, layouts, logic, etc.).
-
-**VS Code GitHub Copilot example:**
-
-```
-/migrate-shared-component
-
-componentName: breadcrumbs
-legacyPageUrl: https://localhost:5001/en-us/home
-```
-
-## Included files
-
-### Prompts/Commands
-
-| Prompt | Description | Parameters |
-|--------|-------------|------------|
-| `migrate-global-code` | Migrates global code and sets up project foundation | None |
-| `migrate-page-widgets` | Migrates Page Builder widgets and sections | `pageName`, `legacyPageUrl` |
-| `migrate-page` | Migrates a complete page with all dependencies | `pageName`, `legacyPageUrl` |
-| `migrate-page-visual` | Ensures visual parity between KX13 and XbyK pages | `pageName`, `legacyPageUrl`, `newPageUrl` |
-| `migrate-shared-component` | Migrates shared/reusable components | `componentName`, `legacyPageUrl` |
-
-### Instructions
-
-These files provide context to the AI about your project setup:
-
-- `projects-structure.md` - Describes the workspace folder structure (KX13 and XbyK locations).
-
-## Best practices for usage
-
-- Run prompts in sequence. Each prompt builds on the work done in the previous step. For example, the full sequence is: migrate-global-code → migrate-page-widgets → migrate-page → migrate-page-visual, repeating as necessary until all pages are converted. You can also omit prompts based on the requirements of the page being converted. If a page doesn't use Page Builder features, the you can skip using migrate-page-widgets, for example.
-- Have both KX13 and XbyK applications running -- the agent visits both applications to compare migration progress.
-- Review generated code before proceeding to the next step.
-- Use the visual matching prompt to fix styling discrepancies.
-- Thoroughly test all migrated functionality.
 
 ## Prompt customization
 
