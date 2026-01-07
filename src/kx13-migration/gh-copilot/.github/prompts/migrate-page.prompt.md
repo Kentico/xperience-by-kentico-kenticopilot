@@ -1,6 +1,6 @@
 ---
 description: "Migrate page from KX13 to XbyK project"
-argument-hint: "pageName sourcePageUrl"
+argument-hint: "pageName legacyPageUrl"
 tools:
   [
     "vscode",
@@ -16,20 +16,20 @@ tools:
   ]
 ---
 
-You are tasked with the process of migrating a page from the source project to the new one.
+You are tasked with the process of migrating a page from the legacy project to the new one.
 
 ## Input Parameters
 
 - **Page Name:** `${input:pageName}` - The name of the page to migrate (e.g., 'home', 'doctors').
-- **source Page URL:** `${input:sourcePageUrl}` - The URL of the page in the KX13 project (e.g., 'https://localhost:5001/en-us/home').
+- **Legacy Page URL:** `${input:legacyPageUrl}` - The URL of the page in the KX13 project (e.g., 'https://localhost:5001/en-us/home').
 
 ## Structure of the projects
 
-Look at the file `../instructions/projects-structure.instructions.md` to understand the structure of both the source (source) and new (target) projects.
+Look at the file `../instructions/projects-structure.instructions.md` to understand the structure of both the legacy (source) and new (target) projects.
 
 ## Important
 
-When migrating a page, ensure that everything that was fetched dynamically from the database will still be dynamically fetched from the database. Nothing can be statically hardcoded in the new project if it was dynamic in the source project.
+When migrating a page, ensure that everything that was fetched dynamically from the database will still be dynamically fetched from the database. Nothing can be statically hardcoded in the new project if it was dynamic in the legacy project.
 
 ## Useful Documentation
 
@@ -48,13 +48,13 @@ When migrating a page, ensure that everything that was fetched dynamically from 
 ## Migration Steps
 
 1. Read all documentation links mentioned above.
-2. Check out how the source page looks like using the provided URL `${input:sourcePageUrl}` and identify all parts it consists of.
-3. Go through pages in the source project and identify the provided page `${input:pageName}`.
+2. Check out how the legacy page looks like using the provided URL `${input:legacyPageUrl}` and identify all parts it consists of.
+3. Go through pages in the legacy project and identify the provided page `${input:pageName}`.
 4. When you know the page, research how this page works and identify all other shared pages, components, or whatever this page relies on.
 5. If present, check how other pages are implemented in the new project.
 6. Migrate page's controller, content, layout, and relevant components, repositories, and services to the new project, together with all dependencies identified.
 7. When done with implementation, ensure that the new project builds successfully without errors and warnings. If not, fix the issues until none are present.
-8. Using the Playwright MCP, check that the migrated page is displayed correctly and functions as expected, exactly matching styling, content, and texts as in the image of the source page. If not, make necessary adjustments until it does (this can also include changes in dependencies).
+8. Using the Playwright MCP, check that the migrated page is displayed correctly and functions as expected, exactly matching styling, content, and texts as in the image of the legacy page. If not, make necessary adjustments until it does (this can also include changes in dependencies).
 
 Whenever unsure about anything, you can use Kentico Docs MCP to search for relevant information.
 
@@ -64,7 +64,7 @@ When done, provide user with this exact output (without any additional text):
 
 ```
 # Migration Complete
-Page migration from the source project to the new one has been successfully completed.
+Page migration from the legacy project to the new one has been successfully completed.
 
 **Next steps:**
 - Review the changes to ensure everything looks as expected.

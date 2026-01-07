@@ -17,11 +17,11 @@ You are tasked with the process of migrating global code from a Kentico Xperienc
 
 ## Structure of the projects
 
-Look at the file `../instructions/projects-structure.instructions.md` to understand the structure of both the source and new project.
+Look at the file `../instructions/projects-structure.instructions.md` to understand the structure of both the legacy and new project.
 
 ## Migration Steps
 
-1. Check out the structure of both the source and new project.
+1. Check out the structure of both the legacy and new project.
 2. Use Kentico Docs MCP to read the following page: https://docs.kentico.com/guides/architecture/upgrade-from-kx13/upgrade-walkthrough/adjust-global-code (note that this guide is written for a sample project and that there will be some differences between the sample project and the project you are migrating)
 3. Create a new project for generated code files (named {ProjectName}.Entities).
    1. Configure given project as described in the documentation.
@@ -54,7 +54,7 @@ When done, provide user with this exact output (without any additional text):
 
 ```
 # Migration Complete
-Global code migration from the source project to the new one has been successfully completed.
+Global code migration from the legacy project to the new one has been successfully completed.
 
 **Next steps:**
 - Update your channel configuration to include the port of the local XbyK instance (the one the project launches with).

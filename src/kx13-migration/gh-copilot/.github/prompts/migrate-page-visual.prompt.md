@@ -1,6 +1,6 @@
 ---
 description: "Ensure migrated page visually matches the original KX13 page"
-argument-hint: "pageName sourcePageUrl newPageUrl"
+argument-hint: "pageName legacyPageUrl newPageUrl"
 tools:
   [
     "vscode",
@@ -16,17 +16,17 @@ tools:
   ]
 ---
 
-You are tasked with ensuring that the migrated page visually matches the original source page.
+You are tasked with ensuring that the migrated page visually matches the original legacy page.
 
 ## Input Parameters
 
 - **Page Name:** `${input:pageName}` - The name/path of the page being matched (e.g., 'home', 'doctors').
-- **source Page URL:** `${input:sourcePageUrl}` - The URL of the page in the KX13 project (e.g., 'https://localhost:5001/en-us/home').
+- **Legacy Page URL:** `${input:legacyPageUrl}` - The URL of the page in the KX13 project (e.g., 'https://localhost:5001/en-us/home').
 - **New Page URL:** `${input:newPageUrl}` - The URL of the page in the XbyK project (e.g., 'http://localhost:60444/en-us/home').
 
 ## Structure of the projects
 
-Look at the file `../instructions/projects-structure.instructions.md` to understand the structure of both the source and new project.
+Look at the file `../instructions/projects-structure.instructions.md` to understand the structure of both the legacy and new project.
 
 ## Context
 
@@ -34,7 +34,7 @@ The page migration from KX13 to XbyK has been completed in the previous step. Th
 
 ## Important Principles
 
-1. **Dynamic content** - When migrating a page, ensure that everything that was fetched dynamically from the database will still be dynamically fetched from the database. Nothing can be statically hardcoded in the new project if it was dynamic in the source project.
+1. **Dynamic content** - When migrating a page, ensure that everything that was fetched dynamically from the database will still be dynamically fetched from the database. Nothing can be statically hardcoded in the new project if it was dynamic in the legacy project.
 2. **Pixel-perfect matching** - The goal is to make the pages visually identical, including layout, spacing, colors, fonts, and responsive behavior.
 3. **Preserve functionality** - While fixing visual issues, ensure all functionality remains intact.
 
@@ -44,7 +44,7 @@ The page migration from KX13 to XbyK has been completed in the previous step. Th
 
 2. **Capture both pages** - Use Playwright MCP to navigate to both pages:
 
-   - Navigate to the source page URL
+   - Navigate to the legacy page URL
    - Take a snapshot/screenshot for reference
    - Navigate to the new page URL
    - Take a snapshot/screenshot for comparison
@@ -64,7 +64,7 @@ The page migration from KX13 to XbyK has been completed in the previous step. Th
    - Make the necessary changes in the XbyK project
    - Prefer fixing via CSS/styling over changing HTML structure
    - Implement retrieval of missing content dynamically from the database
-   - Nothing can be hardcoded if it was dynamic in the source project
+   - Nothing can be hardcoded if it was dynamic in the legacy project
 
 5. **Rebuild and restart** - After making changes:
 
