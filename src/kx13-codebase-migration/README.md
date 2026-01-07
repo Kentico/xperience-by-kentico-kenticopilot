@@ -56,7 +56,7 @@ In a general workflow, you migrate in waves:
 
 - Run prompts in sequence. Each prompt builds on the work done in the previous step. For example, the full sequence to migrate a page is: *migrate-page-widgets* → *migrate-page* → *migrate-page-visual*, repeating as necessary until all pages are converted. You can also omit prompts based on the requirements of the page being converted. If a page doesn't use Page Builder features, you can skip the *migrate-page-widgets* prompt.
 - Have both the source KX13 and target XbyK applications running -- the agent visits both applications to compare migration progress.
-- After runnign a prompt, review all generated code before proceeding to the next step.
+- After running a prompt, review all generated code before proceeding to the next step.
 - Use the visual matching prompt to fix styling discrepancies.
 - Thoroughly test all migrated functionality.
 
@@ -69,8 +69,8 @@ Prompt name: **migrate-global-code**
 Migrates global code, generates code files, and sets up the project foundation. The prompt makes the following changes:
 
 - Creates a new .NET project in the target folder and marks it as [discoverable](https://docs.kentico.com/x/QoXWCQ) by Xperience.
-- Uses the code generator utility to [generate classes]((https://docs.kentico.com/x/5IbWCQ)) for migrated database entities (content types, etc.).
-- Copies global projects files, such as assets and resources, and global code, such as service registration and project startup logic, to the target.
+- Uses the code generator utility to [generate classes](https://docs.kentico.com/x/5IbWCQ) for migrated database entities (content types, etc.).
+- Copies global project files, such as assets and resources, and global code, such as service registration and project startup logic, to the target.
 - Enables [content tree-based routing](https://docs.kentico.com/x/GoXWCQ) and [Page Builder](https://docs.kentico.com/x/6QWiCQ) on the target.
 
 **VS Code GitHub Copilot example:**
