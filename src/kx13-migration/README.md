@@ -4,17 +4,17 @@ AI-assistant prompts for migrating the **codebase** of Kentico Xperience 13 proj
 
 ## Prerequisites
 
-- Kentico Xperience 13 project (source)
-- Xperience by Kentico project (target) with database migrated using the [Kentico Migration Tool](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool)
-- AI coding assistant installed (for example: GitHub Copilot, Cursor, Claude Code)
+- Kentico Xperience 13 project (source).
+- Xperience by Kentico project (target) connected to a database migrated using the [Kentico Migration Tool](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool). The prompts were tested on a fresh Xperience by Kentico project created using the `kentico-xperience-mvc` [project template](https://docs.kentico.com/x/DQKQC).
+- AI coding assistant installed (for example: GitHub Copilot, Cursor, Claude Code).
 
 ## Workflow
 
 These prompts provide step-by-step AI assistance for migrating an existing Kentico Xperience 13 project codebase to Xperience by Kentico:
 
 1. **Global code migration** - Sets up the new project structure, generates code files, and migrates shared code (localization, styles, services).
-2. **Page widgets migration** - Migrates Page Builder widgets and sections to the new project.
-3. **Page migration** - Migrates individual pages including controllers, views, and components.
+2. **Page widgets migration** - Migrates Page Builder widgets and sections used by a specific page to the target project.
+3. **Page migration** - Migrates individual pages and their logic, including controllers, views, and components.
 4. **Visual matching** - Ensures migrated pages visually match the original KX13 pages.
 5. **Shared component migration** - Migrates reusable components (layouts, headers, breadcrumbs, etc.).
 
@@ -35,7 +35,7 @@ Start both projects locally. During the migration, the agent actively visits URL
 
 Copy the appropriate files for your AI assistant. Note that the files also add the Xperience by Kentico [Documentation MCP server](https://docs.kentico.com/x/mcp_server_xp) and [Playwright MCP server](https://github.com/microsoft/playwright-mcp) to your workspace.
 
-> **Important:** For Claude Code, you need to add the servers manually via the command line. Follow the [setup instructions](claude-code/MCP_Setup.md).
+> **Important:** For Claude Code, you need to add the MCP servers manually via the command line. Follow the [setup instructions](claude-code/MCP_Setup.md).
 
 ### 3. Run the migration prompts
 
@@ -65,7 +65,9 @@ Parameters:
   - *pageName*: The name in the content tree of the source project
   - *legacyPageUrl*: The URL of the page in the source project
 
-Migrates Page Builder [widgets](https://docs.kentico.com/x/7gWiCQ) and [sections](https://docs.kentico.com/x/9AWiCQ) for a specific page to the target.
+Migrates Page Builder [widgets](https://docs.kentico.com/x/7gWiCQ) and [sections](https://docs.kentico.com/x/9AWiCQ) used by the specified page.
+
+This prompt can be omitted if the specific page doesn't use Page Builder features.
 
 **VS Code GitHub Copilot example:**
 
@@ -152,7 +154,7 @@ These files provide context to the AI about your project setup:
 
 ## Best practices for usage
 
-- Run prompts in sequence (global code → widgets → pages → visual matching). Each prompt builds on the work done in the previous step.
+- Run prompts in sequence. Each prompt builds on the work done in the previous step. For example, the full sequence is: migrate-global-code → migrate-page-widgets → migrate-page → migrate-page-visual, repeating as necessary until all pages are converted. You can also omit prompts based on the requirements of the page being converted. If a page doesn't use Page Builder features, the you can skip using migrate-page-widgets, for example.
 - Have both KX13 and XbyK applications running -- the agent visits both applications to compare migration progress.
 - Review generated code before proceeding to the next step.
 - Use the visual matching prompt to fix styling discrepancies.
@@ -160,4 +162,4 @@ These files provide context to the AI about your project setup:
 
 ## Prompt customization
 
-These prompt files serve as a baseline for migrating the codebase of KX13 projects to Xperience by Kentico. Modify and enhance the files as required by your implementation, workflow, and requirements. For example, you can update the `instructions/projects-structure.md` file with additional context about the project being migrated.
+These prompt files serve as a baseline for migrating the codebase of KX13 projects to Xperience by Kentico. Modify and enhance the files as required by your implementation, workflow, and requirements. For example, you can update the `instructions/projects-structure.md` file with additional information about the project being migrated.
