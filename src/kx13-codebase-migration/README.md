@@ -2,6 +2,24 @@
 
 AI-assistant prompts for migrating the **codebase** of Kentico Xperience 13 projects to [Xperience by Kentico](https://docs.kentico.com/x/migrate_from_kx13_guides).
 
+## Scope
+
+These prompts are designed to help migrate the live site and page presentation logic as described in the following guides:
+
+- [Adjust global code](https://docs.kentico.com/guides/architecture/upgrade-from-kx13/upgrade-walkthrough/adjust-global-code) – Generating code files for content types, copying localization resources, shared views, styles/scripts, and enabling content tree-based routing and Page Builder.
+- [Display an upgraded page](https://docs.kentico.com/guides/architecture/upgrade-from-kx13/upgrade-walkthrough/display-an-upgraded-page) – Content retrieval services, repositories, view models, views, controllers, and Page Builder sections/widgets.
+
+The following areas are not covered and must be handled manually:
+
+- Custom modules
+- Custom tables
+- Authentication and user management
+- Search functionality
+- E-commerce
+- Marketing features
+
+See the [Adjust and adapt your code](https://docs.kentico.com/x/migrate_your_code_guides) migration guide for details.
+
 ## Prerequisites
 
 - Kentico Xperience 13 project (source).
@@ -45,12 +63,12 @@ The prompts are divided into three main groups:
 In a general workflow, you migrate in waves:
 
 1. Global code to seed the target project with initial logic (using the [*migrate-global-code*](#migrate-global-code) prompt).
-2. Shared components to ensure consistent visuals for pages (using the [*migrate-shared-component*](#migrate-shared-component) prompt).
-3. Individual pages with distinct logic and dependencies.
+2. A single page to establish working URLs in the target project.
     1. First, migrate the page's Page Builder dependencies using [*migrate-page-widgets*](#migrate-page-widgets). Skip this step for pages that don't use Page Builder. 
     2. Then, migrate the business and presentation logic using [*migrate-page*](#migrate-page-logic).
-    3. If the migration results in some visual issues, use [*migrate-page-visual*](#ensure-page-visual-match).
-    4. Repeat for each page with distinct logic and dependencies.
+3. Shared components to ensure consistent visuals across pages (using the [*migrate-shared-component*](#migrate-shared-component) prompt). Use the URL of the page migrated in step 2 to verify visual accuracy.
+4. Remaining pages, repeating step 2 for each.
+    - If any migration results in visual issues, use [*migrate-page-visual*](#ensure-page-visual-match).
 
 ## Best practices
 
