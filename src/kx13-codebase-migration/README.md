@@ -172,7 +172,7 @@ Parameters:
 
 Ensures the migrated page visually matches the original KX13 page. Use if the migrate-page prompt doesn't successfully replicate the look and feel. The prompt uses Playwright to identify differences in both pages and aligns the migrated page to match the source.
 
-> **Note:** This prompt requires both the KX13 and XbyK applications to be running and accessible at the provided URLs. The XbyK application may be left running after this prompt completes.
+> **Note:** Ensure the KX13 application is running and accessible at the provided URL before running this prompt. Stop the XbyK project if running.
 
 **VS Code GitHub Copilot example:**
 
