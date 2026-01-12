@@ -37,7 +37,9 @@ KX13/          # Kentico Xperience 13 project files
 XbyK/          # Xperience by Kentico project files
 ```
 
-Start both projects locally. During the migration, the agent actively visits URLs in both projects to evaluate progress.
+Start the KX13 project locally. **Do not start the XbyK project** – the agent builds and starts it on-demand during the migration to evaluate progress.
+
+> **Tip:** You can also provide a URL to a live KX13 site.
 
 ### 2. Copy the prompts to the workspace
 
@@ -73,7 +75,8 @@ In a general workflow, you migrate in waves:
 ## Best practices
 
 - Run prompts in sequence. Each prompt builds on the work done in the previous step. For example, the full sequence to migrate a page is: *migrate-page-widgets* → *migrate-page* → *migrate-page-visual*, repeating as necessary until all pages are converted. You can also omit prompts based on the requirements of the page being converted. If a page doesn't use Page Builder features, you can skip the *migrate-page-widgets* prompt.
-- Have both the source KX13 and target XbyK applications running -- the agent visits both applications to compare migration progress.
+- Only run the KX13 application before starting. The agent manages the XbyK application lifecycle (building, starting, stopping) automatically.
+- Monitor the XbyK project state between prompts. Some prompts (e.g., *migrate-page-widgets*) may leave the XbyK application running. If a subsequent prompt expects the project to be stopped, you may need to stop it manually before proceeding.
 - After running a prompt, review all generated code before proceeding to the next step.
 - Use the visual matching prompt to fix styling discrepancies.
 - Thoroughly test all migrated functionality.
@@ -106,6 +109,8 @@ Parameters:
 
 Migrates reusable components like headers, footers, and navigation elements. The prompt locates the specified element in the source project and migrates it together with all dependencies (views, layouts, logic, etc.).
 
+> **Note:** Ensure the KX13 application is running and accessible at the provided URL before running this prompt. Stop the XbyK project if running.
+
 **VS Code GitHub Copilot example:**
 
 ```
@@ -126,6 +131,8 @@ Migrates Page Builder [widgets](https://docs.kentico.com/x/7gWiCQ) and [sections
 
 This prompt can be omitted if the specific page doesn't use Page Builder features.
 
+> **Note:** Ensure the KX13 application is running and accessible at the provided URL before running this prompt. Stop the XbyK project if running.
+
 **VS Code GitHub Copilot example:**
 
 ```
@@ -143,6 +150,8 @@ Parameters:
   - *legacyPageUrl*: The URL of the page in the source project
 
 Migrates the code of individual pages: controllers, views, layouts, and dependencies.
+
+> **Note:** Ensure the KX13 application is running and accessible at the provided URL before running this prompt. Stop the XbyK project if running.
 
 **VS Code GitHub Copilot example:**
 
@@ -162,6 +171,8 @@ Parameters:
   - *newPageUrl*: The URL of the page in the target project
 
 Ensures the migrated page visually matches the original KX13 page. Use if the migrate-page prompt doesn't successfully replicate the look and feel. The prompt uses Playwright to identify differences in both pages and aligns the migrated page to match the source.
+
+> **Note:** This prompt requires both the KX13 and XbyK applications to be running and accessible at the provided URLs. The XbyK application may be left running after this prompt completes.
 
 **VS Code GitHub Copilot example:**
 
