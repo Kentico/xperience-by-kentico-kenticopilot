@@ -17,7 +17,7 @@ Prompts are transferrable to other solutions. Follow the conventions of your spe
 
 ## Available prompts
 
-The following prompts are available for your AI coding assistants. See their respective README files for full details on how to use the prompts in different solutions.
+Example prompts for the following scenarios are available for your AI coding assistants. See their respective README files for full details on how to use the prompts in different solutions.
 
 ### Widget creation
 
