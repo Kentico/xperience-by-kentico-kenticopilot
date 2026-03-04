@@ -21,7 +21,7 @@ Example prompts for the following scenarios are available for your AI coding ass
 
 ### Widget creation
 
-> Location: [src/widget-creation/](./src/widget-creation/)
+> **Location:** [src/widget-creation/](./src/widget-creation/)
 
 Two-stage workflow for building [Page Builder](https://docs.kentico.com/x/6QWiCQ) widgets. The AI first researches your requirements against Xperience docs, then generates the full widget implementation (view component, properties, Razor view, view model, localization). Full instructions are available in the [README](./src/widget-creation/README.md).
 
@@ -32,7 +32,7 @@ Two-stage workflow for building [Page Builder](https://docs.kentico.com/x/6QWiCQ
 
 ### KX13 codebase migration
 
-> Location: [src/kx13-codebase-migration/](./src/kx13-codebase-migration/)
+> **Location:** [src/kx13-codebase-migration/](./src/kx13-codebase-migration/)
 
 AI-assisted migration of Kentico Xperience 13 live-site code (pages, widgets, shared components) to Xperience by Kentico. Full instructions are available in the [README](./src/kx13-codebase-migration/README.md).
 
