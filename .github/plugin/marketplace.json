@@ -1,0 +1,36 @@
+{
+  "name": "xperience-by-kentico-kenticopilot",
+  "metadata": {
+    "description": "AI agent prompts and instructions for Xperience by Kentico development",
+    "version": "1.0.0"
+  },
+  "owner": {
+    "name": "Kentico",
+    "email": "support@kentico.com"
+  },
+  "plugins": [
+    {
+      "name": "widget-creation",
+      "source": "plugins/widget-creation",
+      "description": "AI-assisted prompts for creating Page Builder widgets in Xperience by Kentico",
+      "version": "1.0.0",
+      "skills": [
+        "./skills/widget-create-research",
+        "./skills/widget-create-implementation"
+      ]
+    },
+    {
+      "name": "kx13-codebase-migration",
+      "source": "plugins/kx13-codebase-migration",
+      "description": "AI-assisted prompts for migrating the codebase of Kentico Xperience 13 projects to Xperience by Kentico",
+      "version": "1.0.0",
+      "skills": [
+        "./skills/migrate-global-code",
+        "./skills/migrate-page",
+        "./skills/migrate-page-visual",
+        "./skills/migrate-page-widgets",
+        "./skills/migrate-shared-component"
+      ]
+    }
+  ]
+}
