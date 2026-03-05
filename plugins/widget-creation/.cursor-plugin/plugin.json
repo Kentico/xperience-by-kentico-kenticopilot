@@ -5,7 +5,7 @@
   "author": {
     "name": "Kentico"
   },
-  "homepage": "https://github.com/Kentico/xperience-by-kentico-kenticopilot/plugins/widget-creation",
+  "homepage": "https://github.com/Kentico/xperience-by-kentico-kenticopilot/tree/main/plugins/widget-creation",
   "repository": "https://github.com/Kentico/xperience-by-kentico-kenticopilot",
   "license": "MIT",
   "keywords": ["kentico", "xperience", "widget", "page-builder", "cms"]

@@ -5,7 +5,7 @@
   "author": {
     "name": "Kentico"
   },
-  "homepage": "https://github.com/Kentico/xperience-by-kentico-kenticopilot/plugins/kx13-codebase-migration",
+  "homepage": "https://github.com/Kentico/xperience-by-kentico-kenticopilot/tree/main/plugins/kx13-codebase-migration",
   "repository": "https://github.com/Kentico/xperience-by-kentico-kenticopilot",
   "license": "MIT",
   "keywords": ["kentico", "xperience", "migration", "kx13", "cms"]
