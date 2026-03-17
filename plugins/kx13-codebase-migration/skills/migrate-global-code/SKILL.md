@@ -1,6 +1,7 @@
 ---
 name: migrate-global-code
 description: "Migrates global code from a Kentico Xperience 13 project to Xperience by Kentico. Sets up the target project structure, generates code files, and migrates shared code including localization, styles, business logic, and project startup configuration. Use when starting a KX13 to XbyK codebase migration."
+compatibility: "Requires Kentico Docs MCP"
 ---
 
 You are tasked with the process of migrating global code from a Kentico Xperience 13 project to an Xperience by Kentico project.

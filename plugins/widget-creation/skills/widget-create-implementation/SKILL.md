@@ -1,7 +1,8 @@
 ---
 name: "widget-create-implementation"
-description: "Prompt that helps with implementation of Widget creation process."
+description: "Creates a widget code following the generated instructions, project conventions, and Xperience best practices."
 argument-hint: "Path to the file containing instructions for widget creation"
+compatibility: "Requires Kentico Docs MCP"
 ---
 
 You are tasked with the process of creating a new widget following given instructions.

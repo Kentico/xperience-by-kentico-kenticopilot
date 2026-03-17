@@ -1,7 +1,8 @@
 ---
 name: "widget-create-research"
-description: "Prompt that helps with preparation of Widget creation process."
+description: "Prepares for the implementation of a new Page Builder widget. Analyzes widget requirements and design, validates them against Xperience documentation, and generates detailed implementation instructions."
 argument-hint: "Path to the folder containing the user input files"
+compatibility: "Requires Kentico Docs MCP"
 ---
 
 You are tasked with the process of creating a new prompt for generating a new widget.
@@ -20,4 +21,4 @@ You are tasked with the process of creating a new prompt for generating a new wi
 
 - Check the current state of the project for resources you will need for creation of the widget. If you find already present widgets, follow their patterns and conventions.
 
-- Finally, create a new instructions file in the user-input folder that will allow you to generate a new widget. Use `references/CREATION_TEMPLATE.md` as a base and fill in all the parts in brackets. Other parts of the file must stay the same as in the template.
+- Finally, create a new instructions file in the user-input folder that will allow you to generate a new widget. Use `assets/CREATION_TEMPLATE.md` as a base and fill in all the parts in brackets. Other parts of the file must stay the same as in the template.

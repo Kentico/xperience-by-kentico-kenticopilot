@@ -2,6 +2,7 @@
 name: migrate-page-visual
 description: "Ensures a migrated page visually matches the original Kentico Xperience 13 page. Uses Playwright to compare both pages and iteratively fixes styling, layout, and content differences. Use when a page migration results in visual discrepancies that need to be corrected."
 argument-hint: "Name of the page, the legacy page URL, and the new page URL"
+compatibility: "Requires Playwright MCP"
 ---
 
 You are tasked with ensuring that the migrated page visually matches the original legacy page.

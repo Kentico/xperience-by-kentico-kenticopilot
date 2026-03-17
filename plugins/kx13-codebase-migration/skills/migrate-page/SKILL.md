@@ -2,6 +2,7 @@
 name: migrate-page
 description: "Migrates a page from a Kentico Xperience 13 project to Xperience by Kentico. Converts controllers, views, layouts, content retrieval, and all dependencies for the specified page. Use when migrating the business and presentation logic of a specific page after its Page Builder widgets have been migrated."
 argument-hint: "Name of the page in the content tree and the legacy page URL"
+compatibility: "Requires Kentico Docs MCP and Playwright MCP"
 ---
 
 You are tasked with the process of migrating a page from the legacy project to the new one.
