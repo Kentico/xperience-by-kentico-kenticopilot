@@ -14,6 +14,36 @@ This repository contains prompts for the following solutions:
 
 Prompts are transferrable to other solutions. Follow the conventions of your specific assistant.
 
+
+## Available prompts
+
+Example prompts for the following scenarios are available for your AI coding assistants. See their respective README files for full details on how to use the prompts in different solutions.
+
+### Widget creation
+
+> **Location:** [src/widget-creation/](./src/widget-creation/)
+
+Two-stage workflow for building [Page Builder](https://docs.kentico.com/x/6QWiCQ) widgets. The AI first researches your requirements against Xperience docs, then generates the full widget implementation (view component, properties, Razor view, view model, localization). Full instructions are available in the [README](./src/widget-creation/README.md).
+
+| Prompt | Description |
+|---|---|
+| `widget-create-research` | Analyzes requirements and design files, generates implementation instructions |
+| `widget-create-implementation` | Creates widget code following the generated instructions and project conventions |
+
+### KX13 codebase migration
+
+> **Location:** [src/kx13-codebase-migration/](./src/kx13-codebase-migration/)
+
+AI-assisted migration of Kentico Xperience 13 live-site code (pages, widgets, shared components) to Xperience by Kentico. Full instructions are available in the [README](./src/kx13-codebase-migration/README.md).
+
+| Prompt | Description |
+|---|---|
+| `migrate-global-code` | Sets up XbyK project foundation (code generation, localization, routing, Page Builder) |
+| `migrate-page` | Migrates a page's controller, views, repositories, and dependencies |
+| `migrate-page-widgets` | Migrates Page Builder widgets and sections for a specified page |
+| `migrate-shared-component` | Migrates reusable components (header, footer, etc.) with dependencies |
+| `migrate-page-visual` | Compares old and new pages visually with Playwright, fixes discrepancies |
+
 ## Requirements
 
 - [Xperience by Kentico](https://docs.kentico.com) 30.6.0 or newer

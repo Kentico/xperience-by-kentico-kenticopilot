@@ -1,10 +1,10 @@
 # Widget creation
 
-AI-assisted prompts for creating [Page Builder](https://docs.kentico.com/x/6QWiCQ) widgets in Xperience by Kentico.
+AI-assisted example prompts for creating [Page Builder](https://docs.kentico.com/x/6QWiCQ) widgets in Xperience by Kentico.
 
 ## Workflow
 
-These prompts provides two-stage AI assistance for building custom Page Builder widgets:
+These prompts provide two-stage AI assistance for building custom Page Builder widgets:
 
 1. **Research stage** - Analyzes your requirements and design, validates them against Xperience documentation, and generates detailed implementation instructions
 2. **Implementation stage** - Creates the widget code following the generated instructions and project conventions
