@@ -1,6 +1,5 @@
 {
   "name": "xperience-by-kentico-kenticopilot",
-  "strict": true,
   "owner": {
     "name": "Kentico",
     "email": "support@kentico.com"
@@ -22,7 +21,8 @@
       "homepage": "https://github.com/Kentico/xperience-by-kentico-kenticopilot/tree/main/plugins/widget-creation",
       "repository": "https://github.com/Kentico/xperience-by-kentico-kenticopilot",
       "license": "MIT",
-      "keywords": ["kentico", "xperience", "widget", "page-builder", "cms"]
+      "keywords": ["kentico", "xperience", "widget", "page-builder", "cms"],
+      "strict": false
     },
     {
       "name": "kx13-codebase-migration",
@@ -35,7 +35,8 @@
       "homepage": "https://github.com/Kentico/xperience-by-kentico-kenticopilot/tree/main/plugins/kx13-codebase-migration",
       "repository": "https://github.com/Kentico/xperience-by-kentico-kenticopilot",
       "license": "MIT",
-      "keywords": ["kentico", "xperience", "migration", "kx13", "cms"]
+      "keywords": ["kentico", "xperience", "migration", "kx13", "cms"],
+      "strict": false
     }
   ]
 }
