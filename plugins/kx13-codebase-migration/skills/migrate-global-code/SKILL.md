@@ -15,7 +15,7 @@ You are currently located in the root folder, which contains two subfolders:
 
 ## Migration Steps
 
-1. Check out the structure of both the legacy and new project.
+1. Review the structure of both the legacy and new project.
 2. Use Kentico Docs MCP to read the following page: https://docs.kentico.com/guides/architecture/upgrade-from-kx13/upgrade-walkthrough/adjust-global-code (note that this guide is written for a sample project and that there will be some differences between the sample project and the project you are migrating)
 3. Create a new project for generated code files (named {ProjectName}.Entities).
    1. Configure given project as described in the documentation.
@@ -35,7 +35,7 @@ You are currently located in the root folder, which contains two subfolders:
 6. Configure the project to display content.
    1. Enable Content tree-based routing and Page Builder.
    2. Add future custom service registrations and localization.
-7. In the end, ensure that the new project builds successfully without errors and warnings, if not, some part of documentation was not followed correctly, so fix the issues based on the docs page.
+7. Ensure that the new project builds successfully without errors and warnings. If it doesn't, some part of the documentation was not followed correctly. Fix the issues based on the docs page.
 
 Notes relevant to the migration process:
 
@@ -44,7 +44,7 @@ Notes relevant to the migration process:
 
 ## Output format
 
-When done, provide user with this exact output (without any additional text):
+When done, provide the user with this exact output (without any additional text):
 
 ```
 # Migration Complete

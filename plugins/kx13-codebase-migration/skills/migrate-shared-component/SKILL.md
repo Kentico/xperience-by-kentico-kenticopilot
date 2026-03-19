@@ -40,7 +40,7 @@ When migrating a page, ensure that everything that was fetched dynamically from 
 ## Migration Steps
 
 1. Read all documentation links mentioned above.
-2. Check out how the legacy page looks like using the provided URL and identify the shared component.
+2. Review how the legacy page looks using the provided URL and identify the shared component.
 3. Go through files in the legacy project and identify the provided component.
 4. When you know the component, research how this component works and identify all other shared components, pages, or whatever this component relies on.
 5. If present, check how other components are implemented in the new project.
@@ -52,13 +52,13 @@ Whenever unsure about anything, you can use Kentico Docs MCP to search for relev
 
 ## Output format
 
-When done, provide user with this exact output (without any additional text):
+When done, provide the user with this exact output (without any additional text):
 
 ```
 # Migration Complete
 Shared component migration from the legacy project to the new one has been successfully completed.
 
 **Next steps:**
-- Review the changes to ensure everything is looking as expected.
+- Review the changes to ensure everything looks as expected.
 - Use the migrate-page-visual skill to fix visual issues with the migration.
 ```

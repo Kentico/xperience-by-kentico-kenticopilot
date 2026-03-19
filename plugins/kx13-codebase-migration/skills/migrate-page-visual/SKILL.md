@@ -36,9 +36,9 @@ The page migration from KX13 to XbyK has been completed in the previous step. Th
 
 2. **Capture both pages** - Use Playwright MCP to navigate to both pages:
    - Navigate to the legacy page URL
-   - Take a snapshot/screenshot for reference
+   - Take a snapshot or screenshot for reference
    - Navigate to the new page URL
-   - Take a snapshot/screenshot for comparison
+   - Take a snapshot or screenshot for comparison
 
 3. **Identify visual differences** - Compare the two pages and note all differences:
    - Layout and structure
@@ -65,7 +65,7 @@ The page migration from KX13 to XbyK has been completed in the previous step. Th
 
 ## Output format
 
-When done, provide user with this exact output (without any additional text):
+When done, provide the user with this exact output (without any additional text):
 
 ```
 # Migration Complete

@@ -6,39 +6,39 @@
 
 AI agent prompts and instructions for Xperience by Kentico development. This repository provides pre-configured prompts for common development tasks, helping developers accelerate their workflow with AI coding assistants.
 
-This repository contains prompts for the following solutions:
+This repository contains plugins (skills, instructions, MCP server configuration) tested for the following AI coding assistants:
 
 - GitHub Copilot
 - Cursor
 - Claude Code
 
-Prompts are transferrable to other solutions. Follow the conventions of your specific assistant.
+Skills are transferable to other solutions. Follow the conventions of your specific assistant.
 
 
-## Available prompts
+## Available plugins
 
-Example prompts for the following scenarios are available for your AI coding assistants. See their respective README files for full details on how to use the prompts in different solutions.
+This repository provides plugins, each containing a set of skills for AI coding assistants. See the plugin README files for full details.
 
 ### Widget creation
 
-> **Location:** [src/widget-creation/](./src/widget-creation/)
+> **Location:** [plugins/widget-creation/](./plugins/widget-creation/)
 
-Two-stage workflow for building [Page Builder](https://docs.kentico.com/x/6QWiCQ) widgets. The AI first researches your requirements against Xperience docs, then generates the full widget implementation (view component, properties, Razor view, view model, localization). Full instructions are available in the [README](./src/widget-creation/README.md).
+Two-stage workflow for building [Page Builder](https://docs.kentico.com/x/6QWiCQ) widgets. The AI first researches your requirements against your project structure and the Xperience documentation, then generates the full widget implementation (view component, properties, Razor view, view model, localization). Full instructions are available in the [README](./plugins/widget-creation/README.md).
 
-| Prompt | Description |
+| Skill | Description |
 |---|---|
 | `widget-create-research` | Analyzes requirements and design files, generates implementation instructions |
 | `widget-create-implementation` | Creates widget code following the generated instructions and project conventions |
 
 ### KX13 codebase migration
 
-> **Location:** [src/kx13-codebase-migration/](./src/kx13-codebase-migration/)
+> **Location:** [plugins/kx13-codebase-migration/](./plugins/kx13-codebase-migration/)
 
-AI-assisted migration of Kentico Xperience 13 live-site code (pages, widgets, shared components) to Xperience by Kentico. Full instructions are available in the [README](./src/kx13-codebase-migration/README.md).
+AI-assisted migration of Kentico Xperience 13 live-site code (pages, widgets, shared components) to Xperience by Kentico. Full instructions are available in the [README](./plugins/kx13-codebase-migration/README.md).
 
-| Prompt | Description |
+| Skill | Description |
 |---|---|
-| `migrate-global-code` | Sets up XbyK project foundation (code generation, localization, routing, Page Builder) |
+| `migrate-global-code` | Sets up the Xperience by Kentico project foundation (code generation, localization, routing, Page Builder) |
 | `migrate-page` | Migrates a page's controller, views, repositories, and dependencies |
 | `migrate-page-widgets` | Migrates Page Builder widgets and sections for a specified page |
 | `migrate-shared-component` | Migrates reusable components (header, footer, etc.) with dependencies |
@@ -52,34 +52,38 @@ AI-assisted migration of Kentico Xperience 13 live-site code (pages, widgets, sh
   - [Cursor](https://cursor.sh/)
   - [Claude Code](https://www.claude.com/product/claude-code)
 
-## Setup
+## Install as a plugin
 
-1. Clone this repository:
+This repository is an [agent plugin marketplace](https://code.visualstudio.com/docs/copilot/customization/agent-plugins). Install plugins directly from the marketplace — no need to clone the repository or copy files manually.
 
-    ```bash
-    git clone https://github.com/Kentico/xperience-by-kentico-kenticopilot.git
+### VS Code (GitHub Copilot)
+
+1. Add the marketplace to your VS Code settings (`settings.json`):
+
+    ```json
+    "chat.plugins.marketplaces": [
+        "Kentico/xperience-by-kentico-kenticopilot"
+    ]
     ```
 
-1. Copy the files for your AI assistant to your Xperience project:
+2. Open the Extensions sidebar and search `@agentPlugins` to browse and install available plugins.
 
-    ```bash
-    # For GitHub Copilot
-    cp -r src/widget-creation/gh-copilot/* YOUR_PROJECT/
+### Claude Code
 
-    # For Cursor
-    cp -r src/widget-creation/cursor/* YOUR_PROJECT/
+```bash
+/plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
+/plugin install widget-creation@xperience-by-kentico-kenticopilot
+/plugin install kx13-codebase-migration@xperience-by-kentico-kenticopilot
+```
 
-    # For Claude Code
-    cp -r src/widget-creation/claude-code/* YOUR_PROJECT/
-    ```
+> [!NOTE]
+> Claude Code may not install `.mcp.json` from plugin directories automatically. Add the required MCP servers manually with `claude mcp add-json`. See the plugin READMEs for the MCP configuration.
 
-    - Prompts are transferable to other solutions. Follow the conventions of your specific assistant.
+### Cursor
 
-1. Follow the use case README in `src/` for specific instructions.
+Cursor supports the plugin manifest format through its own marketplace. See the [Cursor plugins reference](https://cursor.com/docs/reference/plugins) for installation details.
 
-## Full Instructions
-
-View the [Usage Guide](./docs/Usage-Guide.md) for more detailed instructions.
+For more details, see the [Usage Guide](./docs/Usage-Guide.md).
 
 ## Contributing
 
