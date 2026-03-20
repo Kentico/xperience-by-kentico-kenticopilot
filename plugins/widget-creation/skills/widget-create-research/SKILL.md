@@ -5,11 +5,11 @@ argument-hint: "Path to the folder containing the user input files"
 compatibility: "Requires Kentico Docs MCP"
 ---
 
-You are tasked with the process of creating a new prompt for generating a new widget.
+You are tasked with preparing a detailed instructions file that will guide the implementation of a new Page Builder widget.
 
 ## Input Parameters
 
-- **User Input Folder Path** - The user provided a path to the folder that contains user input files with requirements and design for the new widget. You must follow these when creating the final prompt.
+- **User Input Folder Path** - The user provided a path to the folder that contains user input files with requirements and design for the new widget. You must follow these when creating the final instructions file.
 
 ## Steps to follow
 
