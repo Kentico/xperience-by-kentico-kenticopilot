@@ -20,13 +20,13 @@ Testing with these tools helps validate that your changes work as intended.
 
 ## Repository structure
 
+- `.claude-plugin/marketplace.json` — Claude Code marketplace manifest (lists all plugins)
+- `.cursor/plugin/marketplace.json` — Cursor marketplace manifest
+- `.github/plugin/marketplace.json` — GitHub Copilot / VS Code marketplace manifest (lists all plugins)
 - `plugins/` — Plugin folders organized by use case (e.g., `widget-creation/`, `kx13-codebase-migration/`)
   - `.cursor-plugin/plugin.json` — Cursor plugin manifest
   - `.mcp.json` — MCP server configuration for the plugin
   - `skills/` — SKILL.md files defining individual agent skills
-- `.claude-plugin/marketplace.json` — Claude Code marketplace manifest (lists all plugins)
-- `.cursor/plugin/marketplace.json` — Cursor marketplace manifest
-- `.github/plugin/marketplace.json` — GitHub Copilot / VS Code marketplace manifest (lists all plugins)
 - `examples/` — Example files passed to LLMs as context for corresponding scenarios
 - `docs/` — Usage and contributing documentation
 - `styleguides/` — Kentico documentation style guides

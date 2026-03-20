@@ -12,7 +12,7 @@ Before you start, you need:
 
 ## Install an AI coding assistant
 
-Install an AI coding assistant. This repository provides skills tested with select popular solutions. To transfer the skills to other assistants, follow the conventions of your specific solution.
+Install an AI coding assistant. This repository provides plugins and skills tested with select popular solutions. To transfer the skills to other assistants, follow the conventions of your specific solution.
 
 ### GitHub Copilot
 
