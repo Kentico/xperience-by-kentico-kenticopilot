@@ -1,6 +1,6 @@
 # Usage guide
 
-This guide explains how to use the AI agent prompts and instructions in this repository for Xperience by Kentico development.
+This guide explains how to use the AI agent skills in this repository for Xperience by Kentico development.
 
 ## Prerequisites
 
@@ -12,88 +12,87 @@ Before you start, you need:
 
 ## Install an AI coding assistant
 
-Install an AI coding assistant. This repository contains and focuses on prompts for select popular solutions. To transfer the prompts to other assistants, follow the conventions of your specific solution.
+Install an AI coding assistant. This repository provides plugins and skills tested with select popular solutions. To transfer the skills to other assistants, follow the conventions of your specific solution.
 
 ### GitHub Copilot
 
 1. Install the [GitHub Copilot extension](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot) for VS Code.
-1. Sign in to your GitHub account.
+2. Sign in to your GitHub account.
 
 ### Cursor
 
 1. Download and install [Cursor](https://cursor.sh/).
-1. Sign in with your account.
-1. Configure your AI model preferences.
+2. Sign in with your account.
+3. Configure your AI model preferences.
 
 ### Claude Code
 
 1. Install [Claude Code](https://www.claude.com/product/claude-code).
-1. Sign in to your Anthropic account.
-1. Enable the code editing features.
+2. Sign in to your Anthropic account.
 
-## Clone the repository
+## Install plugins from the marketplace
 
-1. Open your terminal or command prompt.
+This repository is an agent plugin marketplace. Install plugins directly without cloning or copying files.
+
+### VS Code (GitHub Copilot)
+
+1. Add the marketplace to your VS Code settings (`settings.json`):
+
+   ```json
+   "chat.plugins.marketplaces": [
+       "Kentico/xperience-by-kentico-kenticopilot"
+   ]
+   ```
+
+2. Open the Extensions sidebar and search `@agentPlugins` to browse available plugins.
+3. Select **Install** on the plugin you need.
+
+### Claude Code
+
+```bash
+/plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
+/plugin install widget-creation@xperience-by-kentico-kenticopilot
+/plugin install kx13-codebase-migration@xperience-by-kentico-kenticopilot
+```
+
+> [!NOTE]
+> Claude Code does not yet propagate `.mcp.json` from plugin directories automatically. Add the required MCP servers manually with `claude mcp add-json`. See the plugin READMEs for the MCP configuration.
+
+### Cursor
+
+Cursor supports the plugin manifest format through its own marketplace. See the [Cursor plugins reference](https://cursor.com/docs/reference/plugins) for installation details.
+
+## Copy plugin files manually (alternative)
+
+If you prefer not to use the plugin marketplace, copy plugin files directly into your project workspace.
+
 1. Clone this repository:
 
    ```bash
    git clone https://github.com/Kentico/xperience-by-kentico-kenticopilot.git
    ```
 
-1. Navigate to the cloned repository:
+2. Copy the plugin folder for your use case to the root of your project workspace:
 
    ```bash
-   cd xperience-by-kentico-kenticopilot
+   # Widget creation
+   cp -r plugins/widget-creation/ YOUR_PROJECT/
+
+   # KX13 codebase migration
+   cp -r plugins/kx13-codebase-migration/ YOUR_PROJECT/
    ```
 
-## Copy files to your project
+## Use the skills
 
-The repository organizes prompt files by AI assistant. Copy the files that match your chosen assistant to the root of your repository.
-
-### GitHub Copilot
-
-1. Navigate to the use case directory under `src/`.
-2. Copy files from the `gh-copilot/` subdirectory to the root of your project.
-
-**Example for widget creation:**
-
-```bash
-cp -r src/widget-creation/gh-copilot/* YOUR_PROJECT/
-```
-
-### Cursor
-
-1. Navigate to the use case directory under `src/`.
-2. Copy files from the `cursor/` subdirectory to the root of your project.
-
-**Example for widget creation:**
-
-```bash
-cp -r src/widget-creation/cursor/* YOUR_PROJECT/
-```
-
-### Claude Code
-
-1. Navigate to the use case directory under `src/`.
-1. Copy files from the `claude-code/` subdirectory to the root of your project.
-
-**Example for widget creation:**
-
-```bash
-cp -r src/widget-creation/claude-code/* YOUR_PROJECT/
-```
-
-## Use the prompts
-
-After copying the files to your project:
+After installing a plugin (or copying the files manually):
 
 1. Open your project in your AI coding assistant.
-1. Open the README file for your specific use case (e.g., `src/widget-creation/README.md`).
-1. Follow the instructions in the README.
+2. Open the README for the plugin you installed (e.g., `plugins/widget-creation/README.md`).
+3. Follow the instructions in the README.
 
-The README file inside each use case folder explains:
+Each plugin README explains:
 
-- What the prompts do
+- What the skills do
 - How to trigger them
 - What inputs are expected
-- Example scenarios
+- Example usage scenarios

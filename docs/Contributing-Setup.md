@@ -1,16 +1,16 @@
 # Contributing setup
 
-This repository contains AI agent prompts, instructions, and related materials for Xperience by Kentico development assistance. This guide explains how to contribute changes to these materials.
+This repository contains AI agent skills, instructions, and related materials for Xperience by Kentico development assistance. This guide explains how to contribute changes to these materials.
 
 ## Required software
 
 ### Text editor
 
-You need a text editor to work with Markdown and prompt files. We recommend [VS Code](https://code.visualstudio.com/) for its Markdown support and helpful extensions.
+You need a text editor to work with Markdown and skill files. We recommend [VS Code](https://code.visualstudio.com/) for its Markdown support and helpful extensions.
 
 ### AI coding assistants
 
-Test your prompt changes with AI assistants. This repository currently contains workflows for:
+Test your skill changes with AI assistants. This repository currently provides skills tested with:
 
 - [GitHub Copilot](https://github.com/features/copilot)
 - [Cursor](https://cursor.sh/)
@@ -20,35 +20,27 @@ Testing with these tools helps validate that your changes work as intended.
 
 ## Repository structure
 
-- `src/` - Prompt files organized by use case (e.g., `widget-creation/`)
-- `examples/` - Examples of files passed to LLMs as context for corresponding scenarios
+- `.claude-plugin/marketplace.json` — Claude Code marketplace manifest (lists all plugins)
+- `.cursor/plugin/marketplace.json` — Cursor marketplace manifest
+- `.github/plugin/marketplace.json` — GitHub Copilot / VS Code marketplace manifest (lists all plugins)
+- `plugins/` — Plugin folders organized by use case (e.g., `widget-creation/`, `kx13-codebase-migration/`)
+  - `.cursor-plugin/plugin.json` — Cursor plugin manifest
+  - `.mcp.json` — MCP server configuration for the plugin
+  - `skills/` — SKILL.md files defining individual agent skills
+- `examples/` — Example files passed to LLMs as context for corresponding scenarios
+- `docs/` — Usage and contributing documentation
+- `styleguides/` — Kentico documentation style guides
 
-### AI assistant organization
+## Contributing to skill files
 
-Prompt files are organized by AI assistant:
+### Skill engineering best practices
 
-- `claude-code/` - Claude Code configurations
-- `cursor/` - Cursor configurations
-- `gh-copilot/` - GitHub Copilot configurations
-
-## Contributing to prompt files
-
-### Prompt engineering best practices
-
-When you create or modify prompt files:
+When you create or modify skill files:
 
 - Write clear, specific instructions
 - Include context and examples
-- Test prompts with the target AI assistant
-- Follow the structure of existing prompts
-
-### Multi-assistant support
-
-When you contribute prompts for multiple AI assistants:
-
-- Organize files in assistant-specific subdirectories (`claude-code/`, `cursor/`, `gh-copilot/`)
-- Follow each assistant's configuration conventions
-- Test with the target assistant
+- Test skills with the target AI assistant
+- Follow the structure of existing SKILL.md files (YAML frontmatter with `name`, `description`, `argument-hint`, `compatibility`)
 
 ## Development workflow
 

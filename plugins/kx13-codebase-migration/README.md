@@ -4,10 +4,10 @@ AI-assistant example prompts for migrating the **codebase** of Kentico Xperience
 
 ## Scope
 
-These prompts are designed to help migrate the live site and page presentation logic as described in the following guides:
+This plugin is designed to help migrate the live site and page presentation logic as described in the following guides:
 
-- [Adjust global code](https://docs.kentico.com/guides/architecture/upgrade-from-kx13/upgrade-walkthrough/adjust-global-code) – Generating code files for content types, copying localization resources, shared views, styles/scripts, and enabling content tree-based routing and Page Builder.
-- [Display an upgraded page](https://docs.kentico.com/guides/architecture/upgrade-from-kx13/upgrade-walkthrough/display-an-upgraded-page) – Content retrieval services, repositories, view models, views, controllers, and Page Builder sections/widgets.
+- [Adjust global code](https://docs.kentico.com/x/adjust_global_code_guides) – Generating code files for content types, copying localization resources, shared views, styles/scripts, and enabling content tree-based routing and Page Builder.
+- [Display an upgraded page](https://docs.kentico.com/x/display_an_upgraded_page_guides) – Content retrieval services, repositories, view models, views, controllers, and Page Builder sections/widgets.
 
 The following areas are not covered and must be handled manually:
 
@@ -29,6 +29,39 @@ See the [Adjust and adapt your code](https://docs.kentico.com/x/migrate_your_cod
 > [!NOTE]
 > We've released a [Kentico Xperience 13 library on Context7](https://context7.com/websites/kentico_13) that you can use to look up KX13 API references and code samples when working on code migration. Note that Context7 is a third-party service not maintained or supported by Kentico, so your experience may vary.
 
+## Install the plugin
+
+### VS Code (GitHub Copilot)
+
+Add the marketplace to your VS Code settings (`settings.json`), then browse and install from the Extensions sidebar (`@agentPlugins`):
+
+```json
+"chat.plugins.marketplaces": [
+    "Kentico/xperience-by-kentico-kenticopilot"
+]
+```
+
+For more information, see: [VS Code plugin marketplace](https://code.visualstudio.com/docs/copilot/customization/agent-plugins#_configure-plugin-marketplaces)
+
+### Claude Code
+
+```bash
+/plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
+/plugin install kx13-codebase-migration@xperience-by-kentico-kenticopilot
+```
+
+> [!NOTE]
+> Claude Code may not install `.mcp.json` from plugin directories automatically. You may need to add the required MCP servers manually:
+>
+> ```bash
+> claude mcp add-json kentico.docs.mcp '{"type":"http","url":"https://docs.kentico.com/mcp"}'
+> claude mcp add-json playwright-mcp '{"command":"npx","args":["@playwright/mcp@latest","--viewport-size=1920x1080"]}'
+> ```
+
+### Cursor
+
+See the [Cursor plugins reference](https://cursor.com/docs/reference/plugins) for installation details.
+
 ## Usage
 
 ### 1. Set up project structure
@@ -44,11 +77,9 @@ Start the KX13 project locally. **Do not start the XbyK project** – the agent 
 
 > **Tip:** You can also provide a URL to a live KX13 site.
 
-### 2. Copy the prompts to the workspace
+### 2. Configure MCP servers
 
-Copy the appropriate files for your AI assistant. Note that the files also add the Xperience by Kentico [Documentation MCP server](https://docs.kentico.com/x/mcp_server_xp) and [Playwright MCP server](https://github.com/microsoft/playwright-mcp) to your workspace.
-
-> **Important:** For Claude Code, you need to add the MCP servers manually via the command line. Follow the [setup instructions](claude-code/MCP_Setup.md).
+If you installed the plugin via the marketplace, ensure the MCP servers are configured (see [Install the plugin](#install-the-plugin)). If you copied the files manually, the `.mcp.json` file adds the Xperience by Kentico [Documentation MCP server](https://docs.kentico.com/x/mcp_server_xp) and [Playwright MCP server](https://github.com/microsoft/playwright-mcp) to your workspace.
 
 ### 3. Run the migration prompts
 
@@ -187,6 +218,6 @@ legacyPageUrl: https://localhost:5001/en-us/home
 newPageUrl: http://localhost:60444/en-us/home
 ```
 
-## Prompt customization
+## Skill customization
 
-These prompt files serve as a baseline for migrating the codebase of KX13 projects to Xperience by Kentico. Modify and enhance the files as required by your implementation, workflow, and requirements. For example, you can update the `instructions/projects-structure.md` file with additional information about the project being migrated.
+These skill files serve as a baseline for migrating the codebase of KX13 projects to Xperience by Kentico. Modify and enhance the files as required by your implementation, workflow, and requirements.

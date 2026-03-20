@@ -6,7 +6,7 @@ The widget allows marketers to select 1-4 article pages.
 
 ## Presentation options
 
-- **Template:** Choose between Full (art-designed, best for single article) or Minimal (optimized for multiple articles)
+- **Template:** Select between Full (art-designed, best for single article) or Minimal (optimized for multiple articles)
 - **Teaser image:** Toggle to show or hide the teaser image
 - **Related articles:** Toggle to show or hide related articles section
 

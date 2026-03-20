@@ -40,7 +40,7 @@ When migrating a page, ensure that everything that was fetched dynamically from 
 ## Migration Steps
 
 1. Read all documentation links mentioned above.
-2. Check out how the legacy page looks like using the provided URL and identify all parts it consists of.
+2. Review how the legacy page looks using the provided URL and identify all parts it consists of.
 3. Go through pages in the legacy project and identify the provided page.
 4. When you know the page, research how this page works and identify all other shared pages, components, or whatever this page relies on.
 5. If present, check how other pages are implemented in the new project.
@@ -52,7 +52,7 @@ Whenever unsure about anything, you can use Kentico Docs MCP to search for relev
 
 ## Output format
 
-When done, provide user with this exact output (without any additional text):
+When done, provide the user with this exact output (without any additional text):
 
 ```
 # Migration Complete
