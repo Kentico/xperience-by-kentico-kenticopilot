@@ -12,7 +12,7 @@
   "plugins": [
     {
       "name": "widget-creation",
-      "source": "plugins/widget-creation",
+      "source": "./widget-creation",
       "description": "AI-assisted prompts for creating Page Builder widgets in Xperience by Kentico",
       "version": "1.0.0",
       "author": {
@@ -25,7 +25,7 @@
     },
     {
       "name": "kx13-codebase-migration",
-      "source": "plugins/kx13-codebase-migration",
+      "source": "./kx13-codebase-migration",
       "description": "AI-assisted prompts for migrating the codebase of Kentico Xperience 13 projects to Xperience by Kentico",
       "version": "1.0.0",
       "author": {
