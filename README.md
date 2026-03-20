@@ -9,7 +9,6 @@ AI agent prompts and instructions for Xperience by Kentico development. This rep
 This repository contains plugins (skills, instructions, MCP server configuration) tested for the following AI coding assistants:
 
 - GitHub Copilot
-- Cursor
 - Claude Code
 
 Skills are transferable to other solutions. Follow the conventions of your specific assistant.
@@ -49,7 +48,6 @@ AI-assisted migration of Kentico Xperience 13 live-site code (pages, widgets, sh
 - [Xperience by Kentico](https://docs.kentico.com) 30.6.0 or newer
 - An AI coding assistant, for example:
   - [GitHub Copilot](https://github.com/features/copilot)
-  - [Cursor](https://cursor.sh/)
   - [Claude Code](https://www.claude.com/product/claude-code)
 
 ## Install as a plugin
@@ -68,6 +66,14 @@ This repository is an [agent plugin marketplace](https://code.visualstudio.com/d
 
 2. Open the Extensions sidebar and search `@agentPlugins` to browse and install available plugins.
 
+### Copilot CLI
+
+```bash
+copilot plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
+copilot plugin install widget-creation@xperience-by-kentico-kenticopilot
+copilot plugin install kx13-codebase-migration@xperience-by-kentico-kenticopilot
+```
+
 ### Claude Code
 
 ```bash
@@ -75,13 +81,6 @@ This repository is an [agent plugin marketplace](https://code.visualstudio.com/d
 /plugin install widget-creation@xperience-by-kentico-kenticopilot
 /plugin install kx13-codebase-migration@xperience-by-kentico-kenticopilot
 ```
-
-> [!NOTE]
-> Claude Code may not install `.mcp.json` from plugin directories automatically. Add the required MCP servers manually with `claude mcp add-json`. See the plugin READMEs for the MCP configuration.
-
-### Cursor
-
-Cursor supports the plugin manifest format through its own marketplace. See the [Cursor plugins reference](https://cursor.com/docs/reference/plugins) for installation details.
 
 For more details, see the [Usage Guide](./docs/Usage-Guide.md).
 

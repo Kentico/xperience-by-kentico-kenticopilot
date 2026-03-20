@@ -13,7 +13,6 @@ You need a text editor to work with Markdown and skill files. We recommend [VS C
 Test your skill changes with AI assistants. This repository currently provides skills tested with:
 
 - [GitHub Copilot](https://github.com/features/copilot)
-- [Cursor](https://cursor.sh/)
 - [Claude Code](https://www.claude.com/product/claude-code)
 
 Testing with these tools helps validate that your changes work as intended.
@@ -21,10 +20,8 @@ Testing with these tools helps validate that your changes work as intended.
 ## Repository structure
 
 - `.claude-plugin/marketplace.json` — Claude Code marketplace manifest (lists all plugins)
-- `.cursor/plugin/marketplace.json` — Cursor marketplace manifest
 - `.github/plugin/marketplace.json` — GitHub Copilot / VS Code marketplace manifest (lists all plugins)
 - `plugins/` — Plugin folders organized by use case (e.g., `widget-creation/`, `kx13-codebase-migration/`)
-  - `.cursor-plugin/plugin.json` — Cursor plugin manifest
   - `.mcp.json` — MCP server configuration for the plugin
   - `skills/` — SKILL.md files defining individual agent skills
 - `examples/` — Example files passed to LLMs as context for corresponding scenarios

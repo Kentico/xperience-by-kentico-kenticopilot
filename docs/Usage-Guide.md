@@ -6,7 +6,7 @@ This guide explains how to use the AI agent skills in this repository for Xperie
 
 Before you start, you need:
 
-- An AI coding assistant (e.g., [GitHub Copilot](https://github.com/features/copilot), [Cursor](https://cursor.sh/), [Claude Code](https://www.claude.com/product/claude-code))
+- An AI coding assistant (e.g., [GitHub Copilot](https://github.com/features/copilot), [Claude Code](https://www.claude.com/product/claude-code))
 - Git installed on your machine
 - Access to an Xperience by Kentico project
 
@@ -18,12 +18,6 @@ Install an AI coding assistant. This repository provides plugins and skills test
 
 1. Install the [GitHub Copilot extension](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot) for VS Code.
 2. Sign in to your GitHub account.
-
-### Cursor
-
-1. Download and install [Cursor](https://cursor.sh/).
-2. Sign in with your account.
-3. Configure your AI model preferences.
 
 ### Claude Code
 
@@ -47,6 +41,14 @@ This repository is an agent plugin marketplace. Install plugins directly without
 2. Open the Extensions sidebar and search `@agentPlugins` to browse available plugins.
 3. Select **Install** on the plugin you need.
 
+### Copilot CLI
+
+```bash
+copilot plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
+copilot plugin install widget-creation@xperience-by-kentico-kenticopilot
+copilot plugin install kx13-codebase-migration@xperience-by-kentico-kenticopilot
+```
+
 ### Claude Code
 
 ```bash
@@ -54,13 +56,6 @@ This repository is an agent plugin marketplace. Install plugins directly without
 /plugin install widget-creation@xperience-by-kentico-kenticopilot
 /plugin install kx13-codebase-migration@xperience-by-kentico-kenticopilot
 ```
-
-> [!NOTE]
-> Claude Code does not yet propagate `.mcp.json` from plugin directories automatically. Add the required MCP servers manually with `claude mcp add-json`. See the plugin READMEs for the MCP configuration.
-
-### Cursor
-
-Cursor supports the plugin manifest format through its own marketplace. See the [Cursor plugins reference](https://cursor.com/docs/reference/plugins) for installation details.
 
 ## Copy plugin files manually (alternative)
 

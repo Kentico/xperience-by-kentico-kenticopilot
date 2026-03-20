@@ -12,7 +12,7 @@ These prompts provide two-stage AI assistance for building custom Page Builder w
 ## Prerequisites
 
 - Xperience by Kentico project with Page Builder configured
-- AI coding assistant installed (for example, GitHub Copilot, Cursor, or Claude Code)
+- AI coding assistant installed (for example, GitHub Copilot or Claude Code)
 - Widget requirements file describing the main use cases and behavior
 - Widget design file (optional, exported from Figma or similar)
 
@@ -28,23 +28,19 @@ Add the marketplace to your VS Code settings (`settings.json`), then browse and 
 ]
 ```
 
+### Copilot CLI
+
+```bash
+copilot plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
+copilot plugin install widget-creation@xperience-by-kentico-kenticopilot
+```
+
 ### Claude Code
 
 ```bash
 /plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
 /plugin install widget-creation@xperience-by-kentico-kenticopilot
 ```
-
-> [!NOTE]
-> Claude Code may not discover `.mcp.json` from plugin directories automatically. You may need to add the Kentico Docs MCP server manually:
->
-> ```bash
-> claude mcp add-json kentico.docs.mcp '{"type":"http","url":"https://docs.kentico.com/mcp"}'
-> ```
-
-### Cursor
-
-See the [Cursor plugins reference](https://cursor.com/docs/reference/plugins) for installation details.
 
 ## Usage
 

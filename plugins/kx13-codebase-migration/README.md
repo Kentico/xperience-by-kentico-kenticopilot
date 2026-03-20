@@ -24,7 +24,7 @@ See the [Adjust and adapt your code](https://docs.kentico.com/x/migrate_your_cod
 
 - Kentico Xperience 13 project (source).
 - Xperience by Kentico project (target) connected to a database migrated using the [Kentico Migration Tool](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool). The prompts were tested on a fresh Xperience by Kentico project created using the `kentico-xperience-mvc` [project template](https://docs.kentico.com/x/DQKQC).
-- AI coding assistant installed (for example: GitHub Copilot, Cursor, Claude Code).
+- AI coding assistant installed (for example: GitHub Copilot, Claude Code).
 
 > [!NOTE]
 > We've released a [Kentico Xperience 13 library on Context7](https://context7.com/websites/kentico_13) that you can use to look up KX13 API references and code samples when working on code migration. Note that Context7 is a third-party service not maintained or supported by Kentico, so your experience may vary.
@@ -43,24 +43,19 @@ Add the marketplace to your VS Code settings (`settings.json`), then browse and 
 
 For more information, see: [VS Code plugin marketplace](https://code.visualstudio.com/docs/copilot/customization/agent-plugins#_configure-plugin-marketplaces)
 
+### Copilot CLI
+
+```bash
+copilot plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
+copilot plugin install kx13-codebase-migration@xperience-by-kentico-kenticopilot
+```
+
 ### Claude Code
 
 ```bash
 /plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
 /plugin install kx13-codebase-migration@xperience-by-kentico-kenticopilot
 ```
-
-> [!NOTE]
-> Claude Code may not install `.mcp.json` from plugin directories automatically. You may need to add the required MCP servers manually:
->
-> ```bash
-> claude mcp add-json kentico.docs.mcp '{"type":"http","url":"https://docs.kentico.com/mcp"}'
-> claude mcp add-json playwright-mcp '{"command":"npx","args":["@playwright/mcp@latest","--viewport-size=1920x1080"]}'
-> ```
-
-### Cursor
-
-See the [Cursor plugins reference](https://cursor.com/docs/reference/plugins) for installation details.
 
 ## Usage
 
