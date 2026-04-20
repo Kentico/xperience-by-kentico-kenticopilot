@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "kentico.docs.mcp": {
+      "type": "http",
+      "url": "https://docs.kentico.com/mcp"
+    },
+    "context7": {
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {}
+    }
+  }
+}
