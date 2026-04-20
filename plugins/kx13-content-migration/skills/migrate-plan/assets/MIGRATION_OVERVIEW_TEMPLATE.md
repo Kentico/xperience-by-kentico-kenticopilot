@@ -273,6 +273,6 @@ Failure to delete these before a repeated run will result in duplicate records.
 Review migration results using:
 
 - **Console output** — real-time progress, warnings, and errors during execution
-- **Log files** — detailed execution logs written to `logs/log-<date>.txt` in the CLI output directory
+- **Log files** — detailed execution logs written to `logs/log.txt` (relative to the CLI project directory; configured by `Logging.pathFormat` in `appsettings.json`)
 
 Address all errors and warnings before considering the migration complete. Log files contain detailed diagnostic information useful for troubleshooting failed or partially completed migrations.

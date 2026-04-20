@@ -94,7 +94,7 @@ After applying a fix:
 dotnet run -- migrate --nowait --sites --custom-modules --users --page-types --pages --categories --media-libraries --forms --bypass-dependency-check 2>&1 | tee <protocol-dir>/migration-run2.log
 ```
 
-If the fix doesn't resolve the issue after one re-run, check both the saved console log in the protocol log directory and the migration tool's own log file at `logs/migration.tool.log` for more detail. After two failed attempts, present findings to the user and ask for guidance rather than continuing to retry.
+If the fix doesn't resolve the issue after one re-run, check both the saved console log in the protocol log directory and the migration tool's own log file at `logs/log.txt` (relative to the CLI project directory; configured by `Logging.pathFormat` in `appsettings.json`) for more detail. After two failed attempts, present findings to the user and ask for guidance rather than continuing to retry.
 
 #### 4e. Record Result
 
@@ -138,7 +138,7 @@ Then list:
 - **Do not modify the migration plan** — this skill executes the plan, not changes it. If the plan appears incorrect, flag it to the user.
 - **Generous timeouts** — the combined migration run processes database records and binary files across all steps. Use generous timeouts (up to 10 minutes). `--pages` and `--media-libraries` are typically the slowest.
 - **Always save console logs** — every execution must pipe console output to the parent directory of `Settings.MigrationProtocolPath`. This is non-negotiable — logs are essential for post-mortem analysis and `migrate-eval`.
-- **Log file review** — if the saved console log in the protocol log directory is insufficient for diagnosis, check the migration tool's detailed log file (typically `logs/migration.tool.log` in the CLI project directory).
+- **Log file review** — if the saved console log in the protocol log directory is insufficient for diagnosis, check the migration tool's detailed log file (default `logs/log.txt` in the CLI project directory; configured by `Logging.pathFormat` in `appsettings.json`).
 - **Validate after the run completes** — run all post-run validation queries (Step 4f) after the migration run succeeds to catch problems.
 - **Default to including flags** — it is safer to include a flag that finds nothing to migrate than to omit a flag that has data. Only omit a flag when the user explicitly confirms the source does not have that data.
 - **Flag orphan content items** — webpage-type content items without web page entries, and content items with no data rows, are strong indicators of migration failures. These should be investigated, not silently accepted.

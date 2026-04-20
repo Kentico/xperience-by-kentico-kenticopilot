@@ -33,7 +33,7 @@ Ask clarifying questions if critical information is missing (page types, page re
 
 ### Step 3: Resolve Migration Approach Decisions
 
-Read [migration-approach-categories.md](references/migration-approach-categories.md) for the full list of migration approach categories (A through G).
+Read [migration-approach-categories.md](references/migration-approach-categories.md) for the full list of migration approach categories (A through J).
 
 **If a target content model was provided**, analyze it, then compare it against the source model to identify structural divergences — places where the target departs from a straightforward 1:1 migration. Use the "When to ask — target model provided" triggers in each category.
 
@@ -57,7 +57,7 @@ Read [MIGRATION_OVERVIEW_TEMPLATE.md](assets/MIGRATION_OVERVIEW_TEMPLATE.md) and
 
 **Execution Summary** — A table of all `migrate` CLI parameters with a **Status** column. Set Status to **Required** for parameters actively needed by this migration run; leave as **—** for parameters that are available but not required. Default to including all applicable CLI steps (`--sites`, `--custom-modules`, `--users`, `--page-types`, `--pages`, `--categories`, `--media-libraries`, `--forms`) — it is safer to run a step that finds no data than to omit one that silently skips content. Each parameter is displayed as inline code (e.g., `` `--sites` ``). An optional **Notes** column can add brief context (dependencies, what data the step covers). Do not use checkbox syntax (`- [x]` / `- [ ]`) as it does not render in standard markdown previewers. Do NOT include a code extensions summary table here — code extensions are already listed in the dedicated "Code Extensions Summary" section earlier in the document.
 
-**Operational Notes** — Iterative migration guidance (upsert behavior, `--bypass-dependency-check` for repeated runs), bulk deletion requirements (data types that require manual cleanup before re-runs: contacts/activities, consent agreements, form submissions, custom module class data), and logging/troubleshooting guidance (console output, log file location at `logs/log-<date>.txt`).
+**Operational Notes** — Iterative migration guidance (upsert behavior, `--bypass-dependency-check` for repeated runs), bulk deletion requirements (data types that require manual cleanup before re-runs: contacts/activities, consent agreements, form submissions, custom module class data), and logging/troubleshooting guidance (console output, log file location at `logs/log.txt` — relative to the CLI project directory and configured by `Logging.pathFormat` in `appsettings.json`).
 
 ### Step 5: Create the Migration Detail
 

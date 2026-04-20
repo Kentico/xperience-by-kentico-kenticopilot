@@ -261,8 +261,8 @@ The class must remain in `ConvertClassesToContentHub` — removing it causes Con
 
 The migration tool writes detailed logs to:
 
-- **Default path:** `logs/migration.tool.log` (relative to the CLI project directory)
-- **Configured in:** `appsettings.json` → `Logging.File.pathFormat`
+- **Default path:** `logs/log.txt` (relative to the CLI project directory)
+- **Configured in:** `appsettings.json` → `Logging.pathFormat`
 
 The log file contains more detail than console output is useful for diagnosing intermittent failures or tracing specific item migrations.
 

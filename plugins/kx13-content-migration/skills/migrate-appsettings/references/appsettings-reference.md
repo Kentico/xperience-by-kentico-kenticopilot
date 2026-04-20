@@ -114,11 +114,10 @@ Evaluate each of these against the migration plan. Only include settings that ar
 - **Example:**
 
   ```json
-  "CreateReusableFieldSchemaForClasses": [
-    "Acme.SeoFields",
-    "Acme.ArticleFields"
-  ]
+  "CreateReusableFieldSchemaForClasses": "Acme.SeoFields;Acme.ArticleFields"
   ```
+
+  **IMPORTANT:** Like `ConvertClassesToContentHub`, this must be a semicolon-separated string, NOT a JSON array. Using a JSON array causes a runtime configuration binding error.
 
 ### 3. `Settings.CustomModuleClassDisplayNamePatterns`
 

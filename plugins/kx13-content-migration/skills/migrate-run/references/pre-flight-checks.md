@@ -17,7 +17,7 @@ Read the `appsettings.json` in the CLI project directory and verify:
 - **ConvertClassesToContentHub** is a semicolon-separated string (not a JSON array — fix if needed)
 - **CreateReusableFieldSchemaForClasses** is a semicolon-separated string (not a JSON array — fix if needed)
 - **EntityConfigurations** matches exclusions from the migration plan
-- **QuerySourceInstanceApi** — if `Enabled: true`, note that the KX13 source instance must be running. **Test reachability:** attempt an HTTP GET to the configured `SourceInstanceUri` (e.g., `Invoke-WebRequest -Uri "<SourceInstanceUri>/ToolApi/Test" -Method POST -Body '{"secret":"<secret>"}' -ContentType 'application/json' -ErrorAction SilentlyContinue`). If unreachable, warn that `--pages` will block until the API responds and recommend either starting the KX13 instance or setting `Enabled: false` to fall back to legacy widget migration mode
+- **QuerySourceInstanceApi** — if `Enabled: true`, note that the KX13 source instance must be running. **Test reachability:** send an HTTP POST to the configured `SourceInstanceUri` (e.g., `Invoke-WebRequest -Uri "<SourceInstanceUri>/ToolApi/Test" -Method POST -Body '{"secret":"<secret>"}' -ContentType 'application/json' -ErrorAction SilentlyContinue`). If unreachable, warn that `--pages` will block until the API responds and recommend either starting the KX13 instance or setting `Enabled: false` to fall back to legacy widget migration mode
 - **MigrationProtocolPath** — if not set, warn the user: "Protocol log path is not configured — migration logs won't be available for `migrate-eval`. Set `Settings.MigrationProtocolPath` in appsettings.json to enable post-migration evaluation." Stop and confirm before proceeding.
 
 ## 2c. Validate Build
