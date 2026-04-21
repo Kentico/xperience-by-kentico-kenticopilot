@@ -22,7 +22,7 @@ A CLI tool that reads a Kentico Xperience 13 (KX13) database and exports the con
 
 Alternatively, create an `appsettings.development.json` file in the same directory (this file is git-ignored). The CLI loads it automatically as a local override when present.
 
-1. Build the solution:
+3. Build the solution:
 
 ```bash
 dotnet build kx13-content-audit/src/KX13.ContentAuditor.slnx
@@ -86,7 +86,7 @@ dotnet run --project kx13-content-audit/src/KX13.ContentAuditor.CLI -- --page-bu
 | `--custom-tables` | Custom tables with fields |
 | `--forms` | BizForms with fields and alternative forms |
 | `--relationships` | Page-to-page relationships and Pages-field reuse links |
-| `--report` | Generate a Markdown content model report (`content-model-report.md`) |
+| `--report` | Generate a Markdown content model report (`content-model-report.md`). Implied by a full export — only pass this flag explicitly to add the report alongside selective area flags. |
 
 Running without export options exports the full content model (all JSON files + report).
 
@@ -119,9 +119,9 @@ src/
     ├── Models/                         # 25 POCO model classes
     ├── Repositories/                   # SQL queries + result mapping
     │   └── Interfaces/                 # Repository contracts
-    ├── Parsing/                        # XML/JSON parsers (ClassFormDefinition, PageBuilder)
+    ├── Parsers/                        # XML/JSON parsers (ClassFormDefinition, PageBuilder)
     ├── Analysis/                       # Component discovery + content reference analysis
-    └── DbReader/                       # Raw ADO.NET query executor
+    └── DbAccess/                       # Raw ADO.NET query executor
 ```
 
 ## License

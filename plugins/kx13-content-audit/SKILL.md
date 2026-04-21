@@ -1,16 +1,15 @@
 ---
 name: "kx13-content-audit"
 description: "Audits a Kentico Xperience 13 (KX13) project's content model based on the project's database and generates structured Markdown and JSON reports. Use when the user asks to audit, analyze, export, or inspect a KX13 database, content model, page types, content tree, forms, custom tables, or page builder usage."
-argument-hint: "User requests can specify export scope (e.g. sites, page types, report) and filters (e.g. site name, class name patterns, content tree path)."
+argument-hint: "Optional export scope (sites, page types, report, etc.) and filters (site name, class name pattern, content tree path)"
+compatibility: "Requires .NET 8 SDK and access to a Kentico Xperience 13 SQL Server database."
 ---
 
 # KX13 Content Auditor — Agent Skill
 
-You are an AI agent assisting a user with auditing a Kentico Xperience 13 (KX13)
-project's content model. The CLI tool handles the full workflow — querying the
-database, exporting JSON data, and generating a Markdown report. Your job is to
-interpret the user's request, construct the right CLI command, run it, and
-present the results.
+The CLI tool handles the full workflow — querying the database, exporting JSON
+data, and generating a Markdown report. Interpret the user's request, construct
+the right CLI command, run it, and present the results.
 
 For full technical details (setup, flags, project structure), see
 [`kx13-content-audit/README.md`](./README.md).
@@ -46,6 +45,18 @@ If the user asks for everything, or gives no specific scope, run a **full export
 | "DancingGoat._ page types" / "class DancingGoat._"      | `--class-name "DancingGoat.*"` |
 | "under /Articles" / "the articles section"              | `--page-path /Articles`        |
 | "output to ./my-folder"                                 | `--output ./my-folder`         |
+
+---
+
+## Gotchas
+
+- **`--` separator is required** when invoking via `dotnet run`. Everything after `--` is passed to the CLI; without it, `dotnet run` consumes the flags itself and the auditor sees no arguments.
+- **Filter semantics differ per flag.** `--site-name` is **exact match** (no wildcards). `--class-name` accepts `*` wildcards and comma-separated patterns. `--page-path` is a **prefix** match against the node alias path.
+- **Default output directory is `audit-results/` under the auditor project root**, not the current working directory. Pass `--output <path>` if the user expects results elsewhere.
+- **`--report` is implied by a full export.** When running with no area flags (full export), the Markdown report is generated automatically — do not add `--report` on top. Only pass `--report` when the user explicitly asks for the report alongside selective area flags.
+- **TLS errors against KX13 dev databases.** Modern SQL clients require `Encrypt=False;` (or a trusted server cert) in the connection string for typical KX13 dev setups. If the CLI fails with a certificate/SSL error, this is usually the cause.
+- **`appsettings.development.json` is intentionally lowercase.** It is loaded as an explicit overlay in `Program.cs` and is git-ignored. Do not rename it to `appsettings.Development.json`.
+- **Empty results are valid.** A successful run with no rows for a given area means the database genuinely has no data of that type — not a failure.
 
 ---
 
