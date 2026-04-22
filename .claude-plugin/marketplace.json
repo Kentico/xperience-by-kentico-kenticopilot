@@ -37,6 +37,20 @@
       "license": "MIT",
       "keywords": ["kentico", "xperience", "migration", "kx13", "cms"],
       "strict": false
+    },
+    {
+      "name": "configure-cd-repository",
+      "source": "./plugins/configure-cd-repository",
+      "description": "Skills for discovering project layout and configuring scoped CD Repository filters from CI Repository changes in Xperience by Kentico",
+      "version": "1.0.0",
+      "author": {
+        "name": "Kentico"
+      },
+      "homepage": "https://github.com/Kentico/xperience-by-kentico-kenticopilot/tree/main/plugins/configure-cd-repository",
+      "repository": "https://github.com/Kentico/xperience-by-kentico-kenticopilot",
+      "license": "MIT",
+      "keywords": ["kentico", "xperience", "cd-repository", "continuous-deployment", "cms"],
+      "strict": false
     }
   ]
 }
