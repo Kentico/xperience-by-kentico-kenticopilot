@@ -12,7 +12,7 @@ data, and generating a Markdown report. Interpret the user's request, construct
 the right CLI command, run it, and present the results.
 
 For full technical details (setup, flags, project structure), see
-[`kx13-content-audit/README.md`](./README.md).
+[`kx13-content-audit/README.md`](../../README.md).
 
 ---
 
@@ -62,7 +62,20 @@ If the user asks for everything, or gives no specific scope, run a **full export
 
 ## Workflow
 
-### 1. Pre-flight Checks
+### 1. Workspace Check
+
+Search the workspace for the `KX13.ContentAuditor.slnx` solution file (e.g.
+`**/KX13.ContentAuditor.slnx`). If the file is **not found**, stop and inform
+the user:
+
+> The KX13 Content Auditor source code was not found in this workspace. The
+> skill plugin can be installed independently, but running the audit requires
+> the auditor solution. Please clone the repository and ensure the
+> `kx13-content-audit/src/` folder is present in your workspace.
+
+Do **not** proceed to pre-flight or CLI execution without the solution files.
+
+### 2. Pre-flight Checks
 
 1. Read `kx13-content-audit/src/KX13.ContentAuditor.CLI/appsettings.development.json`
    (or `appsettings.json`). Verify that `ConnectionStrings.ConnectionString` is
@@ -70,7 +83,7 @@ If the user asks for everything, or gives no specific scope, run a **full export
 2. Build: `dotnet build kx13-content-audit/src/KX13.ContentAuditor.CLI -c Release -q`  
    If the build fails, report errors and stop.
 
-### 2. Run the CLI
+### 3. Run the CLI
 
 ```
 dotnet run --project kx13-content-audit/src/KX13.ContentAuditor.CLI -- [area-flags] [filter-flags] [--output <path>]
@@ -78,7 +91,7 @@ dotnet run --project kx13-content-audit/src/KX13.ContentAuditor.CLI -- [area-fla
 
 The `--` separator after the project path is required.
 
-### 3. Present Results
+### 4. Present Results
 
 After the CLI completes:
 

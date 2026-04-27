@@ -48,6 +48,19 @@
       "repository": "https://github.com/Kentico/xperience-by-kentico-kenticopilot",
       "license": "MIT",
       "keywords": ["kentico", "xperience", "migration", "kx13", "cms"]
+    },
+    {
+      "name": "kx13-content-audit",
+      "source": "./plugins/kx13-content-audit",
+      "description": "Skills and CLI tool for reading a Kentico Xperience 13 database and exporting the content model as structured audit reports",
+      "version": "1.0.0",
+      "author": {
+        "name": "Kentico"
+      },
+      "homepage": "https://github.com/Kentico/xperience-by-kentico-kenticopilot/tree/main/plugins/kx13-content-audit",
+      "repository": "https://github.com/Kentico/xperience-by-kentico-kenticopilot",
+      "license": "MIT",
+      "keywords": ["kentico", "xperience", "migration", "kx13", "cms"]
     }
   ]
 }
