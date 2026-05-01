@@ -37,6 +37,20 @@
       "license": "MIT",
       "keywords": ["kentico", "xperience", "migration", "kx13", "cms"],
       "strict": false
+    },
+    {
+      "name": "component-analysis",
+      "source": "./plugins/component-analysis",
+      "description": "Skill for analyzing Xperience by Kentico platform components across admin UI, React client components, and builders",
+      "version": "1.0.0",
+      "author": {
+        "name": "Kentico"
+      },
+      "homepage": "https://github.com/Kentico/xperience-by-kentico-kenticopilot/tree/main/plugins/component-analysis",
+      "repository": "https://github.com/Kentico/xperience-by-kentico-kenticopilot",
+      "license": "MIT",
+      "keywords": ["kentico", "xperience", "components", "analysis", "cms"],
+      "strict": false
     }
   ]
 }
