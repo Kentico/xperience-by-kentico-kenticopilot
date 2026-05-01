@@ -12,6 +12,15 @@ This plugin provides AI assistance for upgrading your Xperience by Kentico proje
 
 - Xperience by Kentico project
 - AI coding assistant installed (for example, GitHub Copilot or Claude Code)
+- Access to the project database if you want fully autonomous CI handling during update (for example, SQL access provided through local tools, scripts, or an MCP-enabled SQL workflow)
+
+## SQL Access Note
+
+The update workflow includes CI-aware database operations when Continuous Integration is enabled.
+
+- For fully autonomous execution, the agent needs a way to run SQL queries against the Xperience database.
+- If SQL access is unavailable, the agent can still continue with guidance, but will require manual confirmation or manual execution of CI enable/disable SQL steps.
+- The developer is responsible for providing secure and correct database access and permissions.
 
 ## Install the plugin
 
