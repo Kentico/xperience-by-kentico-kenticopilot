@@ -28,12 +28,13 @@ Write a JSON file with this shape (add additional helpful fields when available)
   "tooling": {
     "ghAvailable": true,
     "gitAvailable": true,
-    "preferredChangeSource": "gh|local git"
+    "preferredChangeSource": "gh|local-git"
   },
   "discovery": {
     "appPathSource": "user|discovered",
     "ciPathSource": "user|default|discovered",
     "cdConfigSource": "user|default|discovered",
+    "repositoryConfigVersion": "2",
     "notes": [
       "optional notes about assumptions or fallbacks"
     ]
@@ -47,7 +48,7 @@ Write a JSON file with this shape (add additional helpful fields when available)
    - Xperience app path
    - CI Repository path
    - CD repository.config path
-   - Preferred change source (`gh` or `local git`)
+   - Preferred change source (`gh` or `local-git`)
 
 2. Discover missing values automatically:
    - Search for `App_Data/CDRepository/repository.config`.
@@ -60,16 +61,21 @@ Write a JSON file with this shape (add additional helpful fields when available)
    - `ciRepositoryPath`
    - `cdRepositoryConfigPath`
 
-4. Detect tool availability:
+4. Detect repository.config syntax version:
+   - Open the `repository.config` file and check the root `<RepositoryConfiguration Version="X">` attribute.
+   - Record the version ("1" or "2") in `discovery.repositoryConfigVersion`.
+   - If Version attribute is missing, assume v1 and record accordingly.
+
+5. Detect tool availability:
    - Check if `gh` CLI is available.
    - Check if local `git` is available.
    - Set `preferredChangeSource`:
-     - Use `gh-pr` when `gh` is available and user did not force local git.
+     - Use `gh` when `gh` is available and user did not force local git.
      - Otherwise use `local-git`.
 
-5. Ensure the context folder exists, then write `cd-repository-context.json`.
+6. Ensure the context folder exists, then write `cd-repository-context.json`.
 
-6. Print a concise summary of what was discovered and where the context file was written.
+7. Print a concise summary of what was discovered and where the context file was written.
 
 ## Rules
 
@@ -78,6 +84,7 @@ Write a JSON file with this shape (add additional helpful fields when available)
 - Keep paths absolute in the context file.
 - Preserve user-provided values when valid; only fall back to discovery/defaults when needed.
 - If both `gh` and `git` are unavailable, still write context with clear error notes and ask user to resolve tooling.
+- If `repository.config` uses v1 syntax, record this in the context file and include a warning in the output summary.
 
 ## Output Format
 
@@ -87,5 +94,8 @@ Conclude with:
 - App path
 - CI repository path
 - CD repository.config path
+- Repository.config syntax version
 - Tooling status (`gh`, `git`, chosen source)
 - Any assumptions/fallbacks recorded
+- **If v1 syntax detected:** Include this warning in the summary:
+  > ⚠️ **Note:** The repository.config file uses the legacy v1 syntax. Before running `cd-repository-configure`, you must upgrade to v2 syntax using the `cd-repository-upgrade` skill. See [Migrate CI/CD repository.config to v2](https://docs.kentico.com/documentation/developers-and-admins/ci-cd/configure-ci-cd-repositories/config-v2-migration) for details.

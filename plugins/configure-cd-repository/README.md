@@ -4,10 +4,11 @@ AI-assisted skills for configuring the [Continuous Deployment (CD) Repository](h
 
 ## Workflow
 
-These skills provide two-stage assistance for building CD Repository filters:
+These skills provide three-stage assistance for building CD Repository filters:
 
-1. **Discovery stage** – Locates the Xperience app folder, CI and CD Repository paths, and available git tooling. Saves everything to a reusable context file so you don't have to re-enter paths for every deployment.
-2. **Configure stage** – Reads the context file, collects changed CI Repository files from the specified PRs or commit range, classifies them (feature vs. Xperience-update noise), and writes a minimal `IncludedObjectTypes` / `ObjectFilters` allowlist to `repository.config`.
+1. **Discovery stage** – Locates the Xperience app folder, CI and CD Repository paths, and available git tooling. Detects the `repository.config` syntax version. Saves everything to a reusable context file so you don't have to re-enter paths for every deployment.
+2. **Upgrade stage** (if needed) – If discovery detects a legacy v1 `repository.config`, migrates it to v2 syntax to enable advanced content item filtering and improved CD restore performance. Automatically updates the context file when complete.
+3. **Configure stage** – Reads the context file, collects changed CI Repository files from the specified PRs or commit range, classifies them (feature vs. Xperience-update noise), and writes a minimal `IncludedObjectTypes` / `ObjectFilters` allowlist to `repository.config`.
 
 ## Prerequisites
 
@@ -47,7 +48,7 @@ copilot plugin install configure-cd-repository@xperience-by-kentico-kenticopilot
 
 ### 1. Run the discovery stage
 
-The discovery skill finds your Xperience app path, CI and CD Repository locations, and detects whether `gh` or local `git` should be used to retrieve change information. It writes this context to a `cd-repository-context.json` file in a folder you specify.
+The discovery skill finds your Xperience app path, CI and CD Repository locations, and detects whether `gh` or local `git` should be used to retrieve change information. It also detects the current `repository.config` syntax version. It writes this context to a `cd-repository-context.json` file in a folder you specify.
 
 You only need to run this once per project (or after your project structure changes).
 
@@ -59,9 +60,31 @@ You only need to run this once per project (or after your project structure chan
 Save context to: C:/my-project/.cd-context
 ```
 
-The skill will ask for any values it cannot discover automatically (for example, the Xperience app path if multiple candidates exist in the workspace).
+The skill will ask for any values it cannot discover automatically (for example, the Xperience app path if multiple candidates exist in the workspace). It will also report the `repository.config` syntax version detected.
 
-### 2. Run the configure stage
+### 2. Upgrade config syntax (if needed)
+
+If discovery detected a legacy v1 `repository.config`, upgrade it to v2 first to enable advanced content item filtering and improve CD restore performance.
+
+#### VS Code GitHub Copilot example — with explicit config path
+
+```text
+/cd-repository-upgrade
+
+Repository config path: C:/my-project/App_Data/CDRepository/repository.config
+```
+
+#### VS Code GitHub Copilot example — auto-discover from context
+
+If you've already run `cd-repository-discovery`, you can run the upgrade skill without arguments and it will automatically locate the config file from the context file:
+
+```text
+/cd-repository-upgrade
+```
+
+The skill will create a backup (`repository.config.v1.backup`) and migrate the file to v2 syntax. If it discovered the config from a context file, it will automatically update the context to reflect v2 syntax. Proceed to step 3 (configure stage).
+
+### 3. Run the configure stage
 
 Provide the folder containing the context file written in step 1, along with the PR numbers or git commit range you want to deploy.
 
@@ -117,9 +140,19 @@ If `Export-DeploymentPackage.ps1` is present in the repository, the skill runs i
 - Use the **same context folder** across multiple configure runs for the same project so you never have to re-enter paths.
 - Keep Xperience version-update PRs separate from feature PRs where possible — this makes classification unambiguous and exclusion automatic.
 - Review the generated `repository.config` diff before deploying, especially for the first run on a project.
-- Commit `cd-repository-context.json` to your repository if your team shares the same project layout, so teammates can skip the discovery stage.
+- Keep the generated `cd-repository-context.json` local to your machine because it contains absolute, machine-specific paths. Optionally add the context folder to `.gitignore`. If you want to share the expected context structure with teammates, commit a template or example context file instead of the generated one.
 
 ## Skill reference
+
+### cd-repository-upgrade
+
+Skill name: **cd-repository-upgrade**
+
+Migrates a CD Repository `repository.config` file from legacy v1 syntax to v2 syntax, enabling advanced content item filtering and improved CD restore performance. Creates a backup (`repository.config.v1.backup`) before migration.
+
+**Argument hint:** Path to the `repository.config` file to migrate.
+
+**Use when:** After running discovery, if `repository.config` syntax version is reported as v1. Run before `cd-repository-configure` to ensure your configuration uses the v2 format. See [Migrate CI/CD repository.config to v2](https://docs.kentico.com/documentation/developers-and-admins/ci-cd/configure-ci-cd-repositories/config-v2-migration) for details on the v1 to v2 changes.
 
 ### cd-repository-discovery
 

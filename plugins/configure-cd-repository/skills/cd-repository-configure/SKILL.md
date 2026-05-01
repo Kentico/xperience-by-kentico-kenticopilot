@@ -21,14 +21,18 @@ Read `cd-repository-context.json` from the provided folder and validate:
 - `ciRepositoryPath`
 - `cdRepositoryConfigPath`
 - `tooling.preferredChangeSource`
+- `discovery.repositoryConfigVersion` must be `"2"`
 
 If the context file is missing or invalid, stop and ask the user to run `cd-repository-discovery` (or fix the file).
+
+**If `discovery.repositoryConfigVersion` is `"1"` or missing:** Stop and inform the user:
+> "The repository.config file uses the legacy v1 syntax. The `cd-repository-configure` skill requires v2 syntax. Please run the `cd-repository-upgrade` skill to migrate your configuration to v2, then run `cd-repository-discovery` again to generate an updated context file. See [Migrate CI/CD repository.config to v2](https://docs.kentico.com/documentation/developers-and-admins/ci-cd/configure-ci-cd-repositories/config-v2-migration) for details."
 
 ## Workflow
 
 1. Load discovery context and confirm paths still exist.
 2. Resolve change source strategy:
-   - Prefer `gh` when context says `gh-pr` and `gh` is available.
+   - Prefer `gh` when context says `gh` and `gh` is available.
    - Otherwise use local git commands.
 3. Collect changed files for each selector:
    - PR mode: collect file list from each PR.
