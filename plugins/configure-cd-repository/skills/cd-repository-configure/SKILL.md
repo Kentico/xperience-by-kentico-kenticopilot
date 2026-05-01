@@ -143,4 +143,4 @@ Finish with a concise deployment summary:
 
 ## Leveraging Kentico Documentation
 
-This skill has access to the Kentico Docs MCP server. If you need deeper information on any topic (content item filtering, CD Repository configuration, object types, etc.), reference the [CI/CD documentation](https://docs.kentico.com/documentation/developers-and-admins/ci-cd/) to provide more accurate and detailed guidance.
+This skill has access to the Kentico Docs MCP server. If you need deeper information on any topic (content item filtering, CD Repository configuration, object types, etc.) use the MCP server to search for "Repository configuration templates" or "Reference - CI/CD object types" for specific syntax and configuration examples.
