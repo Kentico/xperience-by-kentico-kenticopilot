@@ -12,7 +12,7 @@ You are tasked with creating a scoped CD Repository configuration from CI Reposi
 - **Context Folder Path** - Folder that contains `cd-repository-context.json` produced by `cd-repository-discovery`.
 - **Change Selectors** - Provide **either** PR number(s) **or** a git commit range (not both):
   - **PR mode:** One or more PR numbers (e.g., `PR 312` or `PR 310, PR 311, PR 312`)
-  - **Commit mode:** One git commit range (e.g., `abc123..def456`)
+  - **Commit mode:** One git commit range (e.g., `abc123..def456`) which is inclusive
 
 Choose PR mode when deploying specific, discrete changes; choose commit mode when deploying all changes between two commits.
 
@@ -38,14 +38,20 @@ If the context file is missing or invalid, stop and ask the user to run `cd-repo
 2. Resolve change source strategy:
    - Prefer `gh` when context says `gh` and `gh` is available.
    - Otherwise use local git commands.
-3. Collect changed files for each selector:
-   - PR mode: collect file list from each PR.
-   - Commit range mode: run `git diff --name-only` from `repositoryRoot`.
-4. Keep only files under `ciRepositoryPath`.
-5. Classify CI changes into:
+3. **Collect and classify CI changes for each selector:**
+   - **PR mode:** Collect file list and changes for each PR separately.
+   - **Commit range mode:** 
+     - List all commits in the range using `git log <range> --pretty=format:"%H %s"`.
+     - For each commit in the range (oldest to newest):
+       - Run `git show <commit-hash> --name-status -- <ciRepositoryPath>` to get CI files changed in that commit.
+       - Extract commit subject/message to classify the commit intent.
+       - Classify the commit as **Business/feature** or **Xperience update-only** (see Change Classification Guidance below).
+       - Track CI changes per commit separately.
+4. Keep only files under `ciRepositoryPath` that belong to non-excluded commits.
+5. Aggregate CI changes across all non-excluded commits into:
    - **Business/feature changes** (include in deployment filtering)
    - **Xperience update-only changes** (exclude by default)
-6. Exclude update-only changes unless user explicitly requests inclusion.
+6. Exclude entire commits marked as `Xperience update-only` unless user explicitly requests inclusion.
 7. Map remaining CI paths to object types and code names.
 8. Update `cdRepositoryConfigPath`:
    - Build minimal `IncludedObjectTypes` allowlist (main object types only).
@@ -133,10 +139,13 @@ Common CI paths to object types:
 
 Finish with a concise deployment summary:
 
-- Reviewed source selectors (PRs / commit range)
+- **Source selectors analyzed:**
+  - For commit ranges: list all commits in the range with their subjects and classification (Business/Feature vs. Xperience update-only)
+  - For PRs: list all PR numbers analyzed
+- **Commits included in deployment scope** (with hashes and subjects)
+- **Commits excluded as Xperience update-only** (with hashes, subjects, and reason for exclusion)
 - Selected object types for deployment
 - Selected code names by object type
-- Explicitly excluded update-only groups and why
 - Determined RestoreMode and reasoning (Create vs. CreateUpdate based on git history)
 - Exact impact on `repository.config`
 - Validation result for deployment package export (if executed)
