@@ -9,7 +9,7 @@ You are tasked with creating a scoped CD Repository configuration from CI Reposi
 
 ## Input Parameters
 
-- **Context Folder Path** - Folder that contains `cd-repository-context.json` produced by `cd-repository-discover`.
+- **Context Folder Path** - Folder that contains `cd-repository-context.json` produced by `cd-repository-discovery`.
 - **Change Selectors** - One or more PR numbers and/or one git commit range (for example `abc123..def456`).
 
 ## Prerequisite
@@ -22,7 +22,7 @@ Read `cd-repository-context.json` from the provided folder and validate:
 - `cdRepositoryConfigPath`
 - `tooling.preferredChangeSource`
 
-If the context file is missing or invalid, stop and ask the user to run `cd-repository-discover` (or fix the file).
+If the context file is missing or invalid, stop and ask the user to run `cd-repository-discovery` (or fix the file).
 
 ## Workflow
 

@@ -1,5 +1,5 @@
 ---
-name: cd-repository-discover
+name: cd-repository-discovery
 description: "Discovers Xperience by Kentico deployment context (app path, CI/CD repository paths, and available git tooling) and saves it to a reusable context file for follow-up CD repository configuration."
 argument-hint: "Path to a folder where discovery context should be written"
 ---
@@ -28,7 +28,7 @@ Write a JSON file with this shape (add additional helpful fields when available)
   "tooling": {
     "ghAvailable": true,
     "gitAvailable": true,
-    "preferredChangeSource": "gh-pr|local-git"
+    "preferredChangeSource": "gh|local git"
   },
   "discovery": {
     "appPathSource": "user|discovered",

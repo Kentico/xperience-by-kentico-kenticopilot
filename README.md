@@ -50,7 +50,7 @@ Two-stage workflow for building scoped [Continuous Deployment Repository](https:
 
 | Skill                     | Description                                                                                          |
 | ------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `cd-repository-discover`  | Locates the Xperience app, CI/CD repository paths, and git tooling; saves context to a reusable file |
+| `cd-repository-discovery` | Locates the Xperience app, CI/CD repository paths, and git tooling; saves context to a reusable file |
 | `cd-repository-configure` | Reads the context file and PR/commit changes, then writes a scoped `repository.config`               |
 
 ## Requirements

@@ -54,7 +54,7 @@ You only need to run this once per project (or after your project structure chan
 #### VS Code GitHub Copilot example
 
 ```text
-/cd-repository-discover
+/cd-repository-discovery
 
 Save context to: C:/my-project/.cd-context
 ```
@@ -121,9 +121,9 @@ If `Export-DeploymentPackage.ps1` is present in the repository, the skill runs i
 
 ## Skill reference
 
-### cd-repository-discover
+### cd-repository-discovery
 
-Skill name: **cd-repository-discover**
+Skill name: **cd-repository-discovery**
 
 Discovers the Xperience app path, CI Repository path, CD `repository.config` path, git repository root, and tooling availability (`gh` / `git`). Saves all values to `cd-repository-context.json` in the folder you provide.
 
