@@ -94,6 +94,8 @@ Common CI paths to object types:
 
 **Resolving content item code names from channel-scoped diffs:** When a diff shows a change under `<ChannelName>/contentitemdata.<type>/<folder>/`, the folder name encodes the item as `<itemcodename>-<guid_prefix>` but is not directly usable as a `ContentItemFilters` code name. Always resolve the canonical code name by reading the corresponding `<ChannelName>/cms.contentitem/<itemcodename-guid>.xml` file and extracting the `<ContentItemName>` element. This is the value to use in `<IncludedContentItemNames>`.
 
+**Content type not changed but new items of that type were added:** When a CI diff adds new content item files under `@global/contentitemdata.<type>/` or `@global/cms.contentitem/` for a type whose `@global/cms.contenttype/<type>.xml` was **not** changed in any of the included commits, that content type must still be included in **both** `IncludedContentItemsOfType` and `ObjectFilters/IncludedCodeNames ObjectType="cms.contenttype"`. The type definition is unchanged but the type must be present in both places for `kxp-cd-store` to include the new items in the deployment package.
+
 **Forms require two object types:** Both `@global/cms.form/` and `@global/cms.formclass/` must be included together. The `cms.formclass` files use a `bizform.` code name prefix (e.g., `bizform.userfeedback.xml`). Include both in `IncludedObjectTypes`:
 
   ```xml
@@ -133,6 +135,7 @@ Common CI paths to object types:
 - Prefer explicit object types over broad `IncludeAll` patterns.
 - Add content-item-specific filters only when content item deployment is intentionally requested.
 - Keep code name filters minimal and precise.
+- **When `IncludedObjectTypes` contains `cms.contenttype` and `ObjectFilters` has an `IncludedCodeNames ObjectType="cms.contenttype"` entry, every content type listed in `IncludedContentItemsOfType` must also appear in that `ObjectFilters` code name list** — regardless of whether the type definition itself was changed in the included commits. If a type is missing from `ObjectFilters`, `kxp-cd-store` will silently suppress all content items of that type from the deployment package.
 
 ## Formatting Guidelines
 
@@ -168,6 +171,7 @@ For `ContentItemFilters`, use a separate `<IncludedContentItemNames>` element pe
 - Code names listed one per line within elements (see Formatting Guidelines above).
 - Update-only groups are excluded (unless user opted in).
 - Final config diff is concise and justified.
+- **Every `<ContentType>` listed in `IncludedContentItemsOfType` also appears in `ObjectFilters/IncludedCodeNames ObjectType="cms.contenttype"`** (when that filter element is present). Any content type absent from `ObjectFilters` will have its content items silently excluded from the deployment package by `kxp-cd-store`.
 
 ## Output Format
 
