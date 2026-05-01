@@ -19,6 +19,7 @@ This plugin provides AI assistance for upgrading your Xperience by Kentico proje
 The update workflow includes CI-aware database operations when Continuous Integration is enabled.
 
 - For fully autonomous execution, the agent needs a way to run SQL queries against the Xperience database.
+  - Example: [mssql VS Code extension](https://marketplace.visualstudio.com/items?itemName=ms-mssql.mssql) which includes an MCP server
 - If SQL access is unavailable, the agent can still continue with guidance, but will require manual confirmation or manual execution of CI enable/disable SQL steps.
 - The developer is responsible for providing secure and correct database access and permissions.
 
