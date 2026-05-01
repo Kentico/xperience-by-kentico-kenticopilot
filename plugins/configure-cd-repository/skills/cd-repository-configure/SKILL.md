@@ -97,7 +97,7 @@ Common CI paths to object types:
 
 **`@global/cms.class` ambiguity:** This folder covers both module class definitions and reusable field schema definitions. Inspect the file code names to determine which is present before scoping `ObjectFilters`.
 
-**Reusable field schemas** -> Object type `cms.class`. Reusable field schema definitions are tracked via the `CMS.ContentItemCommonData` code name. To include them, add both an `IncludedObjectTypes` entry and an `ObjectFilters` entry:
+**Reusable field schemas** -> Object type `cms.class`. Reusable field schema definitions are tracked via the `CMS.ContentItemCommonData` code name (file path `App_Data\CIRepository\@global\cms.class\cms.contentitemcommondata.xml`). To include them, add both an `IncludedObjectTypes` entry and an `ObjectFilters` entry:
 
   ```xml
   <IncludedObjectTypes>
