@@ -92,6 +92,8 @@ Common CI paths to object types:
 
 **Channel-scoped content (pages, emails, headless items):** These are stored under `<ChannelName>/` rather than `@global/`. For example, `DancingGoat/cms.contentitem/` contains pages for the DancingGoat website channel. When these paths appear in CI changes, use `IncludedContentItemsOfType` / `ContentItemFilters` (v2) rather than `ObjectFilters`. See [CI/CD object type reference](https://docs.kentico.com/documentation/developers-and-admins/ci-cd/reference-ci-cd-object-types#content-management) for details.
 
+**Resolving content item code names from channel-scoped diffs:** When a diff shows a change under `<ChannelName>/contentitemdata.<type>/<folder>/`, the folder name encodes the item as `<itemcodename>-<guid_prefix>` but is not directly usable as a `ContentItemFilters` code name. Always resolve the canonical code name by reading the corresponding `<ChannelName>/cms.contentitem/<itemcodename-guid>.xml` file and extracting the `<ContentItemName>` element. This is the value to use in `<IncludedContentItemNames>`.
+
 **Forms require two object types:** Both `@global/cms.form/` and `@global/cms.formclass/` must be included together. The `cms.formclass` files use a `bizform.` code name prefix (e.g., `bizform.userfeedback.xml`). Include both in `IncludedObjectTypes`:
 
   ```xml
@@ -102,6 +104,11 @@ Common CI paths to object types:
   ```
 
 **`@global/cms.class` ambiguity:** This folder covers both module class definitions and reusable field schema definitions. Inspect the file code names to determine which is present before scoping `ObjectFilters`.
+
+**`@global/cms.contentitemcommondata/` vs `@global/cms.class/cms.contentitemcommondata.xml` — do not confuse these two paths:**
+
+- `@global/cms.contentitemcommondata/<itemcodename>/` — these are **child data files** for individual content items (language variants, draft state, etc.). They are covered automatically when the parent content type is included via `IncludedContentItemsOfType`. Do **not** add `cms.contentitemcommondata` to `ObjectFilters`; the v2 format disallows it and will throw an exception.
+- `@global/cms.class/cms.contentitemcommondata.xml` — this single file is the **reusable field schema definition** and must be explicitly included via `cms.class` in `ObjectFilters` when changed.
 
 **Reusable field schemas** -> Object type `cms.class`. Reusable field schema definitions are tracked via the `CMS.ContentItemCommonData` code name (file path `App_Data\CIRepository\@global\cms.class\cms.contentitemcommondata.xml`). To include them, add both an `IncludedObjectTypes` entry and an `ObjectFilters` entry:
 
@@ -127,11 +134,38 @@ Common CI paths to object types:
 - Add content-item-specific filters only when content item deployment is intentionally requested.
 - Keep code name filters minimal and precise.
 
+## Formatting Guidelines
+
+Write code names one per line for readability. Within a single `<IncludedCodeNames>` element, list each code name on its own indented line with a semicolon separator (no trailing semicolon on the last entry):
+
+```xml
+<ObjectFilters>
+  <IncludedCodeNames ObjectType="cms.contenttype">
+    DancingGoat.Cafe;
+    DancingGoat.FAQItem;
+    DancingGoat.BuilderEmail
+  </IncludedCodeNames>
+  <IncludedCodeNames ObjectType="cms.class">
+    CMS.ContentItemCommonData
+  </IncludedCodeNames>
+</ObjectFilters>
+```
+
+For `ContentItemFilters`, use a separate `<IncludedContentItemNames>` element per item (not semicolons), one per line:
+
+```xml
+<ContentItemFilters>
+  <IncludedContentItemNames>BostonCoffeePlace-034jwdxo</IncludedContentItemNames>
+  <IncludedContentItemNames>CafePhoto-nu2tjd9a</IncludedContentItemNames>
+</ContentItemFilters>
+```
+
 ## Quality Checks
 
 - XML is well-formed.
 - No repeated `IncludedCodeNames` entries for the same object type.
 - Code names match actual CI object code names from XML files.
+- Code names listed one per line within elements (see Formatting Guidelines above).
 - Update-only groups are excluded (unless user opted in).
 - Final config diff is concise and justified.
 
