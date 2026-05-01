@@ -12,7 +12,7 @@ You are tasked with creating a scoped CD Repository configuration from CI Reposi
 - **Context Folder Path** - Folder that contains `cd-repository-context.json` produced by `cd-repository-discovery`.
 - **Change Selectors** - Provide **either** PR number(s) **or** a git commit range (not both):
   - **PR mode:** One or more PR numbers (e.g., `PR 312` or `PR 310, PR 311, PR 312`)
-  - **Commit mode:** One git commit range (e.g., `abc123..def456`) which is inclusive
+  - **Commit mode:** One git commit range (e.g., `abc123..def456` or `abc123^..def456`)
 
 Choose PR mode when deploying specific, discrete changes; choose commit mode when deploying all changes between two commits.
 

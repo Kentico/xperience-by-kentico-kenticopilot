@@ -108,11 +108,31 @@ Changes: PR 310, PR 311, PR 312
 
 #### VS Code GitHub Copilot example — commit range
 
+The `..` range operator follows standard git syntax: the start commit is **exclusive** and the end commit is **inclusive**. Use the commit just before your first feature commit as the start of the range.
+
 ```text
 /cd-repository-configure
 
 Context folder: C:/my-project/.cd-context
 Changes: abc1234..def5678
+```
+
+To include `abc1234` itself, use its parent (`abc1234^`) as the range start:
+
+```text
+/cd-repository-configure
+
+Context folder: C:/my-project/.cd-context
+Changes: abc1234^..def5678
+```
+
+To deploy exactly one commit in isolation:
+
+```text
+/cd-repository-configure
+
+Context folder: C:/my-project/.cd-context
+Changes: abc1234^..abc1234
 ```
 
 The skill will:
