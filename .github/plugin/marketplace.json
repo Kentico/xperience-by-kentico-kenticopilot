@@ -2,7 +2,7 @@
   "name": "xperience-by-kentico-kenticopilot",
   "metadata": {
     "description": "AI agent skills, instructions, and workflows for Xperience by Kentico development",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "pluginRoot": "./plugins"
   },
   "owner": {
@@ -35,6 +35,19 @@
       "repository": "https://github.com/Kentico/xperience-by-kentico-kenticopilot",
       "license": "MIT",
       "keywords": ["kentico", "xperience", "migration", "kx13", "cms"]
+    },
+    {
+      "name": "configure-cd-repository",
+      "source": "./configure-cd-repository",
+      "description": "Skills for configuring scoped CD Repository filters from CI Repository changes in Xperience by Kentico",
+      "version": "1.0.0",
+      "author": {
+        "name": "Kentico"
+      },
+      "homepage": "https://github.com/Kentico/xperience-by-kentico-kenticopilot/tree/main/plugins/configure-cd-repository",
+      "repository": "https://github.com/Kentico/xperience-by-kentico-kenticopilot",
+      "license": "MIT",
+      "keywords": ["kentico", "xperience", "ci/cd", "continuous-deployment", "cms"]
     }
   ]
 }

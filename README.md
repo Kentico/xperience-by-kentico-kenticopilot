@@ -13,7 +13,6 @@ This repository contains plugins (skills, instructions, MCP server configuration
 
 Skills are transferable to other solutions. Follow the conventions of your specific assistant.
 
-
 ## Available plugins
 
 This repository provides plugins, each containing a set of skills for AI coding assistants. See the plugin README files for full details.
@@ -24,9 +23,9 @@ This repository provides plugins, each containing a set of skills for AI coding 
 
 Two-stage workflow for building [Page Builder](https://docs.kentico.com/x/6QWiCQ) widgets. The AI first researches your requirements against your project structure and the Xperience documentation, then generates the full widget implementation (view component, properties, Razor view, view model, localization). Full instructions are available in the [README](./plugins/widget-creation/README.md).
 
-| Skill | Description |
-|---|---|
-| `widget-create-research` | Analyzes requirements and design files, generates implementation instructions |
+| Skill                          | Description                                                                      |
+| ------------------------------ | -------------------------------------------------------------------------------- |
+| `widget-create-research`       | Analyzes requirements and design files, generates implementation instructions    |
 | `widget-create-implementation` | Creates widget code following the generated instructions and project conventions |
 
 ### KX13 codebase migration
@@ -35,13 +34,24 @@ Two-stage workflow for building [Page Builder](https://docs.kentico.com/x/6QWiCQ
 
 AI-assisted migration of Kentico Xperience 13 live-site code (pages, widgets, shared components) to Xperience by Kentico. Full instructions are available in the [README](./plugins/kx13-codebase-migration/README.md).
 
-| Skill | Description |
-|---|---|
-| `migrate-global-code` | Sets up the Xperience by Kentico project foundation (code generation, localization, routing, Page Builder) |
-| `migrate-page` | Migrates a page's controller, views, repositories, and dependencies |
-| `migrate-page-widgets` | Migrates Page Builder widgets and sections for a specified page |
-| `migrate-shared-component` | Migrates reusable components (header, footer, etc.) with dependencies |
-| `migrate-page-visual` | Compares old and new pages visually with Playwright, fixes discrepancies |
+| Skill                      | Description                                                                                                |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `migrate-global-code`      | Sets up the Xperience by Kentico project foundation (code generation, localization, routing, Page Builder) |
+| `migrate-page`             | Migrates a page's controller, views, repositories, and dependencies                                        |
+| `migrate-page-widgets`     | Migrates Page Builder widgets and sections for a specified page                                            |
+| `migrate-shared-component` | Migrates reusable components (header, footer, etc.) with dependencies                                      |
+| `migrate-page-visual`      | Compares old and new pages visually with Playwright, fixes discrepancies                                   |
+
+### Configure CD Repository
+
+> **Location:** [plugins/configure-cd-repository/](./plugins/configure-cd-repository/)
+
+Two-stage workflow for building scoped [Continuous Deployment Repository](https://docs.kentico.com/x/continuous_deployment) filters from CI Repository changes. The AI first discovers your project layout and tooling, then inspects changed CI Repository files from specified PRs or commit ranges and writes a minimal `IncludedObjectTypes` / `ObjectFilters` allowlist — automatically excluding noise from Xperience version updates. Full instructions are available in the [README](./plugins/configure-cd-repository/README.md).
+
+| Skill                     | Description                                                                                          |
+| ------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `cd-repository-discovery` | Locates the Xperience app, CI/CD repository paths, and git tooling; saves context to a reusable file |
+| `cd-repository-configure` | Reads the context file and PR/commit changes, then writes a scoped `repository.config`               |
 
 ## Requirements
 
@@ -58,11 +68,11 @@ This repository is an [agent plugin marketplace](https://code.visualstudio.com/d
 
 1. Add the marketplace to your VS Code settings (`settings.json`):
 
-    ```json
-    "chat.plugins.marketplaces": [
-        "Kentico/xperience-by-kentico-kenticopilot"
-    ]
-    ```
+   ```json
+   "chat.plugins.marketplaces": [
+       "Kentico/xperience-by-kentico-kenticopilot"
+   ]
+   ```
 
 2. Open the Extensions sidebar and search `@agentPlugins` to browse and install available plugins.
 
@@ -72,6 +82,7 @@ This repository is an [agent plugin marketplace](https://code.visualstudio.com/d
 copilot plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
 copilot plugin install widget-creation@xperience-by-kentico-kenticopilot
 copilot plugin install kx13-codebase-migration@xperience-by-kentico-kenticopilot
+copilot plugin install configure-cd-repository@xperience-by-kentico-kenticopilot
 ```
 
 ### Claude Code
@@ -80,6 +91,7 @@ copilot plugin install kx13-codebase-migration@xperience-by-kentico-kenticopilot
 /plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
 /plugin install widget-creation@xperience-by-kentico-kenticopilot
 /plugin install kx13-codebase-migration@xperience-by-kentico-kenticopilot
+/plugin install configure-cd-repository@xperience-by-kentico-kenticopilot
 ```
 
 For more details, see the [Usage Guide](./docs/Usage-Guide.md).
