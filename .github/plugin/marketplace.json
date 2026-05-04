@@ -39,15 +39,15 @@
     {
       "name": "configure-cd-repository",
       "source": "./configure-cd-repository",
-      "description": "Skills for discovering project layout and configuring scoped CD Repository filters from CI Repository changes in Xperience by Kentico",
-      "version": "1.0.0",
+      "description": "Skills for configuring scoped CD Repository filters from CI Repository changes in Xperience by Kentico",
+      "version": "1.0.1",
       "author": {
         "name": "Kentico"
       },
       "homepage": "https://github.com/Kentico/xperience-by-kentico-kenticopilot/tree/main/plugins/configure-cd-repository",
       "repository": "https://github.com/Kentico/xperience-by-kentico-kenticopilot",
       "license": "MIT",
-      "keywords": ["kentico", "xperience", "cd-repository", "continuous-deployment", "cms"]
+      "keywords": ["kentico", "xperience", "ci/cd", "continuous-deployment", "cms"]
     }
   ]
 }
