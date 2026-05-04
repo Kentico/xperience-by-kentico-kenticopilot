@@ -26,7 +26,6 @@ Testing with these tools helps validate that your changes work as intended.
   - `skills/` — SKILL.md files defining individual agent skills
 - `examples/` — Example files passed to LLMs as context for corresponding scenarios
 - `docs/` — Usage and contributing documentation
-- `styleguides/` — Kentico documentation style guides
 
 ## Contributing to skill files
 
@@ -37,7 +36,7 @@ When you create or modify skill files:
 - Write clear, specific instructions
 - Include context and examples
 - Test skills with the target AI assistant
-- Follow the structure of existing SKILL.md files (YAML frontmatter with `name`, `description`, `argument-hint`, `compatibility`)
+- Follow the structure of existing SKILL.md files (YAML frontmatter with `name`, `description`, and `compatibility`; include `argument-hint` when the skill takes arguments)
 
 ## Development workflow
 
