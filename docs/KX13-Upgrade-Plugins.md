@@ -23,17 +23,17 @@ flowchart TD
     env["<b>2. Set up your environment</b><br/>mostly manual; migrate-appsettings automates API discovery setup"]
     data["<b>3. Migrate data and binary files</b><br/>Migration Tool: plan, configure, codegen, run, evaluate<br/>kx13-content-migration"]
     code["<b>4. Adjust global code on the backend</b><br/><b>5. Display an upgraded page</b><br/>kx13-codebase-migration"]
-
+ 
     db --> audit
     audit --> env
     env --> data
     data --> code
-
-    style audit fill:#e8f4ff,stroke:#0969da
-    style data fill:#e8f4ff,stroke:#0969da
-    style code fill:#e8f4ff,stroke:#0969da
-    style env fill:#f6f8fa,stroke:#656d76
-    style db fill:#fff8c5,stroke:#9a6700
+ 
+    style audit fill:#e8f4ff,stroke:#0969da,color:#000
+    style data fill:#e8f4ff,stroke:#0969da,color:#000
+    style code fill:#e8f4ff,stroke:#0969da,color:#000
+    style env fill:#f6f8fa,stroke:#656d76,color:#000
+    style db fill:#fff8c5,stroke:#9a6700,color:#000
 ```
 
 The content-migration stage needs to complete before the codebase stage starts. The codebase plugin generates C# entity classes from the migrated XbyK database with `--kxp-codegen`, and the content types need to exist in the target before that command runs.
