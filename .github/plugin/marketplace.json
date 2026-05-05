@@ -2,7 +2,7 @@
   "name": "xperience-by-kentico-kenticopilot",
   "metadata": {
     "description": "AI agent skills, instructions, and workflows for Xperience by Kentico development",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "pluginRoot": "./plugins"
   },
   "owner": {
