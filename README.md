@@ -42,6 +42,17 @@ AI-assisted migration of Kentico Xperience 13 live-site code (pages, widgets, sh
 | `migrate-shared-component` | Migrates reusable components (header, footer, etc.) with dependencies                                      |
 | `migrate-page-visual`      | Compares old and new pages visually with Playwright, fixes discrepancies                                   |
 
+### Update Xperience
+
+> **Location:** [plugins/update-xperience/](./plugins/update-xperience/)
+
+Two-stage workflow for updating an Xperience by Kentico application to the latest available version. The AI validates your environment, updates NuGet and npm packages, applies database migrations, temporarily toggles CI when needed, and guides you through any breaking changes. Full instructions are available in the [README](./plugins/update-xperience/README.md).
+
+| Skill                    | Description                                                                                              |
+| ------------------------ | -------------------------------------------------------------------------------------------------------- |
+| `update-xperience-prep`  | Validates the environment, installs Data API Builder, discovers CI/connection context, writes context file |
+| `update-xperience`       | Updates packages, applies migrations, toggles CI, resolves breaking changes, and commits the upgrade     |
+
 ### Configure CD Repository
 
 > **Location:** [plugins/configure-cd-repository/](./plugins/configure-cd-repository/)
@@ -83,6 +94,7 @@ copilot plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
 copilot plugin install widget-creation@xperience-by-kentico-kenticopilot
 copilot plugin install kx13-codebase-migration@xperience-by-kentico-kenticopilot
 copilot plugin install configure-cd-repository@xperience-by-kentico-kenticopilot
+copilot plugin install update-xperience@xperience-by-kentico-kenticopilot
 ```
 
 ### Claude Code
@@ -92,6 +104,7 @@ copilot plugin install configure-cd-repository@xperience-by-kentico-kenticopilot
 /plugin install widget-creation@xperience-by-kentico-kenticopilot
 /plugin install kx13-codebase-migration@xperience-by-kentico-kenticopilot
 /plugin install configure-cd-repository@xperience-by-kentico-kenticopilot
+/plugin install update-xperience@xperience-by-kentico-kenticopilot
 ```
 
 For more details, see the [Usage Guide](./docs/Usage-Guide.md).
