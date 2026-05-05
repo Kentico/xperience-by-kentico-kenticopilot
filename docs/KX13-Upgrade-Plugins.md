@@ -90,11 +90,11 @@ These four skills are independent — run only the ones the plan calls for, in a
 |---|---|
 | [Remodel page types as reusable field schemas](https://docs.kentico.com/x/remodel_page_types_as_reusable_field_schemas_guides) | `migrate-classes` (`ReusableSchemaBuilder`) |
 | [Transfer parent-child page hierarchy to the Content hub](https://docs.kentico.com/x/transfer_page_hierarchy_to_content_hub_guides) | `migrate-content-items` (`ContentItemDirectorBase` + `LinkChildren`) |
-| [Upgrade widgets from KX13](https://docs.kentico.com/x/migrate_widgets_from_KX13_guides) (concept) | informs `migrate-widgets` decisions (legacy / API discovery / adjust) |
+| [Upgrade widgets from KX13](https://docs.kentico.com/x/migrate_widgets_from_KX13_guides) | informs `migrate-widgets` decisions (legacy / API discovery / adjust) |
 | [Migrate widget data as reusable content](https://docs.kentico.com/x/migrate_widget_data_as_reusable_content_guides) | `migrate-widgets` (`IWidgetMigration`) |
 | [Transform widget properties](https://docs.kentico.com/x/transform_widget_properties_guides) | `migrate-widgets` (`IWidgetPropertyMigration`) |
 | [Convert child pages to widget content](https://docs.kentico.com/x/convert_child_pages_to_widgets_guides) | `migrate-content-items` (`AsWidget` directive on the director) |
-| [Migrate widget-collection relationships](https://docs.kentico.com/x/migrate_widget_collection_relationships_guides) (concept) | informs `migrate-plan`; implementation via `migrate-content-items` / `migrate-widgets` |
+| [Migrate widget-collection relationships](https://docs.kentico.com/x/migrate_widget_collection_relationships_guides) | informs `migrate-plan`; implementation via `migrate-content-items` / `migrate-widgets` |
 | [Optimize images during your upgrade](https://docs.kentico.com/x/optimize_images_during_upgrade_guides) | **not currently automated** — requires editing `Migration.Tool.Source/AssetFacade.cs` directly. Plan for it as a manual customization. |
 
 `migrate-fields` covers cross-class field transforms (`IFieldMigration`) when a transform applies globally rather than within a single class mapping.
