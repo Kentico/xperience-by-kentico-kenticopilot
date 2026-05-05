@@ -33,7 +33,7 @@ Two-stage workflow for building [Page Builder](https://docs.kentico.com/x/6QWiCQ
 
 > **Location:** [plugins/kx13-content-migration/](./plugins/kx13-content-migration/)
 
-AI-assisted migration of Kentico Xperience 13 **content** (page types, fields, widgets, linked pages, page relationships) to Xperience by Kentico, driving the [Kentico Migration Tool](https://docs.kentico.com/x/migration-tool). Full instructions are available in the [README](./plugins/kx13-content-migration/README.md).
+AI-assisted migration of Kentico Xperience 13 **content** (page types, fields, widgets, linked pages, page relationships) to Xperience by Kentico, driving the [Kentico Migration Tool](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool). Full instructions are available in the [README](./plugins/kx13-content-migration/README.md).
 
 | Skill | Description |
 |---|---|
