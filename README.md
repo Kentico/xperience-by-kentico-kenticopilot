@@ -13,7 +13,6 @@ This repository contains plugins (skills, instructions, MCP server configuration
 
 Skills are transferable to other solutions. Follow the conventions of your specific assistant.
 
-
 ## Available plugins
 
 This repository provides plugins, each containing a set of skills for AI coding assistants. See the plugin README files for full details.
@@ -25,7 +24,7 @@ This repository provides plugins, each containing a set of skills for AI coding 
 Two-stage workflow for building [Page Builder](https://docs.kentico.com/x/6QWiCQ) widgets. The AI first researches your requirements against your project structure and the Xperience documentation, then generates the full widget implementation (view component, properties, Razor view, view model, localization). Full instructions are available in the [README](./plugins/widget-creation/README.md).
 
 | Skill | Description |
-|---|---|
+| --- | --- |
 | `widget-create-research` | Analyzes requirements and design files, generates implementation instructions |
 | `widget-create-implementation` | Creates widget code following the generated instructions and project conventions |
 
@@ -36,12 +35,23 @@ Two-stage workflow for building [Page Builder](https://docs.kentico.com/x/6QWiCQ
 AI-assisted migration of Kentico Xperience 13 live-site code (pages, widgets, shared components) to Xperience by Kentico. Full instructions are available in the [README](./plugins/kx13-codebase-migration/README.md).
 
 | Skill | Description |
-|---|---|
+| --- | --- |
 | `migrate-global-code` | Sets up the Xperience by Kentico project foundation (code generation, localization, routing, Page Builder) |
 | `migrate-page` | Migrates a page's controller, views, repositories, and dependencies |
 | `migrate-page-widgets` | Migrates Page Builder widgets and sections for a specified page |
 | `migrate-shared-component` | Migrates reusable components (header, footer, etc.) with dependencies |
 | `migrate-page-visual` | Compares old and new pages visually with Playwright, fixes discrepancies |
+
+### Component analysis
+
+> **Location:** [plugins/component-analysis/](./plugins/component-analysis/)
+
+Two-stage workflow for auditing Xperience by Kentico component consistency and generating reusable analysis artifacts. The AI first audits selected categories and writes structured JSON outputs, then produces an aggregated HTML report. Full instructions are available in the [README](./plugins/component-analysis/README.md).
+
+| Skill | Description |
+| --- | --- |
+| `analyze-components` | Audits one or more component categories and writes per-category JSON artifacts |
+| `analyze-components-report` | Reads analysis JSON artifacts and generates an aggregated HTML report and JSON output |
 
 ## Requirements
 
@@ -72,6 +82,7 @@ This repository is an [agent plugin marketplace](https://code.visualstudio.com/d
 copilot plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
 copilot plugin install widget-creation@xperience-by-kentico-kenticopilot
 copilot plugin install kx13-codebase-migration@xperience-by-kentico-kenticopilot
+copilot plugin install component-analysis@xperience-by-kentico-kenticopilot
 ```
 
 ### Claude Code
@@ -80,6 +91,7 @@ copilot plugin install kx13-codebase-migration@xperience-by-kentico-kenticopilot
 /plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
 /plugin install widget-creation@xperience-by-kentico-kenticopilot
 /plugin install kx13-codebase-migration@xperience-by-kentico-kenticopilot
+/plugin install component-analysis@xperience-by-kentico-kenticopilot
 ```
 
 For more details, see the [Usage Guide](./docs/Usage-Guide.md).

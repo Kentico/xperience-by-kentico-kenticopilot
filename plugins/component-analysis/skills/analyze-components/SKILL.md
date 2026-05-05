@@ -1,270 +1,158 @@
 ---
 name: analyze-components
-description: "Analyzes Xperience by Kentico component consistency across a project (admin UI, builders, extenders, and related platform customizations) and produces JSON + HTML reports with findings, risks, and recommendations."
-argument-hint: "Path to the Xperience by Kentico project folder to analyze"
+description: "Audits one or more Xperience by Kentico component categories for consistency and writes structured JSON analysis files under .kenticopilot/component-analysis."
+argument-hint: "Path to the Xperience by Kentico project folder to analyze. Optionally include categories to limit the audit."
 compatibility: "Requires Kentico Docs MCP"
 ---
 
 You are tasked with auditing component consistency in an Xperience by Kentico project to improve maintainability and AI-assisted development outcomes.
 
-The goal is to identify inconsistent implementation patterns that reduce predictability for developers and AI agents. Inconsistent patterns make generated code less reliable and increase refactoring overhead.
+The primary goal of this skill is not to produce abstract best-practice commentary. The primary goal is to identify patterns that make the codebase inconsistent and therefore harder for developers and AI agents to extend safely.
+
+This skill is the entry point for component analysis. It writes structured JSON artifacts for each requested component category. It does not generate the final HTML report. Use the separate `analyze-components-report` skill to synthesize HTML from the generated JSON files.
 
 This skill must remain project-agnostic. Do not assume sample-project-specific file paths, naming conventions, or architecture unless discovered in the current workspace.
 
-## Mandatory first step
+## Input parameters
 
-Use Kentico Docs MCP to research current guidance for all relevant component categories before auditing the codebase.
+- **Project folder path** - Required. Root folder of the Xperience by Kentico project to analyze.
+- **Categories** - Optional. A subset of categories to analyze. If omitted, analyze all supported categories.
+- **Output root** - Optional. Default to `<project folder>/.kenticopilot/component-analysis`.
 
-- Prioritize official docs for:
-	- Page Builder widgets, sections, templates, and personalization condition types
-	- Email Builder templates, sections, widgets, editable areas, and markup guidance
-	- Form Builder components, sections, validation rules, and visibility conditions
-	- Admin UI customization (applications, pages, page templates, commands, extenders, UI form components, client React modules)
-	- Global customization patterns (global event handlers, scheduled tasks, custom modules, provider customizations)
+Treat category requests case-insensitively. Map user input to the following category keys:
 
-If Kentico docs guidance and existing code differ, report both and call out the drift explicitly.
+- `admin-ui`
+- `page-builder`
+- `email-builder`
+- `form-builder`
+- `global-extensibility`
 
-## Scope
+If the user requests a subset, load and analyze only those categories.
 
-Analyze and summarize all discovered Xperience components, including at minimum:
+## Required reference files
 
-- Admin UI applications
-- Admin UI pages and page templates
-- Admin UI page commands and page extenders
-- Admin UI form components (editing components), validation rules, visibility conditions
-- Admin UI custom client React components/modules
-- Page Builder widgets
-- Page Builder sections
-- Page Builder templates
-- Page Builder personalization condition types
-- Email Builder templates and editable areas
-- Email Builder sections
-- Email Builder widgets
-- Form Builder components
-- Form Builder sections
-- Form Builder validation rules
-- Form Builder visibility conditions
-- Global event handlers
-- Scheduled tasks
-- Custom module/object-type extensions and provider customizations
+Before auditing code, read these files from this skill folder:
 
-Include any other Xperience platform-specific component categories discovered in the codebase.
+1. `references/output-schema.md`
+2. `references/docs-manifest.md`
+3. The selected category files under `references/component-types/`
 
-## Analysis process
+Do not read category files that are outside the selected audit scope.
 
-### 1. Discover implementations
+## Required docs workflow
 
-Find all implementations by category and build an inventory with:
+For each selected category:
 
-- Component category
-- Component identifier/name
-- Registration mechanism and metadata
-- Source files
-- Related files (properties models, views/razor files, client modules, styles/scripts, tests)
+1. Start with the fixed documentation links listed in `references/docs-manifest.md` for that category.
+2. Use Kentico Docs MCP to retrieve the current official guidance for those links.
+3. Perform one final MCP pass for the category to check whether there are additional relevant current docs pages or subtopics not already covered by the fixed links.
+4. If you find new relevant docs pages, use them and record them in the output.
 
-### 2. Run consistency checks by category
+Use the docs to distill concrete, auditable checks. If Kentico docs guidance and existing code differ, report both and call out the drift explicitly.
 
-Apply the following consistency checks to each component category where applicable.
+## Output location
 
-- Naming and identifiers:
-	- identifier uniqueness and prefixing strategy
-	- file/class/component naming consistency
-	- namespace/module naming consistency
-- Registration and discoverability:
-	- required registration attributes present
-	- registration metadata completeness (name, description, icon, etc.)
-	- registration location consistency (global scope where required)
-- Properties and editing experience:
-	- typed property model presence and consistency
-	- editing components and ordering conventions
-	- default values and null-safety
-	- validation rule coverage for required inputs
-- Data and dependency patterns:
-	- service usage and data access consistency
-	- caching and dependency strategy consistency where relevant
-	- avoidance of duplicated querying logic
-- Rendering and composition patterns:
-	- view/component structure consistency
-	- correct use of zones/areas and supported markup rules
-	- separation of concerns between rendering and business logic
-- Reliability and safety:
-	- error handling and guard checks
-	- asynchronous usage consistency
-	- use of platform-supported extension points over hacks
-- Documentation and testability:
-	- doc comments and intent clarity
-	- unit/integration/UI test presence for critical customizations
-	- determinism and repeatability for scheduled/background logic
+Create and update artifacts only under:
 
-### 3. Evaluate AI code generation risk
+`<project folder>/.kenticopilot/component-analysis`
 
-For each inconsistency, assess AI generation risk:
+Use this structure:
 
-- Low: Minor variance; AI can still infer patterns reliably
-- Medium: Mixed patterns likely to cause partial mismatch
-- High: Contradictory patterns likely to produce incorrect or inconsistent generated code
-
-### 4. Capture missing component types and coverage gaps
-
-Report missing categories from the codebase audit scope (for example, category not present, or present but not registered/used consistently).
-
-### 5. Produce recommendations
-
-For each medium/high issue, include:
-
-- Recommendation summary
-- Why it matters for consistency and AI-assisted development
-- Suggested target pattern
-- Migration strategy
-- Estimated remediation risk (Low/Medium/High)
-
-## Best-practice checklist by component type
-
-Build best-practice checks using docs-backed guidance. Include at least the following checks in your audit.
-
-### Admin UI components
-
-- Ensure server-side definitions and client-side components are coherently paired.
-- Prefer dedicated admin customization assemblies and organized module boundaries.
-- Keep extenders focused; avoid large cross-cutting logic in extender hooks.
-- Validate command handling and result flow consistency.
-- Use consistent React/TypeScript typing and exported module contracts.
-
-### Page Builder widgets/sections/templates/personalization
-
-- Register all custom components with stable, unique identifiers.
-- Keep components in global scope (not in Areas) where required by platform guidance.
-- Use typed properties and editing components with meaningful labels and defaults.
-- Ensure sections include valid widget zones and templates include required builder assets.
-- Keep rendering simple; move non-trivial logic into view components/services.
-- Implement personalization condition types with clear, testable evaluate logic.
-
-### Email Builder templates/sections/widgets
-
-- Keep markup strategy consistent across project (MJML-only or HTML-only; do not mix).
-- Use correctly structured editable areas, sections, and widget zones.
-- Register components with clear metadata and stable identifiers.
-- Use typed property models with validation and sensible defaults.
-- Ensure section/layout rules are respected (for example MJML column placement rules).
-
-### Form Builder components/sections/rules
-
-- Register components and sections with consistent metadata and unique identifiers.
-- Use typed properties and robust validation rules for field configuration.
-- Keep view and logic responsibilities separated; avoid overloading partial views.
-- Ensure expected scripts/styles are included and scoped correctly.
-- Validate editor and live-site behavior parity for key components.
-
-### Global extensibility components
-
-- Register modules/events/tasks through supported extension points.
-- Keep global event handlers minimal, deterministic, and side-effect aware.
-- Use scheduled tasks for recurring jobs with idempotent and observable behavior.
-- Prefer provider customization patterns that align with analyzer/best-practice guidance.
-- Avoid hidden coupling between customization points.
-
-## Output
-
-Output both artifacts:
-
-1. JSON document
-2. HTML report
-
-### JSON requirements
-
-Generate a machine-readable JSON document with this top-level shape:
-
-```json
-{
-	"analysisMetadata": {
-		"projectPath": "...",
-		"generatedAtUtc": "...",
-		"docsReferences": ["..."]
-	},
-	"summary": {
-		"overallConsistencyScore": 0,
-		"overallAiRisk": "Low|Medium|High",
-		"componentCategoryCounts": {}
-	},
-	"categories": [
-		{
-			"category": "...",
-			"inventory": [
-				{
-					"name": "...",
-					"identifier": "...",
-					"files": ["..."],
-					"registration": "..."
-				}
-			],
-			"checks": [
-				{
-					"check": "...",
-					"status": "pass|warning|fail",
-					"details": "...",
-					"evidence": ["..."]
-				}
-			],
-			"bestPractices": [
-				{
-					"practice": "...",
-					"status": "pass|warning|fail",
-					"notes": "..."
-				}
-			],
-			"inconsistencies": [
-				{
-					"title": "...",
-					"severity": "Low|Medium|High",
-					"aiRisk": "Low|Medium|High",
-					"impact": "...",
-					"evidence": ["..."]
-				}
-			],
-			"recommendations": [
-				{
-					"summary": "...",
-					"targetPattern": "...",
-					"migrationPath": ["..."],
-					"remediationRisk": "Low|Medium|High"
-				}
-			]
-		}
-	],
-	"missingOrUncoveredCategories": ["..."],
-	"prioritizedActions": [
-		{
-			"priority": "Critical|Important|Nice-to-have",
-			"action": "...",
-			"aiRiskReduction": "...",
-			"remediationRisk": "Low|Medium|High"
-		}
-	]
-}
+```text
+.kenticopilot/
+  component-analysis/
+    analysis-index.json
+    categories/
+      admin-ui.json
+      page-builder.json
+      email-builder.json
+      form-builder.json
+      global-extensibility.json
+    reports/
 ```
 
-### HTML requirements
+Only write category files for categories included in the current run.
 
-Generate a well-structured HTML document designed for readability and decision making.
+## Analysis workflow
 
-- Include:
-	- Executive summary cards (score, risk, category counts)
-	- Category-by-category findings table
-	- Inconsistency severity and AI-risk visualization
-	- Best-practice compliance matrix
-	- Prioritized action plan section
-- Use clean semantic HTML and embedded CSS for a polished, readable report.
-- Keep style professional and minimal, with strong visual hierarchy.
-- Ensure the report is usable without external CSS/JS dependencies.
+### 1. Prepare the output folder
 
-### Final response format
+- Ensure the `.kenticopilot/component-analysis` folder exists at the project root.
+- Ensure the `categories` and `reports` subfolders exist.
+
+### 2. Discover implementations
+
+For each selected category, find relevant implementations and build an inventory with:
+
+- component category
+- component type
+- component identifier or name
+- registration mechanism and metadata
+- primary source files
+- related files such as properties models, Razor views, client modules, styles, scripts, tests
+
+### 3. Run consistency analysis
+
+For each selected category, use the category reference file plus current docs guidance to evaluate:
+
+- naming and identifier consistency
+- registration and discoverability consistency
+- properties and editing experience consistency
+- rendering and composition consistency
+- service and dependency usage consistency
+- reliability and safety consistency
+- documentation and testability consistency
+
+Prioritize checks that reveal whether the codebase follows one repeatable pattern or several conflicting patterns.
+
+### 4. Produce category JSON
+
+Write one JSON file per selected category into the `categories` folder. Follow the core contract defined in `references/output-schema.md`.
+
+The schema must have a strict shared core and may be extended with category-specific data under `extensions`.
+
+### 5. Produce or update the analysis index
+
+Create or update `analysis-index.json` in the output root. This file must summarize:
+
+- project path
+- generated-at timestamp for each component type
+- selected categories for the current run
+- available category artifact paths
+- docs references used by category
+
+Do not generate HTML in this skill.
+
+## Category expectations
+
+Use the corresponding category reference file to guide discovery and checks:
+
+- `references/component-types/admin-ui.md`
+- `references/component-types/page-builder.md`
+- `references/component-types/email-builder.md`
+- `references/component-types/form-builder.md`
+- `references/component-types/global-extensibility.md`
+
+## Important rules
+
+- Consistency is the primary evaluation metric. Best-practice checks support the analysis, but do not let them overshadow consistency findings.
+- Always include doc references for rules that materially influence a finding or recommendation.
+- Always include `confidence`, `falsePositiveRisk`, and `estimatedAgentEffort` for findings and recommendations.
+- `estimatedAgentEffort` must estimate the effort for an AI agent or coding agent to remediate the issue, not human organizational effort.
+- If a selected category is genuinely absent from the project, still produce its category JSON file and mark the coverage status accordingly.
+- If evidence is ambiguous, say so explicitly instead of overstating certainty.
+- Use repository-relative paths in evidence whenever possible.
+- Do not invent scoring rubrics beyond what is explicitly defined in the output schema. If a score is not yet defined, omit it or set it to `null` where the schema allows it.
+
+## Final response format
 
 Return:
 
-1. Paths to the generated JSON and HTML artifacts
-2. A concise summary of key findings:
-	 - top high-risk inconsistencies
-	 - missing component categories
-	 - highest-value standardization actions
+1. The path to `analysis-index.json`
+2. Paths to the category JSON files written in the current run
+3. A concise summary of:
+   - the highest-risk consistency problems found
+   - categories with missing or uncovered implementations
+   - which category JSON files are now ready for the report-generation skill
 
-Do not output only narrative text when this skill runs. The JSON and HTML artifacts are mandatory deliverables.
+Do not output only narrative text when this skill runs. The JSON artifacts are mandatory deliverables.
