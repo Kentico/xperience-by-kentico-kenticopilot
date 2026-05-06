@@ -144,7 +144,7 @@ tool's appsettings.json from it.
 
 ### Generate code extensions
 
-These four skills are independent and can run in any order, but all relevant ones must build successfully before `migrate-run`. Skip the ones the plan doesn't call for.
+Run all four codegen skills — each skill inspects the plan and automatically skips if its not needed. Afterwards, check that the migration tool project compiles with all the added extensions before running `migrate-run`.
 
 #### migrate-classes
 
@@ -264,8 +264,8 @@ fix and which sibling skill to re-run for each finding.
 ## Best practices
 
 - Run an audit first. The [`kx13-content-audit`](../kx13-content-audit/README.md) CLI gives the planning skill the structured input it needs.
-- Iterate. Treat `migrate-run` and `migrate-eval` as a loop — fix issues, regenerate the relevant extension, re-run.
-- Several skills emit `TODO` placeholders. Resolve them in the plan before re-running, or post-migration in the generated code. The agents prompts you for that during the workflow.
+- Work iteratively. Treat the configure → codegen → run → eval sequence as one loop. Most issues identified by `migrate-eval` require a re-run of an earlier phase. The skill output directly instructs you about which skills to rerun.
+- Several skills emit `TODO` placeholders. Resolve them in the plan before re-running, or post-migration in the generated code. The agents prompt you for that during the workflow.
 - Review every generated extension before running the migration.
 - Keep `MigrationProtocolPath` stable. `migrate-eval` reads protocol and console logs from the directory that `migrate-appsettings` writes into the config. Don't move the directory between runs unless you also update `appsettings.json`.
 

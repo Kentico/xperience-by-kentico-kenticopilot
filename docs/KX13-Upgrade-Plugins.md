@@ -82,9 +82,9 @@ The **Content migration support KX13 → XbyK** plugin covers this whole stage. 
 
 - `migrate-appsettings` — generates the Migration Tool's `appsettings.json` (connection strings, `ConvertClassesToContentHub`, `CreateReusableFieldSchemaForClasses`, `EntityConfigurations`, `OptInFeatures`, `AssetRootFolders`, `MigrationProtocolPath`). The skill is content-only by default; it includes `CommerceConfiguration` (`CommerceSiteNames`, `IncludeCustomerSystemFields`, `OrderStatuses`, `KX13OrderFilter`) only when the user explicitly requests commerce migration.
 
-#### Generate code extensions (any order, skip irrelevant)
+#### Generate code extensions
 
-These four skills are independent — run only the ones the plan calls for, in any order. Each writes C# directly into `Migration.Tool.Extensions`. The deep dives map to skills as follows:
+Run all four codegen skills — each skill inspects the plan and automatically skips if its not needed. Each writes C# directly into `Migration.Tool.Extensions`. The deep dives map to skills as follows:
 
 | Deep dive | Skill |
 |---|---|
@@ -104,7 +104,9 @@ These four skills are independent — run only the ones the plan calls for, in a
 - `migrate-run` — executes a single combined `migrate` CLI invocation with all required flags (the tool orders them internally), monitors output, applies fixes.
 - `migrate-eval` — compares the migrated XbyK database against the plan, emits an HTML report, and routes findings back to the appropriate sibling skill (`migrate-appsettings`, codegen skills, or manual fix-up) for each remediation step.
 
-Treat run + eval as a loop. Almost every non-trivial migration takes multiple iterations — the deep dives above structure themselves the same way (e.g., [Migrate widget data as reusable content](https://docs.kentico.com/x/migrate_widget_data_as_reusable_content_guides) explicitly runs the migration twice: once excluding the affected pages, once with the custom widget logic). The [Plan for an iterative process](https://docs.kentico.com/x/prep_for_migration_and_transfer_data_guides#plan-for-an-iterative-process) section lists the object types that need manual deletion between re-runs.
+Treat the configure → codegen → run → eval sequence as one loop. Most issues identified by `migrate-eval` require a re-run of an earlier phase. The skill output directly instructs you about which skills to rerun.
+
+The deep dives above suggest similar working patterns (e.g., [Migrate widget data as reusable content](https://docs.kentico.com/x/migrate_widget_data_as_reusable_content_guides) explicitly runs the migration twice: once excluding the affected pages, once with the custom widget logic). The [Plan for an iterative process](https://docs.kentico.com/x/prep_for_migration_and_transfer_data_guides#plan-for-an-iterative-process) section lists the object types that need manual deletion between re-runs.
 
 ### 4. Adjust global code & 5. Display an upgraded page
 

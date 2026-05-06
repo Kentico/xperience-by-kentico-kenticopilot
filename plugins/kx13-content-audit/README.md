@@ -145,7 +145,7 @@ src/
 ├── KX13.ContentAuditor.CLI/            # Console entry point, argument parsing, JSON export
 ├── KX13.ContentAuditor.Application/    # Orchestration service (ContentModelService)
 └── KX13.ContentAuditor.DataAccess/     # Database access layer
-    ├── Models/                         # 25 POCO model classes
+    ├── Models/                         # POCO model classes
     ├── Repositories/                   # SQL queries + result mapping
     │   └── Interfaces/                 # Repository contracts
     ├── Parsers/                        # XML/JSON parsers (ClassFormDefinition, PageBuilder)
