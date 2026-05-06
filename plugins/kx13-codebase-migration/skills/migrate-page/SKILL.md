@@ -26,9 +26,9 @@ When migrating a page, ensure that everything that was fetched dynamically from 
 ## Useful Documentation
 
 - Use Kentico Docs MCP to read the following pages:
-  - [Display an upgraded page](https://docs.kentico.com/guides/architecture/upgrade-from-kx13/upgrade-walkthrough/display-an-upgraded-page)
-  - [Adjust your code and adapt](https://docs.kentico.com/guides/architecture/upgrade-from-kx13/adjust-your-code-and-adapt)
-  - [Upgrade content retrieval code](https://docs.kentico.com/guides/development/upgrade-deep-dives/upgrade-content-retrieval)
+  - [Display an upgraded page](https://docs.kentico.com/guides/upgrade-to-xbyk/upgrade-walkthrough/display-an-upgraded-page)
+  - [Adjust your code and adapt](https://docs.kentico.com/guides/upgrade-to-xbyk/upgrade-from-kx13/adjust-your-code-and-adapt)
+  - [Upgrade content retrieval code](https://docs.kentico.com/guides/upgrade-to-xbyk/upgrade-deep-dives/upgrade-content-retrieval)
   - [Content Retrieval](https://docs.kentico.com/documentation/developers-and-admins/development/content-retrieval)
   - [Content Retriever API](https://docs.kentico.com/documentation/developers-and-admins/api/content-item-api/content-retriever-api)
   - [Page Builder](https://docs.kentico.com/documentation/developers-and-admins/development/builders/page-builder)

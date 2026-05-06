@@ -46,6 +46,8 @@ This repository is an agent plugin marketplace. Install plugins directly without
 ```bash
 copilot plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
 copilot plugin install widget-creation@xperience-by-kentico-kenticopilot
+copilot plugin install kx13-content-audit@xperience-by-kentico-kenticopilot
+copilot plugin install kx13-content-migration@xperience-by-kentico-kenticopilot
 copilot plugin install kx13-codebase-migration@xperience-by-kentico-kenticopilot
 ```
 
@@ -54,6 +56,8 @@ copilot plugin install kx13-codebase-migration@xperience-by-kentico-kenticopilot
 ```bash
 /plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
 /plugin install widget-creation@xperience-by-kentico-kenticopilot
+/plugin install kx13-content-audit@xperience-by-kentico-kenticopilot
+/plugin install kx13-content-migration@xperience-by-kentico-kenticopilot
 /plugin install kx13-codebase-migration@xperience-by-kentico-kenticopilot
 ```
 
@@ -73,6 +77,12 @@ If you prefer not to use the plugin marketplace, copy plugin files directly into
    # Widget creation
    cp -r plugins/widget-creation/ YOUR_PROJECT/
 
+   # KX13 content auditor (skill + bundled CLI source)
+   cp -r plugins/kx13-content-audit/ YOUR_PROJECT/
+
+   # KX13 content migration
+   cp -r plugins/kx13-content-migration/ YOUR_PROJECT/
+
    # KX13 codebase migration
    cp -r plugins/kx13-codebase-migration/ YOUR_PROJECT/
    ```
@@ -91,3 +101,7 @@ Each plugin README explains:
 - How to trigger them
 - What inputs are expected
 - Example usage scenarios
+
+## Upgrading from Kentico Xperience 13?
+
+For an end-to-end view of how the KX13-related plugins (`kx13-content-migration`, `kx13-codebase-migration`) and the `kx13-content-audit` CLI tool fit into the [official upgrade walkthrough](https://docs.kentico.com/x/upgrade_walkthrough_guides), see [KX13 upgrade plugins](./KX13-Upgrade-Plugins.md).
