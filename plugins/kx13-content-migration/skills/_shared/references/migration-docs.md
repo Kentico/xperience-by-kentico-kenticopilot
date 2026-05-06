@@ -4,7 +4,7 @@
 
 - **Plan your strategy for migrating features**: https://docs.kentico.com/guides/upgrade-to-xbyk/upgrade-from-kx13/plan-your-strategy-for-migrating-features
 - **Upgrade walkthrough**: https://docs.kentico.com/x/upgrade_walkthrough_guides
-- **Upgrade FAQ**: https://docs.kentico.com/guides/architecture/upgrade-from-kx13/upgrade-faq
+- **Upgrade FAQ**: https://docs.kentico.com/guides/upgrade-to-xbyk/upgrade-from-kx13/upgrade-faq
 
 ## Migration Tool
 
