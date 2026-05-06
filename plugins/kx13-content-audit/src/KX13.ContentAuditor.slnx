@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="KX13.ContentAuditor.Application/KX13.ContentAuditor.Application.csproj" />
+  <Project Path="KX13.ContentAuditor.CLI/KX13.ContentAuditor.CLI.csproj" />
+  <Project Path="KX13.ContentAuditor.DataAccess/KX13.ContentAuditor.DataAccess.csproj" />
+  <Project Path="KX13.ContentAuditor.Tests/KX13.ContentAuditor.Tests.csproj" />
+</Solution>

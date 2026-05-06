@@ -26,8 +26,8 @@ When migrating a page, ensure that everything that was fetched dynamically from 
 ## Useful Documentation
 
 - Use Kentico Docs MCP to read the following pages:
-  - [Adjust your code and adapt](https://docs.kentico.com/guides/architecture/upgrade-from-kx13/adjust-your-code-and-adapt)
-  - [Upgrade content retrieval code](https://docs.kentico.com/guides/development/upgrade-deep-dives/upgrade-content-retrieval)
+  - [Adjust your code and adapt](https://docs.kentico.com/guides/upgrade-to-xbyk/upgrade-from-kx13/adjust-your-code-and-adapt)
+  - [Upgrade content retrieval code](https://docs.kentico.com/guides/upgrade-to-xbyk/upgrade-deep-dives/upgrade-content-retrieval)
   - [Content Retrieval](https://docs.kentico.com/documentation/developers-and-admins/development/content-retrieval)
   - [Content Retriever API](https://docs.kentico.com/documentation/developers-and-admins/api/content-item-api/content-retriever-api)
   - [Page Builder](https://docs.kentico.com/documentation/developers-and-admins/development/builders/page-builder)
@@ -35,7 +35,7 @@ When migrating a page, ensure that everything that was fetched dynamically from 
   - [Widget Properties](https://docs.kentico.com/documentation/developers-and-admins/development/builders/page-builder/widgets-for-page-builder/widget-properties)
   - [Sections for Page Builder](https://docs.kentico.com/documentation/developers-and-admins/development/builders/page-builder/sections-for-page-builder)
   - [Section Properties](https://docs.kentico.com/documentation/developers-and-admins/development/builders/page-builder/sections-for-page-builder/section-properties)
-  - [Upgrade Widgets Introduction](https://docs.kentico.com/guides/development/upgrade-deep-dives/upgrade-widgets-introduction)
+  - [Upgrade Widgets Introduction](https://docs.kentico.com/guides/upgrade-to-xbyk/upgrade-deep-dives/upgrade-widgets-introduction)
 - Use web fetch to read the following pages:
   - [Migration Tool README - Pages](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/blob/master/Migration.Tool.CLI/README.md)
 

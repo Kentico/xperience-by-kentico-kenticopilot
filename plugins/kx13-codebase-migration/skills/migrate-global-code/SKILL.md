@@ -16,7 +16,7 @@ You are currently located in the root folder, which contains two subfolders:
 ## Migration Steps
 
 1. Review the structure of both the legacy and new project.
-2. Use Kentico Docs MCP to read the following page: https://docs.kentico.com/guides/architecture/upgrade-from-kx13/upgrade-walkthrough/adjust-global-code (note that this guide is written for a sample project and that there will be some differences between the sample project and the project you are migrating)
+2. Use Kentico Docs MCP to read the following page: https://docs.kentico.com/guides/upgrade-to-xbyk/upgrade-walkthrough/adjust-global-code (note that this guide is written for a sample project and that there will be some differences between the sample project and the project you are migrating)
 3. Create a new project for generated code files (named {ProjectName}.Entities).
    1. Configure given project as described in the documentation.
    2. **CRITICAL:** Ensure the .csproj file contains the following (without this, content item reference fields will fail to populate):
@@ -52,7 +52,7 @@ Global code migration from the legacy project to the new one has been successful
 
 **Next steps:**
 - Update your channel configuration to include the port of the local XbyK instance (the one the project launches with).
-    Follow these steps: https://docs.kentico.com/guides/architecture/upgrade-from-kx13/upgrade-walkthrough/adjust-global-code#adjust-system-url
+    Follow these steps: https://docs.kentico.com/guides/upgrade-to-xbyk/upgrade-walkthrough/adjust-global-code#adjust-system-url
 - Review the changes to ensure everything looks as expected.
 - Continue with the migrate-page-widgets skill to migrate Page Builder widgets used by the specified page.
 ```
