@@ -1,5 +1,5 @@
 ---
-name: "kx13-content-audit"
+name: "content-audit"
 description: "Audits a Kentico Xperience 13 (KX13) project's content model based on the project's database and generates structured Markdown and JSON reports. Use when the user asks to audit, analyze, export, or inspect a KX13 database, content model, page types, content tree, forms, custom tables, or page builder usage."
 argument-hint: "Optional export scope (sites, page types, report, etc.) and filters (site name, class name pattern, content tree path)"
 compatibility: "Requires .NET 8 SDK and access to a Kentico Xperience 13 SQL Server database."
