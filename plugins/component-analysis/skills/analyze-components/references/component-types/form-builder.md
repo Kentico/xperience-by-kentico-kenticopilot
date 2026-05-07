@@ -47,16 +47,21 @@ Prefer a repeatable creation pattern for every new Form Builder component family
 
 ---
 
-## Platform-specific checks (sourced from Kentico docs)
+## Platform-specific checks
 
-> **Critical namespace distinction**: Form Builder components use the `Kentico.Forms.Web.Mvc` namespace. Admin UI form components use `Kentico.Xperience.Admin.Base.Forms` / `Kentico.Xperience.Admin.Base.FormAnnotations`. These are completely separate class hierarchies with identically named types (`FormComponent`, `ValidationRule`, etc.). **Mixing namespaces is a common and consequential error** — flag any file that mixes them.
+> **Critical namespace distinction**
+
+- Form Builder components use the `Kentico.Forms.Web.Mvc` namespace.
+- Admin UI form components use `Kentico.Xperience.Admin.Base.Forms` / `Kentico.Xperience.Admin.Base.FormAnnotations`.
+- **These are completely separate class hierarchies with identically named types** (`FormComponent`, `ValidationRule`, etc.).
+- **Mixing namespaces is a common and consequential error** — flag any file that mixes them.
 
 ### Form components — class structure
 
-- **Base class**: `FormComponent<TProperties, TValue>` from `Kentico.Forms.Web.Mvc`. `TProperties` must derive from `FormComponentProperties<TValue>` with the same `TValue` type. Type mismatch causes a runtime error.
-- **`FormComponentProperties<TValue>` constructor**: must call the base constructor with a `FieldDataType` value (`FieldDataType.Text`, `FieldDataType.Integer`, etc.). For `Text`, a `size` parameter is also required (e.g., `base(FieldDataType.Text, size: 200)`). Missing size for text fields causes database column misconfiguration.
+- **Base class**: `FormComponent<TProperties, TValue>` from `Kentico.Forms.Web.Mvc`. `TProperties` must derive from `FormComponentProperties<TValue>`.
+- **`FormComponentProperties<TValue>` constructor**: must call the base constructor with a `CMS.DataEngine.FieldDataType` value (`FieldDataType.Text`, `FieldDataType.Integer`, etc.). For `Text`, a `size` parameter is also required (e.g., `base(FieldDataType.Text, size: 200)`). Missing size for text fields causes database column misconfiguration.
 - **`[BindableProperty]` attribute**: properties used for model binding from input elements must be decorated with `[BindableProperty]`. Properties without it will not be bound.
-- **`GetValue()` and `SetValue()` must be overridden**: `GetValue()` composes the final field value (potentially from multiple bindable properties); `SetValue()` restores state. Omitting overrides causes data loss on form submission or re-render.
+- **`GetValue()` and `SetValue()` must be overridden**: `GetValue()` composes the final, rendered field value (potentially from multiple bindable properties); `SetValue()` sets the state. Omitting overrides causes data loss on form submission or re-render.
 - **`DefaultValue` property**: should be overridden in the properties class with an appropriate editing component attribute. Omitting `DefaultValue` means editors cannot configure a default in the Form Builder UI.
 - **`CustomAutopostHandling` property**: for components that construct their value from multiple inputs, override `CustomAutopostHandling` to `true` to prevent premature form auto-submission. Then manually trigger evaluation via `window.kentico.updatableFormHelper.updateForm(this.form)` at the right time.
 - **NOT in Areas**: same constraint as Page Builder components — files must be at application root scope.
@@ -83,7 +88,7 @@ Prefer a repeatable creation pattern for every new Form Builder component family
 ### Validation rules — Form Builder vs. Admin UI
 
 - **Form Builder validation rules** are separate from Admin UI validation rules. Form Builder uses classes from `Kentico.Forms.Web.Mvc`; Admin UI uses `Kentico.Xperience.Admin.Base.Forms`. They are not interchangeable.
-- **Registration**: `RegisterFormComponent` (not `RegisterFormValidationRule`) is used for Form Builder components. Validation rules for Form Builder fields are a separate concept registered via the Form Builder's own validation rule system — check that any custom validation rules are registered against the correct subsystem.
+- **Registration**: `Kentico.Forms.Web.Mvc.RegisterFormComponentAttribute` is used for Form Builder components. Validation rules for Form Builder fields are a separate concept registered via the Form Builder's own validation rule system — check that any custom validation rules are registered against the correct subsystem.
 - **Editor-applied vs. attribute-applied validation**: for Form Builder components, editors configure validation via the Form Builder UI. In Page Builder and Admin UI model-based forms, validation is applied via C# attribute notation. Check that projects use the appropriate strategy for their context and apply it consistently.
 
 ### Visibility conditions — Form Builder vs. Admin UI
