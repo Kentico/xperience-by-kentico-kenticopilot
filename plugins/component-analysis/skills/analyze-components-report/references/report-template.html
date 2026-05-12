@@ -402,11 +402,20 @@
     </header>
 
     <main class="page">
+      <!--
+        SECURITY NOTE:
+        Placeholder values must be rendered with escaped/sanitized dynamic data.
+        Do not inject raw artifact strings directly into placeholders.
+        Preserve markup-like evidence (for example, <widget-zone />) as text.
+      -->
       <aside class="sidebar">
         <h2>Navigation</h2>
         <a href="#executive-summary">Executive summary</a>
         <a href="#coverage">Coverage</a>
         <a href="#cross-category-findings">Cross-category findings</a>
+        <a href="#best-practice-consistency-matrix"
+          >Best-practice and consistency matrix</a
+        >
         <a href="#action-plan">Action plan</a>
         <a href="#category-detail">Category detail</a>
         <a href="#docs-references">Docs references</a>
@@ -427,6 +436,11 @@
         <section class="content-section" id="cross-category-findings">
           <h2>Cross-category findings</h2>
           <div class="table-wrap">{{CROSS_CATEGORY_FINDINGS_TABLE}}</div>
+        </section>
+
+        <section class="content-section" id="best-practice-consistency-matrix">
+          <h2>Best-practice and consistency matrix</h2>
+          <div class="table-wrap">{{BEST_PRACTICE_CONSISTENCY_MATRIX_TABLE}}</div>
         </section>
 
         <section class="content-section" id="action-plan">

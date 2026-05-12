@@ -70,6 +70,18 @@ The report should remain highly scannable for large projects:
 - keep finding and action tables comparable across categories
 - avoid layouts that collapse under long recommendation lists
 
+## Output safety and escaping
+
+Treat all string values loaded from analysis artifacts as untrusted input.
+Do not directly inject raw artifact strings into HTML placeholders.
+
+- HTML-escape dynamic text content before insertion (for example: `&`, `<`, `>`, `"`, `'`).
+- Build HTML tables/sections from escaped cell values rather than interpolating prebuilt raw HTML from artifact fields.
+- Allow HTML only from the controlled report template structure and renderer-owned wrapper markup.
+- For links rendered from data, allow only safe absolute `https://` URLs or repository-relative text paths; reject or neutralize `javascript:`, `data:`, or other active URL schemes.
+- Preserve literal markup-like evidence text (for example `<widget-zone />`) as visible text, not interpreted HTML.
+- Apply the same escaping rules deterministically across all placeholders.
+
 ## Aggregation rules
 
 - Preserve the category-level findings and recommendations from the source JSON files.

@@ -75,11 +75,11 @@ The prompt writes JSON artifacts under the analyzed project's output folder:
     categories/
       admin-ui.json
       page-builder.json
-      email-builder.json
-      form-builder.json
-      global-extensibility.json
     reports/
 ```
+
+For partial runs, only the selected category files are written in `categories/`.
+Other category JSON files are created only when those categories are included in a run.
 
 ### 2. Run the report stage
 

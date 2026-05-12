@@ -116,7 +116,7 @@ The schema must have a strict shared core and may be extended with category-spec
 Create or update `analysis-index.json` in the output root. This file must summarize:
 
 - project path
-- generated-at timestamp for each component type
+- a single top-level `generatedAtUtc` timestamp for the index
 - selected categories for the current run
 - available category artifact paths
 - docs references used by category
