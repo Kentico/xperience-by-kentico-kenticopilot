@@ -1,6 +1,6 @@
 # KX13 Project codebase migration
 
-AI-assistant example prompts for migrating the **codebase** of Kentico Xperience 13 projects to [Xperience by Kentico](https://docs.kentico.com/x/migrate_from_kx13_guides).
+AI-assistant skills for migrating the **codebase** of Kentico Xperience 13 projects to [Xperience by Kentico](https://docs.kentico.com/x/migrate_from_kx13_guides).
 
 ## Scope
 
@@ -18,7 +18,7 @@ The following areas are not covered and must be handled manually:
 - E-commerce
 - Marketing features
 
-See the [Adjust and adapt your code](https://docs.kentico.com/x/migrate_your_code_guides) migration guide for details.
+See the [Adjust your code and adapt your project](https://docs.kentico.com/x/migrate_your_code_guides) migration guide for details.
 
 ## Prerequisites
 
@@ -88,7 +88,7 @@ The prompts are divided into three main groups:
 
 #### Page
 - [**migrate-page-widgets**](#migrate-page-widgets) – Migrates Page Builder widgets and sections used by the specified page.
-- [**migrate-page**](#migrate-page-logic) – Migrates the specified page and related business and presentation logic, including controllers, views, and dependencies.
+- [**migrate-page**](#migrate-page) – Migrates the specified page and related business and presentation logic, including controllers, views, and dependencies.
 - [**migrate-page-visual**](#ensure-page-visual-match) – Ensures migrated pages visually match the original KX13 pages. Used in case the page migration prompts result in visual discrepancies.
 
 In a general workflow, you migrate in waves:
@@ -171,7 +171,7 @@ pageName: home
 legacyPageUrl: https://localhost:5001/en-us/home
 ```
 
-### Migrate page logic
+### Migrate page
 
 Prompt name: **migrate-page**  
 Parameters:
@@ -216,3 +216,7 @@ newPageUrl: http://localhost:60444/en-us/home
 ## Skill customization
 
 These skill files serve as a baseline for migrating the codebase of KX13 projects to Xperience by Kentico. Modify and enhance the files as required by your implementation, workflow, and requirements.
+
+## License
+
+Distributed under the MIT License. See [`LICENSE.md`](../../LICENSE.md) for more information.
