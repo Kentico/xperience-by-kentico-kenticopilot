@@ -1,0 +1,370 @@
+[x-cloak] {
+  display: none !important;
+}
+
+:root {
+  --bs-body-font-family: var(--typeface-product-secondary);
+  --bs-body-color: var(--color-text-default-on-light);
+  --bs-body-bg: #fbfafc;
+  --bs-border-color: var(--color-paper-border);
+  --bs-primary: var(--color-product);
+  --bs-primary-rgb: 127, 9, 183;
+  --bs-link-color: var(--color-product);
+  --bs-link-hover-color: var(--color-product-selected);
+  --bs-border-radius: var(--radius-s);
+  --bs-border-radius-lg: var(--radius-m);
+}
+
+.report-body {
+  background: var(--gradient-background-desk);
+  min-height: 100vh;
+}
+
+.report-main {
+  padding-bottom: 5rem;
+}
+
+.layout-grid {
+  align-items: flex-start;
+}
+
+.filter-panel {
+  position: sticky;
+  top: 1rem;
+}
+
+.hero-bar {
+  background: linear-gradient(110deg, #171420 0%, #2d1f4d 45%, #4b2f74 100%);
+  color: #fff;
+}
+
+.hero-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.hero-copy {
+  max-width: 60rem;
+}
+
+.report-title {
+  font-family: var(--typeface-product-primary);
+  font-size: clamp(1.7rem, 2.35vw, 2.35rem);
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+}
+
+.hero-subtitle {
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 0.95rem;
+  max-width: 48rem;
+}
+
+.report-footer {
+  background: rgba(23, 20, 32, 0.92);
+  backdrop-filter: blur(8px);
+  bottom: 0;
+  color: #fff;
+  position: sticky;
+  z-index: 1030;
+}
+
+.footer-meta {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.82rem;
+}
+
+.brand-block {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 36px;
+}
+
+.kentico-logo {
+  display: block;
+  width: 127px;
+  height: auto;
+  flex-shrink: 0;
+}
+
+.panel {
+  background: var(--color-paper-background);
+  border: 1px solid var(--color-paper-border);
+  border-radius: var(--radius-m);
+  box-shadow: var(--shadow-s);
+}
+
+.table-toolbar {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+}
+
+.table-toolbar .form-label {
+  font-size: 0.75rem;
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.metric-card {
+  background: linear-gradient(145deg, #fff 0%, #f7f2ff 100%);
+  border: 1px solid #e8dcff;
+  border-radius: var(--radius-m);
+  box-shadow: var(--shadow-s);
+  padding: var(--spacing-l);
+}
+
+.metric-label {
+  color: var(--color-text-low-emphasis);
+  font-size: 0.78rem;
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.metric-value {
+  color: var(--color-product-selected);
+  font-family: var(--typeface-product-primary);
+  font-size: clamp(1.8rem, 3.3vw, 2.4rem);
+  font-weight: var(--weight-bold);
+  line-height: 1;
+  margin-top: var(--spacing-s);
+}
+
+.chip {
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 9999px;
+  color: #fff;
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.33rem 0.7rem;
+}
+
+.report-body .panel .chip {
+  background: #f4f2ff;
+  border-color: #ddd4ff;
+  color: #2b1650;
+}
+
+.report-footer .chip {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+.category-chip {
+  display: inline-flex;
+  white-space: nowrap;
+}
+
+.compact-list {
+  margin: 0;
+  padding-left: 1rem;
+}
+
+.compact-list li + li {
+  margin-top: 0.2rem;
+}
+
+.inventory-type {
+  color: #5d4c8c;
+  font-weight: 600;
+  margin-top: 0.2rem;
+}
+
+.inventory-identifier,
+.inventory-location {
+  display: inline-block;
+  max-width: 24rem;
+}
+
+.row-accordion {
+  border: 1px solid #ddd4ff;
+  border-radius: var(--radius-s);
+  padding: 0.35rem 0.55rem;
+}
+
+.row-accordion summary {
+  color: #41206f;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.row-accordion-body {
+  border-top: 1px solid #ece5ff;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--color-focus);
+  box-shadow: 0 0 0 0.2rem rgba(61, 93, 255, 0.24);
+}
+
+.badge-high {
+  background-color: var(--color-alert-background-high-emphasis) !important;
+  color: #fff !important;
+}
+
+.badge-medium {
+  background-color: var(--color-warning-background-high-emphasis) !important;
+  color: #1d1d1d !important;
+}
+
+.badge-low {
+  background-color: var(--color-success-background-high-emphasis) !important;
+  color: #fff !important;
+}
+
+.badge-neutral {
+  background-color: #e9e4f7 !important;
+  color: #2b1650 !important;
+}
+
+.badge-pill {
+  border-radius: 9999px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 0.38rem 0.62rem;
+}
+
+.table th {
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.table td,
+.table th {
+  vertical-align: top;
+}
+
+.drill-panel {
+  background: #fcfbff;
+  border: 1px solid #ece5ff;
+  border-radius: var(--radius-s);
+  padding: var(--spacing-m);
+}
+
+.inventory-detail-grid,
+.inventory-detail-grid-sm {
+  display: grid;
+  gap: 0.85rem;
+  grid-template-columns: 1fr;
+}
+
+.inventory-row {
+  cursor: pointer;
+}
+
+.inventory-row:hover,
+.inventory-row.is-expanded {
+  background: #f7f2ff;
+}
+
+.inventory-row td:first-child {
+  width: 12rem;
+}
+
+.inventory-detail-row td {
+  background: #fbf9ff;
+  border-top: 0;
+  padding-top: 0;
+}
+
+.inventory-detail-row {
+  display: none;
+}
+
+.inventory-row.is-expanded + .inventory-detail-row {
+  display: table-row;
+}
+
+.inventory-detail-row .compact-list {
+  word-break: break-word;
+}
+
+.inventory-detail-grid > div {
+  min-width: 0;
+  padding-bottom: 0.35rem;
+}
+
+.inventory-detail-grid > div + div {
+  border-top: 1px solid #ece5ff;
+  padding-top: 0.55rem;
+}
+
+.inventory-detail-grid .small {
+  word-break: break-word;
+}
+
+.data-point {
+  display: block;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.metadata-item {
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.metadata-item strong {
+  display: block;
+  margin-bottom: 0.1rem;
+}
+
+.inventory-detail-row table td,
+.inventory-detail-row table th {
+  vertical-align: top;
+}
+
+.recommendation-list li + li {
+  margin-top: var(--spacing-s);
+}
+
+.drill-panel .table th {
+  background: #f8f5ff;
+}
+
+.drill-panel .table td {
+  font-size: 0.9rem;
+}
+
+@media (max-width: 576px) {
+  .kentico-logo {
+    width: 108px;
+  }
+
+  .report-main {
+    padding-bottom: 6.2rem;
+  }
+
+  .report-title {
+    font-size: 1.55rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .inventory-identifier,
+  .inventory-location {
+    max-width: 14rem;
+  }
+
+  .inventory-detail-grid,
+  .inventory-detail-grid-sm {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kentico.github.io/xperience-by-kentico-kenticopilot/component-analysis/schemas/analysis-index.schema.json",
+  "title": "Component Analysis Index",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "projectPath",
+    "outputRoot",
+    "generatedAtUtc",
+    "selectedCategories",
+    "availableCategoryArtifacts",
+    "notYetAnalyzedCategories",
+    "docsReferencesByCategory"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "projectPath": {
+      "type": "string",
+      "minLength": 1
+    },
+    "outputRoot": {
+      "type": "string",
+      "minLength": 1
+    },
+    "generatedAtUtc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "selectedCategories": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/category" },
+      "uniqueItems": true
+    },
+    "availableCategoryArtifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["category", "path", "coverageStatus"],
+        "properties": {
+          "category": { "$ref": "#/$defs/category" },
+          "path": {
+            "type": "string",
+            "pattern": "^(admin-ui|page-builder|email-builder|form-builder|global-extensibility)\\.json$"
+          },
+          "coverageStatus": { "$ref": "#/$defs/coverageStatus" }
+        }
+      }
+    },
+    "notYetAnalyzedCategories": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/category" },
+      "uniqueItems": true
+    },
+    "docsReferencesByCategory": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "admin-ui": { "$ref": "#/$defs/docReferences" },
+        "page-builder": { "$ref": "#/$defs/docReferences" },
+        "email-builder": { "$ref": "#/$defs/docReferences" },
+        "form-builder": { "$ref": "#/$defs/docReferences" },
+        "global-extensibility": { "$ref": "#/$defs/docReferences" }
+      }
+    }
+  },
+  "$defs": {
+    "category": {
+      "type": "string",
+      "enum": [
+        "admin-ui",
+        "page-builder",
+        "email-builder",
+        "form-builder",
+        "global-extensibility"
+      ]
+    },
+    "coverageStatus": {
+      "type": "string",
+      "enum": ["analyzed", "not-present", "partially-covered", "unable-to-assess"]
+    },
+    "docReferences": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    }
+  }
+}

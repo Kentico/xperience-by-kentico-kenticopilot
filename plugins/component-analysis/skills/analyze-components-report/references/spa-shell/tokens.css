@@ -1,0 +1,42 @@
+:root {
+  --color-alert-background-high-emphasis: #e10007;
+  --color-background-highlighted: #f4f2ff;
+  --color-background-selected: #e0dcff;
+  --color-background-subtle: #f5f5f5;
+  --color-border-default: #8c8c8c;
+  --color-border-low-emphasis: #dfdfdf;
+  --color-focus: #3d5dff;
+  --color-icon-default: #151515;
+  --color-info-background-high-emphasis: #3d5dff;
+  --color-paper-background: #fff;
+  --color-paper-border: #dfdfdf;
+  --color-product: #7f09b7;
+  --color-product-selected: #5d0088;
+  --color-success-background-high-emphasis: #007d72;
+  --color-text-default-on-light: #151515;
+  --color-text-low-emphasis: #525252;
+  --color-warning-background-high-emphasis: #db9d00;
+  --gradient-background-desk:
+    linear-gradient(0deg, rgba(198, 67, 0, 0.02), rgba(198, 67, 0, 0.02)),
+    linear-gradient(107.51deg, #fff -22.1%, #f5f3f2 37.88%, #e5dedc 229.14%);
+  --gradient-product: linear-gradient(303.62deg, #c64300 -109.97%, #7f09b7 87.4%);
+  --spacing-s: 8px;
+  --spacing-m: 12px;
+  --spacing-l: 16px;
+  --spacing-xl: 24px;
+  --spacing-xxl: 32px;
+  --radius-s: 4px;
+  --radius-m: 8px;
+  --radius-l: 16px;
+  --shadow-s:
+    0 8px 14px rgba(38, 38, 38, 0.08),
+    0 0 8px rgba(38, 38, 38, 0.03);
+  --shadow-m:
+    0 8px 16px rgba(38, 38, 38, 0.16),
+    0 0 8px rgba(38, 38, 38, 0.03);
+  --typeface-product-primary: 'GT Walsheim', sans-serif;
+  --typeface-product-secondary: 'Inter', sans-serif;
+  --weight-regular: 400;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+}

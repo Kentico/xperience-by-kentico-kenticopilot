@@ -34,16 +34,16 @@ Two-stage workflow for building [Page Builder](https://docs.kentico.com/x/6QWiCQ
 
 AI-assisted migration of Kentico Xperience 13 **content** (page types, fields, widgets, linked pages, page relationships) to Xperience by Kentico, driving the [Kentico Migration Tool](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool). Full instructions are available in the [README](./plugins/kx13-content-migration/README.md).
 
-| Skill | Description |
-|---|---|
-| `migrate-plan` | Produces a Migration Overview and Migration Detail document from the source content model |
-| `migrate-appsettings` | Generates the Migration Tool's `appsettings.json` |
-| `migrate-classes` | Generates `IClassMapping` / `ReusableSchemaBuilder` C# extensions |
-| `migrate-fields` | Generates `IFieldMigration` C# extensions for field value and definition transforms |
-| `migrate-widgets` | Generates `IWidgetMigration` / `IWidgetPropertyMigration` C# extensions |
-| `migrate-content-items` | Generates `ContentItemDirectorBase` C# for linked pages, child references, page-to-widget conversions |
-| `migrate-run` | Executes a single combined `migrate` CLI invocation with all required flags (the tool orders them internally), monitors output, applies fixes |
-| `migrate-eval` | Evaluates the migrated XbyK database against the plan and produces an HTML report |
+| Skill                   | Description                                                                                                                                   |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `migrate-plan`          | Produces a Migration Overview and Migration Detail document from the source content model                                                     |
+| `migrate-appsettings`   | Generates the Migration Tool's `appsettings.json`                                                                                             |
+| `migrate-classes`       | Generates `IClassMapping` / `ReusableSchemaBuilder` C# extensions                                                                             |
+| `migrate-fields`        | Generates `IFieldMigration` C# extensions for field value and definition transforms                                                           |
+| `migrate-widgets`       | Generates `IWidgetMigration` / `IWidgetPropertyMigration` C# extensions                                                                       |
+| `migrate-content-items` | Generates `ContentItemDirectorBase` C# for linked pages, child references, page-to-widget conversions                                         |
+| `migrate-run`           | Executes a single combined `migrate` CLI invocation with all required flags (the tool orders them internally), monitors output, applies fixes |
+| `migrate-eval`          | Evaluates the migrated XbyK database against the plan and produces an HTML report                                                             |
 
 ### KX13 content auditor
 
@@ -51,8 +51,8 @@ AI-assisted migration of Kentico Xperience 13 **content** (page types, fields, w
 
 Reads a Kentico Xperience 13 database and exports the content model as structured JSON files plus a Markdown report. The output is the canonical input for the [content migration plan](./plugins/kx13-content-migration/README.md). The plugin ships an AI skill that drives a bundled .NET 8 CLI; the CLI source lives in the plugin folder and needs to be cloned alongside the plugin install. Full instructions are available in the [README](./plugins/kx13-content-audit/README.md).
 
-| Skill | Description |
-|---|---|
+| Skill           | Description                                                                                                         |
+| --------------- | ------------------------------------------------------------------------------------------------------------------- |
 | `content-audit` | Interprets the user's request, runs the auditor CLI with the right flags, and presents the JSON and Markdown output |
 
 ### KX13 codebase migration
@@ -73,12 +73,23 @@ AI-assisted migration of Kentico Xperience 13 live-site code (pages, widgets, sh
 
 > **Location:** [plugins/configure-cd-repository/](./plugins/configure-cd-repository/)
 
-Two-stage workflow for building scoped [Continuous Deployment Repository](https://docs.kentico.com/x/continuous_deployment) filters from CI Repository changes. The AI first discovers your project layout and tooling, then inspects changed CI Repository files from specified PRs or commit ranges and writes a minimal `IncludedObjectTypes` / `ObjectFilters` allowlist — automatically excluding noise from Xperience version updates. Full instructions are available in the [README](./plugins/configure-cd-repository/README.md).
+Two-stage workflow for building scoped [Continuous Deployment Repository](https://docs.kentico.com/x/continuous_deployment) filters from CI Repository changes. The AI first discovers your project layout and tooling, then inspects changed CI Repository files from specified PRs or commit ranges and writes a minimal `IncludedObjectTypes` / `ObjectFilters` allowlist - automatically excluding noise from Xperience version updates. Full instructions are available in the [README](./plugins/configure-cd-repository/README.md).
 
 | Skill                     | Description                                                                                          |
 | ------------------------- | ---------------------------------------------------------------------------------------------------- |
 | `cd-repository-discovery` | Locates the Xperience app, CI/CD repository paths, and git tooling; saves context to a reusable file |
 | `cd-repository-configure` | Reads the context file and PR/commit changes, then writes a scoped `repository.config`               |
+
+### Component analysis
+
+> **Location:** [plugins/component-analysis/](./plugins/component-analysis/)
+
+Two-stage workflow for auditing Xperience by Kentico component consistency and generating reusable analysis artifacts. The AI first audits selected categories and writes structured JSON outputs, then produces an aggregated HTML report. Full instructions are available in the [README](./plugins/component-analysis/README.md).
+
+| Skill                       | Description                                                                           |
+| --------------------------- | ------------------------------------------------------------------------------------- |
+| `analyze-components`        | Audits one or more component categories and writes per-category JSON artifacts        |
+| `analyze-components-report` | Reads analysis JSON artifacts and generates an aggregated HTML report and JSON output |
 
 ## Upgrading from Kentico Xperience 13?
 
@@ -115,6 +126,7 @@ copilot plugin install widget-creation@xperience-by-kentico-kenticopilot
 copilot plugin install kx13-content-audit@xperience-by-kentico-kenticopilot
 copilot plugin install kx13-content-migration@xperience-by-kentico-kenticopilot
 copilot plugin install kx13-codebase-migration@xperience-by-kentico-kenticopilot
+copilot plugin install component-analysis@xperience-by-kentico-kenticopilot
 copilot plugin install configure-cd-repository@xperience-by-kentico-kenticopilot
 ```
 
@@ -126,6 +138,7 @@ copilot plugin install configure-cd-repository@xperience-by-kentico-kenticopilot
 /plugin install kx13-content-audit@xperience-by-kentico-kenticopilot
 /plugin install kx13-content-migration@xperience-by-kentico-kenticopilot
 /plugin install kx13-codebase-migration@xperience-by-kentico-kenticopilot
+/plugin install component-analysis@xperience-by-kentico-kenticopilot
 /plugin install configure-cd-repository@xperience-by-kentico-kenticopilot
 ```
 
