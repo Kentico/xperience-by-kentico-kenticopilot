@@ -259,7 +259,7 @@
 .inventory-detail-grid-sm {
   display: grid;
   gap: 0.85rem;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: 1fr;
 }
 
 .inventory-row {
@@ -281,16 +281,47 @@
   padding-top: 0;
 }
 
+.inventory-detail-row {
+  display: none;
+}
+
+.inventory-row.is-expanded + .inventory-detail-row {
+  display: table-row;
+}
+
 .inventory-detail-row .compact-list {
   word-break: break-word;
 }
 
 .inventory-detail-grid > div {
   min-width: 0;
+  padding-bottom: 0.35rem;
+}
+
+.inventory-detail-grid > div + div {
+  border-top: 1px solid #ece5ff;
+  padding-top: 0.55rem;
 }
 
 .inventory-detail-grid .small {
   word-break: break-word;
+}
+
+.data-point {
+  display: block;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.metadata-item {
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.metadata-item strong {
+  display: block;
+  margin-bottom: 0.1rem;
 }
 
 .inventory-detail-row table td,

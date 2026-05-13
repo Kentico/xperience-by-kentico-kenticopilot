@@ -96,398 +96,715 @@
           </div>
           <div class="hero-copy">
             <h1 class="report-title mb-1">Component Analysis Report</h1>
-            <p class="hero-subtitle mb-0">A consolidated view of component coverage, findings, and prioritized remediation work.</p>
-          </div>
+            <p class="hero-subtitle mb-0">
+              A consolidated view of component coverage, findings, and
+              prioritized remediation work.
+            </p>
           </div>
         </div>
       </div>
     </header>
 
-    <main class="container-xxl py-4 report-main" x-show="!loading && !errorMessage">
+    <main
+      class="container-xxl py-4 report-main"
+      x-show="!loading && !errorMessage"
+    >
       <div class="row g-4 layout-grid">
         <aside class="col-12 col-xl-3">
-      <section class="panel p-3 p-md-4 filter-panel">
-        <h2 class="h5 mb-3">Global Filters</h2>
-        <div class="row g-3">
-          <div class="col-12">
-            <label class="form-label" for="filter-category">Category</label>
-            <select id="filter-category" class="form-select" x-model="filters.category">
-              <option value="">All categories</option>
-              <template x-for="category in categories" :key="category">
-                <option :value="category" x-text="category"></option>
-              </template>
-            </select>
-          </div>
-          <div class="col-12">
-            <label class="form-label" for="filter-component-type">Component Type</label>
-            <select id="filter-component-type" class="form-select" x-model="filters.componentType">
-              <option value="">All types</option>
-              <template x-for="componentType in componentTypes" :key="componentType">
-                <option :value="componentType" x-text="componentType"></option>
-              </template>
-            </select>
-          </div>
-          <div class="col-12">
-            <label class="form-label" for="filter-text">Search</label>
-            <input id="filter-text" class="form-control" type="search" placeholder="Title, identifier, registration, file path" x-model="filters.search" />
-          </div>
-        </div>
-      </section>
+          <section class="panel p-3 p-md-4 filter-panel">
+            <h2 class="h5 mb-3">Global Filters</h2>
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="form-label" for="filter-category">Category</label>
+                <select
+                  id="filter-category"
+                  class="form-select"
+                  x-model="filters.category"
+                >
+                  <option value="">All categories</option>
+                  <template x-for="category in categories" :key="category">
+                    <option :value="category" x-text="category"></option>
+                  </template>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="form-label" for="filter-text">Search</label>
+                <input
+                  id="filter-text"
+                  class="form-control"
+                  type="search"
+                  placeholder="Title, identifier, registration, file path"
+                  x-model="filters.search"
+                />
+              </div>
+            </div>
+          </section>
         </aside>
 
         <div class="col-12 col-xl-9">
+          <section class="panel p-3 p-md-4 mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h2 class="h5 mb-0">Findings</h2>
+              <span
+                class="text-secondary"
+                x-text="`${filteredFindings.length} shown`"
+              ></span>
+            </div>
+            <div class="table-toolbar mb-3">
+              <div>
+                <label class="form-label" for="filter-severity">Severity</label>
+                <select
+                  id="filter-severity"
+                  class="form-select"
+                  x-model="filters.severity"
+                >
+                  <option value="">All severities</option>
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label" for="filter-risk">AI Risk</label>
+                <select
+                  id="filter-risk"
+                  class="form-select"
+                  x-model="filters.risk"
+                >
+                  <option value="">All risk levels</option>
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
+                </select>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover align-middle mb-0">
+                <thead>
+                  <tr>
+                    <th scope="col">Category</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Severity</th>
+                    <th scope="col">AI Risk</th>
+                    <th scope="col">Confidence</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template
+                    x-for="finding in filteredFindings"
+                    :key="`${finding.category}-${finding.title}`"
+                  >
+                    <tr>
+                      <td>
+                        <span
+                          class="chip category-chip"
+                          x-text="finding.category"
+                        ></span>
+                      </td>
+                      <td>
+                        <div class="fw-semibold" x-text="finding.title"></div>
+                        <div
+                          class="small text-secondary"
+                          x-text="finding.impact"
+                        ></div>
+                      </td>
+                      <td>
+                        <span
+                          class="badge badge-pill"
+                          :class="badgeClass(finding.severity)"
+                          x-text="finding.severity"
+                        ></span>
+                      </td>
+                      <td>
+                        <span
+                          class="badge badge-pill"
+                          :class="badgeClass(finding.aiRisk)"
+                          x-text="finding.aiRisk"
+                        ></span>
+                      </td>
+                      <td>
+                        <span
+                          class="badge badge-pill"
+                          :class="badgeClass(finding.confidence)"
+                          x-text="finding.confidence"
+                        ></span>
+                      </td>
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+            </div>
+          </section>
 
-      <section class="panel p-3 p-md-4 mb-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h2 class="h5 mb-0">Findings</h2>
-          <span class="text-secondary" x-text="`${filteredFindings.length} shown`"></span>
-        </div>
-        <div class="table-toolbar mb-3">
-          <div>
-            <label class="form-label" for="filter-severity">Severity</label>
-            <select id="filter-severity" class="form-select" x-model="filters.severity">
-              <option value="">All severities</option>
-              <option value="High">High</option>
-              <option value="Medium">Medium</option>
-              <option value="Low">Low</option>
-            </select>
-          </div>
-          <div>
-            <label class="form-label" for="filter-risk">AI Risk</label>
-            <select id="filter-risk" class="form-select" x-model="filters.risk">
-              <option value="">All risk levels</option>
-              <option value="High">High</option>
-              <option value="Medium">Medium</option>
-              <option value="Low">Low</option>
-            </select>
-          </div>
-        </div>
-        <div class="table-responsive">
-          <table class="table table-hover align-middle mb-0">
-            <thead>
-              <tr>
-                <th scope="col">Category</th>
-                <th scope="col">Title</th>
-                <th scope="col">Severity</th>
-                <th scope="col">AI Risk</th>
-                <th scope="col">Confidence</th>
-              </tr>
-            </thead>
-            <tbody>
-              <template x-for="finding in filteredFindings" :key="`${finding.category}-${finding.title}`">
-                <tr>
-                  <td><span class="chip category-chip" x-text="finding.category"></span></td>
-                  <td>
-                    <div class="fw-semibold" x-text="finding.title"></div>
-                    <div class="small text-secondary" x-text="finding.impact"></div>
-                  </td>
-                  <td><span class="badge badge-pill" :class="badgeClass(finding.severity)" x-text="finding.severity"></span></td>
-                  <td><span class="badge badge-pill" :class="badgeClass(finding.aiRisk)" x-text="finding.aiRisk"></span></td>
-                  <td><span class="badge badge-pill" :class="badgeClass(finding.confidence)" x-text="finding.confidence"></span></td>
-                </tr>
-              </template>
-            </tbody>
-          </table>
-        </div>
-      </section>
+          <section class="panel p-3 p-md-4 mb-4">
+            <h2 class="h5 mb-3">Prioritized Actions</h2>
+            <div class="table-responsive">
+              <table class="table table-striped align-middle mb-0">
+                <thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Summary</th>
+                    <th scope="col">Priority</th>
+                    <th scope="col">Effort</th>
+                    <th scope="col">Confidence</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template x-if="filteredActions.length === 0">
+                    <tr>
+                      <td colspan="5" class="text-center text-secondary py-3">
+                        No prioritized actions generated for this report.
+                      </td>
+                    </tr>
+                  </template>
+                  <template
+                    x-for="(action, idx) in filteredActions"
+                    :key="`${action.categories?.[0]}-${action.summary}-${idx}`"
+                  >
+                    <tr>
+                      <td class="fw-semibold" x-text="action.id"></td>
+                      <td>
+                        <div x-text="action.summary"></div>
+                        <template x-if="action.linkedFinding">
+                          <div
+                            class="small text-secondary"
+                            x-text="`Related: ${action.linkedFinding}`"
+                          ></div>
+                        </template>
+                        <template
+                          x-if="!action.linkedFinding && (action.categories || []).length"
+                        >
+                          <div
+                            class="small text-secondary"
+                            x-text="action.categories.join(', ')"
+                          ></div>
+                        </template>
+                      </td>
+                      <td>
+                        <span
+                          class="badge badge-pill badge-neutral"
+                          x-text="action.priority"
+                        ></span>
+                      </td>
+                      <td>
+                        <span
+                          class="badge badge-pill"
+                          :class="badgeClass(action.estimatedAgentEffort)"
+                          x-text="action.estimatedAgentEffort"
+                        ></span>
+                      </td>
+                      <td>
+                        <span
+                          class="badge badge-pill"
+                          :class="badgeClass(action.confidence)"
+                          x-text="action.confidence"
+                        ></span>
+                      </td>
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+            </div>
+          </section>
 
-      <section class="panel p-3 p-md-4 mb-4">
-        <h2 class="h5 mb-3">Prioritized Actions</h2>
-        <div class="table-responsive">
-          <table class="table table-striped align-middle mb-0">
-            <thead>
-              <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Summary</th>
-                <th scope="col">Priority</th>
-                <th scope="col">Effort</th>
-                <th scope="col">Confidence</th>
-              </tr>
-            </thead>
-            <tbody>
-              <template x-if="filteredActions.length === 0">
-                <tr>
-                  <td colspan="5" class="text-center text-secondary py-3">
-                    No prioritized actions generated for this report.
-                  </td>
-                </tr>
-              </template>
-              <template x-for="(action, idx) in filteredActions" :key="`${action.categories?.[0]}-${action.summary}-${idx}`">
-                <tr>
-                  <td class="fw-semibold" x-text="action.id"></td>
-                  <td>
-                    <div x-text="action.summary"></div>
-                    <template x-if="action.linkedFinding">
-                      <div class="small text-secondary" x-text="`Related: ${action.linkedFinding}`"></div>
-                    </template>
-                    <template x-if="!action.linkedFinding && (action.categories || []).length">
-                      <div class="small text-secondary" x-text="action.categories.join(', ')"></div>
-                    </template>
-                  </td>
-                  <td><span class="badge badge-pill badge-neutral" x-text="action.priority"></span></td>
-                  <td><span class="badge badge-pill" :class="badgeClass(action.estimatedAgentEffort)" x-text="action.estimatedAgentEffort"></span></td>
-                  <td><span class="badge badge-pill" :class="badgeClass(action.confidence)" x-text="action.confidence"></span></td>
-                </tr>
-              </template>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section class="panel p-3 p-md-4 mb-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h2 class="h5 mb-0">Component Inventory</h2>
-          <span class="text-secondary" x-text="`${filteredInventory.length} shown`"></span>
-        </div>
-        <div class="table-toolbar mb-3">
-          <div>
-            <label class="form-label" for="filter-component-type">Component Type</label>
-            <select id="filter-component-type" class="form-select" x-model="filters.componentType">
-              <option value="">All types</option>
-              <template x-for="componentType in componentTypes" :key="componentType">
-                <option :value="componentType" x-text="componentType"></option>
-              </template>
-            </select>
-          </div>
-        </div>
-        <div class="table-responsive">
-          <table class="table table-hover align-middle mb-0">
-            <thead>
-              <tr>
-                <th scope="col">Category</th>
-                <th scope="col">Component</th>
-                <th scope="col">Registration</th>
-              </tr>
-            </thead>
-            <tbody>
-              <template x-if="filteredInventory.length === 0">
-                <tr>
-                  <td colspan="3" class="text-center text-secondary py-3">No inventory items match current filters.</td>
-                </tr>
-              </template>
-              <template x-for="(item, inventoryIdx) in filteredInventory" :key="`${item.category}-${item.componentType}-${item.identifier || item.name}-${inventoryIdx}`">
-                <tr class="inventory-row" :class="{ 'is-expanded': isInventoryRowExpanded(inventoryRowKey(item.category, item.componentType, item.identifier || item.name, inventoryIdx)) }" @click="toggleInventoryRow(inventoryRowKey(item.category, item.componentType, item.identifier || item.name, inventoryIdx))">
-                  <td>
-                    <span class="chip category-chip" x-text="item.category"></span>
-                  </td>
-                  <td>
-                    <div class="fw-semibold" x-text="item.name || '-' "></div>
-                    <div class="small text-secondary text-truncate inventory-identifier" :title="item.identifier || '-'" x-text="item.identifier || '-' "></div>
-                    <div class="small inventory-type" x-text="item.componentType"></div>
-                  </td>
-                  <td>
-                    <div class="fw-semibold small" x-text="item.registration?.mechanism || '-' "></div>
-                    <div class="small text-secondary text-truncate inventory-location" :title="item.registration?.location || '-'" x-text="item.registration?.location || '-' "></div>
-                  </td>
-                </tr>
-                <tr class="inventory-detail-row" x-show="isInventoryRowExpanded(inventoryRowKey(item.category, item.componentType, item.identifier || item.name, inventoryIdx))" x-cloak>
-                  <td colspan="3">
-                    <div class="row-accordion-body">
-                      <div class="inventory-detail-grid">
-                        <div>
-                          <div class="small text-secondary mb-1"><strong>Registration Location</strong></div>
-                          <div class="small mb-2" x-text="item.registration?.location || '-' "></div>
-                          <div class="small text-secondary mb-1"><strong>Registration Metadata</strong></div>
-                          <ul class="compact-list mb-0">
-                            <template x-for="entry in objectEntries(item.registration?.metadata)" :key="entry.key">
-                              <li class="small"><strong x-text="entry.key"></strong>: <span x-text="entry.value"></span></li>
-                            </template>
-                            <template x-if="objectEntries(item.registration?.metadata).length === 0">
-                              <li class="small text-secondary">No registration metadata captured.</li>
-                            </template>
-                          </ul>
-                        </div>
-                        <div>
-                          <div class="small text-secondary mb-1"><strong>Primary Files</strong></div>
-                          <ul class="compact-list mb-0">
-                            <template x-for="filePath in (item.files || [])" :key="filePath">
-                              <li class="small" x-text="shortPath(filePath)"></li>
-                            </template>
-                            <template x-if="(item.files || []).length === 0">
-                              <li class="small text-secondary">No primary files captured.</li>
-                            </template>
-                          </ul>
-                        </div>
-                        <div>
-                          <div class="small text-secondary mb-1"><strong>Related Files</strong></div>
-                          <ul class="compact-list mb-0">
-                            <template x-for="relatedPath in (item.relatedFiles || [])" :key="relatedPath">
-                              <li class="small" x-text="shortPath(relatedPath)"></li>
-                            </template>
-                            <template x-if="(item.relatedFiles || []).length === 0">
-                              <li class="small text-secondary">No related files captured.</li>
-                            </template>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              </template>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section class="panel p-3 p-md-4">
-        <h2 class="h5 mb-3">Category Drill-Down</h2>
-        <div class="accordion" id="categoryAccordion">
-          <template x-for="categoryArtifact in categoryArtifacts" :key="categoryArtifact.analysisMetadata.category">
-            <div class="accordion-item">
-              <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" :data-bs-target="`#cat-${categoryArtifact.analysisMetadata.category}`">
-                  <span class="fw-semibold" x-text="categoryArtifact.analysisMetadata.category"></span>
-                </button>
-              </h2>
-              <div class="accordion-collapse collapse" :id="`cat-${categoryArtifact.analysisMetadata.category}`" data-bs-parent="#categoryAccordion">
-                <div class="accordion-body">
-                  <div class="d-flex flex-wrap gap-2 mb-3">
-                    <span class="badge" :class="coverageBadgeClass(categoryArtifact.coverage.status)" x-text="categoryArtifact.coverage.status"></span>
-                    <span class="chip" x-text="`${(categoryArtifact.inventory || []).length} inventory items`"></span>
-                    <span class="chip" x-text="`${(categoryArtifact.findings || []).length} findings`"></span>
-                    <span class="chip" x-text="`${(categoryArtifact.recommendations || []).length} recommendations`"></span>
-                  </div>
-                  <div class="row g-3">
-                    <div class="col-12 col-lg-6">
-                      <div class="drill-panel">
-                        <h3 class="h6 mb-2">Coverage</h3>
-                        <p class="mb-2" x-text="categoryArtifact.coverage.summary"></p>
-                        <div class="small text-secondary mb-2">
-                          <strong>Analyzed Types:</strong>
-                          <span x-text="(categoryArtifact.coverage.analyzedComponentTypes || []).join(', ') || '-'" ></span>
-                        </div>
-                        <div class="small text-secondary mb-0">
-                          <strong>Missing Types:</strong>
-                          <span x-text="(categoryArtifact.coverage.missingComponentTypes || []).join(', ') || '-'" ></span>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-12 col-lg-6">
-                      <div class="drill-panel">
-                        <h3 class="h6 mb-2">Documentation References</h3>
-                        <ul class="compact-list mb-0">
-                          <template x-if="(categoryArtifact.analysisMetadata.docsReferences || []).length === 0">
-                            <li class="text-secondary">No documentation references captured for this category.</li>
-                          </template>
-                          <template x-for="(docRef, docIdx) in categoryArtifact.analysisMetadata.docsReferences" :key="`${docRef.url}-${docIdx}`">
-                            <li>
-                              <a :href="docRef.url" target="_blank" rel="noopener noreferrer" x-text="docRef.title || docRef.url"></a>
-                              <span class="small text-secondary" x-show="docRef.source" x-text="` (${docRef.source})`"></span>
-                            </li>
-                          </template>
-                        </ul>
-                      </div>
-                    </div>
-                    <div class="col-12">
-                      <div class="drill-panel">
-                        <h3 class="h6 mb-2">Recommendations</h3>
-                        <ol class="recommendation-list mb-0">
-                          <template x-if="(categoryArtifact.recommendations || []).length === 0">
-                            <li class="text-secondary">No recommendations generated for this category.</li>
-                          </template>
-                          <template x-for="rec in categoryArtifact.recommendations" :key="rec.summary">
-                            <li>
-                              <span x-text="rec.summary"></span>
-                            </li>
-                          </template>
-                        </ol>
-                      </div>
-                    </div>
-                    <div class="col-12">
-                      <div class="drill-panel">
-                        <h3 class="h6 mb-2">Inventory Details</h3>
-                        <div class="table-responsive">
-                          <table class="table table-sm align-middle mb-0">
-                            <thead>
-                              <tr>
-                                <th scope="col">Type</th>
-                                <th scope="col">Component</th>
-                                <th scope="col">Registration</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <template x-if="(categoryArtifact.inventory || []).length === 0">
-                                <tr>
-                                  <td colspan="3" class="text-secondary">No inventory items captured for this category.</td>
-                                </tr>
-                              </template>
-                              <template x-for="(item, catInventoryIdx) in (categoryArtifact.inventory || [])" :key="`${item.componentType}-${item.identifier || item.name}-${catInventoryIdx}`">
-                                <template>
-                                  <tr class="inventory-row" :class="{ 'is-expanded': isInventoryRowExpanded(inventoryRowKey(categoryArtifact.analysisMetadata.category, item.componentType, item.identifier || item.name, catInventoryIdx)) }" @click="toggleInventoryRow(inventoryRowKey(categoryArtifact.analysisMetadata.category, item.componentType, item.identifier || item.name, catInventoryIdx))">
-                                    <td x-text="item.componentType || '-'"></td>
-                                    <td>
-                                      <div class="fw-semibold" x-text="item.name || '-'"></div>
-                                      <div class="small text-secondary text-truncate inventory-identifier" :title="item.identifier || '-'" x-text="item.identifier || '-'"></div>
-                                    </td>
-                                    <td>
-                                      <div class="small fw-semibold mb-1" x-text="item.registration?.mechanism || '-'"></div>
-                                      <div class="small text-secondary text-truncate inventory-location" :title="item.registration?.location || '-'" x-text="item.registration?.location || '-'"></div>
-                                    </td>
-                                  </tr>
-                                  <tr class="inventory-detail-row" x-show="isInventoryRowExpanded(inventoryRowKey(categoryArtifact.analysisMetadata.category, item.componentType, item.identifier || item.name, catInventoryIdx))" x-cloak>
-                                    <td colspan="3">
-                                      <div class="inventory-detail-grid inventory-detail-grid-sm">
-                                        <div>
-                                          <div class="small text-secondary mb-1"><strong>Registration Metadata</strong></div>
-                                          <ul class="compact-list mb-0">
-                                            <template x-for="entry in objectEntries(item.registration?.metadata)" :key="entry.key">
-                                              <li class="small"><strong x-text="entry.key"></strong>: <span x-text="entry.value"></span></li>
-                                            </template>
-                                            <template x-if="objectEntries(item.registration?.metadata).length === 0">
-                                              <li class="small text-secondary">No registration metadata captured.</li>
-                                            </template>
-                                          </ul>
-                                        </div>
-                                        <div>
-                                          <div class="small text-secondary mb-1"><strong>Primary Files</strong></div>
-                                          <ul class="compact-list mb-0">
-                                            <template x-for="filePath in (item.files || [])" :key="filePath">
-                                              <li class="small" x-text="shortPath(filePath)"></li>
-                                            </template>
-                                            <template x-if="(item.files || []).length === 0">
-                                              <li class="small text-secondary">No primary files captured.</li>
-                                            </template>
-                                          </ul>
-                                        </div>
-                                        <div>
-                                          <div class="small text-secondary mb-1"><strong>Related Files</strong></div>
-                                          <ul class="compact-list mb-0">
-                                            <template x-for="relatedPath in (item.relatedFiles || [])" :key="relatedPath">
-                                              <li class="small" x-text="shortPath(relatedPath)"></li>
-                                            </template>
-                                            <template x-if="(item.relatedFiles || []).length === 0">
-                                              <li class="small text-secondary">No related files captured.</li>
-                                            </template>
-                                          </ul>
-                                        </div>
-                                      </div>
-                                    </td>
-                                  </tr>
+          <section class="panel p-3 p-md-4 mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h2 class="h5 mb-0">Component Inventory</h2>
+              <span
+                class="text-secondary"
+                x-text="`${filteredInventory.length} shown`"
+              ></span>
+            </div>
+            <div class="table-toolbar mb-3">
+              <div>
+                <label class="form-label" for="filter-component-type"
+                  >Component Type</label
+                >
+                <select
+                  id="filter-component-type"
+                  class="form-select"
+                  x-model="filters.componentType"
+                >
+                  <option value="">All types</option>
+                  <template
+                    x-for="componentType in componentTypes"
+                    :key="componentType"
+                  >
+                    <option
+                      :value="componentType"
+                      x-text="componentType"
+                    ></option>
+                  </template>
+                </select>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover align-middle mb-0">
+                <thead>
+                  <tr>
+                    <th scope="col">Category</th>
+                    <th scope="col">Component</th>
+                    <th scope="col">Registration</th>
+                  </tr>
+                </thead>
+                <template x-if="filteredInventory.length === 0">
+                  <tbody>
+                    <tr>
+                      <td colspan="3" class="text-center text-secondary py-3">
+                        No inventory items match current filters.
+                      </td>
+                    </tr>
+                  </tbody>
+                </template>
+                <template
+                  x-for="(item, inventoryIdx) in filteredInventory"
+                  :key="`${item.category}-${item.componentType}-${item.identifier || item.name}-${inventoryIdx}`"
+                >
+                  <tbody>
+                    <tr
+                      class="inventory-row"
+                      :class="{ 'is-expanded': isInventoryRowExpanded(inventoryRowKey(item.category, item.componentType, item.identifier || item.name, inventoryIdx)) }"
+                      @click="toggleInventoryRow(inventoryRowKey(item.category, item.componentType, item.identifier || item.name, inventoryIdx))"
+                    >
+                      <td>
+                        <span
+                          class="chip category-chip"
+                          x-text="item.category"
+                        ></span>
+                      </td>
+                      <td>
+                        <div
+                          class="fw-semibold"
+                          x-text="item.name || '-'"
+                        ></div>
+                        <div
+                          class="small text-secondary text-truncate inventory-identifier"
+                          :title="item.identifier || '-'"
+                          x-text="item.identifier || '-' "
+                        ></div>
+                        <div
+                          class="small inventory-type"
+                          x-text="item.componentType"
+                        ></div>
+                      </td>
+                      <td>
+                        <div
+                          class="fw-semibold small"
+                          x-text="item.registration?.mechanism || '-'"
+                        ></div>
+                        <div
+                          class="small text-secondary text-truncate inventory-location"
+                          :title="item.registration?.location || '-'"
+                          x-text="item.registration?.location || '-' "
+                        ></div>
+                      </td>
+                    </tr>
+                    <tr class="inventory-detail-row">
+                      <td colspan="3">
+                        <div class="row-accordion-body">
+                          <div class="inventory-detail-grid">
+                            <div>
+                              <div class="small text-secondary mb-1">
+                                <strong>Registration Location</strong>
+                              </div>
+                              <div
+                                class="small mb-2 data-point"
+                                x-text="item.registration?.location || '-' "
+                              ></div>
+                              <div class="small text-secondary mb-1">
+                                <strong>Registration Metadata</strong>
+                              </div>
+                              <ul class="compact-list mb-0">
+                                <template
+                                  x-for="entry in objectEntries(item.registration?.metadata)"
+                                  :key="entry.key"
+                                >
+                                  <li class="small metadata-item">
+                                    <strong x-text="entry.key"></strong
+                                    ><span
+                                      class="data-point"
+                                      x-text="entry.value"
+                                    ></span>
+                                  </li>
                                 </template>
+                                <template
+                                  x-if="objectEntries(item.registration?.metadata).length === 0"
+                                >
+                                  <li class="small text-secondary">
+                                    No registration metadata captured.
+                                  </li>
+                                </template>
+                              </ul>
+                            </div>
+                            <div>
+                              <div class="small text-secondary mb-1">
+                                <strong>Primary Files</strong>
+                              </div>
+                              <ul class="compact-list mb-0">
+                                <template
+                                  x-for="filePath in (item.files || [])"
+                                  :key="filePath"
+                                >
+                                  <li
+                                    class="small data-point"
+                                    x-text="shortPath(filePath)"
+                                  ></li>
+                                </template>
+                                <template
+                                  x-if="(item.files || []).length === 0"
+                                >
+                                  <li class="small text-secondary">
+                                    No primary files captured.
+                                  </li>
+                                </template>
+                              </ul>
+                            </div>
+                            <div>
+                              <div class="small text-secondary mb-1">
+                                <strong>Related Files</strong>
+                              </div>
+                              <ul class="compact-list mb-0">
+                                <template
+                                  x-for="relatedPath in (item.relatedFiles || [])"
+                                  :key="relatedPath"
+                                >
+                                  <li
+                                    class="small data-point"
+                                    x-text="shortPath(relatedPath)"
+                                  ></li>
+                                </template>
+                                <template
+                                  x-if="(item.relatedFiles || []).length === 0"
+                                >
+                                  <li class="small text-secondary">
+                                    No related files captured.
+                                  </li>
+                                </template>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </template>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel p-3 p-md-4">
+            <h2 class="h5 mb-3">Category Drill-Down</h2>
+            <div class="accordion" id="categoryAccordion">
+              <template
+                x-for="categoryArtifact in categoryArtifacts"
+                :key="categoryArtifact.analysisMetadata.category"
+              >
+                <div class="accordion-item">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button collapsed"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      :data-bs-target="`#cat-${categoryArtifact.analysisMetadata.category}`"
+                    >
+                      <span
+                        class="fw-semibold"
+                        x-text="categoryArtifact.analysisMetadata.category"
+                      ></span>
+                    </button>
+                  </h2>
+                  <div
+                    class="accordion-collapse collapse"
+                    :id="`cat-${categoryArtifact.analysisMetadata.category}`"
+                    data-bs-parent="#categoryAccordion"
+                  >
+                    <div class="accordion-body">
+                      <div class="d-flex flex-wrap gap-2 mb-3">
+                        <span
+                          class="badge"
+                          :class="coverageBadgeClass(categoryArtifact.coverage.status)"
+                          x-text="categoryArtifact.coverage.status"
+                        ></span>
+                        <span
+                          class="chip"
+                          x-text="`${(categoryArtifact.inventory || []).length} inventory items`"
+                        ></span>
+                        <span
+                          class="chip"
+                          x-text="`${(categoryArtifact.findings || []).length} findings`"
+                        ></span>
+                        <span
+                          class="chip"
+                          x-text="`${(categoryArtifact.recommendations || []).length} recommendations`"
+                        ></span>
+                      </div>
+                      <div class="row g-3">
+                        <div class="col-12 col-lg-6">
+                          <div class="drill-panel">
+                            <h3 class="h6 mb-2">Coverage</h3>
+                            <p
+                              class="mb-2"
+                              x-text="categoryArtifact.coverage.summary"
+                            ></p>
+                            <div class="small text-secondary mb-2">
+                              <strong>Analyzed Types:</strong>
+                              <span
+                                x-text="(categoryArtifact.coverage.analyzedComponentTypes || []).join(', ') || '-' "
+                              ></span>
+                            </div>
+                            <div class="small text-secondary mb-0">
+                              <strong>Missing Types:</strong>
+                              <span
+                                x-text="(categoryArtifact.coverage.missingComponentTypes || []).join(', ') || '-' "
+                              ></span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                          <div class="drill-panel">
+                            <h3 class="h6 mb-2">Documentation References</h3>
+                            <ul class="compact-list mb-0">
+                              <template
+                                x-if="(categoryArtifact.analysisMetadata.docsReferences || []).length === 0"
+                              >
+                                <li class="text-secondary">
+                                  No documentation references captured for this
+                                  category.
+                                </li>
                               </template>
-                            </tbody>
-                          </table>
+                              <template
+                                x-for="(docRef, docIdx) in categoryArtifact.analysisMetadata.docsReferences"
+                                :key="`${docRef.url}-${docIdx}`"
+                              >
+                                <li>
+                                  <a
+                                    :href="docRef.url"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    x-text="docRef.title || docRef.url"
+                                  ></a>
+                                  <span
+                                    class="small text-secondary"
+                                    x-show="docRef.source"
+                                    x-text="` (${docRef.source})`"
+                                  ></span>
+                                </li>
+                              </template>
+                            </ul>
+                          </div>
+                        </div>
+                        <div class="col-12">
+                          <div class="drill-panel">
+                            <h3 class="h6 mb-2">Recommendations</h3>
+                            <ol class="recommendation-list mb-0">
+                              <template
+                                x-if="(categoryArtifact.recommendations || []).length === 0"
+                              >
+                                <li class="text-secondary">
+                                  No recommendations generated for this
+                                  category.
+                                </li>
+                              </template>
+                              <template
+                                x-for="rec in categoryArtifact.recommendations"
+                                :key="rec.summary"
+                              >
+                                <li>
+                                  <span x-text="rec.summary"></span>
+                                </li>
+                              </template>
+                            </ol>
+                          </div>
+                        </div>
+                        <div class="col-12">
+                          <div class="drill-panel">
+                            <h3 class="h6 mb-2">Inventory Details</h3>
+                            <div class="table-responsive">
+                              <table class="table table-sm align-middle mb-0">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Component</th>
+                                    <th scope="col">Registration</th>
+                                  </tr>
+                                </thead>
+                                <template
+                                  x-if="(categoryArtifact.inventory || []).length === 0"
+                                >
+                                  <tbody>
+                                    <tr>
+                                      <td colspan="3" class="text-secondary">
+                                        No inventory items captured for this
+                                        category.
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </template>
+                                <template
+                                  x-for="(item, catInventoryIdx) in (categoryArtifact.inventory || [])"
+                                  :key="`${item.componentType}-${item.identifier || item.name}-${catInventoryIdx}`"
+                                >
+                                  <tbody>
+                                    <tr
+                                      class="inventory-row"
+                                      :class="{ 'is-expanded': isInventoryRowExpanded(inventoryRowKey(categoryArtifact.analysisMetadata.category, item.componentType, item.identifier || item.name, catInventoryIdx)) }"
+                                      @click="toggleInventoryRow(inventoryRowKey(categoryArtifact.analysisMetadata.category, item.componentType, item.identifier || item.name, catInventoryIdx))"
+                                    >
+                                      <td
+                                        x-text="item.componentType || '-' "
+                                      ></td>
+                                      <td>
+                                        <div
+                                          class="fw-semibold"
+                                          x-text="item.name || '-' "
+                                        ></div>
+                                        <div
+                                          class="small text-secondary text-truncate inventory-identifier"
+                                          :title="item.identifier || '-'"
+                                          x-text="item.identifier || '-' "
+                                        ></div>
+                                      </td>
+                                      <td>
+                                        <div
+                                          class="small fw-semibold mb-1"
+                                          x-text="item.registration?.mechanism || '-' "
+                                        ></div>
+                                        <div
+                                          class="small text-secondary text-truncate inventory-location"
+                                          :title="item.registration?.location || '-'"
+                                          x-text="item.registration?.location || '-' "
+                                        ></div>
+                                      </td>
+                                    </tr>
+                                    <tr class="inventory-detail-row">
+                                      <td colspan="3">
+                                        <div
+                                          class="inventory-detail-grid inventory-detail-grid-sm"
+                                        >
+                                          <div>
+                                            <div
+                                              class="small text-secondary mb-1"
+                                            >
+                                              <strong
+                                                >Registration Metadata</strong
+                                              >
+                                            </div>
+                                            <ul class="compact-list mb-0">
+                                              <template
+                                                x-for="entry in objectEntries(item.registration?.metadata)"
+                                                :key="entry.key"
+                                              >
+                                                <li class="small metadata-item">
+                                                  <strong
+                                                    x-text="entry.key"
+                                                  ></strong
+                                                  ><span
+                                                    class="data-point"
+                                                    x-text="entry.value"
+                                                  ></span>
+                                                </li>
+                                              </template>
+                                              <template
+                                                x-if="objectEntries(item.registration?.metadata).length === 0"
+                                              >
+                                                <li
+                                                  class="small text-secondary"
+                                                >
+                                                  No registration metadata
+                                                  captured.
+                                                </li>
+                                              </template>
+                                            </ul>
+                                          </div>
+                                          <div>
+                                            <div
+                                              class="small text-secondary mb-1"
+                                            >
+                                              <strong>Primary Files</strong>
+                                            </div>
+                                            <ul class="compact-list mb-0">
+                                              <template
+                                                x-for="filePath in (item.files || [])"
+                                                :key="filePath"
+                                              >
+                                                <li
+                                                  class="small data-point"
+                                                  x-text="shortPath(filePath)"
+                                                ></li>
+                                              </template>
+                                              <template
+                                                x-if="(item.files || []).length === 0"
+                                              >
+                                                <li
+                                                  class="small text-secondary"
+                                                >
+                                                  No primary files captured.
+                                                </li>
+                                              </template>
+                                            </ul>
+                                          </div>
+                                          <div>
+                                            <div
+                                              class="small text-secondary mb-1"
+                                            >
+                                              <strong>Related Files</strong>
+                                            </div>
+                                            <ul class="compact-list mb-0">
+                                              <template
+                                                x-for="relatedPath in (item.relatedFiles || [])"
+                                                :key="relatedPath"
+                                              >
+                                                <li
+                                                  class="small data-point"
+                                                  x-text="shortPath(relatedPath)"
+                                                ></li>
+                                              </template>
+                                              <template
+                                                x-if="(item.relatedFiles || []).length === 0"
+                                              >
+                                                <li
+                                                  class="small text-secondary"
+                                                >
+                                                  No related files captured.
+                                                </li>
+                                              </template>
+                                            </ul>
+                                          </div>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </template>
+                              </table>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </template>
             </div>
-          </template>
-        </div>
-      </section>
+          </section>
         </div>
       </div>
     </main>
 
     <footer class="report-footer border-top">
       <div class="container-xxl py-2">
-        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
-          <span class="footer-meta" x-text="projectPath || '-'" ></span>
+        <div
+          class="d-flex flex-wrap justify-content-between align-items-center gap-2"
+        >
+          <span class="footer-meta" x-text="projectPath || '-'"></span>
           <div class="d-flex flex-wrap gap-2">
-            <span class="chip" x-text="`Generated ${generatedAt || '-'}`"></span>
-            <span class="chip" x-text="`Categories ${summary?.coverage?.includedCategories?.length || 0}`"></span>
+            <span
+              class="chip"
+              x-text="`Generated ${generatedAt || '-'}`"
+            ></span>
+            <span
+              class="chip"
+              x-text="`Categories ${summary?.coverage?.includedCategories?.length || 0}`"
+            ></span>
             <span class="chip" x-text="`Findings ${allFindings.length}`"></span>
           </div>
         </div>
@@ -497,7 +814,9 @@
     <section class="container-xxl py-5" x-show="loading">
       <div class="panel p-4 text-center">
         <h2 class="h5">Loading analysis artifacts</h2>
-        <p class="text-secondary mb-0">Reading summary and category JSON files...</p>
+        <p class="text-secondary mb-0">
+          Reading summary and category JSON files...
+        </p>
       </div>
     </section>
 
