@@ -1,6 +1,6 @@
 ---
 name: analyze-components
-description: "Audits one or more Xperience by Kentico component categories for consistency and writes structured JSON analysis files under .kenticopilot/component-analysis."
+description: "Runs analysis on one or more Xperience by Kentico component categories for consistency and writes structured JSON analysis files under .kenticopilot/component-analysis."
 argument-hint: "Path to the Xperience by Kentico project folder to analyze. Optionally include categories to limit the audit."
 compatibility: "Requires Kentico Docs MCP"
 ---
@@ -9,7 +9,7 @@ You are tasked with auditing component consistency in an Xperience by Kentico pr
 
 The primary goal of this skill is not to produce abstract best-practice commentary. The primary goal is to identify patterns that make the codebase inconsistent and therefore harder for developers and AI agents to extend safely.
 
-This skill is the entry point for component analysis. It writes structured JSON artifacts for each requested component category. It does not generate the final HTML report. Use the separate `analyze-components-report` skill to synthesize HTML from the generated JSON files.
+This skill is the entry point for component analysis. It writes schema-valid structured JSON artifacts for each requested component category. It does not generate the final HTML report.
 
 This skill must remain project-agnostic. Do not assume sample-project-specific file paths, naming conventions, or architecture unless discovered in the current workspace.
 
@@ -35,7 +35,10 @@ Before auditing code, read these files from this skill folder:
 
 1. `references/output-schema.md`
 2. `references/docs-manifest.md`
-3. The selected category files under `references/component-types/`
+3. `references/schemas/analysis-index.schema.json`
+4. `references/schemas/category-analysis.schema.json`
+5. `references/schemas/report-summary.schema.json`
+6. The selected category files under `references/component-types/`
 
 Do not read category files that are outside the selected audit scope.
 
@@ -61,14 +64,14 @@ Use this structure:
 ```text
 .kenticopilot/
   component-analysis/
-    analysis-index.json
-    categories/
+    analysis/
+      analysis-index.json
+      component-analysis-summary.json
       admin-ui.json
       page-builder.json
       email-builder.json
       form-builder.json
       global-extensibility.json
-    reports/
 ```
 
 Only write category files for categories included in the current run.
@@ -78,7 +81,7 @@ Only write category files for categories included in the current run.
 ### 1. Prepare the output folder
 
 - Ensure the `.kenticopilot/component-analysis` folder exists at the project root.
-- Ensure the `categories` and `reports` subfolders exist.
+- Ensure the `analysis` subfolder exists.
 
 ### 2. Discover implementations
 
@@ -107,13 +110,16 @@ Prioritize checks that reveal whether the codebase follows one repeatable patter
 
 ### 4. Produce category JSON
 
-Write one JSON file per selected category into the `categories` folder. Follow the core contract defined in `references/output-schema.md`.
+Write one JSON file per selected category into the `analysis` folder. Follow the core contract defined in `references/output-schema.md`.
 
 The schema must have a strict shared core and may be extended with category-specific data under `extensions`.
 
+Validate each category JSON against `references/schemas/category-analysis.schema.json` before finalizing it.
+If validation fails, stop and return actionable validation errors.
+
 ### 5. Produce or update the analysis index
 
-Create or update `analysis-index.json` in the output root. This file must summarize:
+Create or update `analysis/analysis-index.json` in the output root. This file must summarize:
 
 - project path
 - a single top-level `generatedAtUtc` timestamp for the index
@@ -122,6 +128,20 @@ Create or update `analysis-index.json` in the output root. This file must summar
 - docs references used by category
 
 Do not generate HTML in this skill.
+
+Validate `analysis/analysis-index.json` against `references/schemas/analysis-index.schema.json`.
+If validation fails, stop and return actionable validation errors.
+
+### 6. Produce report summary JSON
+
+Create or update `analysis/component-analysis-summary.json` in the output root.
+
+- Use the deterministic structure in `references/report-summary-schema.md`.
+- Use the deterministic structure in `../analyze-components-report/references/report-summary-schema.md`.
+- Validate the summary JSON against `references/schemas/report-summary.schema.json`.
+- If validation fails, stop and return actionable validation errors.
+
+Do not generate `analysis/component-analysis-report.html` in this skill.
 
 ## Category expectations
 
@@ -143,14 +163,18 @@ Use the corresponding category reference file to guide discovery and checks:
 - If evidence is ambiguous, say so explicitly instead of overstating certainty.
 - Use repository-relative paths in evidence whenever possible.
 - Do not invent scoring rubrics beyond what is explicitly defined in the output schema. If a score is not yet defined, omit it or set it to `null` where the schema allows it.
+- Enforce deterministic output ordering before writing JSON files.
+- Every written artifact must validate against its JSON Schema; fail fast if any artifact is invalid.
+- **Schema compliance from generation:** Generate JSON with correct field names from the start. Do not use interim field names and transform them afterward. For example, when building a prioritized action, use `id`, `summary`, `categories`, `estimatedAgentEffort`, and `priority` (mapped to `P1|P2|P3`) as you construct the object. This avoids post-processing passes and ensures artifacts are immediately compliant on write.
 
 ## Final response format
 
 Return:
 
-1. The path to `analysis-index.json`
+1. The path to `analysis/analysis-index.json`
 2. Paths to the category JSON files written in the current run
-3. A concise summary of:
+3. Path to `analysis/component-analysis-summary.json`
+4. A concise summary of:
    - the highest-risk consistency problems found
    - categories with missing or uncovered implementations
    - which category JSON files are now ready for the report-generation skill

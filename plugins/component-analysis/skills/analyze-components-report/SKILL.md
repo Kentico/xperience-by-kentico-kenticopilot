@@ -1,18 +1,32 @@
 ---
 name: analyze-components-report
-description: "Reads component-analysis JSON artifacts from .kenticopilot/component-analysis and generates an aggregated HTML report."
+description: "Creates a report app from the component-analysis skill artifacts and performs full artifact validation."
 argument-hint: "Path to the Xperience by Kentico project folder or the .kenticopilot/component-analysis folder"
-compatibility: "Does not require MCP"
+compatibility: "PowerShell Test-Json command or node.js + npx to run ajv-cli package"
 ---
 
-You are tasked with generating a readable HTML report from previously generated component-analysis JSON artifacts.
+You are tasked with validating previously generated component-analysis JSON artifacts and deploying a static SPA report shell.
 
 This skill does not perform fresh code discovery and uses the JSON artifacts as they exist. If an artifact for a component type is missing, report it to the user. This skill's primary input is the output of the `analyze-components` skill.
+
+This skill must fail fast when required artifacts are missing or schema-invalid.
 
 ## Input parameters
 
 - **Project folder path or analysis output folder** - Required.
-- **Included categories** - Optional. If omitted, include all available category JSON files found in the analysis output folder.
+- **Validation mode** - Optional. Must be one of:
+   - `test-json` (PowerShell `Test-Json`)
+   - `ajv-cli` (`npx ajv-cli validate`)
+   - `skip` (no schema validation)
+
+If validation mode is omitted, ask the user to choose one of the three modes before proceeding.
+
+Resolve categories from existing artifacts in this order:
+
+1. `analysis/component-analysis-summary.json` -> `sourceArtifacts.includedCategoryArtifacts`
+2. `analysis/analysis-index.json` -> `availableCategoryArtifacts`
+
+If neither source provides category artifacts, fail with an actionable error.
 
 Resolve the analysis output root to:
 
@@ -21,31 +35,92 @@ Resolve the analysis output root to:
 
 ## Required files
 
-Read:
+Read the following from the **analysis output root** (`<project>/.kenticopilot/component-analysis`):
 
-1. `analysis-index.json`
-2. All selected files under `categories/`
-3. `references/report-template.html`
-4. `references/report-summary-schema.md`
-5. `references/branding.md`
+1. `analysis/analysis-index.json`
+2. All category files referenced by resolved artifact paths under `analysis/`
+3. `analysis/component-analysis-summary.json`
 
-If `analysis-index.json` is missing, infer available categories from the `categories` directory and say so in the final response.
+Read the following from the **report skill's folder**:
+
+4. `../analyze-components/references/schemas/analysis-index.schema.json`
+5. `../analyze-components/references/schemas/category-analysis.schema.json`
+6. `../analyze-components/references/schemas/report-summary.schema.json`
+7. `references/spa-shell/index.html`
+8. `references/spa-shell/app.js`
+9. `references/spa-shell/styles.css`
+10. `references/spa-shell/tokens.css`
+11. `references/report-summary-schema.md`
+
+Important: do not resolve `references/...` from the analysis output root; resolve them from the skill folder path above.
+
+Do not infer missing required artifacts.
+If any required file is missing, stop and return actionable errors.
+
+## Required validation workflow
+
+Prompt the user to select a validation mode from the options below.
+
+### Mode: `test-json`
+
+Use PowerShell `Test-Json` for each instance/schema pair as separate commands.
+
+Example commands:
+
+- `Test-Json -Json (Get-Content analysis/analysis-index.json -Raw) -Schema (Get-Content ../analyze-components/references/schemas/analysis-index.schema.json -Raw)`
+- `Test-Json -Json (Get-Content analysis/component-analysis-summary.json -Raw) -Schema (Get-Content ../analyze-components/references/schemas/report-summary.schema.json -Raw)`
+- `Test-Json -Json (Get-Content analysis/<file>.json -Raw) -Schema (Get-Content ../analyze-components/references/schemas/category-analysis.schema.json -Raw)`
+
+### Mode: `ajv-cli`
+
+Use Node via `npx ajv-cli` for each instance/schema pair as separate commands.
+
+Example commands:
+
+- `npx ajv-cli validate -s ../analyze-components/references/schemas/analysis-index.schema.json -d analysis/analysis-index.json`
+- `npx ajv-cli validate -s ../analyze-components/references/schemas/report-summary.schema.json -d analysis/component-analysis-summary.json`
+- `npx ajv-cli validate -s ../analyze-components/references/schemas/category-analysis.schema.json -d analysis/<file>.json`
+
+Use this for:
+
+- `analysis/analysis-index.json` with `analysis-index.schema.json`
+- `analysis/component-analysis-summary.json` with `report-summary.schema.json`
+- each resolved file under `analysis/` with `category-analysis.schema.json`
+
+### Mode: `skip`
+
+Skip schema validation.
+
+- Continue to copy SPA assets.
+- Return a clear warning that no validation guarantees were applied and report rendering may fail with invalid data.
+
+### Failure behavior
+
+If mode is `test-json` or `ajv-cli` and any validation fails:
+
+- Stop immediately.
+- Do not generate or overwrite output files.
+- Return a concise error list with file path and reason.
 
 ## Output files
 
-Write artifacts only under the analysis output root:
+Write files only under the analysis output root:
 
-- `reports/component-analysis-report.html`
-- `reports/component-analysis-summary.json`
+- `report/index.html`
+- `report/app.js`
+- `report/styles.css`
+- `report/tokens.css`
 
-The summary JSON is a downstream handoff artifact for other agents and external presentation systems.
-Treat it as a stable, machine-consumable document, not a narrative supplement.
+Copy these files from `references/spa-shell/` with identical content.
+Use the existing analysis JSON artifacts as data inputs. Do not regenerate them in this skill.
 
-## Report requirements
+## Deployment requirements
 
-Generate a professional, readable HTML document with embedded CSS and no external dependencies.
-Use `references/report-template.html` as the structural baseline and adapt it to actual data volume.
-Apply branding and design direction from `references/branding.md` and the linked Kentico brand pages.
+The SPA must remain zero-build and static:
+
+- Bootstrap 5.3 and Alpine.js loaded from CDN.
+- Data loaded at runtime from relative JSON paths under `.kenticopilot/component-analysis`.
+- Visual direction and styling defined by `references/spa-shell/tokens.css` and `references/spa-shell/styles.css`.
 
 Include:
 
@@ -53,62 +128,39 @@ Include:
 - analyzed category coverage summary
 - category-by-category findings table
 - inconsistency severity and AI-risk summary
-- best-practice and consistency matrix
 - prioritized action plan
-- docs references by category
+- category drill-down sections
+- filters for category, severity, AI risk, and free-text search
 
-The report should clearly distinguish:
+The deployed UI should clearly distinguish:
 
 - categories that were analyzed and have findings
 - categories that were analyzed and not present in the project
 - categories that have not yet been analyzed
 
-The report should remain highly scannable for large projects:
+The deployed UI should remain highly scannable for large projects:
 
 - keep executive summary and coverage visible quickly
 - provide drill-down per category via expandable/detail sections
 - keep finding and action tables comparable across categories
 - avoid layouts that collapse under long recommendation lists
 
-## Output safety and escaping
+## Copy workflow
 
-Treat all string values loaded from analysis artifacts as untrusted input.
-Do not directly inject raw artifact strings into HTML placeholders.
+After validation succeeds:
 
-- HTML-escape dynamic text content before insertion (for example: `&`, `<`, `>`, `"`, `'`).
-- Build HTML tables/sections from escaped cell values rather than interpolating prebuilt raw HTML from artifact fields.
-- Allow HTML only from the controlled report template structure and renderer-owned wrapper markup.
-- For links rendered from data, allow only safe absolute `https://` URLs or repository-relative text paths; reject or neutralize `javascript:`, `data:`, or other active URL schemes.
-- Preserve literal markup-like evidence text (for example `<widget-zone />`) as visible text, not interpreted HTML.
-- Apply the same escaping rules deterministically across all placeholders.
-
-## Aggregation rules
-
-- Preserve the category-level findings and recommendations from the source JSON files.
-- Do not invent findings that are not supported by the category artifacts.
-- When combining actions across categories, merge only clearly duplicate actions.
-- Preserve `confidence`, `falsePositiveRisk`, and `estimatedAgentEffort` in the summary JSON and surface them in the HTML where helpful.
-- If scoring fields are `null` or absent in the source JSON, do not fabricate them.
-
-## Predictability and determinism
-
-Use deterministic output rules for both HTML and summary JSON:
-
-- category display order must always be: `admin-ui`, `page-builder`, `email-builder`, `form-builder`, `global-extensibility`
-- apply stable sorting for findings and actions as defined in `references/report-summary-schema.md`
-- when combining duplicate actions, use stable grouping keys and deterministic action IDs
-- preserve unknowns explicitly rather than inventing values
-
-Do not introduce arbitrary wording or section changes between runs when source data is unchanged.
-When the same input artifacts are used, output structure and ordering should remain predictably similar.
+1. Ensure `<analysis output root>/report` exists.
+2. Copy all files from `references/spa-shell/` into `<analysis output root>/report`.
+3. Do not write or overwrite files under `analysis/` or the output root JSON artifacts.
 
 ## Final response format
 
 Return:
 
-1. Path to `reports/component-analysis-report.html`
-2. Path to `reports/component-analysis-summary.json`
-3. A concise summary of:
-   - the highest-risk cross-category consistency problems
-   - categories included in the report
+1. Path to `report/index.html`
+2. A concise summary of:
+   - validation mode used (`test-json`, `ajv-cli`, or `skip`)
+   - validation result for required artifacts
+   - categories resolved from existing artifacts and included in the deployed report shell
    - any missing prerequisite JSON files
+   - warning that rendering is not guaranteed when mode is `skip`

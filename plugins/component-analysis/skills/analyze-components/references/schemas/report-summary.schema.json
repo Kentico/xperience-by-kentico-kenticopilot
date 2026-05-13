@@ -1,0 +1,279 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kentico.github.io/xperience-by-kentico-kenticopilot/component-analysis/schemas/report-summary.schema.json",
+  "title": "Component Analysis Report Summary",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "projectPath",
+    "outputRoot",
+    "generatedAtUtc",
+    "sourceArtifacts",
+    "coverage",
+    "metrics",
+    "topRisks",
+    "prioritizedActions",
+    "categorySnapshots",
+    "docsReferencesByCategory"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "projectPath": {
+      "type": "string",
+      "minLength": 1
+    },
+    "outputRoot": {
+      "type": "string",
+      "minLength": 1
+    },
+    "generatedAtUtc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "sourceArtifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["analysisIndexPath", "includedCategoryArtifacts", "missingPrerequisites"],
+      "properties": {
+        "analysisIndexPath": {
+          "type": "string",
+          "const": "analysis-index.json"
+        },
+        "includedCategoryArtifacts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["category", "path", "coverageStatus"],
+            "properties": {
+              "category": { "$ref": "#/$defs/category" },
+              "path": {
+                "type": "string",
+                "pattern": "^(admin-ui|page-builder|email-builder|form-builder|global-extensibility)\\.json$"
+              },
+              "coverageStatus": { "$ref": "#/$defs/coverageStatus" }
+            }
+          }
+        },
+        "missingPrerequisites": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "description": "Mutually exclusive category coverage partitions for the run scope.",
+      "additionalProperties": false,
+      "required": [
+        "includedCategories",
+        "analyzedCategories",
+        "notPresentCategories",
+        "notYetAnalyzedCategories",
+        "unableToAssessCategories"
+      ],
+      "properties": {
+        "includedCategories": { "$ref": "#/$defs/categoryArray" },
+        "analyzedCategories": { "$ref": "#/$defs/categoryArray", "description": "Categories analyzed with reliable results." },
+        "notPresentCategories": { "$ref": "#/$defs/categoryArray", "description": "Categories not implemented in the project." },
+        "notYetAnalyzedCategories": { "$ref": "#/$defs/categoryArray", "description": "Known categories outside the current analysis run." },
+        "unableToAssessCategories": { "$ref": "#/$defs/categoryArray", "description": "Categories present but not reliably assessable in this run." }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "findingCount",
+        "recommendationCount",
+        "consistencyCheckCount",
+        "severityCounts",
+        "aiRiskCounts"
+      ],
+      "properties": {
+        "findingCount": { "type": "integer", "minimum": 0 },
+        "recommendationCount": { "type": "integer", "minimum": 0 },
+        "consistencyCheckCount": { "type": "integer", "minimum": 0 },
+        "consistencyPassRate": {
+          "description": "Normalized pass coverage in range 0..1; null when no applicable checks. See report-summary-schema.md for formula.",
+          "anyOf": [
+            { "type": "number", "minimum": 0, "maximum": 1 },
+            { "type": "null" }
+          ]
+        },
+        "severityCounts": { "$ref": "#/$defs/ratingCounts" },
+        "aiRiskCounts": { "$ref": "#/$defs/ratingCounts" }
+      }
+    },
+    "topRisks": {
+      "type": "array",
+      "description": "Highest-priority findings ranked deterministically across included categories.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "title",
+          "category",
+          "severity",
+          "aiRisk",
+          "confidence",
+          "falsePositiveRisk",
+          "estimatedAgentEffort",
+          "evidence"
+        ],
+        "properties": {
+          "title": { "type": "string", "minLength": 1 },
+          "category": { "$ref": "#/$defs/category" },
+          "severity": { "$ref": "#/$defs/rating", "description": "Impact magnitude if issue is real." },
+          "aiRisk": { "$ref": "#/$defs/rating", "description": "Likelihood of AI-assisted implementation drift." },
+          "confidence": { "$ref": "#/$defs/rating", "description": "Confidence in finding accuracy based on evidence." },
+          "falsePositiveRisk": { "$ref": "#/$defs/rating", "description": "Likelihood the finding is not a real issue." },
+          "estimatedAgentEffort": { "$ref": "#/$defs/rating", "description": "Relative coding-agent effort to remediate." },
+          "evidence": { "$ref": "#/$defs/stringArray" }
+        }
+      }
+    },
+    "prioritizedActions": {
+      "type": "array",
+      "description": "De-duplicated remediation actions with deterministic priority ordering.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "summary",
+          "categories",
+          "sourceRecommendations",
+          "priority",
+          "remediationRisk",
+          "estimatedAgentEffort",
+          "confidence",
+          "docReferences"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^ACT-[0-9]{3}$"
+          },
+          "summary": { "type": "string", "minLength": 1 },
+          "categories": { "$ref": "#/$defs/categoryArray" },
+          "sourceRecommendations": {
+            "type": "array",
+            "description": "Traceability links back to source category recommendation entries.",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["category", "recommendationIndex"],
+              "properties": {
+                "category": { "$ref": "#/$defs/category" },
+                "recommendationIndex": { "type": "integer", "minimum": 0, "description": "Zero-based index in source category recommendations array." }
+              }
+            }
+          },
+          "priority": {
+            "type": "string",
+            "enum": ["P1", "P2", "P3"]
+          },
+          "remediationRisk": { "$ref": "#/$defs/rating", "description": "Likelihood that implementing this action causes regressions." },
+          "estimatedAgentEffort": { "$ref": "#/$defs/rating", "description": "Relative coding-agent effort to implement this action." },
+          "confidence": { "$ref": "#/$defs/rating", "description": "Confidence that this action addresses the underlying issue." },
+          "docReferences": { "$ref": "#/$defs/stringArray" },
+          "linkedFinding": {
+            "type": "string",
+            "description": "Title or identifier of the related finding that prompted this action; provides context for action priority."
+          },
+          "recommendedSteps": {
+            "type": "array",
+            "description": "Step-by-step implementation guidance for remediating this action.",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "categorySnapshots": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "category",
+          "coverageStatus",
+          "overallAiRisk",
+          "summaryNotes",
+          "findingCount",
+          "recommendationCount"
+        ],
+        "properties": {
+          "category": { "$ref": "#/$defs/category" },
+          "coverageStatus": { "$ref": "#/$defs/coverageStatus" },
+          "overallAiRisk": {
+            "anyOf": [
+              { "$ref": "#/$defs/rating" },
+              { "type": "null" }
+            ]
+          },
+          "summaryNotes": { "type": "string" },
+          "findingCount": { "type": "integer", "minimum": 0 },
+          "recommendationCount": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "docsReferencesByCategory": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "admin-ui": { "$ref": "#/$defs/stringArray" },
+        "page-builder": { "$ref": "#/$defs/stringArray" },
+        "email-builder": { "$ref": "#/$defs/stringArray" },
+        "form-builder": { "$ref": "#/$defs/stringArray" },
+        "global-extensibility": { "$ref": "#/$defs/stringArray" }
+      }
+    }
+  },
+  "$defs": {
+    "category": {
+      "type": "string",
+      "enum": [
+        "admin-ui",
+        "page-builder",
+        "email-builder",
+        "form-builder",
+        "global-extensibility"
+      ]
+    },
+    "categoryArray": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/category" },
+      "uniqueItems": true
+    },
+    "coverageStatus": {
+      "type": "string",
+      "enum": ["analyzed", "not-present", "partially-covered", "unable-to-assess"]
+    },
+    "rating": {
+      "type": "string",
+      "enum": ["Low", "Medium", "High"]
+    },
+    "ratingCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["High", "Medium", "Low"],
+      "properties": {
+        "High": { "type": "integer", "minimum": 0 },
+        "Medium": { "type": "integer", "minimum": 0 },
+        "Low": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "stringArray": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}

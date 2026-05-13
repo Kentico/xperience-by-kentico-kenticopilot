@@ -1,0 +1,220 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kentico.github.io/xperience-by-kentico-kenticopilot/component-analysis/schemas/category-analysis.schema.json",
+  "title": "Component Category Analysis",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "analysisMetadata",
+    "coverage",
+    "inventory",
+    "consistencyChecks",
+    "findings",
+    "recommendations",
+    "summary",
+    "extensions"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "analysisMetadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "projectPath",
+        "outputRoot",
+        "category",
+        "generatedAtUtc",
+        "docsReferences"
+      ],
+      "properties": {
+        "projectPath": { "type": "string", "minLength": 1 },
+        "outputRoot": { "type": "string", "minLength": 1 },
+        "category": { "$ref": "#/$defs/category" },
+        "generatedAtUtc": { "type": "string", "format": "date-time" },
+        "docsReferences": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["title", "url", "source"],
+            "properties": {
+              "title": { "type": "string", "minLength": 1 },
+              "url": { "type": "string", "format": "uri" },
+              "source": { "type": "string", "enum": ["manifest", "mcp-discovery"] }
+            }
+          }
+        }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "summary", "analyzedComponentTypes", "missingComponentTypes"],
+      "properties": {
+        "status": { "$ref": "#/$defs/coverageStatus" },
+        "summary": { "type": "string" },
+        "analyzedComponentTypes": { "$ref": "#/$defs/stringArray" },
+        "missingComponentTypes": { "$ref": "#/$defs/stringArray" }
+      }
+    },
+    "inventory": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "componentType",
+          "name",
+          "identifier",
+          "registration",
+          "files",
+          "relatedFiles"
+        ],
+        "properties": {
+          "componentType": { "type": "string", "minLength": 1 },
+          "name": { "type": "string", "minLength": 1 },
+          "identifier": { "type": "string", "minLength": 1 },
+          "registration": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["mechanism", "location", "metadata"],
+            "properties": {
+              "mechanism": { "type": "string", "minLength": 1 },
+              "location": { "type": "string", "minLength": 1 },
+              "metadata": { "type": "object" }
+            }
+          },
+          "files": { "$ref": "#/$defs/stringArray" },
+          "relatedFiles": { "$ref": "#/$defs/stringArray" }
+        }
+      }
+    },
+    "consistencyChecks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "title",
+          "status",
+          "importance",
+          "details",
+          "evidence",
+          "docReferences"
+        ],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "title": { "type": "string", "minLength": 1 },
+          "status": { "type": "string", "enum": ["pass", "warning", "fail", "not-applicable"] },
+          "importance": { "type": "string", "enum": ["high", "medium", "low"] },
+          "details": { "type": "string" },
+          "evidence": { "$ref": "#/$defs/stringArray" },
+          "docReferences": { "$ref": "#/$defs/stringArray" }
+        }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "title",
+          "severity",
+          "aiRisk",
+          "impact",
+          "whyItMatters",
+          "evidence",
+          "docReferences",
+          "confidence",
+          "falsePositiveRisk",
+          "estimatedAgentEffort"
+        ],
+        "properties": {
+          "title": { "type": "string", "minLength": 1 },
+          "severity": { "$ref": "#/$defs/rating" },
+          "aiRisk": { "$ref": "#/$defs/rating" },
+          "impact": { "type": "string" },
+          "whyItMatters": { "type": "string" },
+          "evidence": { "$ref": "#/$defs/stringArray" },
+          "docReferences": { "$ref": "#/$defs/stringArray" },
+          "confidence": { "$ref": "#/$defs/rating" },
+          "falsePositiveRisk": { "$ref": "#/$defs/rating" },
+          "estimatedAgentEffort": { "$ref": "#/$defs/rating" }
+        }
+      }
+    },
+    "recommendations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "summary",
+          "targetPattern",
+          "migrationPath",
+          "remediationRisk",
+          "estimatedAgentEffort",
+          "confidence",
+          "docReferences"
+        ],
+        "properties": {
+          "summary": { "type": "string", "minLength": 1 },
+          "targetPattern": { "type": "string" },
+          "migrationPath": { "$ref": "#/$defs/stringArray" },
+          "remediationRisk": { "$ref": "#/$defs/rating" },
+          "estimatedAgentEffort": { "$ref": "#/$defs/rating" },
+          "confidence": { "$ref": "#/$defs/rating" },
+          "docReferences": { "$ref": "#/$defs/stringArray" }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["overallAiRisk", "notes"],
+      "properties": {
+        "overallAiRisk": {
+          "anyOf": [
+            { "$ref": "#/$defs/rating" },
+            { "type": "null" }
+          ]
+        },
+        "notes": { "type": "string" }
+      }
+    },
+    "extensions": { "type": "object" }
+  },
+  "$defs": {
+    "category": {
+      "type": "string",
+      "enum": [
+        "admin-ui",
+        "page-builder",
+        "email-builder",
+        "form-builder",
+        "global-extensibility"
+      ]
+    },
+    "coverageStatus": {
+      "type": "string",
+      "enum": ["analyzed", "not-present", "partially-covered", "unable-to-assess"]
+    },
+    "rating": {
+      "type": "string",
+      "enum": ["Low", "Medium", "High"]
+    },
+    "stringArray": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}

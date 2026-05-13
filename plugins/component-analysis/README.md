@@ -7,7 +7,7 @@ Agent skills for auditing Xperience by Kentico platform components for consisten
 These prompts provide a two-stage workflow:
 
 1. Analysis stage - Audits one or more component categories and generates structured JSON artifacts.
-2. Report stage - Aggregates the JSON artifacts into a human-readable HTML report and JSON document used by agents to make suggested updates.
+2. Report stage - Validates analysis artifacts and copies a static SPA report shell that renders the JSON data at runtime.
 
 This split keeps the analysis reusable. Teams can analyze only changed categories and regenerate reports without rerunning code discovery.
 
@@ -71,14 +71,15 @@ The prompt writes JSON artifacts under the analyzed project's output folder:
 ```text
 .kenticopilot/
   component-analysis/
-    analysis-index.json
-    categories/
+    analysis/
+      analysis-index.json
+      component-analysis-summary.json
       admin-ui.json
       page-builder.json
-    reports/
+    report/
 ```
 
-For partial runs, only the selected category files are written in `categories/`.
+For partial runs, only the selected category files are written in `analysis/`.
 Other category JSON files are created only when those categories are included in a run.
 
 ### 2. Run the report stage
@@ -94,21 +95,23 @@ Project folder path: /Users/example/dev/MyXperienceProject
 Included categories: admin-ui, page-builder
 ```
 
-This stage writes:
+This stage validates artifact presence/schema compatibility, then writes SPA assets to:
 
-- .kenticopilot/component-analysis/reports/component-analysis-report.html
-- .kenticopilot/component-analysis/reports/component-analysis-summary.json
+- .kenticopilot/component-analysis/report/index.html
+- .kenticopilot/component-analysis/report/app.js
+- .kenticopilot/component-analysis/report/styles.css
+- .kenticopilot/component-analysis/report/tokens.css
 
-The HTML report is generated from a reusable template designed for high-level scanning and deep drill-down across large component inventories.
-The summary JSON is a stable machine-consumable handoff artifact intended for downstream agents and alternative visualizations (custom dashboards, charts, or external reporting pipelines).
+The SPA reads analysis JSON files from relative paths and dynamically renders the report UI.
+The summary JSON (`analysis/component-analysis-summary.json`) is produced by the analysis stage and consumed by the SPA.
 
 ## Best practices
 
-- Run analysis first, report generation second.
+- Run analysis first, report deployment second.
 - Analyze only changed categories when iterating, then regenerate the report.
 - Review and version the generated JSON artifacts so trend changes are visible across runs.
 - Treat consistency drift as a priority signal for maintainability and AI-assisted implementation quality.
-- Treat `component-analysis-summary.json` as the primary automation input for follow-up remediation agents.
+- Treat `component-analysis-summary.json` as the primary automation input for follow-up remediation agents and report rendering.
 
 ## Prompt reference
 
@@ -119,7 +122,7 @@ Prompt name: analyze-components
 Purpose:
 
 - Audits selected categories for consistency.
-- Produces per-category JSON files and analysis-index.json under .kenticopilot/component-analysis.
+- Produces per-category JSON files, analysis-index.json, and summary artifacts under .kenticopilot/component-analysis/analysis.
 
 Notes:
 
@@ -133,18 +136,18 @@ Prompt name: analyze-components-report
 Purpose:
 
 - Reads existing analysis JSON artifacts.
-- Produces HTML and JSON report outputs under .kenticopilot/component-analysis/reports.
-- Uses a reference HTML template and deterministic ordering rules for predictable output across runs.
+- Validates analysis JSON artifacts against schema files.
+- Copies a zero-build SPA shell to .kenticopilot/component-analysis/report.
 
 Notes:
 
 - Does not require MCP.
-- Does not perform fresh code discovery unless prerequisite artifacts are missing.
+- Does not perform fresh code discovery or analysis.
 
 ## Included skills
 
 - analyze-components - Audits component categories and writes per-category analysis artifacts.
-- analyze-components-report - Aggregates analysis artifacts into report outputs.
+- analyze-components-report - Validates analysis artifacts and deploys the SPA report shell.
 
 ## Skill customization
 
