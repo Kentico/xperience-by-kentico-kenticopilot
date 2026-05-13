@@ -4,7 +4,7 @@ Agent skills for auditing Xperience by Kentico platform components for consisten
 
 ## Workflow
 
-These prompts provide a two-stage workflow:
+These skills provide a two-stage workflow:
 
 1. Analysis stage - Audits one or more component categories and generates structured JSON artifacts.
 2. Report stage - Validates analysis artifacts and copies a static SPA report shell that renders the JSON data at runtime.
@@ -23,7 +23,7 @@ This split keeps the analysis reusable. Teams can analyze only changed categorie
 
 - Xperience by Kentico solution in the workspace.
 - AI coding assistant installed (for example, GitHub Copilot or Claude Code).
-- Kentico Docs MCP server configured (required by the analyze-components prompt).
+- Kentico Docs MCP server configured (required by the analyze-components skill).
 
 ## Install the plugin
 
@@ -55,7 +55,7 @@ copilot plugin install component-analysis@xperience-by-kentico-kenticopilot
 
 ### 1. Run the analysis stage
 
-Run the analyze-components prompt and provide the project root path. You can optionally limit the run to selected categories.
+Run the analyze-components skill and provide the project root path. You can optionally limit the run to selected categories.
 
 VS Code GitHub Copilot example:
 
@@ -66,7 +66,7 @@ Project folder path: /Users/example/dev/MyXperienceProject
 Categories: admin-ui, page-builder
 ```
 
-The prompt writes JSON artifacts under the analyzed project's output folder:
+The skill writes JSON artifacts under the analyzed project's output folder:
 
 ```text
 .kenticopilot/
@@ -84,7 +84,7 @@ Other category JSON files are created only when those categories are included in
 
 ### 2. Run the report stage
 
-Run the analyze-components-report prompt and provide either the project root path or the component-analysis output folder.
+Run the analyze-components-report skill and provide either the project root path or the component-analysis output folder.
 
 VS Code GitHub Copilot example:
 
@@ -92,10 +92,11 @@ VS Code GitHub Copilot example:
 /analyze-components-report
 
 Project folder path: /Users/example/dev/MyXperienceProject
-Included categories: admin-ui, page-builder
 ```
 
-This stage validates artifact presence/schema compatibility, then writes SPA assets to:
+When the report skill starts, it resolves included categories from the existing JSON artifacts and asks you to choose a validation mode: `test-json`, `ajv-cli`, or `skip`.
+
+This stage validates the required JSON artifacts and schema conformance using the selected validation mode, then writes SPA assets to:
 
 - .kenticopilot/component-analysis/report/index.html
 - .kenticopilot/component-analysis/report/app.js
@@ -113,11 +114,11 @@ The summary JSON (`analysis/component-analysis-summary.json`) is produced by the
 - Treat consistency drift as a priority signal for maintainability and AI-assisted implementation quality.
 - Treat `component-analysis-summary.json` as the primary automation input for follow-up remediation agents and report rendering.
 
-## Prompt reference
+## Skill reference
 
 ### Analyze components
 
-Prompt name: analyze-components
+Skill name: analyze-components
 
 Purpose:
 
@@ -131,12 +132,12 @@ Notes:
 
 ### Generate component analysis report
 
-Prompt name: analyze-components-report
+Skill name: analyze-components-report
 
 Purpose:
 
 - Reads existing analysis JSON artifacts.
-- Validates analysis JSON artifacts against schema files.
+- Validates required analysis JSON artifacts against schema files using the selected validation mode.
 - Copies a zero-build SPA shell to .kenticopilot/component-analysis/report.
 
 Notes:

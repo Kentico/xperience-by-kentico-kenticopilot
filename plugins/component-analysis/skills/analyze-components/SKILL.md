@@ -136,7 +136,6 @@ If validation fails, stop and return actionable validation errors.
 
 Create or update `analysis/component-analysis-summary.json` in the output root.
 
-- Use the deterministic structure in `references/report-summary-schema.md`.
 - Use the deterministic structure in `../analyze-components-report/references/report-summary-schema.md`.
 - Validate the summary JSON against `references/schemas/report-summary.schema.json`.
 - If validation fails, stop and return actionable validation errors.
