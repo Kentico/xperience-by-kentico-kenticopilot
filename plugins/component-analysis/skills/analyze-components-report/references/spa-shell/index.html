@@ -139,12 +139,160 @@
               </div>
             </div>
           </section>
+
+          <section class="panel p-3 p-md-4 mt-4">
+            <h2 class="h5 mb-3">Report Metrics</h2>
+            <div class="row g-3 mb-3">
+              <div class="col-12">
+                <div class="metric-card h-100">
+                  <div class="metric-label">Findings</div>
+                  <div class="metric-value" x-text="summaryMetrics.findingCount"></div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="metric-card h-100">
+                  <div class="metric-label">Recommendations</div>
+                  <div class="metric-value" x-text="summaryMetrics.recommendationCount"></div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="metric-card h-100">
+                  <div class="metric-label">Consistency Checks</div>
+                  <div class="metric-value" x-text="summaryMetrics.consistencyCheckCount"></div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="metric-card h-100">
+                  <div class="metric-label">Consistency Pass Rate</div>
+                  <div class="metric-value" x-text="summaryMetrics.passRatePercent"></div>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+              <span class="chip">Severity High <strong x-text="summaryMetrics.severityCounts.High || 0"></strong></span>
+              <span class="chip">Severity Medium <strong x-text="summaryMetrics.severityCounts.Medium || 0"></strong></span>
+              <span class="chip">Severity Low <strong x-text="summaryMetrics.severityCounts.Low || 0"></strong></span>
+              <span class="chip">AI Risk High <strong x-text="summaryMetrics.aiRiskCounts.High || 0"></strong></span>
+              <span class="chip">AI Risk Medium <strong x-text="summaryMetrics.aiRiskCounts.Medium || 0"></strong></span>
+              <span class="chip">AI Risk Low <strong x-text="summaryMetrics.aiRiskCounts.Low || 0"></strong></span>
+            </div>
+          </section>
         </aside>
 
         <div class="col-12 col-xl-9">
           <section class="panel p-3 p-md-4 mb-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
-              <h2 class="h5 mb-0">Findings</h2>
+              <h2 class="h5 mb-0">Top Risks</h2>
+              <span
+                class="text-secondary"
+                x-text="`${filteredTopRisks.length} shown`"
+              ></span>
+            </div>
+            <div class="table-toolbar mb-3">
+              <div>
+                <label class="form-label" for="filter-top-fp-risk">False Positive Risk</label>
+                <select
+                  id="filter-top-fp-risk"
+                  class="form-select"
+                  x-model="filters.topFalsePositiveRisk"
+                >
+                  <option value="">All values</option>
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label" for="filter-top-effort">Effort</label>
+                <select
+                  id="filter-top-effort"
+                  class="form-select"
+                  x-model="filters.topEffort"
+                >
+                  <option value="">All values</option>
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
+                </select>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover align-middle mb-0">
+                <thead>
+                  <tr>
+                    <th scope="col">Category</th>
+                    <th scope="col">Risk</th>
+                    <th scope="col">Severity</th>
+                    <th scope="col">AI Risk</th>
+                    <th scope="col">False Positive Risk</th>
+                    <th scope="col">Effort</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template x-if="filteredTopRisks.length === 0">
+                    <tr>
+                      <td colspan="6" class="text-center text-secondary py-3">
+                        No top risks captured in summary.
+                      </td>
+                    </tr>
+                  </template>
+                  <template
+                    x-for="(risk, riskIdx) in filteredTopRisks"
+                    :key="`${risk.category}-${risk.title}-${riskIdx}`"
+                  >
+                    <tr>
+                      <td>
+                        <span
+                          class="chip category-chip"
+                          x-text="risk.category"
+                        ></span>
+                      </td>
+                      <td>
+                        <div class="fw-semibold" x-text="risk.title"></div>
+                        <a
+                          class="small"
+                          :href="riskFindingHref(risk)"
+                          x-text="`${(risk.evidence || []).length} evidence item(s)`"
+                        ></a>
+                      </td>
+                      <td>
+                        <span
+                          class="badge badge-pill"
+                          :class="badgeClass(risk.severity)"
+                          x-text="risk.severity"
+                        ></span>
+                      </td>
+                      <td>
+                        <span
+                          class="badge badge-pill"
+                          :class="badgeClass(risk.aiRisk)"
+                          x-text="risk.aiRisk"
+                        ></span>
+                      </td>
+                      <td>
+                        <span
+                          class="badge badge-pill"
+                          :class="badgeClass(risk.falsePositiveRisk)"
+                          x-text="risk.falsePositiveRisk"
+                        ></span>
+                      </td>
+                      <td>
+                        <span
+                          class="badge badge-pill"
+                          :class="badgeClass(risk.estimatedAgentEffort)"
+                          x-text="risk.estimatedAgentEffort"
+                        ></span>
+                      </td>
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel p-3 p-md-4 mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h2 id="findings-section" class="h5 mb-0">Findings</h2>
               <span
                 class="text-secondary"
                 x-text="`${filteredFindings.length} shown`"
@@ -177,6 +325,32 @@
                   <option value="Low">Low</option>
                 </select>
               </div>
+              <div>
+                <label class="form-label" for="filter-findings-confidence">Confidence</label>
+                <select
+                  id="filter-findings-confidence"
+                  class="form-select"
+                  x-model="filters.findingsConfidence"
+                >
+                  <option value="">All values</option>
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label" for="filter-findings-fp-risk">False Positive Risk</label>
+                <select
+                  id="filter-findings-fp-risk"
+                  class="form-select"
+                  x-model="filters.findingsFalsePositiveRisk"
+                >
+                  <option value="">All values</option>
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
+                </select>
+              </div>
             </div>
             <div class="table-responsive">
               <table class="table table-hover align-middle mb-0">
@@ -194,7 +368,7 @@
                     x-for="finding in filteredFindings"
                     :key="`${finding.category}-${finding.title}`"
                   >
-                    <tr>
+                    <tr :id="findingRowId(finding)">
                       <td>
                         <span
                           class="chip category-chip"
@@ -207,6 +381,20 @@
                           class="small text-secondary"
                           x-text="finding.impact"
                         ></div>
+                        <div
+                          class="small text-secondary mt-1"
+                          x-text="finding.whyItMatters"
+                        ></div>
+                        <details class="row-accordion mt-2" x-show="(finding.evidence || []).length > 0">
+                          <summary x-text="`Evidence (${(finding.evidence || []).length})`"></summary>
+                          <div class="row-accordion-body">
+                            <ul class="compact-list mb-0">
+                              <template x-for="evidencePath in (finding.evidence || [])" :key="evidencePath">
+                                <li class="small data-point" x-text="shortPath(evidencePath)"></li>
+                              </template>
+                            </ul>
+                          </div>
+                        </details>
                       </td>
                       <td>
                         <span
@@ -228,6 +416,10 @@
                           :class="badgeClass(finding.confidence)"
                           x-text="finding.confidence"
                         ></span>
+                        <div class="small text-secondary mt-1">
+                          FP Risk:
+                          <span x-text="finding.falsePositiveRisk || '-'"></span>
+                        </div>
                       </td>
                     </tr>
                   </template>
@@ -238,6 +430,60 @@
 
           <section class="panel p-3 p-md-4 mb-4">
             <h2 class="h5 mb-3">Prioritized Actions</h2>
+            <div class="table-toolbar mb-3">
+              <div>
+                <label class="form-label" for="filter-action-priority">Priority</label>
+                <select
+                  id="filter-action-priority"
+                  class="form-select"
+                  x-model="filters.actionPriority"
+                >
+                  <option value="">All values</option>
+                  <option value="P1">P1</option>
+                  <option value="P2">P2</option>
+                  <option value="P3">P3</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label" for="filter-action-remediation-risk">Remediation Risk</label>
+                <select
+                  id="filter-action-remediation-risk"
+                  class="form-select"
+                  x-model="filters.actionRemediationRisk"
+                >
+                  <option value="">All values</option>
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label" for="filter-action-effort">Effort</label>
+                <select
+                  id="filter-action-effort"
+                  class="form-select"
+                  x-model="filters.actionEffort"
+                >
+                  <option value="">All values</option>
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label" for="filter-action-confidence">Confidence</label>
+                <select
+                  id="filter-action-confidence"
+                  class="form-select"
+                  x-model="filters.actionConfidence"
+                >
+                  <option value="">All values</option>
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
+                </select>
+              </div>
+            </div>
             <div class="table-responsive">
               <table class="table table-striped align-middle mb-0">
                 <thead>
@@ -245,6 +491,7 @@
                     <th scope="col">ID</th>
                     <th scope="col">Summary</th>
                     <th scope="col">Priority</th>
+                    <th scope="col">Remediation Risk</th>
                     <th scope="col">Effort</th>
                     <th scope="col">Confidence</th>
                   </tr>
@@ -252,7 +499,7 @@
                 <tbody>
                   <template x-if="filteredActions.length === 0">
                     <tr>
-                      <td colspan="5" class="text-center text-secondary py-3">
+                      <td colspan="6" class="text-center text-secondary py-3">
                         No prioritized actions generated for this report.
                       </td>
                     </tr>
@@ -279,11 +526,28 @@
                             x-text="action.categories.join(', ')"
                           ></div>
                         </template>
+                        <template x-if="(action.recommendedSteps || []).length">
+                          <ol class="small mb-0 mt-2 recommendation-list">
+                            <template
+                              x-for="(step, stepIdx) in action.recommendedSteps"
+                              :key="`${action.id}-step-${stepIdx}`"
+                            >
+                              <li x-text="step"></li>
+                            </template>
+                          </ol>
+                        </template>
                       </td>
                       <td>
                         <span
                           class="badge badge-pill badge-neutral"
                           x-text="action.priority"
+                        ></span>
+                      </td>
+                      <td>
+                        <span
+                          class="badge badge-pill"
+                          :class="badgeClass(action.remediationRisk)"
+                          x-text="action.remediationRisk"
                         ></span>
                       </td>
                       <td>
@@ -392,11 +656,6 @@
                           class="fw-semibold small"
                           x-text="item.registration?.mechanism || '-'"
                         ></div>
-                        <div
-                          class="small text-secondary text-truncate inventory-location"
-                          :title="item.registration?.location || '-'"
-                          x-text="item.registration?.location || '-' "
-                        ></div>
                       </td>
                     </tr>
                     <tr class="inventory-detail-row">
@@ -488,6 +747,96 @@
                     </tr>
                   </tbody>
                 </template>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel p-3 p-md-4 mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h2 class="h5 mb-0">Consistency Checks</h2>
+              <span
+                class="text-secondary"
+                x-text="`${filteredConsistencyChecks.length} shown`"
+              ></span>
+            </div>
+            <div class="table-toolbar mb-3">
+              <div>
+                <label class="form-label" for="filter-check-status">Status</label>
+                <select
+                  id="filter-check-status"
+                  class="form-select"
+                  x-model="filters.checkStatus"
+                >
+                  <option value="">All values</option>
+                  <option value="Pass">Pass</option>
+                  <option value="Warning">Warning</option>
+                  <option value="Fail">Fail</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label" for="filter-check-importance">Importance</label>
+                <select
+                  id="filter-check-importance"
+                  class="form-select"
+                  x-model="filters.checkImportance"
+                >
+                  <option value="">All values</option>
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
+                </select>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover align-middle mb-0">
+                <thead>
+                  <tr>
+                    <th scope="col">Category</th>
+                    <th scope="col">Check</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Importance</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template x-if="filteredConsistencyChecks.length === 0">
+                    <tr>
+                      <td colspan="4" class="text-center text-secondary py-3">
+                        No consistency checks match current filters.
+                      </td>
+                    </tr>
+                  </template>
+                  <template
+                    x-for="(check, checkIdx) in filteredConsistencyChecks"
+                    :key="`${check.category}-${check.id || check.title}-${checkIdx}`"
+                  >
+                    <tr>
+                      <td>
+                        <span
+                          class="chip category-chip"
+                          x-text="check.category"
+                        ></span>
+                      </td>
+                      <td>
+                        <div class="fw-semibold" x-text="check.title"></div>
+                        <div class="small text-secondary" x-text="check.details"></div>
+                      </td>
+                      <td>
+                        <span
+                          class="badge badge-pill"
+                          :class="consistencyStatusBadgeClass(check.status)"
+                          x-text="toLevel(check.status)"
+                        ></span>
+                      </td>
+                      <td>
+                        <span
+                          class="badge badge-pill"
+                          :class="badgeClass(toLevel(check.importance))"
+                          x-text="toLevel(check.importance)"
+                        ></span>
+                      </td>
+                    </tr>
+                  </template>
+                </tbody>
               </table>
             </div>
           </section>

@@ -15,6 +15,16 @@ function reportApp() {
       componentType: '',
       severity: '',
       risk: '',
+      findingsConfidence: '',
+      findingsFalsePositiveRisk: '',
+      topFalsePositiveRisk: '',
+      topEffort: '',
+      actionPriority: '',
+      actionRemediationRisk: '',
+      actionEffort: '',
+      actionConfidence: '',
+      checkStatus: '',
+      checkImportance: '',
       search: ''
     },
 
@@ -91,6 +101,14 @@ function reportApp() {
         }
 
         if (this.filters.risk && finding.aiRisk !== this.filters.risk) {
+          return false;
+        }
+
+        if (this.filters.findingsConfidence && finding.confidence !== this.filters.findingsConfidence) {
+          return false;
+        }
+
+        if (this.filters.findingsFalsePositiveRisk && finding.falsePositiveRisk !== this.filters.findingsFalsePositiveRisk) {
           return false;
         }
 
@@ -228,11 +246,164 @@ function reportApp() {
 
     get filteredActions() {
       const actions = this.resolvedActions;
-      if (!this.filters.category) {
-        return actions;
-      }
+      return actions.filter((action) => {
+        if (this.filters.category && !(action.categories || []).includes(this.filters.category)) {
+          return false;
+        }
 
-      return actions.filter((action) => (action.categories || []).includes(this.filters.category));
+        if (this.filters.actionPriority && action.priority !== this.filters.actionPriority) {
+          return false;
+        }
+
+        if (this.filters.actionRemediationRisk && action.remediationRisk !== this.filters.actionRemediationRisk) {
+          return false;
+        }
+
+        if (this.filters.actionEffort && action.estimatedAgentEffort !== this.filters.actionEffort) {
+          return false;
+        }
+
+        if (this.filters.actionConfidence && action.confidence !== this.filters.actionConfidence) {
+          return false;
+        }
+
+        return true;
+      });
+    },
+
+    get summaryMetrics() {
+      const metrics = this.summary?.metrics || {};
+      const findingCount = Number(metrics.findingCount || 0);
+      const recommendationCount = Number(metrics.recommendationCount || 0);
+      const consistencyCheckCount = Number(metrics.consistencyCheckCount || 0);
+      const consistencyPassRate = Number(metrics.consistencyPassRate || 0);
+
+      return {
+        findingCount,
+        recommendationCount,
+        consistencyCheckCount,
+        consistencyPassRate,
+        passRatePercent: `${Math.round(consistencyPassRate * 100)}%`,
+        severityCounts: metrics.severityCounts || {},
+        aiRiskCounts: metrics.aiRiskCounts || {}
+      };
+    },
+
+    get topRisks() {
+      const items = this.summary?.topRisks || [];
+
+      return [...items].sort((a, b) => {
+        const severityCompare = this.compareSeverity(a.severity, b.severity);
+        if (severityCompare !== 0) {
+          return severityCompare;
+        }
+
+        const riskCompare = this.compareSeverity(a.aiRisk, b.aiRisk);
+        if (riskCompare !== 0) {
+          return riskCompare;
+        }
+
+        const categoryCompare = this.compareCategory(a.category || '', b.category || '');
+        if (categoryCompare !== 0) {
+          return categoryCompare;
+        }
+
+        return (a.title || '').localeCompare(b.title || '');
+      });
+    },
+
+    get filteredTopRisks() {
+      const search = this.filters.search.trim().toLowerCase();
+
+      return this.topRisks.filter((risk) => {
+        if (this.filters.category && risk.category !== this.filters.category) {
+          return false;
+        }
+
+        if (this.filters.severity && risk.severity !== this.filters.severity) {
+          return false;
+        }
+
+        if (this.filters.risk && risk.aiRisk !== this.filters.risk) {
+          return false;
+        }
+
+        if (this.filters.topFalsePositiveRisk && risk.falsePositiveRisk !== this.filters.topFalsePositiveRisk) {
+          return false;
+        }
+
+        if (this.filters.topEffort && risk.estimatedAgentEffort !== this.filters.topEffort) {
+          return false;
+        }
+
+        if (!search) {
+          return true;
+        }
+
+        const corpus = [risk.title, ...(risk.evidence || [])]
+          .join(' ')
+          .toLowerCase();
+
+        return corpus.includes(search);
+      });
+    },
+
+    get allConsistencyChecks() {
+      return this.categoryArtifacts
+        .flatMap((artifact) => {
+          const category = artifact.analysisMetadata?.category || 'unknown';
+          return (artifact.consistencyChecks || []).map((check) => ({
+            ...check,
+            category
+          }));
+        })
+        .sort((a, b) => {
+          const statusRank = { fail: 0, warning: 1, pass: 2 };
+          const statusCompare = (statusRank[a.status] ?? 99) - (statusRank[b.status] ?? 99);
+          if (statusCompare !== 0) {
+            return statusCompare;
+          }
+
+          const importanceCompare = this.compareSeverity(this.toLevel(a.importance), this.toLevel(b.importance));
+          if (importanceCompare !== 0) {
+            return importanceCompare;
+          }
+
+          const categoryCompare = this.compareCategory(a.category || '', b.category || '');
+          if (categoryCompare !== 0) {
+            return categoryCompare;
+          }
+
+          return (a.title || '').localeCompare(b.title || '');
+        });
+    },
+
+    get filteredConsistencyChecks() {
+      const search = this.filters.search.trim().toLowerCase();
+
+      return this.allConsistencyChecks.filter((check) => {
+        if (this.filters.category && check.category !== this.filters.category) {
+          return false;
+        }
+
+        if (this.filters.checkStatus && check.status !== this.filters.checkStatus.toLowerCase()) {
+          return false;
+        }
+
+        if (this.filters.checkImportance && this.toLevel(check.importance) !== this.filters.checkImportance) {
+          return false;
+        }
+
+        if (!search) {
+          return true;
+        }
+
+        const corpus = [check.title, check.details, ...(check.evidence || [])]
+          .join(' ')
+          .toLowerCase();
+
+        return corpus.includes(search);
+      });
     },
 
     coverageBadgeClass(status) {
@@ -281,6 +452,55 @@ function reportApp() {
       }
 
       return 'badge-neutral';
+    },
+
+    consistencyStatusBadgeClass(status) {
+      if (status === 'fail') {
+        return 'badge-high';
+      }
+
+      if (status === 'warning') {
+        return 'badge-medium';
+      }
+
+      if (status === 'pass') {
+        return 'badge-low';
+      }
+
+      return 'badge-neutral';
+    },
+
+    toLevel(value) {
+      if (!value) {
+        return '';
+      }
+
+      return `${value}`.charAt(0).toUpperCase() + `${value}`.slice(1).toLowerCase();
+    },
+
+    normalizeAnchorToken(value) {
+      return `${value || ''}`
+        .toLowerCase()
+        .replaceAll(/[^a-z0-9]+/g, '-')
+        .replaceAll(/^-+|-+$/g, '');
+    },
+
+    findingRowId(finding) {
+      const category = this.normalizeAnchorToken(finding?.category);
+      const title = this.normalizeAnchorToken(finding?.title);
+      return `finding-${category}-${title}`;
+    },
+
+    riskFindingHref(risk) {
+      const match = this.allFindings.find((finding) => {
+        return finding.category === risk.category && finding.title === risk.title;
+      });
+
+      if (!match) {
+        return '#findings-section';
+      }
+
+      return `#${this.findingRowId(match)}`;
     },
 
     canonicalCategoryOrder() {
