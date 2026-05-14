@@ -241,7 +241,7 @@ If stopped early, keep the same structure and set failed or not created fields a
 - **Prep skill required** — `update-xperience-prep` must be run once before this skill. It generates `update-xperience-context.json` and (when CI is enabled) `dab-config.json`.
 - **Breaking changes before database update** — all compilation errors from breaking API changes must be resolved before running `--kxp-update`. The database update cannot be rolled back without a backup.
 - **CI behavior is context-driven** — use `usesCI` from `update-xperience-context.json`. If false, skip DAB toggle and skip `--kxp-ci-store`. If true, disable CI before update and re-enable before `--kxp-ci-store`.
-- **Try/finally on CI toggle** — when CI is enabled, the re-enable CI step (Step 6, step 6) **must** execute even if the update command fails. If re-enable fails, CI is stuck off and user intervention is required.
+- **Try/finally on CI toggle** — when CI is enabled, the re-enable CI step (step 7 in [references/update-path-ci-enabled.md](references/update-path-ci-enabled.md)) **must** execute even if the update command fails. If re-enable fails, CI is stuck off and user intervention is required.
 - **No secrets in files** — the context file stores only source metadata. The connection string value is read at runtime from the configured source and passed only to the DAB subprocess environment. Never write it to `.env`, files, or the parent shell.
 - **Kill DAB subprocess** — after all steps (successful or failed), terminate the DAB process.
 - **Keep changes minimal** — do not update unrelated dependencies.
