@@ -1,0 +1,62 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Azure/data-api-builder/refs/tags/v2.0.0-rc/schemas/dab.draft.schema.json",
+  "data-source": {
+    "database-type": "mssql",
+    "connection-string": "@env('XBK_UPDATE_DB_CONNECTION')",
+    "options": {
+      "set-session-context": false
+    }
+  },
+  "runtime": {
+    "rest": {
+      "enabled": true,
+      "path": "/api",
+      "request-body-strict": true
+    },
+    "graphql": {
+      "enabled": false,
+      "path": "/graphql",
+      "allow-introspection": true
+    },
+    "host": {
+      "mode": "development"
+    },
+    "telemetry": {
+      "open-telemetry": {
+        "enabled": false,
+        "endpoint": ""
+      }
+    }
+  },
+  "autoentities": {},
+  "entities": {
+    "SettingsKey": {
+      "source": {
+        "object": "dbo.CMS_SettingsKey",
+        "type": "table"
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "read"
+            },
+            {
+              "action": "create",
+              "fields": {
+                "include": ["KeyID", "KeyValue"]
+              }
+            },
+            {
+              "action": "update",
+              "fields": {
+                "include": ["KeyID", "KeyValue"]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
