@@ -11,7 +11,8 @@
   },
   "ciSettingsKeyId": 69816,
   "dabConfigPath": "absolute path to dab-config.json when usesCI=true, otherwise null",
-  "dabPort": 52341
+  "dabPort": 52341,
+  "docPaths": ["README.md", "docs/CHANGELOG.md"]
 }
 ```
 
@@ -23,3 +24,4 @@
 | `ciSettingsKeyId` | integer\|null | The `KeyID` of the `CMSEnableCI` row in `CMS_SettingsKey`. `null` when `usesCI = false` |
 | `dabConfigPath` | string\|null | Absolute path to the generated `dab-config.json`. `null` when `usesCI = false` |
 | `dabPort` | integer\|null | The port DAB listens on for HTTP requests. `null` when `usesCI = false` |
+| `docPaths` | string[] | Repository-relative paths to files that reference the Xperience version. Empty array skips Step 8 (documentation update) in the main skill. |

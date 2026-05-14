@@ -27,7 +27,8 @@ This skill:
 7. Validates `dab-config.json` with `dotnet dab validate` (CI-enabled projects only)
 8. Selects a DAB listener port (CI-enabled projects only)
 9. Runs a DAB REST API smoke test, resolves `CMSEnableCI` `KeyID`, and records it for the main skill (CI-enabled projects only)
-10. Writes `update-xperience-context.json` to the repository root for the main skill
+10. Collects documentation file paths that reference the Xperience version
+11. Writes `update-xperience-context.json` to the repository root for the main skill
 
 Output:
 
@@ -183,7 +184,18 @@ Use DAB's REST API to verify end-to-end readiness for the main `update-xperience
 
 If any check fails, report the error and stop. This indicates DAB is not ready for the main skill.
 
-## Step 10 — Write update-xperience-context.json
+## Step 10 — Collect Documentation Paths
+
+Ask the user to identify documentation files in the repository that reference the current Xperience version and should be updated when the main skill runs:
+
+> "Which files reference the Xperience version and should be updated automatically (e.g., README.md, docs/CHANGELOG.md)? Enter paths relative to the repository root, one per line. Leave blank to skip automatic documentation updates."
+
+1. Accept zero or more paths from the user.
+2. Validate that each provided path exists in the repository.
+   - If a path does not exist, warn the user and exclude it from the list.
+3. Record the accepted paths as `docPaths` (an array of relative paths, or an empty array if none provided).
+
+## Step 11 — Write update-xperience-context.json
 
 1. Ensure repository root is known (`git rev-parse --show-toplevel`).
 2. Write `update-xperience-context.json` at repository root with the contract above.
@@ -208,6 +220,7 @@ When done, output using this exact structure:
 - DAB port: <port number | not-required>
 - Database connectivity: <OK or skipped>
 - dab-config.json: <created and validated | skipped>
+- Documentation paths: <list of paths | none>
 - update-xperience-context.json: <path>
 - Status: ready for update-xperience skill
 

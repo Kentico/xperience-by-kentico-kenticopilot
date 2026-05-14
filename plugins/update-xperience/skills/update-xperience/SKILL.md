@@ -30,6 +30,7 @@ Read these sources before making changes:
    - `ciSettingsKeyId` when `usesCI = true`
    - `dabConfigPath` when `usesCI = true`
    - `dabPort` when `usesCI = true`
+   - `docPaths` (optional — empty array is valid)
      If validation fails, stop and report the error.
 3. **DAB config is valid (only when CI is enabled)**:
    - If `usesCI = true`, first resolve the connection string from `connectionString.source`.
@@ -136,6 +137,7 @@ The update command applies SQL scripts and file system changes to bring the data
    - `ciSettingsKeyId` to target the `CMSEnableCI` row (only if `usesCI = true`)
    - `dabConfigPath` to start DAB REST server (only if `usesCI = true`)
    - `dabPort` to bind DAB's HTTP listener (only if `usesCI = true`)
+   - `docPaths` to determine whether Step 8 runs
 
 ### Path A — CI not enabled (`usesCI = false`)
 
@@ -165,12 +167,16 @@ Before committing, validate that the updated application builds and runs correct
 
 ## Step 8 — Update Project Documentation
 
-1. Locate where the project documents its current Xperience version — typically a `README.md` at the repository root, but may also be a `CHANGELOG.md` or a file in a `docs/` folder.
-2. Update the version reference to the new version.
+Skip this step if `docPaths` in `update-xperience-context.json` is absent or empty.
+
+For each path in `docPaths`:
+
+1. Read the file and locate references to the current Xperience version.
+2. Update the version reference to the target version.
 3. Update any changelog or release notes links:
    - Use Kentico Docs MCP to retrieve the Xperience by Kentico changelog, and review the RSS feed at `https://docs.kentico.com/feeds/xbyk-releases.xml`.
-   - If project docs use a single release link, replace it with the entry URL for the **target version**.
-   - If project docs maintain a version-by-version update log, append entries for all reviewed versions in the update path.
+   - If the file uses a single release link, replace it with the entry URL for the **target version**.
+   - If the file maintains a version-by-version update log, append entries for all reviewed versions in the update path.
 
 ## Step 9 — Final Validation and Commit
 
