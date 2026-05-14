@@ -25,8 +25,9 @@ This skill:
 5. Retrieves the connection string value when CI is enabled
 6. Generates `dab-config.json` from a template with REST API enabled (CI-enabled projects only)
 7. Validates `dab-config.json` with `dotnet dab validate` (CI-enabled projects only)
-8. Runs a DAB REST API smoke test, resolves `CMSEnableCI` `KeyID`, and records it for the main skill (CI-enabled projects only)
-9. Writes `update-xperience-context.json` to the repository root for the main skill
+8. Selects a DAB listener port (CI-enabled projects only)
+9. Runs a DAB REST API smoke test, resolves `CMSEnableCI` `KeyID`, and records it for the main skill (CI-enabled projects only)
+10. Writes `update-xperience-context.json` to the repository root for the main skill
 
 Output:
 
@@ -58,19 +59,7 @@ Pin DAB to `2.0.0-rc`.
 
 ## Context File Contract
 
-Write a JSON file named `update-xperience-context.json` at the repository root with this shape:
-
-```json
-{
-  "xperienceProjectCsprojPath": "absolute path to ASP.NET Core Xperience .csproj",
-  "usesCI": true,
-  "connectionString": {
-    "source": "appsettings.json|appsettings.Development.json|user-secrets|not-required"
-  },
-  "ciSettingsKeyId": 69816,
-  "dabConfigPath": "absolute path to dab-config.json when usesCI=true, otherwise null"
-}
-```
+See [references/context-file-contract.md](references/context-file-contract.md) for the full JSON schema and field descriptions.
 
 ## Step 3 — Locate XbK Web Project
 
@@ -90,7 +79,8 @@ If `usesCI = false`:
 - Set `connectionString.source = not-required`
 - Set `ciSettingsKeyId = null`
 - Set `dabConfigPath = null`
-- Skip to Step 9.
+- Set `dabPort = null`
+- Skip to Step 10.
 
 If `usesCI = true`, detect where the connection string is sourced, in this order:
 
@@ -135,22 +125,10 @@ If `usesCI = false`, skip this step.
 
 Inject the connection string retrieved in Step 5 into the DAB process environment, then run validation.
 
-Use shell-appropriate syntax:
-
-- Bash/zsh:
-
-```bash
-XBK_UPDATE_DB_CONNECTION="<connection-string-from-step-5>" dotnet dab validate --config dab-config.json
-```
-
-- PowerShell:
-
 ```powershell
 $env:XBK_UPDATE_DB_CONNECTION = "<connection-string-from-step-5>"
 dotnet dab validate --config dab-config.json
 ```
-
-If your active terminal is PowerShell, do not use Unix inline env syntax like `VAR=value command`.
 
 **Important:** The connection string is passed to the subprocess environment only; never add it to the parent shell or logs.
 
@@ -161,38 +139,40 @@ Expected output: exit code 0, confirmation message. If validation fails:
 
 After validation, run:
 
-```bash
+```powershell
 dotnet dab configure --config dab-config.json --show-effective-permissions
 ```
 
 Confirm `SettingsKey` includes `create` and `update` for `anonymous` (DAB REST PATCH authorization evaluates both create and update permissions for PATCH/PUT).
 If either action is missing, regenerate `dab-config.json` from the prep template and re-validate.
 
-## Step 8 — DAB REST Smoke Test (Only if CI is enabled)
+## Step 8 — Select DAB Port (Only if CI is enabled)
+
+If `usesCI = false`, skip this step.
+
+1. Generate a random candidate port in the range 49152–65535.
+2. Present the candidate port to the user:
+   > "DAB will listen on port `<candidate-port>`. Press Enter to accept or type a different port number:"
+3. Accept the user's input (or use the candidate if they accept).
+4. Record the accepted value as `dabPort` for the context file.
+
+## Step 9 — DAB REST Smoke Test (Only if CI is enabled)
 
 Use DAB's REST API to verify end-to-end readiness for the main `update-xperience` skill.
 
 1. Start DAB as a REST server subprocess using the generated config, injecting the connection string retrieved in Step 5:
 
-   Bash/zsh:
-
-   ```bash
-   ASPNETCORE_URLS="http://127.0.0.1:50771" XBK_UPDATE_DB_CONNECTION="<connection-string-from-step-5>" dotnet dab start --config dab-config.json
-   ```
-
-   PowerShell:
-
    ```powershell
-   $env:ASPNETCORE_URLS = "http://127.0.0.1:50771"
+   $env:ASPNETCORE_URLS = "http://127.0.0.1:<dabPort>"
    $env:XBK_UPDATE_DB_CONNECTION = "<connection-string-from-step-5>"
    dotnet dab start --config dab-config.json
    ```
 
-   DAB will listen on `http://127.0.0.1:50771`. **Important:** The connection string is passed to the subprocess environment only; never add it to the parent shell or logs.
+   DAB will listen on `http://127.0.0.1:<dabPort>` (where `<dabPort>` is the port selected in Step 8). **Important:** The connection string is passed to the subprocess environment only; never add it to the parent shell or logs.
 
 2. Run an HTTP GET request against the `SettingsKey` entity REST endpoint:
-   ```bash
-   curl "http://127.0.0.1:50771/api/SettingsKey?\$filter=KeyName eq 'CMSEnableCI'"
+   ```powershell
+   curl "http://127.0.0.1:<dabPort>/api/SettingsKey?`$filter=KeyName eq 'CMSEnableCI'"
    ```
 3. Confirm:
    - DAB process starts successfully (HTTP server is listening).
@@ -203,7 +183,7 @@ Use DAB's REST API to verify end-to-end readiness for the main `update-xperience
 
 If any check fails, report the error and stop. This indicates DAB is not ready for the main skill.
 
-## Step 9 — Write update-xperience-context.json
+## Step 10 — Write update-xperience-context.json
 
 1. Ensure repository root is known (`git rev-parse --show-toplevel`).
 2. Write `update-xperience-context.json` at repository root with the contract above.
@@ -225,6 +205,7 @@ When done, output using this exact structure:
 - CI enabled: <true/false>
 - Connection string source: <appsettings.json | appsettings.Development.json | user-secrets | not-required>
 - CMSEnableCI KeyID: <integer | not-required>
+- DAB port: <port number | not-required>
 - Database connectivity: <OK or skipped>
 - dab-config.json: <created and validated | skipped>
 - update-xperience-context.json: <path>
@@ -267,6 +248,5 @@ If stopped early, set failed fields accordingly:
 
 ## Important rules
 
-- **DAB REST enabled.** The template configures REST API and the skills bind DAB to http://127.0.0.1:50771 via `ASPNETCORE_URLS`; the main skill uses HTTP for CI operations.
-- **Idempotent.** Running this skill twice produces the same context and config; no state accumulates.
+- **DAB REST enabled.** The template configures REST API and the skills bind DAB to `http://127.0.0.1:<dabPort>` via `ASPNETCORE_URLS`; the port is selected during prep and stored in `update-xperience-context.json` for use by the main skill.
 - **Spawned inline.** The main skill launches and terminates the DAB process per update cycle.

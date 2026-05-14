@@ -29,13 +29,16 @@ Read these sources before making changes:
    - `connectionString.source`
    - `ciSettingsKeyId` when `usesCI = true`
    - `dabConfigPath` when `usesCI = true`
+   - `dabPort` when `usesCI = true`
      If validation fails, stop and report the error.
 3. **DAB config is valid (only when CI is enabled)**:
    - If `usesCI = true`, first resolve the connection string from `connectionString.source`.
    - Run validation with `XBK_UPDATE_DB_CONNECTION` set in the command environment (required because `dab-config.json` uses `@env('XBK_UPDATE_DB_CONNECTION')`).
-   - Shell examples:
-     - Bash/zsh: `XBK_UPDATE_DB_CONNECTION="<resolved-connection-string>" dotnet dab validate --config <dabConfigPath>`
-     - PowerShell: `$env:XBK_UPDATE_DB_CONNECTION = "<resolved-connection-string>"; dotnet dab validate --config <dabConfigPath>`
+   - Example:
+     ```powershell
+     $env:XBK_UPDATE_DB_CONNECTION = "<resolved-connection-string>"
+     dotnet dab validate --config <dabConfigPath>
+     ```
    - Exit code must be 0. If validation fails, stop and report the error.
 4. **Clean working tree**: run `git status --porcelain`. Output MUST be empty. If not, ask the user to commit or stash changes and stop.
 5. **Not on the default branch**:
@@ -75,23 +78,10 @@ If any precondition fails: output a clear message explaining the issue and stop.
 
 ## Step 2 — Update NuGet Packages
 
-### Projects using Central Package Management (`Directory.Packages.props`)
+Follow the instructions for the detected package management style:
 
-1. Open the applicable `Directory.Packages.props` file selected in precondition 6 (do not assume repository root).
-2. Identify all `<PackageVersion Include="Kentico.Xperience.*" Version="*" />` entries (any version).
-3. For each `Kentico.Xperience.*` package:
-   - **If the version matches the current version identified in Step 1**: replace it with the target version.
-   - **If the version differs from the current version** (e.g., intentionally pinned to an older or newer value, or at a different patch level): leave it untouched and note it in the final summary as an "intentionally pinned" package.
-4. If any `Kentico.Xperience.*` package uses a `-preview` or `-prerelease` suffix and its base version matches the current version, update it to the corresponding pre-release of the new version if one is available.
-5. Note: do not update packages outside the `Kentico.Xperience.*` namespace, even if they appear outdated.
-
-### Projects using per-project package references (`.csproj` / `Directory.Build.props`)
-
-1. Search all `.csproj` and `Directory.Build.props` files for `<PackageReference Include="Kentico.Xperience.*" Version="*" />` entries (any version).
-2. For each `Kentico.Xperience.*` package:
-   - **If the version matches the current version identified in Step 1**: update it to the target version.
-   - **If the version differs from the current version**: leave it untouched and note it in the final summary as an "intentionally pinned" package.
-3. Apply the same pre-release rules described above.
+- **Central Package Management**: see [references/nuget-central-package-management.md](references/nuget-central-package-management.md)
+- **Per-project package references**: see [references/nuget-per-project.md](references/nuget-per-project.md)
 
 ### After updating package versions (both styles)
 
@@ -145,55 +135,15 @@ The update command applies SQL scripts and file system changes to bring the data
    - `connectionString.source` to retrieve connection string (only if `usesCI = true`)
    - `ciSettingsKeyId` to target the `CMSEnableCI` row (only if `usesCI = true`)
    - `dabConfigPath` to start DAB REST server (only if `usesCI = true`)
+   - `dabPort` to bind DAB's HTTP listener (only if `usesCI = true`)
 
 ### Path A — CI not enabled (`usesCI = false`)
 
-1. Run the update command from the Xperience web project directory:
-   ```
-   dotnet run --no-build -- --kxp-update --skip-confirmation
-   ```
-2. If the command fails: report the failure and **stop**. Do not commit.
-3. Do not run `--kxp-ci-store` when CI is disabled.
+Follow [references/update-path-ci-disabled.md](references/update-path-ci-disabled.md).
 
 ### Path B — CI enabled (`usesCI = true`)
 
-When CI is enabled, it must be disabled before update and re-enabled before `--kxp-ci-store`.
-
-1. Retrieve the connection string according to `connectionString.source`:
-   - `appsettings.Development.json`: read `ConnectionStrings:CMSConnectionString` from that file.
-   - `appsettings.json`: read `ConnectionStrings:CMSConnectionString` from that file.
-   - `user-secrets`: run `dotnet user-secrets list --project <xperienceProjectCsprojPath>` and read `ConnectionStrings:CMSConnectionString`.
-2. Start DAB with `ASPNETCORE_URLS=http://127.0.0.1:50771`, `XBK_UPDATE_DB_CONNECTION=<resolved-connection-string>`, and `dotnet dab start --config <dabConfigPath>`.
-3. Read `ciSettingsKeyId` from `update-xperience-context.json`.
-   - Use this value as the `CMSEnableCI` row key.
-   - If missing or invalid, stop and instruct the user to rerun `update-xperience-prep`.
-4. Disable CI via HTTP PATCH:
-   - `PATCH http://127.0.0.1:50771/api/SettingsKey/KeyID/<ciSettingsKeyId>`
-   - Request body: `{\"KeyValue\": \"0\"}`
-   - Expect: 200
-
-   - Verify with GET:
-     - `GET http://127.0.0.1:50771/api/SettingsKey/KeyID/<ciSettingsKeyId>` and confirm `KeyValue = \"0\"`
-
-5. Run the update command from the Xperience web project directory:
-   ```
-   dotnet run --no-build -- --kxp-update --skip-confirmation
-   ```
-6. Wrap step 5 in try/finally so CI re-enable is guaranteed.
-7. Re-enable CI via HTTP PATCH in finally:
-   - `PATCH http://127.0.0.1:50771/api/SettingsKey/KeyID/<ciSettingsKeyId>`
-   - Request body: `{\"KeyValue\": \"1\"}`
-   - Expect: 200
-
-   - Verify with GET:
-     - `GET http://127.0.0.1:50771/api/SettingsKey/KeyID/<ciSettingsKeyId>` and confirm `KeyValue = \"1\"`
-
-8. If update succeeded, run:
-   ```
-   dotnet run --no-build -- --kxp-ci-store
-   ```
-   If this command fails: report the failure and **stop**. Do not commit.
-9. Kill the DAB subprocess after all CI operations complete (successful or failed).
+Follow [references/update-path-ci-enabled.md](references/update-path-ci-enabled.md).
 
 ## Step 7 — Post-Update Validation
 
@@ -275,7 +225,7 @@ If stopped early, keep the same structure and set failed or not created fields a
 | `--kxp-update` command fails with CI enabled             | Re-enable CI via HTTP PATCH (mandatory), report failure, abort. Do not commit.                                      |
 | `--kxp-update` command fails without CI                  | Report failure; abort. Do not run `--kxp-ci-store`. Do not commit.                                                  |
 | DAB HTTP PATCH fails (re-enable CI)                      | **CRITICAL**: CI is stuck off. Report prominently, abort, do not commit. User intervention required.                |
-| DAB HTTP requests fail (due to network/port issues)      | Report error; check that port 50771 is available and not blocked by firewall. Ask user to verify port availability. |
+| DAB HTTP requests fail (due to network/port issues)      | Report error; check that the configured `dabPort` is available and not blocked by a firewall. Ask user to set an unused port number in `update-xperience-context.json` and retry. |
 | npm install/update fails                                 | Report error; ask user before continuing.                                                                           |
 
 ## Important rules
