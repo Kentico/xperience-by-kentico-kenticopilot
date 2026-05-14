@@ -12,7 +12,8 @@
   "ciSettingsKeyId": 69816,
   "dabConfigPath": "absolute path to dab-config.json when usesCI=true, otherwise null",
   "dabPort": 52341,
-  "docPaths": ["README.md", "docs/CHANGELOG.md"]
+  "docPaths": ["README.md", "docs/CHANGELOG.md"],
+  "runTests": true
 }
 ```
 
@@ -25,3 +26,4 @@
 | `dabConfigPath` | string\|null | Absolute path to the generated `dab-config.json`. `null` when `usesCI = false` |
 | `dabPort` | integer\|null | The port DAB listens on for HTTP requests. `null` when `usesCI = false` |
 | `docPaths` | string[] | Repository-relative paths to files that reference the Xperience version. Empty array skips Step 8 (documentation update) in the main skill. |
+| `runTests` | boolean | Whether the main skill should run `dotnet test` after a successful build in Step 7. |

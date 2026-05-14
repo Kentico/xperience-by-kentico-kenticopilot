@@ -31,6 +31,7 @@ Read these sources before making changes:
    - `dabConfigPath` when `usesCI = true`
    - `dabPort` when `usesCI = true`
    - `docPaths` (optional — empty array is valid)
+   - `runTests` (boolean)
      If validation fails, stop and report the error.
 3. **DAB config is valid (only when CI is enabled)**:
    - If `usesCI = true`, first resolve the connection string from `connectionString.source`.
@@ -138,6 +139,7 @@ The update command applies SQL scripts and file system changes to bring the data
    - `dabConfigPath` to start DAB REST server (only if `usesCI = true`)
    - `dabPort` to bind DAB's HTTP listener (only if `usesCI = true`)
    - `docPaths` to determine whether Step 8 runs
+   - `runTests` to determine whether tests run in Step 7
 
 ### Path A — CI not enabled (`usesCI = false`)
 
@@ -149,19 +151,19 @@ Follow [references/update-path-ci-enabled.md](references/update-path-ci-enabled.
 
 ## Step 7 — Post-Update Validation
 
-Before committing, validate that the updated application builds and runs correctly.
+Validate that the updated application builds and runs correctly before reporting completion.
 
 1. **Build the solution**: run `dotnet build <solution-file>` from the repository root.
-   - If the build **fails**: report the error and **stop**. Do not commit. Fix the compilation errors and rebuild until successful.
+   - If the build **fails**: report the error and **stop**. Fix the compilation errors and rebuild until successful.
    - If the build **succeeds**: continue.
 
-2. **Optional smoke tests**: if the repository includes test projects (`.csproj` files with test frameworks), run them:
+2. **Run tests**: if `runTests = true` in `update-xperience-context.json`, run:
 
    ```bash
    dotnet test <solution-file>
    ```
 
-   If tests fail: report the failure, investigate, and repair before committing. (Optional: if tests are not critical, you may ask the user whether to proceed.)
+   If tests fail: report the failure, investigate, and repair before reporting completion.
 
 3. **Optional startup verification**: if the Xperience application is configured to start quickly and safely in a CI/development environment, attempt a dry-run startup to verify the application boots without errors (e.g., with a timeout and graceful shutdown). This is optional but recommended for early detection of runtime issues.
 

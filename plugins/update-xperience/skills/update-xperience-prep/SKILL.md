@@ -27,7 +27,7 @@ This skill:
 7. Validates `dab-config.json` with `dotnet dab validate` (CI-enabled projects only)
 8. Selects a DAB listener port (CI-enabled projects only)
 9. Runs a DAB REST API smoke test, resolves `CMSEnableCI` `KeyID`, and records it for the main skill (CI-enabled projects only)
-10. Collects documentation file paths that reference the Xperience version
+10. Collects update preferences: documentation paths and whether to run tests
 11. Writes `update-xperience-context.json` to the repository root for the main skill
 
 Output:
@@ -184,9 +184,11 @@ Use DAB's REST API to verify end-to-end readiness for the main `update-xperience
 
 If any check fails, report the error and stop. This indicates DAB is not ready for the main skill.
 
-## Step 10 — Collect Documentation Paths
+## Step 10 — Collect Update Preferences
 
-Ask the user to identify documentation files in the repository that reference the current Xperience version and should be updated when the main skill runs:
+Ask the user two questions before writing the context file.
+
+**Documentation paths:**
 
 > "Which files reference the Xperience version and should be updated automatically (e.g., README.md, docs/CHANGELOG.md)? Enter paths relative to the repository root, one per line. Leave blank to skip automatic documentation updates."
 
@@ -194,6 +196,12 @@ Ask the user to identify documentation files in the repository that reference th
 2. Validate that each provided path exists in the repository.
    - If a path does not exist, warn the user and exclude it from the list.
 3. Record the accepted paths as `docPaths` (an array of relative paths, or an empty array if none provided).
+
+**Run tests:**
+
+> "Should the update skill run `dotnet test` after a successful build? (yes/no)"
+
+4. Record the answer as `runTests` (boolean).
 
 ## Step 11 — Write update-xperience-context.json
 
@@ -221,6 +229,7 @@ When done, output using this exact structure:
 - Database connectivity: <OK or skipped>
 - dab-config.json: <created and validated | skipped>
 - Documentation paths: <list of paths | none>
+- Run tests: <yes/no>
 - update-xperience-context.json: <path>
 - Status: ready for update-xperience skill
 
