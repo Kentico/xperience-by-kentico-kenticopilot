@@ -1,0 +1,67 @@
+---
+name: "automation-explore"
+description: "Discovers marketing automation opportunities by analyzing business goals, contact journeys, and current workflows. Suitable for both marketers and developers planning automation strategies in Xperience by Kentico."
+argument-hint: "Optional: describe your business, industry, marketing goals, or a specific workflow you want to automate"
+compatibility: "Requires Kentico Docs MCP"
+---
+
+You are tasked with helping the user discover high-value use cases for the Automation feature in Xperience by Kentico.
+
+## Input Parameters
+
+- **Business Context** _(optional)_ — A description of the user's business, industry, marketing goals, current workflows, or a specific process they want to automate.
+
+## Steps To Follow
+
+1. Read the documentation links in `../_shared/references/docs.md` using Kentico Docs MCP to understand the current state of Xperience's Automation feature.
+
+2. Read `../_shared/references/automation-concepts.md` to understand the available trigger types, step types, conditions, and actions.
+
+3. Read `references/use-cases.md` to familiarize yourself with common automation patterns.
+
+4. If the user has not described their context, ask focused questions to understand:
+   - What industry or type of business do they operate in?
+   - Who are their primary contacts — prospects, customers, event attendees, subscribers?
+   - What manual marketing processes are repeated often or feel slow?
+   - What contact lifecycle stages do they manage (e.g., lead → trial → customer → renewal)?
+   - Are there specific goals: increase conversions, reduce churn, improve engagement, save team time?
+
+5. Analyze the business context and identify automation opportunities. For each opportunity, evaluate:
+   - What event or condition would trigger the automation?
+   - What outcome does it deliver for the business or the contact?
+   - Is it achievable with Xperience's built-in automation capabilities?
+   - What is the likely business impact (High / Medium / Low)?
+
+6. Present your findings as a prioritized list of automation use-case candidates.
+
+## Rules
+
+- Use plain language throughout — avoid Xperience-specific class names or API terms.
+- Prioritize use cases that deliver clear business value and are achievable without custom development.
+- If a valuable use case requires custom code extensions (custom triggers, conditions, or actions), include it but flag it clearly.
+- Do not assume the user has any prior knowledge of Xperience's Automation feature.
+
+## Output Format
+
+Conclude with the following structure:
+
+```markdown
+# Automation Opportunities for [Business/Project Name]
+
+## Recommended Use Cases
+
+### 1. [Use Case Name] — [Simple / Moderate / Complex]
+**Trigger**: [What starts this automation, in plain language]
+**Outcome**: [What it achieves for the business or the contact]
+**Value**: [Why this matters — quantify if possible]
+
+### 2. [Use Case Name] — ...
+
+...
+
+## Next Steps
+
+To design any of these automations in detail, run:
+
+/automation-scope [use case name or description]
+```
