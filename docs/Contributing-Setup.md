@@ -38,26 +38,24 @@ When you create or modify skill files:
 - Test skills with the target AI assistant
 - Follow the structure of existing SKILL.md files (YAML frontmatter with `name`, `description`, and `compatibility`; include `argument-hint` when the skill takes arguments)
 
+Follow the best practices provided by [agentskills.io](https://agentskills.io/skill-creation/best-practices)
+
 ## Development workflow
 
 1. Fork this repository.
 2. Create a new branch with one of the following prefixes:
-
    - `feat/` - new functionality
    - `refactor/` - restructuring of existing features
    - `fix/` - bugfixes
 
 3. Validate your Markdown formatting:
-
    - Verify proper syntax and link validity
    - Follow existing file organization patterns
 
 4. Commit your changes with a commit message following the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/#summary) convention.
-
    - See the [Conventional Commits documentation](https://www.conventionalcommits.org/en/v1.0.0/#summary) for guidelines
 
 5. Create a pull request on GitHub, targeting this repository.
-
    - Write a clear description of the changes
    - Include screenshots or recordings demonstrating prompt testing results (if applicable)
    - Verify prompt clarity and documentation quality
