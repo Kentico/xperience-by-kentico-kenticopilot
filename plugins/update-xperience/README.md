@@ -24,7 +24,7 @@ DAB exposes a REST API over your Xperience database so the update skill can togg
 
 - DAB startup is config-driven. Use `dotnet dab start --config dab-config.json`.
 - Do not pass `--rest` to `dab start` for DAB 2.0.0-rc. REST should be enabled in `dab-config.json`.
-- The update workflow binds DAB to `http://127.0.0.1:50771` via `ASPNETCORE_URLS` to avoid common conflicts on the default port.
+- The prep skill selects a random listener port in the range 49152–65535 and stores it in `update-xperience-context.json`. The update skill binds DAB to that port via `ASPNETCORE_URLS`.
 - DAB validation requires `XBK_UPDATE_DB_CONNECTION` to be set when your config uses `@env('XBK_UPDATE_DB_CONNECTION')`.
 - Use shell-appropriate environment syntax: Bash/zsh uses inline `VAR=value command`, while PowerShell uses `$env:VAR = "value"; command`.
 - On Apple Silicon, if `dotnet dab` fails due to framework or architecture mismatch, run DAB with ARM64 explicitly, for example `arch -arm64 $(which dotnet) dab --version`, and use the same prefix for other DAB commands when needed.
@@ -118,7 +118,6 @@ The skill will:
 - Run build and optional test suites
 - (If CI is enabled) Temporarily disable CI, apply database migrations, re-enable CI
 - Guide you through any code changes required for breaking changes
-- Commit the update to git
 
 #### Copilot CLI example
 
@@ -142,13 +141,12 @@ copilot skill run update-xperience
 ### From update stage
 
 - **Updated project files** — NuGet and npm package changes, code adaptations for breaking changes
-- **Git commits** — One or more commits capturing the upgrade progress, with clear commit messages
 - **Migration artifacts** — Any database migration scripts or backups created during the update
 
 ## Best Practices
 
 - Run **prep** once per repository (or after your project structure changes).
-- **Re-run prep** if you update your .NET SDK version or change CI/connection settings.
+- **Re-run prep** if you update your .NET SDK version, change CI/connection settings, or move/rename the Xperience project. Re-run if a port conflict occurs during the update workflow.
 - Keep **both generated files** (`update-xperience-context.json` and `dab-config.json`) in version control; they contain no secrets and enable consistent updates across developers.
 - Review the **generated diffs** before committing, especially if code changes were required for breaking changes.
 - If prep reports that it **cannot find a connection string**, follow its instructions to configure one before running update (use `appsettings.json`, `appsettings.Development.json`, or .NET user-secrets).
@@ -177,7 +175,7 @@ Validates the development environment (.NET 8 SDK/runtime), installs Microsoft D
 
 Skill name: **update-xperience**
 
-Analyzes the current Xperience version, identifies the latest version and upgrade path, updates NuGet and npm packages, applies database migrations, temporarily disables and re-enables CI (if enabled), and guides you through any code changes required for breaking changes. Commits the upgrade to git.
+Analyzes the current Xperience version, identifies the latest version and upgrade path, updates NuGet and npm packages, applies database migrations, temporarily disables and re-enables CI (if enabled), and guides you through any code changes required for breaking changes.
 
 **Argument hint:** Optional target version to upgrade to (defaults to latest). Pass `AgentMode` to skip interactive confirmations.
 

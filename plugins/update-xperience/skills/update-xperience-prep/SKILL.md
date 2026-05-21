@@ -26,7 +26,7 @@ This skill:
 6. Generates `dab-config.json` from a template with REST API enabled (CI-enabled projects only)
 7. Validates `dab-config.json` with `dotnet dab validate` (CI-enabled projects only)
 8. Selects a DAB listener port (CI-enabled projects only)
-9. Runs a DAB REST API smoke test, resolves `CMSEnableCI` `KeyID`, and records it for the main skill (CI-enabled projects only)
+9. Runs a DAB REST API smoke test to verify connectivity and access to the `CMSEnableCI` settings key (CI-enabled projects only)
 10. Collects update preferences: documentation paths and whether to run tests
 11. Writes `update-xperience-context.json` to the repository root for the main skill
 
@@ -57,6 +57,8 @@ Pin DAB to `2.0.0-rc`.
    - If not installed: run `dotnet tool install Microsoft.DataApiBuilder --local --version 2.0.0-rc`.
 3. Run `dotnet tool restore` to confirm the tool is restorable.
 4. Verify: run `dotnet dab --version` and report the version installed.
+
+> **Note (Apple Silicon):** On ARM64 Macs (M1/M2/M3), if `dotnet dab` fails with an architecture or framework error, prefix all `dotnet dab` commands with `arch -arm64 $(which dotnet)`. For example: `arch -arm64 $(which dotnet) dab --version`.
 
 ## Context File Contract
 
@@ -178,8 +180,7 @@ Use DAB's REST API to verify end-to-end readiness for the main `update-xperience
 3. Confirm:
    - DAB process starts successfully (HTTP server is listening).
    - HTTP GET request returns a 200 status code.
-   - Response JSON includes exactly one record in the `value` array.
-   - The returned row includes `KeyID`; capture this value as `ciSettingsKeyId` for Step 9.
+   - Response JSON includes exactly one record in the `value` array with a `KeyValue` field.
 4. Stop/kill the DAB subprocess (SIGTERM or equivalent).
 
 If any check fails, report the error and stop. This indicates DAB is not ready for the main skill.
@@ -208,6 +209,7 @@ Ask the user two questions before writing the context file.
 1. Ensure repository root is known (`git rev-parse --show-toplevel`).
 2. Write `update-xperience-context.json` at repository root with the contract above.
 3. Ensure paths are absolute and booleans are actual JSON booleans.
+4. Set `schemaVersion` to `1`.
 
 ## Output
 
@@ -224,7 +226,6 @@ When done, output using this exact structure:
 - XbK project identified: <path-to-.csproj>
 - CI enabled: <true/false>
 - Connection string source: <appsettings.json | appsettings.Development.json | user-secrets | not-required>
-- CMSEnableCI KeyID: <integer | not-required>
 - DAB port: <port number | not-required>
 - Database connectivity: <OK or skipped>
 - dab-config.json: <created and validated | skipped>
