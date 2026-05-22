@@ -2,19 +2,39 @@
 
 AI-assisted skills for identifying, planning, and refining [Marketing Automation](https://docs.kentico.com/documentation/business-users/digital-marketing/automation) workflows in Xperience by Kentico.
 
+## Quick start
+
+Not sure where to begin? Install the plugin and ask:
+
+```shell
+/automation-context
+
+I'm new to Xperience automations. What are they, what can they do,
+and what should I consider building first for a [describe your business]?
+```
+
+The agent will explain what automations can do and help you think through what's worth building.
+
 ## Overview
 
 These skills help both marketing teams and developers work with Xperience automations — from discovering what to automate, to producing a concrete implementation plan, to reviewing and improving existing processes.
 
-The plugin includes three skills that cover different stages of the automation lifecycle:
+The plugin includes two types of skill:
 
-| Skill | Use when... |
-|-------|-------------|
-| [`/automation-explore`](#automation-explore) | You know you want to use automations but aren't sure what to automate |
-| [`/automation-scope`](#automation-scope) | You have a specific automation in mind and need to turn it into a plan |
-| [`/automation-context`](#automation-context) | You want to review an existing automation, brainstorm ideas freely, or get developer guidance |
+### Ask anything: conversational
 
-A team new to automations would typically run explore → scope to get started, then use the context skill for ongoing Q&A, process reviews, and developer conversations.
+| Skill                                        | Use when...                                                                                                            |
+| -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| [`/automation-context`](#automation-context) | You want to ask questions, review an existing automation, brainstorm ideas, or understand how automations can help you |
+
+### Plan and build: structured workflow
+
+| Skill                                        | Use when...                                                     |
+| -------------------------------------------- | --------------------------------------------------------------- |
+| [`/automation-explore`](#automation-explore) | You want to use automations but aren't sure what to automate    |
+| [`/automation-scope`](#automation-scope)     | You have a specific automation in mind and need a concrete plan |
+
+When planning or building, run explore → scope in sequence. Use the context skill at any point for Q&A, process reviews, and developer conversations.
 
 ## Prerequisites
 
@@ -49,6 +69,53 @@ copilot plugin install automation-guidance@xperience-by-kentico-kenticopilot
 
 ---
 
+## `/automation-context`
+
+**Problem it solves:** General-purpose automation expertise on demand. The other two skills are sequential and output-oriented. This one is conversational — it handles questions that don't fit neatly into explore or scope, including reviewing existing processes, freeform brainstorming, and developer extensibility guidance.
+
+**Who it's for:** Anyone already working with automations who needs an expert conversation partner — marketers auditing existing processes, developers understanding what to build, or teams planning a new campaign.
+
+### Usage
+
+Run the skill and describe what you need. It handles three distinct patterns:
+
+#### Review an existing automation
+
+Describe a process or paste its step structure, and the agent evaluates it against a review checklist — checking recurrence mode, whether all branches have named Finish steps, whether consent is checked before email sends, whether condition nesting is becoming unmaintainable, and more.
+
+```shell
+/automation-context
+
+Can you review this automation? It's a re-engagement campaign triggered by form submission.
+Here's the step sequence: ...
+```
+
+#### Brainstorm automation ideas
+
+Describe a campaign brief, contact lifecycle scenario, or marketing initiative, and the agent generates automation ideas — including which ones need developer setup and why.
+
+```shell
+/automation-context
+
+We're launching a loyalty programme next quarter. What automations should we
+plan for the tier progression journey?
+```
+
+#### Get developer extensibility guidance
+
+Ask what custom code is needed to unlock specific automation capabilities that aren't available out of the box.
+
+```shell
+/automation-context
+
+Our client wants to branch automations based on a loyalty point score.
+What do we need to build to make that work?
+```
+
+The agent will explain that numeric comparison isn't available in Condition steps, and that the developer needs to own the threshold logic and fire a custom activity at each meaningful level — which the marketer can then use as both a trigger and a condition without any further developer involvement.
+
+---
+
 ## `/automation-explore`
 
 **Problem it solves:** Most people new to automations know the feature exists but don't know what to automate. This skill acts as a strategic consultant — it surfaces high-value opportunities grounded in your business context, rather than presenting a generic feature overview.
@@ -59,7 +126,7 @@ copilot plugin install automation-guidance@xperience-by-kentico-kenticopilot
 
 Run the skill and either describe your business context upfront, or let the agent guide you through a short discovery conversation covering your industry, contact types, manual processes that feel slow, and marketing goals.
 
-```
+```shell
 /automation-explore
 
 We are a B2B SaaS company. We have a free trial sign-up form and a lot of
@@ -92,7 +159,7 @@ Each entry ends with a prompt to continue with `/automation-scope`.
 
 Provide a use case by name or description. If anything is ambiguous — who enters, what triggers it, whether there are branches — the agent asks clarifying questions before producing the plan.
 
-```
+```shell
 /automation-scope
 
 Use case: Trial re-engagement nudge for contacts who go quiet after day 7
@@ -114,53 +181,6 @@ A saved scope document (`[use-case-name]-automation-scope.md`) containing:
 - Prerequisites checklist — the forms, email templates, consents, and contact attributes that must exist before building starts
 
 The prerequisites checklist is particularly useful: it makes the build sequence explicit so nothing blocks the marketer mid-implementation.
-
----
-
-## `/automation-context`
-
-**Problem it solves:** General-purpose automation expertise on demand. The other two skills are sequential and output-oriented. This one is conversational — it handles questions that don't fit neatly into explore or scope, including reviewing existing processes, freeform brainstorming, and developer extensibility guidance.
-
-**Who it's for:** Anyone already working with automations who needs an expert conversation partner — marketers auditing existing processes, developers understanding what to build, or teams planning a new campaign.
-
-### Usage
-
-Run the skill and describe what you need. It handles three distinct patterns:
-
-**Review an existing automation**
-
-Describe a process or paste its step structure, and the agent evaluates it against a review checklist — checking recurrence mode, whether all branches have named Finish steps, whether consent is checked before email sends, whether condition nesting is becoming unmaintainable, and more.
-
-```
-/automation-context
-
-Can you review this automation? It's a re-engagement campaign triggered by form submission.
-Here's the step sequence: ...
-```
-
-**Brainstorm automation ideas**
-
-Describe a campaign brief, contact lifecycle scenario, or marketing initiative, and the agent generates automation ideas — including which ones need developer setup and why.
-
-```
-/automation-context
-
-We're launching a loyalty programme next quarter. What automations should we
-plan for the tier progression journey?
-```
-
-**Get developer extensibility guidance**
-
-Ask what custom code is needed to unlock specific automation capabilities that aren't available out of the box.
-
-```
-/automation-context
-
-Our client wants to branch automations based on a loyalty point score.
-What do we need to build to make that work?
-```
-
-The agent will explain that numeric comparison isn't available in Condition steps, and that the developer needs to own the threshold logic and fire a custom activity at each meaningful level — which the marketer can then use as both a trigger and a condition without any further developer involvement.
 
 ---
 
