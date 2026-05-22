@@ -11,152 +11,9 @@ You now have complete context on the Automation feature in Xperience by Kentico.
 - **Brainstorm** — generating automation ideas given a marketing strategy, campaign, or contact lifecycle scenario
 - **Developer unlock** — identifying where custom code creates new automation capabilities for marketers
 
----
+## Load knowledge
 
-## What Automations Are
-
-Automation processes dynamically interact with contacts via a visual Automation Builder. Each process has a single trigger, a sequence of steps, and terminates at one or more Finish steps. Processes run **per contact**, not globally.
-
----
-
-## Triggers (3 types)
-
-| Trigger             | When it fires                                        | Notes                                                                                                                                                                                                                                               |
-| ------------------- | ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Form submission** | A specific form is submitted                         | Most common; supports Form autoresponder email purpose                                                                                                                                                                                              |
-| **Registration**    | A member becomes active/enabled                      | Fires after email confirmation if double opt-in is enabled; cannot coexist with Form autoresponder email step                                                                                                                                       |
-| **Custom activity** | A specific custom activity is logged for the contact | Requires developer setup; enables chaining and external event bridging. **The trigger matches on activity type only — the activity value is not accessible in the trigger condition, so the activity type itself must carry the semantic meaning.** |
-
-**Key nuance — Registration trigger + member-to-contact mapping:** Automation runs for a _contact_, not the member. XbK maps by email. If the registering member's email doesn't match the current session contact, the process may run for a different or newly created contact — meaning subsequent page visits won't be tracked for the contact in the process.
-
----
-
-## Steps
-
-### Send Email
-
-- Supported email purposes:
-  - **Form autoresponder** — only valid in Form-triggered processes; typically used for double opt-in confirmation links
-  - **Automation** — all other automation emails; cannot be used as a form autoresponder in Form configuration (requires an automation process instead)
-- Limitation: multilingual emails require a separate form and separate automation process per language
-
-### Wait
-
-- Holds a contact for a fixed duration or until a specific date
-- Contacts in Wait steps continue executing even after a process is disabled (potentially hours/days later)
-
-### Condition
-
-- Splits the process into **Yes / No** branches based on a single condition
-- **Critical limitation:** only one condition check per step. If/else-if chains require nested branching — becomes complex and hard to manage past 2–3 levels
-- Available conditions (full list):
-  - `Contact has value in field` (string matching only — contains, starts with, equals, etc. — **no numeric comparison**)
-  - `Contact field value is empty`
-  - `Contact has visited a page in the last X days`
-  - `Contact has performed specific activities in the last X days`
-  - `Contact has performed activity with value in the last X days`
-  - `Contact has agreed with consent`
-  - `Contact is in recipient list`
-  - `Contact has clicked on a link in a specific email in the last X days`
-  - `Contact has clicked on an email link with a specific URL in the last X days`
-  - `Contact is member`
-
-### Set Contact Field Value
-
-- Sets a single **fixed** value on a contact field; not dynamic based on contact state or automation context
-- Supports non-string field types (checkboxes, dropdowns, dates render appropriate controls)
-- **Dev required:** custom contact fields must be added to the `Set contact field value automation step` UI form in Modules → Contact management → Contact → UI Forms before they appear in this step
-
-### Log Custom Activity
-
-- Logs a specified custom activity on the contact
-- **Limitations:** activity type, title, and value are all static — no dynamic values
-- Primary use: triggering a downstream automation process, or feeding contact group conditions for personalization
-
-### Finish
-
-- Represents a terminal state (successful or not)
-- Multiple Finish steps allowed — use distinct names for reporting clarity (Finish steps differentiate "completed" from "in-progress" in Statistics and Contacts views)
-- **Critical for recurrence:** for processes with **"If not already running"** recurrence, the contact must reach a Finish step before the process can re-trigger
-
----
-
-## Process Recurrence
-
-| Mode                       | Behavior                                                                                   |
-| -------------------------- | ------------------------------------------------------------------------------------------ |
-| **Always**                 | Triggers every time conditions are met, even if already running. Risk: duplicate emails.   |
-| **Only once**              | Runs once per contact, ever.                                                               |
-| **If not already running** | Re-triggers only after the contact reaches a Finish step. Most balanced for re-engagement. |
-
----
-
-## Known Limitations (critical for review and design)
-
-1. **Condition steps are binary** — one check, yes/no. Complex branching requires nesting, which degrades maintainability quickly.
-2. **No numeric comparison in Contact has value in field** — string matching only. Cannot check "points > 400". Workaround: developer logs a custom activity at the threshold.
-3. **Set Contact Field Value is static** — the value is configured at build time, not computed at runtime.
-4. **Log Custom Activity is static** — type, title, and value cannot be dynamic.
-5. **No versioning** — editing a live process with active contacts immediately affects those contacts. Steps with logged statistics cannot be deleted.
-6. **Stuck contacts** — if a contact reaches an unconnected step (non-Finish terminal), they stop permanently. Adding a new step later does not resume them.
-7. **Not for long-term newsletters** — automation email sequences are fixed at build time. Use recipient lists + regular email sends for ongoing newsletter cadences.
-8. **Form autoresponder emails are scoped** — a Form autoresponder purpose email can only be used in a Form-triggered automation. An Automation purpose email cannot serve as a form autoresponder without an automation process.
-9. **Disabling doesn't stop in-progress** — contacts in Wait steps continue after disabling. Allow days before assuming a process is fully stopped.
-10. **Statistics lag** — step statistics update every 30 minutes (manual refresh available).
-
----
-
-## Developer Extensibility — Where Code Unlocks Marketer Value
-
-**Important constraint:** The Automation Builder step palette is fixed by the platform. Developers **cannot add custom step types** to the UI. All extensibility works _around_ the built-in steps via custom activities, custom contact fields, and external application extensions that programmatically initiate triggers automations can respond to, or read state that is set in automations (contact data or custom activities).
-
-The highest-leverage developer contributions for automations:
-
-### 1. Custom Contact Fields
-
-- **What:** Extend `Contact management - Contact` via Modules → Classes → Field Editor
-- **Marketer unlock:** Contact field conditions and Set Contact Field Value steps become far more powerful with domain-specific fields (e.g., `LoyaltyTier`, `BrewerModel`, `EventAttended`)
-- **Required dev steps:**
-  - Add DB column to the Contact class
-  - Add field to `Contact edit` UI form (exposes to Condition steps)
-  - Add field to `Set contact field value automation step` UI form (exposes to Set step)
-  - For custom data types, implement empty value detection for `Contact field is empty` condition
-
-### 2. Custom Activity Types
-
-- **What:** Activity type definitions are created in the Xperience admin UI (Contact Management → Activity types) — no code required for the definition itself. The developer's job is to **log** the activity at the right moment, via `IActivityLogService` server-side or [client-side via JavaScript](https://docs.kentico.com/documentation/developers-and-admins/digital-marketing-setup/set-up-activities/custom-activities#client-side-code).
-- **Marketer unlock:** Once an activity is being logged, marketers can use it as an automation trigger and in Condition steps without any further developer involvement.
-- **Patterns:**
-  - Threshold events (e.g., loyalty points crossing 400 → log `approaching_roaster`)
-  - Physical-world bridging (e.g., event attendance via QR → form → lightweight automation → logs `brew_lab_attended`)
-  - Commerce events (first purchase, repeat purchase, cart abandonment)
-  - Third-party system events via webhook → API → activity log
-
-### 3. Custom Page Builder Widget for Activity Logging
-
-- **What:** A configurable Page Builder widget that conditionally logs a custom activity when a contact visits a page. See the reference implementation: [ConditionalCustomActivityWidget](https://github.com/Kentico/xperience-by-kentico-labs-automations-exploration/tree/v1.0.0/examples/DancingGoat/Components/Widgets/ConditionalCustomActivityWidget)
-- **Widget properties (all marketer-configurable once installed):**
-  - **Condition type** — what must be true before the activity is logged:
-    - `Custom activity`: the contact has previously performed a specific activity type (optionally filtered by activity value)
-    - `Contact group`: the contact is a member of a specific group
-  - **Action activity type** — which custom activity to log when the condition is met (with optional value to attach)
-  - **Execute when** — `Always` (log on every qualifying visit), `Once` (log only the first time the condition is met, then skip), or `Disabled` (suppress logging without removing the widget)
-- **Marketer unlock:** Once installed, marketers place the widget on any page and configure all properties without further developer involvement. The widget is invisible to visitors and only fires on live page views — not in edit or preview mode.
-- **Patterns this enables:**
-  - Log `pricing_page_visited` when any contact lands on the pricing page → triggers a sales notification automation
-  - Log `re_engaged_with_product` only when the contact is already in the "Active Trial" contact group → advances a trial nurture chain without spamming non-trial contacts
-  - Log `deep_content_consumer` only after the contact has already performed `watched_demo` → gates a content drip on confirmed prior engagement
-  - Use `Once` to ensure each contact triggers the downstream automation exactly once, regardless of how many times they visit the page
-
-### 4. Member Field → Contact Field Mapping
-
-- **What:** Configure `MemberFieldMappings` to automatically copy member registration fields to contact fields
-- **Marketer unlock:** Data collected at registration (preferences, product interests, referral source) becomes immediately available in automation conditions without manual steps
-
-### 5. Webhook / API-triggered Activity Logging
-
-- **What:** External systems (CRM, e-commerce, event platforms) call an XbK API endpoint that logs a custom activity
-- **Marketer unlock:** Automation responds to real-world events (purchase completed in Shopify, support ticket resolved in Zendesk) without the marketer needing to touch external systems after setup
+Read `../_shared/references/automation-concepts.md` for the complete Xperience automation knowledge base: trigger types, step types and their limitations, process recurrence modes, developer extensibility patterns, and the marketer vs. developer capability reference.
 
 ---
 
@@ -219,6 +76,11 @@ If automations are connected — sharing a trigger type, or where one automation
 
 [Campaigns](https://docs.kentico.com/documentation/business-users/digital-marketing/campaigns) let you logically group digital marketing assets — including automations — under a shared initiative. If a set of automations represents a coordinated program (a launch, a loyalty ladder, an onboarding sequence), associating them with a Campaign makes the relationship explicit and keeps assets organized.
 
+Campaigns provide two additional capabilities worth knowing:
+
+- **Customer Journey view** — a Campaign automatically generates a Customer Journey that maps contact progression across the campaign's assets. This gives marketers a measurement layer beyond the per-automation Statistics view, making it possible to identify where contacts drop off across the full program.
+- **Campaign brief** — the Campaign stores a brief describing the initiative's goals and context. This brief is available to AI agents working on the campaign, giving them strategic context without requiring the user to re-explain the program in every conversation.
+
 ---
 
 ## Automation Review Checklist
@@ -251,27 +113,3 @@ When generating automation ideas from a marketing brief, consider:
 5. **Where does the journey end meaningfully?** → define distinct Finish step labels per outcome
 6. **Could this automation fire another?** → Log Custom Activity chaining pattern
 7. **What physical or external-system events matter?** → identify webhook/API activity logging opportunities
-
----
-
-## Quick Reference — What Marketers Can Do Without Developers
-
-- Create and configure any automation process
-- Set triggers (Form, Registration, Custom activity — if activity type already exists)
-- Use any built-in condition (contact field string match, recipient list membership, activity logged, consent, email engagement)
-- Send any email with correct purpose
-- Add Wait steps with fixed durations
-- Log pre-existing custom activities
-- Set pre-existing contact field values
-- Build QR-code attendance pages using existing forms and automations
-- Configure all process recurrence and naming
-- Create new custom activity types
-- Add custom contact fields (and expose them to automation condition and Set Contact Field Value steps via the Modules UI)
-- Map member fields to contact fields via Form Builder form field configuration
-
-## Quick Reference — What Requires a Developer
-
-- Enable numeric Contact field comparisons (must be encoded as threshold activities — developer owns the numeric logic and fires a custom activity at the threshold)
-- Build reusable activity-logging Page Builder widgets
-- Integrate external system events via webhook → custom activity
-- Map member fields to contact fields automatically in custom code (beyond what Form Builder configuration supports)

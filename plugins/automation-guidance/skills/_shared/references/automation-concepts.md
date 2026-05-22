@@ -58,7 +58,10 @@ Automation processes dynamically interact with contacts via a visual Automation 
 
 - Logs a specified custom activity on the contact
 - **Limitations:** activity type, title, and value are all static — no dynamic values
-- Primary use: triggering a downstream automation process, or feeding contact group conditions for personalization
+- Primary uses:
+  - **Triggering a downstream automation process** — the logged activity fires another automation's Custom activity trigger, enabling chained sequences
+  - **Feeding contact group conditions** — logged activities can drive contact group membership for personalization across channels
+  - **Building measurable Customer Journey stages** — logging a named activity at each key step (e.g., `newsletter_reminder_sent`) creates a stage in the Customer Journey view, enabling dropout analysis and AI-assisted journey optimization
 
 ### Finish
 
