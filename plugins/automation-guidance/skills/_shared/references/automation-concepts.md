@@ -105,14 +105,16 @@ Automation processes dynamically interact with contacts via a visual Automation 
 
 ### Custom Activity Types
 
-- Register a new `ActivityType` via code; log it server-side via `IActivityLogService` or client-side via JavaScript
-- **Marketer unlock:** New trigger types and new condition checks without any future code changes
+- Activity type definitions are created in the Xperience admin UI (Contact Management → Activity types) — no code required. The developer's job is to **log** the activity at the right moment, via `IActivityLogService` server-side or client-side via JavaScript.
+- **Marketer unlock:** Once an activity is being logged, marketers can use it as an automation trigger and in Condition steps without any further developer involvement.
 - Common patterns: threshold events (loyalty points crossing a level), physical-world bridging (event attendance via QR → form), commerce events, third-party system events via webhook → API → activity log
 
 ### Custom Page Builder Widget for Activity Logging
 
-- A configurable widget that logs a specified custom activity when a page is rendered or interacted with
-- **Marketer unlock:** Marketers can trigger automation logic from any page without future developer involvement — reusable across campaigns
+- A configurable Page Builder widget that **conditionally** logs a custom activity when a contact visits a page. Reference implementation: [ConditionalCustomActivityWidget](https://github.com/Kentico/xperience-by-kentico-labs-automations-exploration/tree/v1.0.0/examples/DancingGoat/Components/Widgets/ConditionalCustomActivityWidget)
+- Condition types: contact has previously performed a specific activity, or contact is in a specific contact group
+- Execution modes: Always, Once (log only the first time the condition is met), or Disabled
+- **Marketer unlock:** Once installed, marketers place and configure the widget on any page without further developer involvement. Invisible to visitors; only fires on live page views, not in edit or preview mode.
 
 ### Member Field → Contact Field Mapping
 

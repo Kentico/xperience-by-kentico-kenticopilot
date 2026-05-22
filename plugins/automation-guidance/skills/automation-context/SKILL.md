@@ -1,5 +1,5 @@
 ---
-name: xbk-automations-context
+name: automation-context
 description: Loads complete Xperience by Kentico (XbK) Automation feature context into the agent, enabling expert assistance with automation review, design, brainstorming, and developer extensibility guidance. Trigger whenever the user asks about XbK automations, wants to review an existing automation process, brainstorm new automation ideas, identify improvement opportunities, or understand what developers can build to unlock more automation value for marketers. Also trigger for any Xperience by Kentico digital marketing workflow that involves triggers, steps, conditions, contacts, or custom activities.
 ---
 
@@ -124,8 +124,8 @@ The highest-leverage developer contributions for automations:
 
 ### 2. Custom Activity Types
 
-- **What:** Register a new `ActivityType` via code; log it server-side via `IActivityLogService` or [client-side via JavaScript](https://docs.kentico.com/documentation/developers-and-admins/digital-marketing-setup/set-up-activities/custom-activities#client-side-code)
-- **Marketer unlock:** New trigger types and new condition checks without any code changes after setup
+- **What:** Activity type definitions are created in the Xperience admin UI (Contact Management → Activity types) — no code required for the definition itself. The developer's job is to **log** the activity at the right moment, via `IActivityLogService` server-side or [client-side via JavaScript](https://docs.kentico.com/documentation/developers-and-admins/digital-marketing-setup/set-up-activities/custom-activities#client-side-code).
+- **Marketer unlock:** Once an activity is being logged, marketers can use it as an automation trigger and in Condition steps without any further developer involvement.
 - **Patterns:**
   - Threshold events (e.g., loyalty points crossing 400 → log `approaching_roaster`)
   - Physical-world bridging (e.g., event attendance via QR → form → lightweight automation → logs `brew_lab_attended`)
@@ -134,15 +134,26 @@ The highest-leverage developer contributions for automations:
 
 ### 3. Custom Page Builder Widget for Activity Logging
 
-- **What:** A configurable widget that logs a specified custom activity when a page containing it is rendered or interacted with
-- **Marketer unlock:** Marketers can trigger automation logic from any page (e.g., confirmation page, landing page) without future developer involvement — reusable across campaigns
+- **What:** A configurable Page Builder widget that conditionally logs a custom activity when a contact visits a page. See the reference implementation: [ConditionalCustomActivityWidget](https://github.com/Kentico/xperience-by-kentico-labs-automations-exploration/tree/v1.0.0/examples/DancingGoat/Components/Widgets/ConditionalCustomActivityWidget)
+- **Widget properties (all marketer-configurable once installed):**
+  - **Condition type** — what must be true before the activity is logged:
+    - `Custom activity`: the contact has previously performed a specific activity type (optionally filtered by activity value)
+    - `Contact group`: the contact is a member of a specific group
+  - **Action activity type** — which custom activity to log when the condition is met (with optional value to attach)
+  - **Execute when** — `Always` (log on every qualifying visit), `Once` (log only the first time the condition is met, then skip), or `Disabled` (suppress logging without removing the widget)
+- **Marketer unlock:** Once installed, marketers place the widget on any page and configure all properties without further developer involvement. The widget is invisible to visitors and only fires on live page views — not in edit or preview mode.
+- **Patterns this enables:**
+  - Log `pricing_page_visited` when any contact lands on the pricing page → triggers a sales notification automation
+  - Log `re_engaged_with_product` only when the contact is already in the "Active Trial" contact group → advances a trial nurture chain without spamming non-trial contacts
+  - Log `deep_content_consumer` only after the contact has already performed `watched_demo` → gates a content drip on confirmed prior engagement
+  - Use `Once` to ensure each contact triggers the downstream automation exactly once, regardless of how many times they visit the page
 
 ### 4. Member Field → Contact Field Mapping
 
 - **What:** Configure `MemberFieldMappings` to automatically copy member registration fields to contact fields
 - **Marketer unlock:** Data collected at registration (preferences, product interests, referral source) becomes immediately available in automation conditions without manual steps
 
-### 6. Webhook / API-triggered Activity Logging
+### 5. Webhook / API-triggered Activity Logging
 
 - **What:** External systems (CRM, e-commerce, event platforms) call an XbK API endpoint that logs a custom activity
 - **Marketer unlock:** Automation responds to real-world events (purchase completed in Shopify, support ticket resolved in Zendesk) without the marketer needing to touch external systems after setup

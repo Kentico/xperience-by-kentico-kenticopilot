@@ -11,9 +11,25 @@ You are tasked with helping the user discover high-value use cases for the Autom
 
 - **Business Context** _(optional)_ — A description of the user's business, industry, marketing goals, current workflows, or a specific process they want to automate.
 
+## Gotchas
+
+- **Scheduled and time-based triggers do not exist.** There is no built-in way to trigger an automation on a schedule or after a period of inactivity. Use cases like "send a reminder if they haven't acted in N days" or "run weekly for dormant contacts" require a developer to build a background job that logs a custom activity. Always flag these as requiring developer involvement.
+- **Contact attribute changes are not triggers.** There is no "when a contact field changes" trigger. Use cases that conceptually start from a status change (e.g., "when a contact becomes a customer") require the system making that change — a form, a purchase flow, or an integration — to also log a custom activity. Developer involvement required.
+- **Page visits are not triggers.** Tracking a page visit in an automation requires a developer-built activity-logging Page Builder widget or server-side code on the target page.
+
 ## Steps To Follow
 
-1. Read the documentation links in `../_shared/references/docs.md` using Kentico Docs MCP to understand the current state of Xperience's Automation feature.
+1. Verify that Kentico Docs MCP is available by attempting to fetch the automation overview page listed in `../_shared/references/docs.md`. If the MCP tool is not available or the request fails, stop immediately and tell the user:
+
+   > This skill requires the Kentico Docs MCP to be configured. Ensure the plugin's `.mcp.json` is loaded by your AI assistant, or add the following server to your MCP configuration manually:
+   > ```json
+   > "kentico.docs.mcp": {
+   >   "type": "http",
+   >   "url": "https://docs.kentico.com/mcp"
+   > }
+   > ```
+
+   Do not proceed until the MCP is available and the fetch succeeds.
 
 2. Read `../_shared/references/automation-concepts.md` to understand the available trigger types, step types, conditions, and actions.
 
