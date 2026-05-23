@@ -57,6 +57,19 @@ Use the Xperience by Kentico releases RSS feed for changelog and release informa
 
 If any precondition fails: output a clear message explaining the issue and stop.
 
+## Step 0 — CI Restore (only when `usesCI = true`)
+
+Skip this step entirely if `usesCI = false`.
+
+When CI is enabled, restore the CI repository into the database before any package changes are made. This ensures the CI store step later in the process does not overwrite CI object state that has not yet been applied to the database.
+
+1. From the Xperience web project directory (identified from `xperienceProjectCsprojPath`), run:
+   ```powershell
+   dotnet run --no-build -- --kxp-ci-restore
+   ```
+2. If the command exits with a non-zero exit code: report the error and **stop**. The CI repository may be in an inconsistent state; the user must resolve this before proceeding.
+3. If the command succeeds: continue to Step 1.
+
 ## Step 1 — Determine Current and Latest Xperience Version
 
 1. Run `dotnet tool restore` at the repository root (if a `.config/dotnet-tools.json` is present).
@@ -200,6 +213,7 @@ If stopped early, keep the same structure and set failed or not created fields a
 | Scenario                                                 | Action                                                                                                              |
 | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
 | update-xperience-context.json missing or invalid         | Abort; instruct user to run update-xperience-prep skill first.                                                      |
+| `--kxp-ci-restore` fails (Step 0)                        | Abort; report the error. CI repository may be inconsistent — user must resolve before retrying.                     |
 | dab-config.json missing or invalid when CI enabled       | Abort; report validation error and stop.                                                                            |
 | Dirty working tree                                       | Abort; ask user to commit or stash changes.                                                                         |
 | `dotnet restore` fails after package update              | Report error; abort.                                                                                                |
