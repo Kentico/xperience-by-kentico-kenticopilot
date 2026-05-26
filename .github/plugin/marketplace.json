@@ -2,7 +2,7 @@
   "name": "xperience-by-kentico-kenticopilot",
   "metadata": {
     "description": "AI agent skills, instructions, and workflows for Xperience by Kentico development",
-    "version": "1.2.0",
+    "version": "1.3.0",
     "pluginRoot": "./plugins"
   },
   "owner": {
@@ -10,6 +10,19 @@
     "email": "support@kentico.com"
   },
   "plugins": [
+    {
+      "name": "automation",
+      "source": "./automation",
+      "description": "Skills and references for implementing custom automation process extensions (actions, triggers, conditions) in Xperience by Kentico",
+      "version": "1.0.0",
+      "author": {
+        "name": "Kentico"
+      },
+      "homepage": "https://github.com/Kentico/xperience-by-kentico-kenticopilot/tree/main/plugins/automation",
+      "repository": "https://github.com/Kentico/xperience-by-kentico-kenticopilot",
+      "license": "MIT",
+      "keywords": ["kentico", "xperience", "automation", "marketing", "cms"]
+    },
     {
       "name": "widget-creation",
       "source": "./widget-creation",

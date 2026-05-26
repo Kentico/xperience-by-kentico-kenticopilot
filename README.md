@@ -17,6 +17,16 @@ Skills are transferable to other solutions. Follow the conventions of your speci
 
 This repository provides plugins, each containing a set of skills for AI coding assistants. See the plugin README files for full details.
 
+### Automation
+
+> **Location:** [plugins/automation/](./plugins/automation/)
+
+AI-assisted implementation of [Automation process](https://docs.kentico.com/documentation/business-users/digital-marketing/automation) extensions in Xperience by Kentico — starting with **custom automation actions** (custom step types in the Automation Builder). The AI reviews your project conventions and the action API, confirms the action's behavior and properties with you, then emits the action class, the optional properties model with form-component annotations, and the assembly-level `RegisterAutomationAction<>` registration. Full instructions are available in the [README](./plugins/automation/README.md).
+
+| Skill                       | Description                                                                                                  |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `automation-action-create`  | Researches the project and the action API, then implements a registered custom automation action and (optionally) its properties model |
+
 ### Widget creation
 
 > **Location:** [plugins/widget-creation/](./plugins/widget-creation/)
@@ -111,6 +121,7 @@ This repository is an [agent plugin marketplace](https://code.visualstudio.com/d
 
 ```bash
 copilot plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
+copilot plugin install automation@xperience-by-kentico-kenticopilot
 copilot plugin install widget-creation@xperience-by-kentico-kenticopilot
 copilot plugin install kx13-content-audit@xperience-by-kentico-kenticopilot
 copilot plugin install kx13-content-migration@xperience-by-kentico-kenticopilot
@@ -122,6 +133,7 @@ copilot plugin install configure-cd-repository@xperience-by-kentico-kenticopilot
 
 ```bash
 /plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
+/plugin install automation@xperience-by-kentico-kenticopilot
 /plugin install widget-creation@xperience-by-kentico-kenticopilot
 /plugin install kx13-content-audit@xperience-by-kentico-kenticopilot
 /plugin install kx13-content-migration@xperience-by-kentico-kenticopilot
