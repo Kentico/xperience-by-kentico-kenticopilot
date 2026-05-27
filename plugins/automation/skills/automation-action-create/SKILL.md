@@ -23,11 +23,13 @@ You implement a custom **automation process action** in an Xperience by Kentico 
 - Read **`references/guardrails.md`** — team rules and conventions beyond the API spec.
 - Fetch supplementary docs listed in **`references/docs.md`** via the Kentico Docs MCP if needed (form-component reference for less common attributes, visibility conditions).
 
-### 2. Discover the project
+### 2. Discover the project and the surrounding APIs
 
 - Search for `AutomationAction<` and `RegisterAutomationAction<`. If existing actions are found, mirror their folder, namespace, and registration style.
 - If none exist, follow the project's conventions for similar extensibility (widgets, page templates). Default to an `Automation/` folder at the project root.
 - Note DI registration patterns and whether the project uses `.resx` localization in component metadata.
+- **Verify the API surface of any Xperience service you plan to inject** (e.g. `IConsentAgreementService`, `IInfoProvider<TInfo>`, `INotificationEmailMessageProvider`) before calling its methods — check the actual method signatures, return types, and whether they are sync or async. Do not assume.
+- **If the action integrates with an external service** (Twilio, Slack, HubSpot, Salesforce, a webhook, an SDK, etc.) — briefly research that service's documentation and request shape (via Kentico Docs MCP for Kentico-side concerns, and via WebSearch/WebFetch for the third-party API). Enough to make the SDK call or HTTP payload look realistic, including: the canonical SDK entry point or HTTP endpoint, required authentication shape, the request body, and how the provider signals errors / duplicates. Capture credentials in a typed `*Options` class bound to `appsettings.json` — never on `TProperties`.
 
 ### 3. Confirm the design
 
@@ -45,6 +47,8 @@ Write the files following these rules (full detail in `guardrails.md`):
 - External calls keyed by a stable identifier from `context.ProcessedObject` (typically `ContactInfo.ContactID`) for idempotency.
 - No secrets in `TProperties` — read them from `IConfiguration` / `IOptions<T>`.
 - Outbound HTTP uses typed `HttpClient` registered with `services.AddHttpClient<TAction>()`.
+- Cast `context.ProcessedObject` to the expected type and short-circuit on mismatch — see the canonical guard in `guardrails.md`.
+- Prefer declarative validation attributes (`RequiredValidationRule`, `MaxLengthValidationRule`, `MinimumIntegerValueValidationRule`, `MaximumIntegerValueValidationRule`, `MinimumDecimalValueValidationRule`, ...) on `TProperties` instead of hand-rolled checks in `Execute`. Reserve `Execute` validation for cross-property or runtime conditions only.
 
 ### 5. Verify
 

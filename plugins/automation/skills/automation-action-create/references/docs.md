@@ -12,3 +12,8 @@ Fetch these on demand via the **Kentico Docs MCP**. If a page is not yet publish
 - Form components reference: <https://docs.kentico.com/documentation/developers-and-admins/customization/extend-the-administration-interface/ui-form-components/reference-admin-ui-form-components>
   - Canonical catalog of attributes — fetch when picking attributes for `TProperties`.
 - Visibility conditions: <https://docs.kentico.com/documentation/developers-and-admins/customization/extend-the-administration-interface/ui-form-components/visibility-conditions>
+
+## Icon catalog (for `IconName`)
+
+- Annotated Xperience icons library: <https://github.com/Kentico/xperience-by-kentico-component-icons>
+  - Canonical list of available icons with descriptions. Pick the icon name whose intent matches the action; the default for registration is `xp-cogwheel`.

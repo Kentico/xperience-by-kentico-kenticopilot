@@ -2,6 +2,25 @@
 
 Rules that go beyond what the API documentation (`automation-customization.md`) says. Security policies, concurrency rules, and conventions specific to this codebase.
 
+## Canonical patterns
+
+### `ProcessedObject` guard
+
+Every action that expects a contact must short-circuit when the processed object is not a `ContactInfo`. Use this exact shape:
+
+```csharp
+if (context.ProcessedObject is not ContactInfo contact)
+{
+    logger.LogWarning(
+        "Skipping {ActionName} — processed object is not a contact (got '{ObjectType}').",
+        nameof(MyAction),
+        context.ProcessedObject?.TypeInfo.ObjectType);
+    return;
+}
+```
+
+Substitute the expected type if the action handles a different object type. Never assume the cast succeeds — `ProcessedObject` is `BaseInfo`.
+
 ## Concurrency
 
 - Do not keep per-execution state in instance fields. The action class instance may be reused across executions, and `Execute` may run concurrently for different processed objects.
