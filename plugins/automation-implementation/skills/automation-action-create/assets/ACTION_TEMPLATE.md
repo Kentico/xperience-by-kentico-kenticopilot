@@ -24,9 +24,9 @@ For each property, decide:
 - Default value.
 - Form category for UI grouping, if any.
 - Visibility condition, if any (`[VisibleIfTrue(nameof(...))]`).
-- Marketer-facing label and explanation/watermark text.
+- Marketer-facing label, plus optional explanation and/or watermark text (e.g. `Label = "Webhook URL"`, `ExplanationText = "Slack incoming webhook (https://hooks.slack.com/...)"`, `WatermarkText = "https://hooks.slack.com/services/..."`).
 
-Decide whether to override the default **Step name** input by declaring a `StepDisplayName` property with its own form-component annotation.
+Only when the action has `TProperties`: optionally override the default **Step name** input by declaring a `StepDisplayName` property on the properties class with its own form-component annotation. For no-properties actions this override isn't available — the marketer enters the step name in the default input.
 
 ## Runtime behavior
 
@@ -55,7 +55,7 @@ For each service: type, where it's registered, lifestyle. Confirm any that aren'
 - Action extends the right base class and overrides `Execute`.
 - `[assembly: RegisterAutomationAction<...>]` is either above the `namespace` in the action's file or in a central registration class.
 - Identifier is letters/digits/underscores/dots only and unique in the solution.
-- `TProperties` implements `IAutomationActionProperties`; public read/write auto-properties; sensible defaults; validation rules attached where appropriate.
+- `TProperties` implements `IAutomationActionProperties`; public properties with both getter and setter; sensible defaults; validation rules attached where appropriate.
 - Every annotated property has a `Label` and an explicit `Order`.
 - `IAutomationProcessData` implementations declare a unique `Identifier` and store non-personal data only.
 - All injected dependencies are registered.

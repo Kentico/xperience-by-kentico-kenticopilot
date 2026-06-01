@@ -2,20 +2,10 @@
 
 AI-assisted skills for extending [Automation processes](https://docs.kentico.com/documentation/business-users/digital-marketing/automation) in Xperience by Kentico — starting with **custom automation actions** (custom step types in the Automation Builder).
 
-## What the skill does
-
-The plugin ships one skill, `automation-action-create`, that walks the agent through a single conversation:
-
-1. **Reads** the action API reference and project guardrails bundled with the skill, and pulls supplementary Xperience docs via the Kentico Docs MCP.
-2. **Inspects** the target Xperience by Kentico project for existing actions, namespace conventions, DI patterns, and `.resx` localization.
-3. **Confirms** the missing pieces with you in chat: identifier, display name, icon, tooltip, configurable properties (each with type, form component, default, visibility conditions), runtime behavior, and dependencies.
-4. **Generates** the action class, the optional `TProperties` class with form-component annotations, the assembly-level `RegisterAutomationAction<>` attribute, and any `.resx` strings the project already uses.
-5. **Verifies** by building and grepping for identifier collisions.
-
 ## Prerequisites
 
 - Xperience by Kentico project with the custom automation action API available
-- AI coding assistant (for example, GitHub Copilot or Claude Code)
+- AI coding assistant (for example, GitHub Copilot, Copilot CLI, or Claude Code)
 - A short description of what the action should do and what — if anything — marketers should be able to configure on the step
 
 ## Install the plugin
@@ -44,11 +34,17 @@ copilot plugin install automation-implementation@xperience-by-kentico-kenticopil
 /plugin install automation-implementation@xperience-by-kentico-kenticopilot
 ```
 
-## Available skills
+## Skills
 
-| Skill                       | Description                                                                                                                                                    |
-| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `automation-action-create`  | Researches the project and the action API, confirms requirements, and implements a registered custom automation action and (optionally) its properties model. |
+### `automation-action-create`
+
+Researches the project and the action API, then implements **and registers** a custom automation action and (optionally) its `IAutomationActionProperties`-implementing properties class. The skill walks the agent through a single conversation:
+
+1. **Reads** the action API reference and code-quality guardrails bundled with the skill, and pulls supplementary Xperience docs via the Kentico Docs MCP.
+2. **Inspects** the target Xperience by Kentico project for existing actions, namespace conventions, DI patterns, and `.resx` localization.
+3. **Confirms** the missing pieces with you in chat: identifier, display name, icon, tooltip, configurable properties (each with type, form component, default, validation rules, visibility conditions), runtime behavior, and dependencies.
+4. **Generates** the action class, the optional `TProperties` class (implementing `IAutomationActionProperties`) with form-component annotations, the assembly-level `RegisterAutomationAction<>` attribute, and any `.resx` strings the project already uses.
+5. **Verifies** by building and grepping for identifier collisions.
 
 ## Usage
 
@@ -93,7 +89,7 @@ The first five extend `AutomationAction<TProperties>`; `ResetLeadScoreAction` us
 ### References (read by the agent)
 
 - `references/automation-customization.md` — snapshot of the official **Automation customization** documentation page (base classes, registration, `AutomationProcessContext`, `IAutomationProcessData`, form components, validation rules, best practices). Will be replaced by a link to the live docs page once it is published.
-- `references/guardrails.md` — team rules and security/concurrency conventions beyond the API spec (no secrets in `TProperties`, `ILogger<T>` over `IEventLogService`, typed `HttpClient`, idempotency, marketer-experience conventions).
+- `references/guardrails.md` — code-quality guardrails beyond the API spec (no secrets in `TProperties`, `ILogger<T>` over `IEventLogService`, typed `HttpClient`, idempotency, marketer-experience conventions).
 - `references/docs.md` — supplementary Xperience documentation pages the agent fetches via the Kentico Docs MCP.
 
 ### Templates

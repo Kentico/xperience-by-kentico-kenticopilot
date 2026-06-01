@@ -1,6 +1,6 @@
-# Guardrails — team rules and design patterns
+# Code quality guardrails
 
-Rules that go beyond what the API documentation (`automation-customization.md`) says. Security policies, concurrency rules, and conventions specific to this codebase.
+Rules that go beyond what the API documentation (`automation-customization.md`) says. Security, concurrency, idempotency, and house-style conventions for custom automation actions.
 
 ## Canonical patterns
 
@@ -19,7 +19,7 @@ if (context.ProcessedObject is not ContactInfo contact)
 }
 ```
 
-Substitute the expected type if the action handles a different object type. Never assume the cast succeeds — `ProcessedObject` is `BaseInfo`.
+Never assume the cast succeeds — `ProcessedObject` is `BaseInfo`.
 
 ## Concurrency
 
@@ -36,7 +36,7 @@ Substitute the expected type if the action handles a different object type. Neve
 
 ## External calls and idempotency
 
-- When the action talks to an external system, key the call by a stable identifier derived from `context.ProcessedObject` (typically `ContactInfo.ContactID`) so retries — caused by failures or republishes — do not double-apply.
+- When the action talks to an external system, key the call by a stable identifier derived from the cast contact so retries — caused by failures or republishes — do not double-apply. `ContactInfo.ContactID` is local to the database; use `ContactInfo.ContactGUID` when the external system needs a globally stable key.
 
 ## Async
 
@@ -51,6 +51,6 @@ Substitute the expected type if the action handles a different object type. Neve
 
 ## Marketer experience
 
-- Pick an icon (`xp-...` class) that matches the action's intent. Default is `xp-cogwheel`.
+- Pick a specific icon (`xp-...` class) that matches the action's intent — only fall back to `xp-cogwheel` if nothing better fits.
 - `Tooltip` answers "what does this step do?" in one sentence.
 - Use marketer-friendly labels on properties (`Webhook URL`, not `WebhookEndpoint`).

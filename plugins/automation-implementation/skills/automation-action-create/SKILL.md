@@ -20,8 +20,8 @@ You implement a custom **automation process action** in an Xperience by Kentico 
 ### 1. Read context
 
 - Read **`references/automation-customization.md`** — base classes, registration, `AutomationProcessContext`, `IAutomationProcessData`, form components, validation rules, best practices.
-- Read **`references/guardrails.md`** — team rules and conventions beyond the API spec.
-- Fetch supplementary docs listed in **`references/docs.md`** via the Kentico Docs MCP if needed (form-component reference for less common attributes, visibility conditions).
+- Read **`references/guardrails.md`** — code quality guardrails beyond the API spec.
+- Fetch supplementary docs listed in **`references/docs.md`** via the Kentico Docs MCP if needed (form-component reference, visibility conditions, validation rules — see `references/docs.md` for the catalog of pages worth fetching on demand).
 
 ### 2. Discover the project and the surrounding APIs
 
@@ -44,11 +44,12 @@ Write the files following these rules (full detail in `guardrails.md`):
 - Constructor injection for dependencies; verify every injected service is registered with the DI container.
 - Use `ILogger<T>` for logging — not `IEventLogService`.
 - Never `.Result`/`.Wait()`; no static mutable state; no per-execution state in instance fields.
-- External calls keyed by a stable identifier from `context.ProcessedObject` (typically `ContactInfo.ContactID`) for idempotency.
+- Cast `context.ProcessedObject` to `ContactInfo` and short-circuit on mismatch — see the canonical guard in `guardrails.md`.
+- External calls keyed by a stable identifier on the cast contact (typically `ContactInfo.ContactID`; prefer `ContactInfo.ContactGUID` when the external system needs a globally stable key) for idempotency.
 - No secrets in `TProperties` — read them from `IConfiguration` / `IOptions<T>`.
-- Outbound HTTP uses typed `HttpClient` registered with `services.AddHttpClient<TAction>()`.
-- Cast `context.ProcessedObject` to the expected type and short-circuit on mismatch — see the canonical guard in `guardrails.md`.
+- Outbound HTTP uses typed `HttpClient` registered with `services.AddHttpClient<TAction>()` — this binds a factory-pooled `HttpClient` to the action class, avoiding both socket exhaustion (from `new`-ing `HttpClient` per call) and stale DNS (from a long-lived singleton). The typed form also lets you centralise base address, default headers, and `DelegatingHandler`s (retry / auth / logging) without leaking that wiring into `Execute`.
 - Prefer declarative validation attributes (`RequiredValidationRule`, `MaxLengthValidationRule`, `MinimumIntegerValueValidationRule`, `MaximumIntegerValueValidationRule`, `MinimumDecimalValueValidationRule`, ...) on `TProperties` instead of hand-rolled checks in `Execute`. Reserve `Execute` validation for cross-property or runtime conditions only.
+- Form-component attributes and validation rules come from `Kentico.Xperience.Admin.Base.FormAnnotations` (plus `Kentico.Xperience.Admin.Content.FormAnnotations` and `Kentico.Xperience.Admin.DigitalMarketing.FormAnnotations` for content- and marketing-specific selectors). Do **not** import `Kentico.Forms.Web.Mvc` — that namespace contains obsolete classes with matching names (`ValidationRule`, `RegisterFormValidationRule`, ...) for the live-site Form Builder, which is the wrong API surface here.
 
 ### 5. Verify
 

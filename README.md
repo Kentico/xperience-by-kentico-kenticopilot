@@ -25,7 +25,7 @@ AI-assisted implementation of [Automation process](https://docs.kentico.com/docu
 
 | Skill                       | Description                                                                                                  |
 | --------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `automation-action-create`  | Researches the project and the action API, then implements a registered custom automation action and (optionally) its properties model |
+| `automation-action-create`  | Researches the project and the action API, then implements **and registers** a custom automation action and (optionally) its properties model |
 
 ### Widget creation
 
