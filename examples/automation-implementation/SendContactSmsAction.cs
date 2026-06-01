@@ -5,12 +5,10 @@ using CMS.Automation;
 using CMS.ContactManagement;
 
 using Kentico.Xperience.Admin.Base.FormAnnotations;
-using Kentico.Xperience.DancingGoat.Automation;
 
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
-using Twilio;
+using Twilio.Clients;
 using Twilio.Rest.Api.V2010.Account;
 using Twilio.Types;
 
@@ -53,18 +51,25 @@ public class SendContactSmsActionProperties : IAutomationActionProperties
 /// <c>Twilio.Rest.Api.V2010.Account.MessageResource.CreateAsync</c>.
 /// </summary>
 /// <remarks>
-/// Twilio credentials are bound from the <c>Twilio</c> section of <c>appsettings.json</c> via
-/// <see cref="TwilioOptions"/>. The static Twilio client is initialized once per action instance.
+/// The host registers <see cref="ITwilioRestClient"/> once and the DI container manages its
+/// lifetime. A typical wiring in <c>Program.cs</c> reads credentials from a typed
+/// <c>TwilioOptions</c> bound to <c>appsettings.json</c>:
+/// <code>
+/// services.Configure&lt;TwilioOptions&gt;(builder.Configuration.GetSection("Twilio"));
+/// services.AddSingleton&lt;ITwilioRestClient&gt;(sp =&gt;
+/// {
+///     var opts = sp.GetRequiredService&lt;IOptions&lt;TwilioOptions&gt;&gt;().Value;
+///     return new TwilioRestClient(opts.AccountSid, opts.AuthToken);
+/// });
+/// </code>
+/// This keeps a single container-managed client instance and respects the concurrency guardrail
+/// (no per-execution mutable state in the action; no global static init from inside Execute).
 /// </remarks>
 public class SendContactSmsAction(
-    IOptions<TwilioOptions> twilioOptions,
+    ITwilioRestClient twilioRestClient,
     ILogger<SendContactSmsAction> logger)
     : AutomationAction<SendContactSmsActionProperties>
 {
-    private readonly TwilioOptions twilioOptions = twilioOptions.Value;
-    private bool clientInitialized;
-
-
     public override async Task Execute(
         SendContactSmsActionProperties properties,
         AutomationProcessContext context,
@@ -87,9 +92,13 @@ public class SendContactSmsAction(
 
         var body = properties.MessageTemplate.Replace(
             "{ContactFirstName}",
-            string.IsNullOrEmpty(contact.ContactFirstName) ? "there" : contact.ContactFirstName);
+            string.IsNullOrEmpty(contact.ContactFirstName) ? "valued customer" : contact.ContactFirstName);
 
-        var message = await SendViaTwilioAsync(properties.SenderId, phone, body, cancellationToken);
+        var message = await MessageResource.CreateAsync(
+            to: new PhoneNumber(phone),
+            from: new PhoneNumber(properties.SenderId),
+            body: body,
+            client: twilioRestClient);
 
         logger.LogInformation(
             "Twilio SMS sent for contact {ContactId} to {RecipientPhone} (sid {MessageSid}, status {Status}).",
@@ -104,27 +113,4 @@ public class SendContactSmsAction(
         !string.IsNullOrWhiteSpace(contact.ContactMobilePhone)
             ? contact.ContactMobilePhone
             : contact.ContactBusinessPhone;
-
-
-    private async Task<MessageResource> SendViaTwilioAsync(string from, string to, string body, CancellationToken cancellationToken)
-    {
-        EnsureTwilioClientInitialized();
-
-        return await MessageResource.CreateAsync(
-            to: new PhoneNumber(to),
-            from: new PhoneNumber(from),
-            body: body);
-    }
-
-
-    private void EnsureTwilioClientInitialized()
-    {
-        if (clientInitialized)
-        {
-            return;
-        }
-
-        TwilioClient.Init(twilioOptions.AccountSid, twilioOptions.AuthToken);
-        clientInitialized = true;
-    }
 }

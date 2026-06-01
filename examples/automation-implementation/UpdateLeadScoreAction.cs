@@ -6,7 +6,6 @@ using CMS.Automation;
 using CMS.ContactManagement;
 
 using Kentico.Xperience.Admin.Base.FormAnnotations;
-using Kentico.Xperience.DancingGoat.Automation;
 
 using Microsoft.Extensions.Logging;
 

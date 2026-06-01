@@ -7,15 +7,15 @@ using CMS.Automation;
 using CMS.ContactManagement;
 
 using Kentico.Xperience.Admin.Base.FormAnnotations;
-using Kentico.Xperience.DancingGoat.Automation;
 
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 [assembly: RegisterAutomationAction<NotifySalesOnSlackAction>(
     identifier: "DancingGoat.NotifySalesOnSlack",
     displayName: "Notify sales on Slack",
     IconName = "xp-bell",
-    Tooltip = "Posts a templated message to a configured Slack incoming webhook when a contact reaches this step.")]
+    Tooltip = "Posts a templated message to the configured Slack incoming webhook when a contact reaches this step.")]
 
 namespace Kentico.Xperience.DancingGoat.Automation;
 
@@ -23,20 +23,17 @@ namespace Kentico.Xperience.DancingGoat.Automation;
 /// <summary>
 /// Configurable properties for <see cref="NotifySalesOnSlackAction"/>.
 /// </summary>
+/// <remarks>
+/// The Slack webhook URL embeds a tokenized path and is treated as a secret — it lives in
+/// <c>appsettings.json</c> (bound to <c>SlackOptions</c>), not on the step. Marketers only edit
+/// the message template here.
+/// </remarks>
 public class NotifySalesOnSlackActionProperties : IAutomationActionProperties
 {
-    [TextInputComponent(
-        Label = "Webhook URL",
-        ExplanationText = "Slack incoming webhook URL (https://hooks.slack.com/services/...).",
-        Order = 1)]
-    [RequiredValidationRule]
-    public string WebhookUrl { get; set; } = "";
-
-
     [TextAreaComponent(
         Label = "Message template",
         ExplanationText = "Use {ContactDescriptiveName} as a placeholder for the contact's display name.",
-        Order = 2)]
+        Order = 1)]
     [RequiredValidationRule]
     public string MessageTemplate { get; set; } = "Hot lead reached the qualification step: {ContactDescriptiveName}";
 }
@@ -48,11 +45,25 @@ public class NotifySalesOnSlackActionProperties : IAutomationActionProperties
 /// Uses a typed <see cref="HttpClient"/> registered via
 /// <c>services.AddHttpClient&lt;NotifySalesOnSlackAction&gt;()</c>.
 /// </summary>
+/// <remarks>
+/// <para>
+/// The host wires the webhook URL through a typed <c>SlackOptions</c> (with a <c>WebhookUrl</c>
+/// property) bound to the <c>Slack</c> section of <c>appsettings.json</c>:
+/// </para>
+/// <code>
+/// services.Configure&lt;SlackOptions&gt;(builder.Configuration.GetSection("Slack"));
+/// services.AddHttpClient&lt;NotifySalesOnSlackAction&gt;();
+/// </code>
+/// </remarks>
 public class NotifySalesOnSlackAction(
     HttpClient httpClient,
+    IOptions<SlackOptions> slackOptions,
     ILogger<NotifySalesOnSlackAction> logger)
     : AutomationAction<NotifySalesOnSlackActionProperties>
 {
+    private readonly SlackOptions slackOptions = slackOptions.Value;
+
+
     public override async Task Execute(
         NotifySalesOnSlackActionProperties properties,
         AutomationProcessContext context,
@@ -74,7 +85,7 @@ public class NotifySalesOnSlackAction(
         // https://api.slack.com/messaging/webhooks#advanced_message_formatting
         var payload = new { text };
 
-        var response = await httpClient.PostAsJsonAsync(properties.WebhookUrl, payload, cancellationToken);
+        var response = await httpClient.PostAsJsonAsync(slackOptions.WebhookUrl, payload, cancellationToken);
 
         if (!response.IsSuccessStatusCode)
         {

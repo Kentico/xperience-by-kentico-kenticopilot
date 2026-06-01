@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,7 +8,6 @@ using CMS.DataEngine;
 using CMS.DataProtection;
 
 using Kentico.Xperience.Admin.Base.FormAnnotations;
-using Kentico.Xperience.DancingGoat.Automation;
 
 using Microsoft.Extensions.Logging;
 
@@ -24,19 +21,6 @@ namespace Kentico.Xperience.DancingGoat.Automation;
 
 
 /// <summary>
-/// Action to take on the selected consent.
-/// </summary>
-public enum ConsentActionOption
-{
-    [Description("Grant consent")]
-    Agree,
-
-    [Description("Revoke consent")]
-    Revoke,
-}
-
-
-/// <summary>
 /// Configurable properties for <see cref="UpdateContactConsentAction"/>.
 /// </summary>
 public class UpdateContactConsentActionProperties : IAutomationActionProperties
@@ -45,14 +29,15 @@ public class UpdateContactConsentActionProperties : IAutomationActionProperties
         ConsentInfo.OBJECT_TYPE,
         Label = "Consent",
         Order = 1)]
-    public IEnumerable<int> Consent { get; set; } = [];
+    [RequiredValidationRule]
+    public int? Consent { get; set; }
 
 
     [DropDownComponent(
         Label = "Action",
         Options = "Agree;Grant consent\nRevoke;Revoke consent",
         Order = 2)]
-    public string Action { get; set; } = nameof(ConsentActionOption.Agree);
+    public string Action { get; set; } = UpdateContactConsentAction.AgreeAction;
 }
 
 
@@ -66,6 +51,10 @@ public class UpdateContactConsentAction(
     ILogger<UpdateContactConsentAction> logger)
     : AutomationAction<UpdateContactConsentActionProperties>
 {
+    internal const string AgreeAction = "Agree";
+    internal const string RevokeAction = "Revoke";
+
+
     public override Task Execute(
         UpdateContactConsentActionProperties properties,
         AutomationProcessContext context,
@@ -79,8 +68,7 @@ public class UpdateContactConsentAction(
             return Task.CompletedTask;
         }
 
-        var consentId = properties.Consent?.FirstOrDefault() ?? 0;
-        if (consentId <= 0)
+        if (properties.Consent is not int consentId)
         {
             logger.LogWarning("Skipping UpdateContactConsent for contact {ContactId} — no consent selected on the step.", contact.ContactID);
             return Task.CompletedTask;
@@ -93,7 +81,7 @@ public class UpdateContactConsentAction(
             return Task.CompletedTask;
         }
 
-        if (string.Equals(properties.Action, nameof(ConsentActionOption.Revoke), System.StringComparison.OrdinalIgnoreCase))
+        if (string.Equals(properties.Action, RevokeAction, StringComparison.OrdinalIgnoreCase))
         {
             consentAgreementService.Revoke(contact, consent);
             logger.LogInformation("Revoked consent '{ConsentName}' for contact {ContactId}.", consent.ConsentName, contact.ContactID);

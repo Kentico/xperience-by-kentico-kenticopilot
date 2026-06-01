@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using CMS.Automation;
 using CMS.ContactManagement;
 
-using Kentico.Xperience.DancingGoat.Automation;
-
 using Microsoft.Extensions.Logging;
 
 [assembly: RegisterAutomationAction<ResetLeadScoreAction>(
