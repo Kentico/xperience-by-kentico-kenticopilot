@@ -38,7 +38,7 @@ copilot plugin install automation-implementation@xperience-by-kentico-kenticopil
 
 ### `automation-action-create`
 
-Researches the project and the action API, then implements **and registers** a custom automation action and (optionally) its `IAutomationActionProperties`-implementing properties class. The skill walks the agent through a single conversation:
+Researches the project and the action API, then implements and registers a custom automation action and (optionally) its `IAutomationActionProperties`-implementing properties class. The skill walks the agent through a single conversation:
 
 1. **Reads** the action API reference and code-quality guardrails bundled with the skill, and pulls supplementary Xperience docs via the Kentico Docs MCP.
 2. **Inspects** the target Xperience by Kentico project for existing actions, namespace conventions, DI patterns, and `.resx` localization.
