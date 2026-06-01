@@ -34,14 +34,14 @@ Add the marketplace to your VS Code settings (`settings.json`), then browse and 
 
 ```bash
 copilot plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
-copilot plugin install automation@xperience-by-kentico-kenticopilot
+copilot plugin install automation-implementation@xperience-by-kentico-kenticopilot
 ```
 
 ### Claude Code
 
 ```bash
 /plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
-/plugin install automation@xperience-by-kentico-kenticopilot
+/plugin install automation-implementation@xperience-by-kentico-kenticopilot
 ```
 
 ## Available skills
@@ -75,7 +75,7 @@ process data. No configurable properties.
 
 ## Examples
 
-The `examples/automation/` folder contains canonical action samples covering distinct patterns:
+The `examples/automation-implementation/` folder contains canonical action samples covering distinct patterns:
 
 | Example                          | Pattern                                                                          |
 | -------------------------------- | -------------------------------------------------------------------------------- |
