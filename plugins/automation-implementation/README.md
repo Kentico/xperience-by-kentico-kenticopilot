@@ -71,7 +71,7 @@ process data. No configurable properties.
 
 ## Examples
 
-The `examples/` folder (next to this README) contains canonical action samples covering distinct patterns:
+The `skills/automation-action-create/examples/` folder contains canonical action samples covering distinct patterns:
 
 | Example                          | Pattern                                                                          |
 | -------------------------------- | -------------------------------------------------------------------------------- |
