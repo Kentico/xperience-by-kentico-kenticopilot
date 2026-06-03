@@ -84,6 +84,9 @@ Place the KX13 source, XbyK target, Migration Tool, and the content-audit output
 └── MigrationProtocol/               # Created by migrate-run; consumed by migrate-eval
 ```
 
+> [!TIP]
+> While many agents can adapt to different folder names and structures, following the diagram above will align your workspace with the skills and reduce the risk of issues.
+
 Ensure the KX13 database is reachable from the machine running the Migration Tool, and that the XbyK database is initialized but otherwise empty (or carrying prior migration data to upsert).
 
 ### Configure MCP servers

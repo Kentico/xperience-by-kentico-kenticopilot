@@ -50,7 +50,7 @@ copilot plugin install kx13-content-audit@xperience-by-kentico-kenticopilot
 
 The plugin install does not include the CLI source. Set it up once per workspace:
 
-1. Clone this repository so the plugin folder is available locally.
+1. Clone this repository so the plugin folder is available locally. (We recommend ensuring the *kx13-content-audit* folder sits directly in the root of your workspace.)
 2. Configure the connection string in the CLI project's `appsettings.json` (`src/KX13.ContentAuditor.CLI/appsettings.json` inside the plugin folder):
 
    ```json
