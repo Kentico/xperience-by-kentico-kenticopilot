@@ -4,7 +4,7 @@ This repository contains AI agent skills, instructions, and related materials fo
 
 ## What belongs here
 
-These resources are for **Kentico Xperience developers** and are designed to be invoked by AI assistants (e.g., GitHub Copilot, Claude Code) to help developers complete tasks more efficiently. Resources intended for non-developers (e.g., marketing, sales, or support) should not be contributed here.
+These resources are for **Kentico Xperience developers** and are used through AI assistants and tools (e.g., GitHub Copilot, Claude Code) to help complete tasks more efficiently. Resources intended for non-developers (e.g., marketing, sales, or support) should not be contributed here.
 
 Resources must not duplicate information already available in the Kentico documentation. Instead, link the relevant documentation pages and provide additional context.
 
@@ -29,7 +29,6 @@ Resources must not duplicate information already available in the Kentico docume
         ├── agents/                 # Subagent definitions — one Markdown file per subagent (optional)
         └── skills/
             ├── _shared/            # References shared by multiple skills in the plugin (optional)
-            │   └── references/
             └── <skill-name>/
                 ├── SKILL.md        # Required — the skill definition
                 ├── assets/         # Templates and code samples the skill writes/copies (optional)
@@ -47,7 +46,7 @@ There are three basic types of resource you can add. Use this table to help you 
 | Skill    | `plugins/<plugin>/skills/<name>/`   | lowercase, hyphenated, descriptive | No (scoped by plugin) | No                 |
 | Subagent | `plugins/<plugin>/agents/<name>.md` | lowercase, hyphenated, descriptive | No (scoped by plugin) | No                 |
 
-**Shared conventions** (apply to every resource): keep each one lean and focused on a single task; write descriptions that trigger the resource reliably but aren't so long they become overwhelming; and avoid assistant-specific features and fields, since these resources are used by different AI assistants. All files related to a resource live inside that resource's folder.
+**Shared conventions** (apply to every resource): keep each one lean and tightly scoped — a plugin to one domain, a skill or subagent to a single task; write descriptions that trigger the resource reliably but aren't so long they become overwhelming; and avoid features or fields specific to a single AI tool, since these resources are used by different AI assistants. All files related to a resource live inside that resource's folder.
 
 ### Plugin
 
