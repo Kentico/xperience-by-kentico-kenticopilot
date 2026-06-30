@@ -1,8 +1,35 @@
 # Kentico web development
 
-Skills and references for building Xperience by Kentico websites. The plugin currently focuses on AI-assisted creation of [Page Builder](https://docs.kentico.com/x/6QWiCQ) widgets, with more web-development capabilities planned.
+Skills and references for building Xperience by Kentico websites.
 
-## Workflow
+| Skill | Description |
+| --- | --- |
+| `widget-create-research` | Analyzes requirements and design, generates implementation instructions |
+| `widget-create-implementation` | Creates widget code following the generated instructions and project conventions |
+| `agentify` | Audits an XbyK project for agentic-development readiness, reports gaps, and applies fixes on request |
+
+## Agentic readiness (`agentify`)
+
+`agentify` prepares an Xperience by Kentico project for AI-assisted development. It audits the project against Kentico's agentic-development best practices, writes an `agentic-readiness-report.md`, and — with your confirmation — fixes the gaps it finds.
+
+It checks:
+
+- **Agent instructions** (`AGENTS.md` / `CLAUDE.md`) — project overview, dev-environment setup, run & verify instructions, MCP-usage instructions, and pointers to further guidance.
+- **Design / architecture / interactions guidance** — recommending description-driven **passive skills** over static `DESIGN.md` / `ARCHITECTURE.md` / `INTERACTIONS.md` files.
+- **Kentico Docs MCP** and **Kentico Management MCP** — configured and accessible to the agent.
+- **Code quality** — SOLID / reusability and no outdated technology.
+
+When fixing the **Management MCP** gap, the skill can enable the management API in your app (NuGet package + `Program.cs` + a secret) and add the local MCP server. This is a Kentico **preview, local-development-only** feature — `agentify` confirms before editing application code and never enables it for production.
+
+**Claude Code example**
+
+```
+/agentify
+
+Project root: C:/my-project
+```
+
+## Widget creation workflow
 
 These prompts provide two-stage AI assistance for building custom Page Builder widgets:
 

@@ -27,6 +27,7 @@ Skills and references for building Xperience by Kentico websites. The first capa
 | ------------------------------ | --------------------------------------------------------------------------------- |
 | `widget-create-research`       | Analyzes requirements and design files, generates implementation instructions     |
 | `widget-create-implementation` | Creates widget code following the generated instructions and project conventions  |
+| `agentify`                     | Audits an XbyK project for agentic-development readiness, reports gaps, and applies fixes on request |
 
 ### KX13 → Xperience by Kentico migration
 
