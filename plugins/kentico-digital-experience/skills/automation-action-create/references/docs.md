@@ -1,6 +1,13 @@
 # Documentation links
 
-Fetch these on demand via the **Kentico Docs MCP**. If a page is not yet published (the custom-action API is being released alongside this plugin), skip silently — `references/automation-customization.md` already contains the authoritative API surface.
+Fetch these on demand via the **Kentico Docs MCP**. Treat the live pages below as the authoritative source for the contract (base classes, registration attribute, identifier constraints, runtime context, process data). Do not rely on a bundled snapshot.
+
+## Automation customization (primary API reference)
+
+- Custom automation steps: <https://docs.kentico.com/documentation/developers-and-admins/digital-marketing-setup/automation-customization/automation-custom-steps>
+  - Authoritative API surface: the `AutomationAction` / `AutomationAction<TProperties>` base classes and their `Execute` overrides, the `RegisterAutomationAction<TAction>` assembly attribute and its parameters (`identifier`, `displayName`, optional `IconName`, `Description`), identifier constraints, the `AutomationProcessContext` (processed contact via `GetProcessedObject`, `Process.DisplayName`, trigger data via `GetTriggerData<T>`, cross-step data via `GetProcessData<T>` / `SetProcessData<T>`), and `IAutomationProcessData`. Fetch this first when implementing an action.
+- Automation customization overview: <https://docs.kentico.com/documentation/developers-and-admins/digital-marketing-setup/automation-customization>
+  - The kinds of custom automation components and where actions fit.
 
 ## Automation processes
 
@@ -20,4 +27,4 @@ Fetch these on demand via the **Kentico Docs MCP**. If a page is not yet publish
 ## Icon catalog (for `IconName`)
 
 - Annotated Xperience icons library: <https://github.com/Kentico/xperience-by-kentico-component-icons>
-  - Canonical list of available icons with descriptions. Pick the icon name whose intent matches the action; the default for registration is `xp-cogwheel`.
+  - Canonical list of available icons with descriptions. Reference icons through the `Kentico.Xperience.Admin.Base.Icons` constants (e.g. `Icons.Bell`) rather than raw `xp-` strings; the default for registration is `Icons.Cogwheel` (`xp-cogwheel`).

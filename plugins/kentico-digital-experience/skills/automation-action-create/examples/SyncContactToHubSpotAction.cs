@@ -4,15 +4,15 @@ using System.Threading.Tasks;
 using CMS.Automation;
 using CMS.ContactManagement;
 
-using Kentico.Xperience.Admin.Base.FormAnnotations;
+using Kentico.Xperience.Admin.Base;
 
 using Microsoft.Extensions.Logging;
 
 [assembly: RegisterAutomationAction<SyncContactToHubSpotAction>(
-    identifier: "DancingGoat.SyncContactToHubSpot",
+    identifier: SyncContactToHubSpotAction.IDENTIFIER,
     displayName: "Sync contact to HubSpot",
-    IconName = "xp-arrow-right-top-square",
-    Tooltip = "Pushes the contact's mapped fields to a HubSpot list. Updates the contact when it already exists (keyed by email).")]
+    IconName = Icons.ArrowRightTopSquare,
+    Description = "Pushes the contact's mapped fields to a HubSpot list. Updates the contact when it already exists (keyed by email).")]
 
 namespace Kentico.Xperience.DancingGoat.Automation;
 
@@ -42,32 +42,6 @@ public sealed class ContactFieldMapping
 
 
 /// <summary>
-/// Configurable properties for <see cref="SyncContactToHubSpotAction"/>.
-/// </summary>
-public class SyncContactToHubSpotActionProperties : IAutomationActionProperties
-{
-    [TextInputComponent(
-        Label = "Target list ID",
-        ExplanationText = "HubSpot static list identifier the contact should be added to after upsert.",
-        Order = 1)]
-    [RequiredValidationRule]
-    public string TargetListId { get; set; } = "";
-
-
-    [CheckBoxComponent(Label = "Include email", Order = 2)]
-    public bool IncludeEmail { get; set; } = true;
-
-
-    [CheckBoxComponent(Label = "Include phone", Order = 3)]
-    public bool IncludePhone { get; set; } = false;
-
-
-    [CheckBoxComponent(Label = "Include company", Order = 4)]
-    public bool IncludeCompany { get; set; } = false;
-}
-
-
-/// <summary>
 /// Automation action that pushes the contact to a HubSpot list. Orchestrates HubSpot CRM v3
 /// primitives exposed by <see cref="HubSpotCrmSyncService"/>: builds the property payload,
 /// creates the contact, falls through to a PATCH (keyed by email) when the contact already exists,
@@ -78,18 +52,15 @@ public class SyncContactToHubSpotAction(
     ILogger<SyncContactToHubSpotAction> logger)
     : AutomationAction<SyncContactToHubSpotActionProperties>
 {
+    public const string IDENTIFIER = "DancingGoat.SyncContactToHubSpot";
+
+
     public override async Task Execute(
         SyncContactToHubSpotActionProperties properties,
         AutomationProcessContext context,
         CancellationToken cancellationToken)
     {
-        if (context.ProcessedObject is not ContactInfo contact)
-        {
-            logger.LogWarning(
-                "Skipping SyncContactToHubSpot — processed object is not a contact (got '{ObjectType}').",
-                context.ProcessedObject?.TypeInfo.ObjectType);
-            return;
-        }
+        ContactInfo contact = await context.GetProcessedObject(cancellationToken);
 
         var mapping = new ContactFieldMapping
         {

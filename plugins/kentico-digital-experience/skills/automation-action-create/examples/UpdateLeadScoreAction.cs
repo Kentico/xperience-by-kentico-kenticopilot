@@ -1,31 +1,21 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 using CMS.Automation;
 using CMS.ContactManagement;
 
-using Kentico.Xperience.Admin.Base.FormAnnotations;
+using Kentico.Xperience.Admin.Base;
 
 using Microsoft.Extensions.Logging;
 
 [assembly: RegisterAutomationAction<UpdateLeadScoreAction>(
-    identifier: "DancingGoat.UpdateLeadScore",
+    identifier: UpdateLeadScoreAction.IDENTIFIER,
     displayName: "Update lead score",
-    IconName = "xp-arrow-up",
-    Tooltip = "Adds (or subtracts) points from the contact's accumulated lead score persisted across automation steps.")]
+    IconName = Icons.ArrowUp,
+    Description = "Adds (or subtracts) points from the contact's accumulated lead score persisted across automation steps.")]
 
 namespace Kentico.Xperience.DancingGoat.Automation;
-
-
-/// <summary>
-/// Configurable properties for <see cref="UpdateLeadScoreAction"/>.
-/// </summary>
-public class UpdateLeadScoreActionProperties : IAutomationActionProperties
-{
-    [NumberInputComponent(Label = "Points", ExplanationText = "Use a negative value to subtract.", Order = 1)]
-    public int Points { get; set; } = 10;
-}
 
 
 /// <summary>
@@ -34,18 +24,15 @@ public class UpdateLeadScoreActionProperties : IAutomationActionProperties
 /// </summary>
 public class UpdateLeadScoreAction(ILogger<UpdateLeadScoreAction> logger) : AutomationAction<UpdateLeadScoreActionProperties>
 {
+    public const string IDENTIFIER = "DancingGoat.UpdateLeadScore";
+
+
     public override async Task Execute(
         UpdateLeadScoreActionProperties properties,
         AutomationProcessContext context,
         CancellationToken cancellationToken)
     {
-        if (context.ProcessedObject is not ContactInfo contact)
-        {
-            logger.LogWarning(
-                "Skipping UpdateLeadScore — processed object is not a contact (got '{ObjectType}').",
-                context.ProcessedObject?.TypeInfo.ObjectType);
-            return;
-        }
+        ContactInfo contact = await context.GetProcessedObject(cancellationToken);
 
         var data = await context.GetProcessData<LeadScoringData>(cancellationToken) ?? new LeadScoringData();
 

@@ -24,14 +24,14 @@ Add the marketplace to your VS Code settings (`settings.json`), then browse and 
 
 ```bash
 copilot plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
-copilot plugin install automation-implementation@xperience-by-kentico-kenticopilot
+copilot plugin install kentico-digital-experience@xperience-by-kentico-kenticopilot
 ```
 
 ### Claude Code
 
 ```bash
 /plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
-/plugin install automation-implementation@xperience-by-kentico-kenticopilot
+/plugin install kentico-digital-experience@xperience-by-kentico-kenticopilot
 ```
 
 ## Skills
@@ -40,7 +40,7 @@ copilot plugin install automation-implementation@xperience-by-kentico-kenticopil
 
 Researches the project and the action API, then implements and registers a custom automation action and (optionally) its `IAutomationActionProperties`-implementing properties class. The skill walks the agent through a single conversation:
 
-1. **Reads** the action API reference and code-quality guardrails bundled with the skill, and pulls supplementary Xperience docs via the Kentico Docs MCP.
+1. **Reads** the code-quality guardrails bundled with the skill, and fetches the action API contract and supplementary Xperience docs from the live documentation via the Kentico Docs MCP.
 2. **Inspects** the target Xperience by Kentico project for existing actions, namespace conventions, DI patterns, and `.resx` localization.
 3. **Confirms** the missing pieces with you in chat: identifier, display name, icon, tooltip, configurable properties (each with type, form component, default, validation rules, visibility conditions), runtime behavior, and dependencies.
 4. **Generates** the action class, the optional `TProperties` class (implementing `IAutomationActionProperties`) with form-component annotations, the assembly-level `RegisterAutomationAction<>` attribute, and any `.resx` strings the project already uses.
@@ -88,9 +88,8 @@ The first five extend `AutomationAction<TProperties>`; `ResetLeadScoreAction` us
 
 ### References (read by the agent)
 
-- `references/automation-customization.md` — snapshot of the official **Automation customization** documentation page (base classes, registration, `AutomationProcessContext`, `IAutomationProcessData`, form components, validation rules, best practices). Will be replaced by a link to the live docs page once it is published.
 - `references/guardrails.md` — code-quality guardrails beyond the API spec (no secrets in `TProperties`, `ILogger<T>` over `IEventLogService`, typed `HttpClient`, idempotency, marketer-experience conventions).
-- `references/docs.md` — supplementary Xperience documentation pages the agent fetches via the Kentico Docs MCP.
+- `references/docs.md` — links to the live Xperience documentation the agent fetches via the Kentico Docs MCP, including the **Custom automation steps** page that is the authoritative source for the action API (base classes, registration, `AutomationProcessContext`, `IAutomationProcessData`, form components, validation rules).
 
 ### Templates
 

@@ -10,18 +10,18 @@ You implement a custom **automation process action** in an Xperience by Kentico 
 ## What you must produce
 
 1. A class extending **`CMS.Automation.AutomationAction`** (no properties) or **`CMS.Automation.AutomationAction<TProperties>`** (with properties).
-2. An assembly-level **`[assembly: RegisterAutomationAction<TAction>(identifier, displayName, IconName = ..., Tooltip = ...)]`**.
-3. If properties: a **`TProperties`** class implementing `CMS.Automation.IAutomationActionProperties` with form-component-annotated public read/write properties.
+2. An assembly-level **`[assembly: RegisterAutomationAction<TAction>(identifier, displayName, IconName = ..., Description = ...)]`**.
+3. If properties: a **`TProperties`** class implementing `CMS.Automation.IAutomationActionProperties` with form-component-annotated public read/write properties, in **its own file** (`<ActionClass>Properties.cs`) — not co-located in the action's file.
 4. If the action shares cross-step state: an **`IAutomationProcessData`** implementation with a unique `static abstract string Identifier`.
-5. If the project uses `.resx` localization in `Register*` attributes (look for `"{$...$}"` strings): the new display name, tooltip, and labels in the existing `.resx`, referenced via the `{$...$}` syntax.
+5. If the project uses `.resx` localization in `Register*` attributes (look for `"{$...$}"` strings): the new display name, description, and labels in the existing `.resx`, referenced via the `{$...$}` syntax.
 
 ## Steps
 
 ### 1. Read context
 
-- Read **`references/automation-customization.md`** — base classes, registration, `AutomationProcessContext`, `IAutomationProcessData`, form components, validation rules, best practices.
 - Read **`references/guardrails.md`** — code quality guardrails beyond the API spec.
-- Fetch supplementary docs listed in **`references/docs.md`** via the Kentico Docs MCP if needed (form-component reference, visibility conditions, validation rules — see `references/docs.md` for the catalog of pages worth fetching on demand).
+- Fetch the action API contract from the live documentation via the **Kentico Docs MCP** — the **Custom automation steps** page listed in **`references/docs.md`** is authoritative for the base classes, the `RegisterAutomationAction<TAction>` attribute and its parameters (`identifier`, `displayName`, optional `IconName`, `Description`), identifier constraints, the `AutomationProcessContext` (processed contact via `GetProcessedObject`, process name, trigger data, cross-step `GetProcessData<T>` / `SetProcessData<T>`), and `IAutomationProcessData`. Do not rely on memorized API shapes — confirm against the page.
+- Fetch the supplementary docs listed in **`references/docs.md`** via the Kentico Docs MCP as needed (form-component reference, visibility conditions, validation rules — see `references/docs.md` for the catalog of pages worth fetching on demand).
 
 ### 2. Discover the project and the surrounding APIs
 
@@ -41,10 +41,11 @@ Ask only what you cannot reasonably infer. Propose defaults the user can overrid
 
 Write the files following these rules (full detail in `guardrails.md`):
 
+- One class per file: the action, its `TProperties`, each `IAutomationProcessData`, and any typed `*Options` each go in their own file named after the class.
 - Constructor injection for dependencies; verify every injected service is registered with the DI container.
 - Use `ILogger<T>` for logging — not `IEventLogService`.
 - Never `.Result`/`.Wait()`; no static mutable state; no per-execution state in instance fields.
-- Cast `context.ProcessedObject` to `ContactInfo` and short-circuit on mismatch — see the canonical guard in `guardrails.md`.
+- Retrieve the processed contact with `ContactInfo contact = await context.GetProcessedObject(cancellationToken);` (extension method in `CMS.ContactManagement`) — see the canonical pattern in `guardrails.md`. Do not read `context.ProcessedObject` directly; it is not part of the public API.
 - External calls keyed by a stable identifier on the cast contact (typically `ContactInfo.ContactID`; prefer `ContactInfo.ContactGUID` when the external system needs a globally stable key) for idempotency.
 - No secrets in `TProperties` — read them from `IConfiguration` / `IOptions<T>`.
 - Outbound HTTP uses typed `HttpClient` registered with `services.AddHttpClient<TAction>()`.

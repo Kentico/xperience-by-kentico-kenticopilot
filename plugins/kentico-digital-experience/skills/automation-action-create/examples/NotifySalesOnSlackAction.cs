@@ -6,37 +6,18 @@ using System.Threading.Tasks;
 using CMS.Automation;
 using CMS.ContactManagement;
 
-using Kentico.Xperience.Admin.Base.FormAnnotations;
+using Kentico.Xperience.Admin.Base;
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 [assembly: RegisterAutomationAction<NotifySalesOnSlackAction>(
-    identifier: "DancingGoat.NotifySalesOnSlack",
+    identifier: NotifySalesOnSlackAction.IDENTIFIER,
     displayName: "Notify sales on Slack",
-    IconName = "xp-bell",
-    Tooltip = "Posts a templated message to the configured Slack incoming webhook when a contact reaches this step.")]
+    IconName = Icons.Bell,
+    Description = "Posts a templated message to the configured Slack incoming webhook when a contact reaches this step.")]
 
 namespace Kentico.Xperience.DancingGoat.Automation;
-
-
-/// <summary>
-/// Configurable properties for <see cref="NotifySalesOnSlackAction"/>.
-/// </summary>
-/// <remarks>
-/// The Slack webhook URL embeds a tokenized path and is treated as a secret — it lives in
-/// <c>appsettings.json</c> (bound to <c>SlackOptions</c>), not on the step. Marketers only edit
-/// the message template here.
-/// </remarks>
-public class NotifySalesOnSlackActionProperties : IAutomationActionProperties
-{
-    [TextAreaComponent(
-        Label = "Message template",
-        ExplanationText = "Use {ContactDescriptiveName} as a placeholder for the contact's display name.",
-        Order = 1)]
-    [RequiredValidationRule]
-    public string MessageTemplate { get; set; } = "Hot lead reached the qualification step: {ContactDescriptiveName}";
-}
 
 
 /// <summary>
@@ -61,6 +42,8 @@ public class NotifySalesOnSlackAction(
     ILogger<NotifySalesOnSlackAction> logger)
     : AutomationAction<NotifySalesOnSlackActionProperties>
 {
+    public const string IDENTIFIER = "DancingGoat.NotifySalesOnSlack";
+
     private readonly SlackOptions slackOptions = slackOptions.Value;
 
 
@@ -69,13 +52,7 @@ public class NotifySalesOnSlackAction(
         AutomationProcessContext context,
         CancellationToken cancellationToken)
     {
-        if (context.ProcessedObject is not ContactInfo contact)
-        {
-            logger.LogWarning(
-                "Skipping NotifySalesOnSlack — processed object is not a contact (got '{ObjectType}').",
-                context.ProcessedObject?.TypeInfo.ObjectType);
-            return;
-        }
+        ContactInfo contact = await context.GetProcessedObject(cancellationToken);
 
         var text = properties.MessageTemplate
             .Replace("{ContactDescriptiveName}", contact.ContactDescriptiveName ?? $"Contact #{contact.ContactID}");

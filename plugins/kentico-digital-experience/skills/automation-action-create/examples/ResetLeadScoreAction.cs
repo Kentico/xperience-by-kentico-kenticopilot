@@ -5,13 +5,15 @@ using System.Threading.Tasks;
 using CMS.Automation;
 using CMS.ContactManagement;
 
+using Kentico.Xperience.Admin.Base;
+
 using Microsoft.Extensions.Logging;
 
 [assembly: RegisterAutomationAction<ResetLeadScoreAction>(
-    identifier: "DancingGoat.ResetLeadScore",
+    identifier: ResetLeadScoreAction.IDENTIFIER,
     displayName: "Reset lead score",
-    IconName = "xp-arrow-u-left",
-    Tooltip = "Resets the contact's accumulated lead score back to zero. Pairs with the Update lead score action.")]
+    IconName = Icons.ArrowULeft,
+    Description = "Resets the contact's accumulated lead score back to zero. Pairs with the Update lead score action.")]
 
 namespace Kentico.Xperience.DancingGoat.Automation;
 
@@ -22,15 +24,12 @@ namespace Kentico.Xperience.DancingGoat.Automation;
 /// </summary>
 public class ResetLeadScoreAction(ILogger<ResetLeadScoreAction> logger) : AutomationAction
 {
+    public const string IDENTIFIER = "DancingGoat.ResetLeadScore";
+
+
     public override async Task Execute(AutomationProcessContext context, CancellationToken cancellationToken)
     {
-        if (context.ProcessedObject is not ContactInfo contact)
-        {
-            logger.LogWarning(
-                "Skipping ResetLeadScore — processed object is not a contact (got '{ObjectType}').",
-                context.ProcessedObject?.TypeInfo.ObjectType);
-            return;
-        }
+        ContactInfo contact = await context.GetProcessedObject(cancellationToken);
 
         await context.SetProcessData(
             new LeadScoringData
