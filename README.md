@@ -21,7 +21,7 @@ This repository provides plugins, each containing a set of skills for AI coding 
 
 > **Location:** [plugins/kentico-digital-experience/](./plugins/kentico-digital-experience/)
 
-AI-assisted implementation of [Automation process](https://docs.kentico.com/documentation/business-users/digital-marketing/automation) extensions in Xperience by Kentico — starting with **custom automation actions** (custom step types in the Automation Builder). The AI reviews your project conventions and the action API, confirms the action's behavior and properties with you, then emits the action class, the optional properties model with form-component annotations, and the assembly-level `RegisterAutomationAction<>` registration. Full instructions are available in the [README](./plugins/kentico-digital-experience/README.md).
+AI-assisted implementation of [Automation components](https://docs.kentico.com/x/automation_custom_xp) in Xperience by Kentico. Currently supports **custom automation actions** (custom step types in the Automation Builder). The AI accepts a description of the action you want to create, then reviews your project conventions and the action API, and generates the action class along with an optional properties model with form-component annotations and the assembly-level `RegisterAutomationAction<>` registration. Full instructions are available in the [README](./plugins/kentico-digital-experience/README.md).
 
 | Skill                       | Description                                                                                                  |
 | --------------------------- | ------------------------------------------------------------------------------------------------------------ |

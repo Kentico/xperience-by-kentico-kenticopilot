@@ -1,12 +1,12 @@
 # Automation
 
-AI-assisted skills for extending [Automation processes](https://docs.kentico.com/documentation/business-users/digital-marketing/automation) in Xperience by Kentico — starting with **custom automation actions** (custom step types in the Automation Builder).
+AI-assisted skills for extending [Automation processes](https://docs.kentico.com/x/automation_xp) with [custom components](https://docs.kentico.com/x/automation_custom_xp) in Xperience by Kentico. Currently supports **custom automation actions** (custom step types in the Automation Builder).
 
 ## Prerequisites
 
-- Xperience by Kentico project with the custom automation action API available
+- Xperience by Kentico project using version 31.6.0 or newer
 - AI coding assistant (for example, GitHub Copilot, Copilot CLI, or Claude Code)
-- A short description of what the action should do and what — if anything — marketers should be able to configure on the step
+- A short description of what the component should do and what properties (if any) marketers should be able to configure for the step
 
 ## Install the plugin
 
@@ -42,7 +42,7 @@ Researches the project and the action API, then implements and registers a custo
 
 1. **Reads** the code-quality guardrails bundled with the skill, and fetches the action API contract and supplementary Xperience docs from the live documentation via the Kentico Docs MCP.
 2. **Inspects** the target Xperience by Kentico project for existing actions, namespace conventions, DI patterns, and `.resx` localization.
-3. **Confirms** the missing pieces with you in chat: identifier, display name, icon, tooltip, configurable properties (each with type, form component, default, validation rules, visibility conditions), runtime behavior, and dependencies.
+3. **Confirms** the missing pieces with you in chat: identifier, display name, icon, tooltip, configurable properties (each with type, form component, default, validation rules, visibility conditions), runtime behavior, and dependencies. Default values may be inferred without confirmation during the initial generation – you can always adjust the output or ask the agent to make any required changes.
 4. **Generates** the action class, the optional `TProperties` class (implementing `IAutomationActionProperties`) with form-component annotations, the assembly-level `RegisterAutomationAction<>` attribute, and any `.resx` strings the project already uses.
 5. **Verifies** by building and grepping for identifier collisions.
 
@@ -79,23 +79,23 @@ The [`references/example-actions.md`](skills/automation-action-create/references
 | `NotifySalesOnSlackAction`       | Internal-facing webhook POST with templated card.                                |
 | `SyncContactToHubSpotAction`     | Outbound data sync to external CRM; DI-injected `HttpClient`; idempotency.       |
 | `UpdateContactConsentAction`     | Service-based internal write using `IConsentAgreementService`.                   |
-| `UpdateLeadScoreAction`          | Cross-step custom process data via `GetProcessData` / `SetProcessData`.          |
-| `ResetLeadScoreAction`           | No-properties base class shape (pairs with `UpdateLeadScoreAction`).             |
+| `UpdateLeadScoreAction`          | Cross-step custom process data sharing via `GetProcessData` / `SetProcessData`.  |
+| `ResetLeadScoreAction`           | No-properties base class pattern (pairs with `UpdateLeadScoreAction`).             |
 
-The first five extend `AutomationAction<TProperties>`; `ResetLeadScoreAction` uses the no-properties `AutomationAction` base class.
+The first five inherit from `AutomationAction<TProperties>`. `ResetLeadScoreAction` uses the no-properties `AutomationAction` base class.
 
 ## Included files
 
 ### References (read by the agent)
 
-- `references/guardrails.md` — code-quality guardrails beyond the API spec (no secrets in `TProperties`, `ILogger<T>` over `IEventLogService`, typed `HttpClient`, idempotency, marketer-experience conventions).
-- `references/docs.md` — links to the live Xperience documentation the agent fetches via the Kentico Docs MCP, including the **Custom automation steps** page that is the authoritative source for the action API (base classes, registration, `AutomationProcessContext`, `IAutomationProcessData`, form components, validation rules).
-- `references/example-actions.md` — canonical custom action samples (one section per action, with the action and its properties class shown as separate files) that the skill mirrors when generating code.
+- `references/guardrails.md` – code-quality guardrails beyond the API specification (no secrets in `TProperties`, `ILogger<T>` over `IEventLogService`, typed `HttpClient`, idempotency, marketer-experience conventions).
+- `references/docs.md` – links to the live Xperience documentation the agent fetches via the Kentico Docs MCP, including the **Custom automation steps** page that is the authoritative source for the action API (base classes, registration, `AutomationProcessContext`, `IAutomationProcessData`, form components, validation rules).
+- `references/example-actions.md` – canonical custom action samples (one section per action, with the action and its properties class shown as separate files) that the skill mirrors when generating code.
 
 ### Templates
 
-- `skills/automation-action-create/assets/ACTION_TEMPLATE.md` — in-chat scaffold the agent uses when proposing the action's design (not written to disk).
+- `skills/automation-action-create/assets/ACTION_TEMPLATE.md` – in-chat scaffold the agent uses when proposing the action's design (not written to disk).
 
 ## Skill customization
 
-These files are a baseline. Extend `references/` to capture your team's conventions (resource string organization, namespace structure, common dependencies) — the skill reads every file in that folder.
+These files are a baseline. Extend `references/` to capture your team's conventions (resource string organization, namespace structure, common dependencies) – the skill reads every file in that folder.
