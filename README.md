@@ -17,7 +17,7 @@ Skills are transferable to other solutions. Follow the conventions of your speci
 
 This repository provides plugins, each containing a set of skills for AI coding assistants. See the plugin README files for full details.
 
-### Automation
+### Digital experience
 
 > **Location:** [plugins/kentico-digital-experience/](./plugins/kentico-digital-experience/)
 

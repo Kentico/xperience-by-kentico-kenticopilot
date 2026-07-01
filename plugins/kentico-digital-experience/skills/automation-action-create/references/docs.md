@@ -23,8 +23,3 @@ Fetch these on demand via the **Kentico Docs MCP**. Treat the live pages below a
 - Visibility conditions: <https://docs.kentico.com/documentation/developers-and-admins/customization/extend-the-administration-interface/ui-form-components/ui-form-component-visibility-conditions.html>
 - Configure editing component state: <https://docs.kentico.com/documentation/developers-and-admins/customization/extend-the-administration-interface/ui-form-components/editing-components/configure-editing-component-state>
   - Cross-field dependencies via component configurators — e.g. a dropdown whose options change based on another property's value.
-
-## Icon catalog (for `IconName`)
-
-- Annotated Xperience icons library: <https://github.com/Kentico/xperience-by-kentico-component-icons>
-  - Canonical list of available icons with descriptions. Reference icons through the `Kentico.Xperience.Admin.Base.Icons` constants (e.g. `Icons.Bell`) rather than raw `xp-` strings; the default for registration is `Icons.Cogwheel` (`xp-cogwheel`).

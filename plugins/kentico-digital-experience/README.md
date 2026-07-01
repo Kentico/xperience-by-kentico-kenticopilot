@@ -71,7 +71,7 @@ process data. No configurable properties.
 
 ## Examples
 
-The `skills/automation-action-create/examples/` folder contains canonical action samples covering distinct patterns:
+The [`references/example-actions.md`](skills/automation-action-create/references/example-actions.md) file collects canonical action samples covering distinct patterns:
 
 | Example                          | Pattern                                                                          |
 | -------------------------------- | -------------------------------------------------------------------------------- |
@@ -90,6 +90,7 @@ The first five extend `AutomationAction<TProperties>`; `ResetLeadScoreAction` us
 
 - `references/guardrails.md` — code-quality guardrails beyond the API spec (no secrets in `TProperties`, `ILogger<T>` over `IEventLogService`, typed `HttpClient`, idempotency, marketer-experience conventions).
 - `references/docs.md` — links to the live Xperience documentation the agent fetches via the Kentico Docs MCP, including the **Custom automation steps** page that is the authoritative source for the action API (base classes, registration, `AutomationProcessContext`, `IAutomationProcessData`, form components, validation rules).
+- `references/example-actions.md` — canonical custom action samples (one section per action, with the action and its properties class shown as separate files) that the skill mirrors when generating code.
 
 ### Templates
 

@@ -20,6 +20,7 @@ You implement a custom **automation process action** in an Xperience by Kentico 
 ### 1. Read context
 
 - Read **`references/guardrails.md`** — code quality guardrails beyond the API spec.
+- Study **`references/example-actions.md`** — canonical action samples covering distinct patterns (service injection, typed `HttpClient`, cross-step process data, no-properties actions). Mirror their structure and conventions, including one class per file.
 - Fetch the action API contract from the live documentation via the **Kentico Docs MCP** — the **Custom automation steps** page listed in **`references/docs.md`** is authoritative for the base classes, the `RegisterAutomationAction<TAction>` attribute and its parameters (`identifier`, `displayName`, optional `IconName`, `Description`), identifier constraints, the `AutomationProcessContext` (processed contact via `GetProcessedObject`, process name, trigger data, cross-step `GetProcessData<T>` / `SetProcessData<T>`), and `IAutomationProcessData`. Do not rely on memorized API shapes — confirm against the page.
 - Fetch the supplementary docs listed in **`references/docs.md`** via the Kentico Docs MCP as needed (form-component reference, visibility conditions, validation rules — see `references/docs.md` for the catalog of pages worth fetching on demand).
 
