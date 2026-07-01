@@ -30,9 +30,9 @@
 ## Kentico MCP Servers
 
 - **Kentico Docs MCP** is the **primary source** for any question about Xperience by Kentico projects. Prefer it over web search and over your prior knowledge.
-- **Kentico Management MCP** is used to work with content inside the Xperience by Kentico projects. Prefer it over manual management using website admin interface.
+- **Kentico Management MCP** is used to work with content inside the Xperience by Kentico projects. Prefer it over manual management using the website admin interface.
 
 ## Validation of changes
 
 - Always build project and run relevant tests after making changes.
-- Always validate user facing changes in the browser before for content, layout, styling and localization correctness.
+- Always validate user-facing changes in the browser for content, layout, styling, and localization correctness before committing.

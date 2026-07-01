@@ -6,14 +6,14 @@ This checklist identifies areas which determine how well an Xperience by Kentico
 
 - The project contains a file `AGENTS.md` (or `CLAUDE.md`) with instructions for AI coding assistants on how to work with the project.
   - This file follows: https://code.claude.com/docs/en/best-practices#write-an-effective-claude-md
-  - This file is contains info about project overview and repository layout.
+  - This file contains info about the project overview and repository layout.
   - This file contains useful commands.
-  - This file contains or references coding conventions and information how to validate work.
-  - This file mentions how to and when to use both Kentico MCPs.
+  - This file contains or references coding conventions and information on how to validate work.
+  - This file mentions how and when to use both Kentico MCPs.
 
 ## 2. Guidance skills
 
-- This project has skill that provides guidance on how to handle design related questions and tasks.
+- This project has a skill that provides guidance on how to handle design-related questions and tasks.
 
 ## 3. Kentico MCPs
 

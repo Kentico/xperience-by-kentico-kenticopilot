@@ -9,8 +9,8 @@ You are tasked with making an Xperience by Kentico (XbyK) project **ready for AI
 
 ### 1. Ask user about AI tool
 
-- Ask the user which AI tool they want to use for agentic-development (Claude Code, Github Copilot, other).
-- Note this information for later use, to create this tool specific resources.
+- Ask the user which AI tool they want to use for agentic-development (Claude Code, GitHub Copilot, other).
+- Note this information for later use, to create these tool-specific resources.
 
 ### 2. Identify the project
 
@@ -23,12 +23,12 @@ You are tasked with making an Xperience by Kentico (XbyK) project **ready for AI
 
 ### 4. Audit project
 
-- Go though the project and evaluate all the areas of agentic-development readiness.
+- Go through the project and evaluate all the areas of agentic-development readiness.
 
 ### 5. Report findings
 
-- Following the `assets/READINESS_REPORT_TEMPLATE.md`, produce a readiness report filling into all placeholder fields.
+- Following the `assets/READINESS_REPORT_TEMPLATE.md`, produce a readiness report filling in all placeholder fields.
 
 ### 6. Suggest fixing
 
-- Ask user if he wants to apply the recommended fixes. If yes, apply them following the `references/implement-agentic-conventions.md` guidelines and report back.
+- Ask the user if they want to apply the recommended fixes. If yes, apply them following the `references/implement-agentic-conventions.md` guidelines and report back.
