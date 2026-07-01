@@ -25,3 +25,4 @@ This checklist identifies areas which determine how well an Xperience by Kentico
 - This project's code generally follows SOLID principles.
 - This project's code is reusable and modular.
 - This project does not use outdated technologies (e.g. .NET Framework, old versions of libraries, etc.).
+- This project has tests for its code (unit tests, integration tests, etc.).
