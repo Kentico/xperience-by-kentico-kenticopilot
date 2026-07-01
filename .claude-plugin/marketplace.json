@@ -11,14 +11,14 @@
   },
   "plugins": [
     {
-      "name": "automation-implementation",
-      "source": "./plugins/automation-implementation",
+      "name": "kentico-digital-experience",
+      "source": "./plugins/kentico-digital-experience",
       "description": "Skills and references for implementing custom automation process extensions (actions, triggers, conditions) in Xperience by Kentico",
       "version": "1.0.0",
       "author": {
         "name": "Kentico"
       },
-      "homepage": "https://github.com/Kentico/xperience-by-kentico-kenticopilot/tree/main/plugins/automation-implementation",
+      "homepage": "https://github.com/Kentico/xperience-by-kentico-kenticopilot/tree/main/plugins/kentico-digital-experience",
       "repository": "https://github.com/Kentico/xperience-by-kentico-kenticopilot",
       "license": "MIT",
       "keywords": ["kentico", "xperience", "automation", "marketing", "cms"],

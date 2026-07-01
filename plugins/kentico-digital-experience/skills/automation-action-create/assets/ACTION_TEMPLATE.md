@@ -7,8 +7,8 @@ Use this as a mental checklist when proposing the action design with the user in
 - Action class name (PascalCase, ends in `Action`).
 - Registration identifier (`Company_Module_Action`; letters, digits, underscores, dots; unique in solution).
 - Display name (short, marketer-facing).
-- Icon name (`xp-...`).
-- Tooltip (one sentence).
+- Icon (`Icons.*` constant from `Kentico.Xperience.Admin.Base`, e.g. `Icons.Bell`).
+- Description (one sentence — hover text shown in the step selector).
 
 ## Base class
 
@@ -26,11 +26,11 @@ For each property, decide:
 - Visibility condition, if any (`[VisibleIfTrue(nameof(...))]`).
 - Marketer-facing label, plus optional explanation and/or watermark text (e.g. `Label = "Webhook URL"`, `ExplanationText = "Slack incoming webhook (https://hooks.slack.com/...)"`, `WatermarkText = "https://hooks.slack.com/services/..."`).
 
-Only when the action has `TProperties`: optionally override the default **Step name** input by declaring a `StepDisplayName` property on the properties class with its own form-component annotation. For no-properties actions this override isn't available — the marketer enters the step name in the default input.
+Only when the action has `TProperties`: optionally override the default **Step name** input by declaring a property named `StepDisplayName` on the properties class with its own form-component annotation (label, validation, ...). The step name always appears first in the dialog — its order cannot be changed. For no-properties actions this override isn't available — the marketer enters the step name in the default input.
 
 ## Runtime behavior
 
-- Inputs from `context.ProcessedObject` (cast to `ContactInfo` or relevant `BaseInfo`).
+- The processed contact, retrieved via `await context.GetProcessedObject(ct)` (returns the `ContactInfo`; throws if the processed object is not a contact).
 - Inputs from `TProperties`.
 - Cross-step state read with `await context.GetProcessData<T>(ct)` — list each `IAutomationProcessData` type, including its `Identifier`. Remember `GetProcessData` returns `null` if the data has never been written.
 - Inputs from configuration / `IOptions<T>` (secrets, environment-scoped values).
@@ -53,6 +53,7 @@ For each service: type, where it's registered, lifestyle. Confirm any that aren'
 ## Pre-flight checks
 
 - Action extends the right base class and overrides `Execute`.
+- Each class (action, `TProperties`, each `IAutomationProcessData`, each `*Options`) lives in its own file named after the class — the properties class is not co-located in the action's file.
 - `[assembly: RegisterAutomationAction<...>]` is either above the `namespace` in the action's file or in a central registration class.
 - Identifier is letters/digits/underscores/dots only and unique in the solution.
 - `TProperties` implements `IAutomationActionProperties`; public properties with both getter and setter; sensible defaults; validation rules attached where appropriate.
