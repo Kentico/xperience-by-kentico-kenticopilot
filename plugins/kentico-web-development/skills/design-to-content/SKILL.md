@@ -9,12 +9,14 @@ This skill points you to Kentico's content-modeling documentation. Use it to des
 ## Pieces of a content model
 
 - **Content types** – blueprints for content.
-- **Fields** – data type + form component per field.
-- **Relationships** – linked items between types.
-- **Taxonomies** – tags and categories.
-- **Structured vs unstructured** – separate content from presentation.
-- **Storage** – reusable, webpage, email, headless.
-- **Presentation** – Page Builder sections and widgets.
+- **Content items** – reusable instances of content.
+- **Webpage items** – instances of content displayed on web pages.
+- **Content type fields** – parts of a content type, each with a data type and form component.
+- **Reusable field schemas** – reusable field definitions for content types.
+- **Taxonomies** – tags and categories for content items.
+- **Relationships** – linked items between content types.
+- **Page builder** – component representation of web pages.
+- **Page builder widgets** – reusable components for building web pages.
 
 ## How to use
 
