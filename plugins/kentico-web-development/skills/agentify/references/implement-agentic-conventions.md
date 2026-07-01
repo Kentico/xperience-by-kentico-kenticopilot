@@ -18,7 +18,3 @@ This reference describes how to implement agentic conventions in an Xperience by
 
 - Set up the Kentico Docs MCP following: https://docs.kentico.com/documentation/developers-and-admins/installation/mcp-server
 - Set up the Kentico Management MCP following: https://docs.kentico.com/documentation/developers-and-admins/api/management-api/configure-management-mcp-server
-
-## 4. Code quality
-
-- Based on the gaps identified in the readiness report and user's decision on what to fix, apply those fixes to improve code quality.

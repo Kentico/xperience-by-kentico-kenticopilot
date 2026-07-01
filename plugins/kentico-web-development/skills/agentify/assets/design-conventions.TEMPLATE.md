@@ -9,29 +9,15 @@ description: "Provides guidance on how to handle design related questions and ta
 
 ## Brand
 
-- **Primary color:** {primary color hex code} ({primary color name/variable})
-- **Accent:** {accent color hex code} ({accent color name/variable})
-- **Neutrals:** {neutral color hex codes} ({neutral color names/variables})
-- **Logo:** {logo path} — never recolor, never below 24px height
-- **Tone of voice:** {tone of voice description}
-- {...}
+{brand guidelines description, e.g., "Use the brand's primary colors for buttons and links. Avoid using secondary colors for text. Follow the brand's logo usage guidelines."}
 
 ## Typography
 
-| Role    | Family         | Weight                | Size (desktop / mobile)                          |
-| ------- | -------------- | --------------------- | ------------------------------------------------ |
-| Display | {display font} | {display font weight} | {display font size} / {display font size mobile} |
-| Heading | {heading font} | {heading font weight} | {heading font size} / {heading font size mobile} |
-| Body    | {body font}    | {body font weight}    | {body font size} / {body font size mobile}       |
-| Caption | {caption font} | {caption font weight} | {caption font size} / {caption font size mobile} |
-| {...}   | {...}          | {...}                 | {...}                                            |
+{typography guidelines description, e.g., "Use the brand's primary typeface for headings and body text. Ensure sufficient contrast and readability. Follow the design system's typography scale."}
 
 ## Layout
 
-- **Grid:** {grid system description, e.g., 12-column, 16px gutter, 1200px max width}
-- **Breakpoints:** {breakpoints description, e.g., 480, 768, 1024, 1280}
-- **Spacing scale:** {spacing scale description, e.g., 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64}
-- {...}
+{layout guidelines description, e.g., "Use a grid system for consistent spacing and alignment. Avoid cluttered layouts; prioritize content hierarchy. Follow the design system's layout patterns."}
 
 ## Components
 
