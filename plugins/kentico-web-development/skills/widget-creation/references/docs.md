@@ -3,6 +3,7 @@
 ## Widgets
 
 - **Page Builder Widgets**: https://docs.kentico.com/documentation/developers-and-admins/development/builders/page-builder/widgets-for-page-builder
+- **Inline editors for widget properties**: https://docs.kentico.com/documentation/developers-and-admins/development/builders/page-builder/widgets-for-page-builder/inline-editors-for-widget-properties
 
 ## Content Retrieval
 
@@ -20,7 +21,7 @@
 
 ## System Fields of Content Items
 
-For these, use just web search, not MCP!
+These are API-reference pages on `api-reference.kentico.com`, which the Docs MCP does not index — look them up with web search instead.
 
 - **ContentItemFields**: https://api-reference.kentico.com/api/CMS.ContentEngine.ContentItemFields.html
 - **WebPageFields**: https://api-reference.kentico.com/api/CMS.Websites.WebPageFields.html

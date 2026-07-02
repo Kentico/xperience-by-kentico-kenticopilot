@@ -23,7 +23,7 @@ Sections define the layout of widget zones within an editable area. The system s
 Key facts:
 
 - **Every section must contain at least one widget zone** — rendered with `@await Html.Kentico().WidgetZoneAsync()` (or the `<widget-zone />` Tag Helper). Sections without a widget zone are not supported.
-- **Two flavors:** *basic* (a partial view only) and *view-component-based* (recommended when the section needs business logic, page context, or POST handling). View-component sections receive `ComponentViewModel` (or `ComponentViewModel<TProperties>` for sections with properties) in `InvokeAsync`.
+- **Two flavors:** *basic* (a partial view only) and *view-component-based* (recommended when the section needs business logic, page context, or POST handling). A view-component section's `Invoke`/`InvokeAsync` method must declare a `ComponentViewModel` parameter (or `ComponentViewModel<TProperties>` for sections with properties) — both the synchronous and asynchronous signatures are supported, so pick whichever the logic needs.
 - **Properties** are optional; define an `ISectionProperties`-style property class and pass its `System.Type` as `PropertiesType` during registration. Access values via `Model.Properties` in the view.
 - **Register** with the `[assembly: RegisterSection(...)]` attribute (`Kentico.PageBuilder.Web.Mvc`). Use a company/project prefix in the identifier. Optional `Description` and `IconClass` (icons use the `icon-` prefix).
 - **Location matters:** section code files must live in the application root (`~/Components/Sections/<SectionName>/`), **not** inside an MVC Area.
@@ -39,7 +39,7 @@ Page templates let content editors assign a full-page MVC layout to a page witho
 
 Key facts:
 
-- **The template view is a full HTML page** — it must include `<html>`, `<head>`, `<body>`, all stylesheet/script links, and the Page Builder resources (`<page-builder-styles />` in the head, `<page-builder-scripts />` before `</body>`). Pages using templates do **not** have their own view.
+- **The rendered output must be a full HTML page** — including `<html>`, `<head>`, `<body>`, all stylesheet/script links, and the Page Builder resources (`<page-builder-styles />` in the head, `<page-builder-scripts />` inside the body before `</body>`). This markup can live directly in the template view *or* in a shared layout the template view references (`Layout = "..."`) — use whichever the project's other templates use, and ensure the Page Builder resource tags appear exactly once. Pages using templates do **not** have their own per-page view.
 - **Default vs. preset:** developers create *default* templates in code; editors can save *preset* templates that snapshot Page Builder content on top of a default template. Preset templates do **not** store structured (field) content.
 - **Content type setup:** the content type must have *Include in routing* enabled and Page Builder enabled. The route's action method returns a `TemplateResult` (optionally with a custom model object).
 - **Model:** the view uses `TemplateViewModel` or `TemplateViewModel<TProperties>`; access properties via `Model.Properties`, page context via `Model.Page`, and a custom model via `Model.GetTemplateModel<T>()`.

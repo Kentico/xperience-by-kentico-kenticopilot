@@ -1,7 +1,7 @@
 ---
 name: "widget-creation"
 description: "Knowledge and conventions for building Page Builder widgets in Xperience by Kentico — view component, properties with admin UI form components, view model, Razor view, registration, localization, caching, and content retrieval. Use whenever creating, building, or modifying a Page Builder widget."
-compatibility: "Requires Kentico Docs MCP"
+compatibility: "Recommended: Kentico Docs MCP (for verifying API shapes)"
 ---
 
 # Page Builder widget creation
@@ -14,7 +14,7 @@ This skill provides the knowledge needed to build a custom Page Builder widget i
 2. **Study the project first.** Existing widgets are the source of truth for conventions in this repository. Locate them (the bundled examples use `Components/Widgets/` and `Features/**/Widgets/`, but follow whatever layout your project uses) and mirror their namespace layout, file structure, registration style, localization approach, and content-retrieval patterns. When the project's conventions differ from the examples in `references/`, the project wins.
 3. **Verify APIs you are unsure about.** Use the Kentico Docs MCP server and the links in `references/docs.md` to confirm form-component attributes, the `IContentRetriever` API, page-URL retrieval, and content-item system fields before relying on them. Do not guess API shapes.
 4. **Implement** the widget following the anatomy and rules below.
-5. **Build and test.** Build the project and fix any errors related to the new widget. Verify it renders in both edit and live mode.
+5. **Build and test.** Build the web project (locate the `.csproj`/`.sln` the widget belongs to — typically the web application project) and fix any errors related to the new widget. If a build target isn't obvious or the project can't be built in this environment, say so rather than guessing. Verify the widget renders in both edit and live mode.
 
 ## What to capture
 
@@ -29,6 +29,7 @@ Before implementing, make sure the requirements (and design) give you each of th
 - **HTML structure** — the expected markup.
 - **Styling** — CSS classes, inline styles, and **existing project styles to reuse** rather than reinventing.
 - **Responsive behavior** — how the widget should adapt across screen sizes.
+- **Inline editing** — whether any property should be editable directly on the surface in edit mode (via an inline editor) rather than only through the properties dialog. See [Inline editors](#inline-editors) below.
 - **JavaScript / client-side** — any client-side interactions or behaviors, and where the scripts live.
 - **Constraints / additional notes** — any other requirements or limitations the user specifies.
 
@@ -42,7 +43,15 @@ A typical widget consists of four code files plus registration and localized str
 - **Razor view** (`_<Name>Widget.cshtml`) — renders the markup; applies the agreed styling and responsive behavior, reusing existing project CSS classes where possible; handles missing data gracefully.
 - **Client-side assets** (optional) — any JavaScript/CSS the widget needs. Follow the project's convention for where these live and how they are bundled; only add them when the requirements call for client-side behavior.
 
+### Inline editors
+
+Inline editors let editors change a property's value directly on the widget surface inside the Page Builder editing UI, instead of only through the properties dialog — useful for text and other content edited "in place." They are an optional Page Builder feature, not required for a working widget.
+
+An inline editor is a separate partial (conventionally under `~/Components/InlineEditors/<EditorName>/`) rendered from the widget view, and only in edit mode. The Card widget in `references/example-widgets.md` shows the pattern: inside a `Context.Kentico().PageBuilder().EditMode` check, render the editor partial with a model that carries the target property name (`nameof(...)`) and current value; in live mode, render the plain value instead. Reuse an existing inline editor from the project when one fits rather than authoring a new one. See the docs link in `references/docs.md` for building custom editors and their registration scripts.
+
 ## Important rules
+
+- **Location.** Like all Page Builder components, widget code files must live in the application root of the web project, **not** inside an MVC Area — placing them in an Area can cause unexpected behavior. Beyond that, follow the project's folder layout (e.g. `Components/Widgets/<Name>/` or a feature-based path).
 
 - **Follow project conventions over examples.** Reuse existing widgets' patterns for structure, naming, and shared services.
 - **Caching.** Always cache content retrieval unless explicitly told otherwise.

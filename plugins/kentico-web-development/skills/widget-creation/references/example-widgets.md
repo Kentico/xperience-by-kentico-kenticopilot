@@ -179,9 +179,9 @@ using TrainingGuides.Web.Features.Shared.Services;
     RegisterWidget(
         identifier: SimpleCallToActionWidgetViewComponent.IDENTIFIER,
         viewComponentType: typeof(SimpleCallToActionWidgetViewComponent),
-        name: "Simple call to action",
+        name: "{$trainingguides.simplecalltoactionwidget.name$}",
         propertiesType: typeof(SimpleCallToActionWidgetProperties),
-        Description = $"Displays a call to action button. Simpler configuration options than {CallToActionWidgetViewComponent.NAME} widget.",
+        Description = "{$trainingguides.simplecalltoactionwidget.description$}",
         IconClass = "icon-bubble")]
 
 namespace TrainingGuides.Web.Features.LandingPages.Widgets.SimpleCallToAction;
@@ -214,14 +214,15 @@ public class SimpleCallToActionWidgetViewComponent : ViewComponent
             OpenInNewTab = properties?.OpenInNewTab ?? false,
         };
 
-        return View("~/Features/LandingPages/Widgets/SimpleCallToAction/SimpleCallToACtionWidget.cshtml", model);
+        return View("~/Features/LandingPages/Widgets/SimpleCallToAction/_SimpleCallToActionWidget.cshtml", model);
     }
 
     private async Task<string?> GetWebPageUrl(ContentItemReference? webPage)
     {
         if (webPage is not null)
         {
-            var page = await contentRetriever.RetrieveContentByGuids([webPage.Identifier]).FirstOrDefault();
+            var pages = await contentRetriever.RetrieveContentByGuids<IWebPageFieldsSource>([webPage.Identifier]);
+            var page = pages.FirstOrDefault();
             return page?.GetUrl()?.RelativePath ?? string.Empty;
         }
         return string.Empty;
@@ -243,15 +244,15 @@ namespace TrainingGuides.Web.Features.LandingPages.Widgets.SimpleCallToAction;
 public class SimpleCallToActionWidgetProperties : IWidgetProperties
 {
     [TextInputComponent(
-        Label = "Call to action text",
-        ExplanationText = "Add your call to action. Keep it under 30 characters.",
+        Label = "{$trainingguides.simplecalltoactionwidget.text.label$}",
+        ExplanationText = "{$trainingguides.simplecalltoactionwidget.text.explanation$}",
         Order = 10)]
     public string Text { get; set; } = string.Empty;
 
     // See the same property implemented using RadioGroupComponent instead in CallToAction widget.
     [DropDownComponent(
-        Label = "Target content",
-        ExplanationText = "Select what happens when a visitor clicks your button.",
+        Label = "{$trainingguides.simplecalltoactionwidget.targetcontent.label$}",
+        ExplanationText = "{$trainingguides.simplecalltoactionwidget.targetcontent.explanation$}",
         DataProviderType = typeof(DropdownEnumOptionProvider<TargetContentOption>),
         Order = 20)]
     public string TargetContent { get; set; } = nameof(TargetContentOption.Page);
@@ -265,22 +266,22 @@ public class SimpleCallToActionWidgetProperties : IWidgetProperties
             ProductPage.CONTENT_TYPE_NAME,
             ProfilePage.CONTENT_TYPE_NAME
         ],
-        Label = "Target page",
-        ExplanationText = "Select the page in the tree.",
+        Label = "{$trainingguides.simplecalltoactionwidget.targetpage.label$}",
+        ExplanationText = "{$trainingguides.simplecalltoactionwidget.targetpage.explanation$}",
         MaximumItems = 1,
         Order = 30)]
     [VisibleIfEqualTo(nameof(TargetContent), nameof(TargetContentOption.Page), StringComparison.OrdinalIgnoreCase)]
     public IEnumerable<ContentItemReference> TargetContentPage { get; set; } = [];
 
     [TextInputComponent(
-        Label = "Absolute URL",
-        ExplanationText = "Add a hyperlink to an external site, or use the product's URL + anchor tag # for referencing an anchor on the page.",
+        Label = "{$trainingguides.simplecalltoactionwidget.absoluteurl.label$}",
+        ExplanationText = "{$trainingguides.simplecalltoactionwidget.absoluteurl.explanation$}",
         Order = 40)]
     [VisibleIfEqualTo(nameof(TargetContent), nameof(TargetContentOption.AbsoluteUrl), StringComparison.OrdinalIgnoreCase)]
     public string TargetContentAbsoluteUrl { get; set; } = string.Empty;
 
     [CheckBoxComponent(
-        Label = "Open in new tab",
+        Label = "{$trainingguides.simplecalltoactionwidget.openinnewtab.label$}",
         Order = 50)]
     public bool OpenInNewTab { get; set; } = false;
 }
@@ -307,7 +308,7 @@ public class SimpleCallToActionWidgetViewModel
 }
 ```
 
-\_SimpleCallToACtionWidget.cshtml
+\_SimpleCallToActionWidget.cshtml
 
 ```cshtml
 @using TrainingGuides.Web.Features.LandingPages.Widgets.SimpleCallToAction
@@ -331,3 +332,5 @@ public class SimpleCallToActionWidgetViewModel
     </div>
 }
 ```
+
+> **Note:** `<tg-page-builder-content>` and `<tg-configure-widget-instructions />` are custom Tag Helpers defined in the *TrainingGuides* project — they are not Xperience framework built-ins. They realize the "show a configuration prompt in edit mode, degrade gracefully in live mode" rule in a project-specific way. In a different project, use that project's equivalent (or a plain edit-mode `Context.Kentico().PageBuilder().EditMode` check) — do not emit `<tg-...>` tags into a project that hasn't defined them.
