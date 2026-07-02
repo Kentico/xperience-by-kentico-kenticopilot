@@ -21,12 +21,13 @@ This repository provides plugins, each containing a set of skills for AI coding 
 
 > **Location:** [plugins/kentico-web-development/](./plugins/kentico-web-development/)
 
-Skills and references for building Xperience by Kentico websites. The first capability is a two-stage workflow for building [Page Builder](https://docs.kentico.com/x/6QWiCQ) widgets: the AI researches your requirements against your project structure and the Xperience documentation, then generates the full widget implementation (view component, properties, Razor view, view model, localization). Full instructions are available in the [README](./plugins/kentico-web-development/README.md).
+Skills and references for building Xperience by Kentico websites. A two-stage workflow builds [Page Builder](https://docs.kentico.com/x/6QWiCQ) widgets — the AI researches your requirements against your project structure and the Xperience documentation, then generates the full widget implementation (view component, properties, Razor view, view model, localization) — and a content-retrieval reference skill guides reading published content in live-site code. Full instructions are available in the [README](./plugins/kentico-web-development/README.md).
 
 | Skill                          | Description                                                                       |
 | ------------------------------ | --------------------------------------------------------------------------------- |
 | `widget-create-research`       | Analyzes requirements and design files, generates implementation instructions     |
 | `widget-create-implementation` | Creates widget code following the generated instructions and project conventions  |
+| `content-retrieval`            | Decision rules, a docs/API map, and performance guidance for reading published content in live-site/MVC code |
 
 ### KX13 → Xperience by Kentico migration
 
