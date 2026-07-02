@@ -45,6 +45,7 @@ This repository is an agent plugin marketplace. Install plugins directly without
 
 ```bash
 copilot plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
+copilot plugin install kentico-digital-experience@xperience-by-kentico-kenticopilot
 copilot plugin install widget-creation@xperience-by-kentico-kenticopilot
 copilot plugin install kx13-content-audit@xperience-by-kentico-kenticopilot
 copilot plugin install kx13-content-migration@xperience-by-kentico-kenticopilot
@@ -55,6 +56,7 @@ copilot plugin install kx13-codebase-migration@xperience-by-kentico-kenticopilot
 
 ```bash
 /plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
+/plugin install kentico-digital-experience@xperience-by-kentico-kenticopilot
 /plugin install widget-creation@xperience-by-kentico-kenticopilot
 /plugin install kx13-content-audit@xperience-by-kentico-kenticopilot
 /plugin install kx13-content-migration@xperience-by-kentico-kenticopilot
@@ -74,6 +76,9 @@ If you prefer not to use the plugin marketplace, copy plugin files directly into
 2. Copy the plugin folder for your use case to the root of your project workspace:
 
    ```bash
+   # Digital experience (custom automation actions)
+   cp -r plugins/kentico-digital-experience/ YOUR_PROJECT/
+
    # Widget creation
    cp -r plugins/widget-creation/ YOUR_PROJECT/
 
