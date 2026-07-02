@@ -1,13 +1,33 @@
 # Kentico web development
 
-Skills and references for building Xperience by Kentico websites. The plugin currently focuses on AI-assisted creation of [Page Builder](https://docs.kentico.com/x/6QWiCQ) widgets, with more web-development capabilities planned.
+Skills and references for building Xperience by Kentico websites. The plugin provides AI-assisted content modeling and [Page Builder](https://docs.kentico.com/x/6QWiCQ) widget creation.
 
-## Workflow
+## Skills
+
+| Skill | Description |
+|---|---|
+| `design-to-content` | Guides content modeling — translating designs/wireframes into an Xperience content model |
+| `widget-create-research` | Analyzes requirements and design files, generates widget implementation instructions |
+| `widget-create-implementation` | Creates widget code following the generated instructions and project conventions |
+
+## Widget creation workflow
 
 These prompts provide two-stage AI assistance for building custom Page Builder widgets:
 
 1. **Research stage** - Analyzes your requirements and design, validates them against Xperience documentation, and generates detailed implementation instructions
 2. **Implementation stage** - Creates the widget code following the generated instructions and project conventions
+
+## Content modeling (`design-to-content`)
+
+Use the `design-to-content` skill when translating designs, wireframes, or Figma files into an Xperience by Kentico content model. The skill points the AI to the relevant Kentico content-modeling documentation and guides decisions about content types, reusable schemas, taxonomies, relationships, and Page Builder structure.
+
+**VS Code GitHub Copilot example**
+
+```
+/design-to-content
+
+I have a Figma design for a news portal. Help me model the content types.
+```
 
 ## Prerequisites
 
