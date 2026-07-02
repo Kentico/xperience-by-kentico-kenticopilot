@@ -23,11 +23,12 @@ This repository provides plugins, each containing a set of skills for AI coding 
 
 Skills and references for building Xperience by Kentico websites. Includes content modeling guidance for translating designs into a content model, and a two-stage workflow for building [Page Builder](https://docs.kentico.com/x/6QWiCQ) widgets: the AI researches your requirements against your project structure and the Xperience documentation, then generates the full widget implementation (view component, properties, Razor view, view model, localization). Full instructions are available in the [README](./plugins/kentico-web-development/README.md).
 
-| Skill                          | Description                                                                       |
-| ------------------------------ | --------------------------------------------------------------------------------- |
-| `design-to-content`            | Guides content modeling — translating designs/wireframes into an Xperience content model |
-| `widget-create-research`       | Analyzes requirements and design files, generates implementation instructions     |
-| `widget-create-implementation` | Creates widget code following the generated instructions and project conventions  |
+| Skill                          | Description                                                                                          |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------- |
+| `agentify`                     | Audits an XbyK project for agentic-development readiness, reports gaps, and applies fixes on request |
+| `design-to-content`            | Guides content modeling — translating designs/wireframes into an Xperience content model             |
+| `widget-create-research`       | Analyzes requirements and design files, generates implementation instructions                        |
+| `widget-create-implementation` | Creates widget code following the generated instructions and project conventions                     |
 
 ### KX13 → Xperience by Kentico migration
 
@@ -35,22 +36,22 @@ Skills and references for building Xperience by Kentico websites. Includes conte
 
 The complete toolkit for upgrading a Kentico Xperience 13 project to Xperience by Kentico — content-model auditing, database **content** migration (driving the [Kentico Migration Tool](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool)), and live-site **codebase** migration. Full instructions are available in the [README](./plugins/kentico-kx13-migration/README.md). See also [KX13 upgrade plugins](./docs/KX13-Upgrade-Plugins.md) for the end-to-end path.
 
-| Skill | Description |
-|---|---|
-| `migrate-content-audit` | Runs a bundled .NET 8 CLI that reads a KX13 database and exports the content model as JSON + a Markdown report (the canonical input for `migrate-content-plan`) |
-| `migrate-content-plan` | Produces a Migration Overview and Migration Detail document from the source content model |
-| `migrate-content-appsettings` | Generates the Migration Tool's `appsettings.json` |
-| `migrate-content-classes` | Generates `IClassMapping` / `ReusableSchemaBuilder` C# extensions |
-| `migrate-content-fields` | Generates `IFieldMigration` C# extensions for field value and definition transforms |
-| `migrate-content-widgets` | Generates `IWidgetMigration` / `IWidgetPropertyMigration` C# extensions |
-| `migrate-content-items` | Generates `ContentItemDirectorBase` C# for linked pages, child references, page-to-widget conversions |
-| `migrate-content-run` | Executes a single combined `migrate` CLI invocation with all required flags (the tool orders them internally), monitors output, applies fixes |
-| `migrate-content-eval` | Evaluates the migrated XbyK database against the plan and produces an HTML report |
-| `migrate-code-global` | Sets up the Xperience by Kentico project foundation (code generation, localization, routing, Page Builder) |
-| `migrate-code-page` | Migrates a page's controller, views, repositories, and dependencies |
-| `migrate-code-page-widgets` | Migrates Page Builder widgets and sections for a specified page |
-| `migrate-code-component` | Migrates reusable components (header, footer, etc.) with dependencies |
-| `migrate-code-page-visual` | Compares old and new pages visually with Playwright, fixes discrepancies |
+| Skill                         | Description                                                                                                                                                     |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `migrate-content-audit`       | Runs a bundled .NET 8 CLI that reads a KX13 database and exports the content model as JSON + a Markdown report (the canonical input for `migrate-content-plan`) |
+| `migrate-content-plan`        | Produces a Migration Overview and Migration Detail document from the source content model                                                                       |
+| `migrate-content-appsettings` | Generates the Migration Tool's `appsettings.json`                                                                                                               |
+| `migrate-content-classes`     | Generates `IClassMapping` / `ReusableSchemaBuilder` C# extensions                                                                                               |
+| `migrate-content-fields`      | Generates `IFieldMigration` C# extensions for field value and definition transforms                                                                             |
+| `migrate-content-widgets`     | Generates `IWidgetMigration` / `IWidgetPropertyMigration` C# extensions                                                                                         |
+| `migrate-content-items`       | Generates `ContentItemDirectorBase` C# for linked pages, child references, page-to-widget conversions                                                           |
+| `migrate-content-run`         | Executes a single combined `migrate` CLI invocation with all required flags (the tool orders them internally), monitors output, applies fixes                   |
+| `migrate-content-eval`        | Evaluates the migrated XbyK database against the plan and produces an HTML report                                                                               |
+| `migrate-code-global`         | Sets up the Xperience by Kentico project foundation (code generation, localization, routing, Page Builder)                                                      |
+| `migrate-code-page`           | Migrates a page's controller, views, repositories, and dependencies                                                                                             |
+| `migrate-code-page-widgets`   | Migrates Page Builder widgets and sections for a specified page                                                                                                 |
+| `migrate-code-component`      | Migrates reusable components (header, footer, etc.) with dependencies                                                                                           |
+| `migrate-code-page-visual`    | Compares old and new pages visually with Playwright, fixes discrepancies                                                                                        |
 
 ### Project lifecycle
 
