@@ -333,4 +333,4 @@ public class SimpleCallToActionWidgetViewModel
 }
 ```
 
-> **Note:** `<tg-page-builder-content>` and `<tg-configure-widget-instructions />` are custom Tag Helpers defined in the *TrainingGuides* project — they are not Xperience framework built-ins. They realize the "show a configuration prompt in edit mode, degrade gracefully in live mode" rule in a project-specific way. In a different project, use that project's equivalent (or a plain edit-mode `Context.Kentico().PageBuilder().EditMode` check) — do not emit `<tg-...>` tags into a project that hasn't defined them.
+> **Note:** `<tg-page-builder-content>` and `<tg-configure-widget-instructions />` are custom Tag Helpers, not Xperience framework built-ins. They realize the "show a configuration prompt in edit mode, degrade gracefully in live mode" rule in a project-specific way. In a different project, use that project's equivalent (or a plain edit-mode `Context.Kentico().PageBuilder().EditMode` check) — do not emit `<tg-...>` tags into a project that hasn't defined them.

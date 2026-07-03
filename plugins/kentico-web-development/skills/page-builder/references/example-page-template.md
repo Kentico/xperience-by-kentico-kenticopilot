@@ -4,7 +4,7 @@ A default page template with one property and a Page Builder editable area. File
 
 ## Registration — `PageTemplateRegister.cs` (`~/PageTemplates/`)
 
-Templates without extra services or view components are registered in a dedicated file.
+When a template needs no extra services or view-component logic, put its `RegisterPageTemplate` attribute in a dedicated registration file (e.g. `PageTemplateRegister.cs`) instead of on a component class. This keeps registrations organized.
 
 ```csharp
 using Kentico.PageBuilder.Web.Mvc.PageTemplates;
@@ -88,5 +88,4 @@ public ActionResult Index()
 
 - This example inlines the whole document with `Layout = null`. Equally valid — and often preferred when templates share chrome — is to move `<html>/<head>/<body>` and the `<page-builder-styles />`/`<page-builder-scripts />` tags into a shared layout and set `Layout = "~/Views/Shared/_MyTemplateLayout.cshtml"` here. Follow whatever the project's existing templates do; just make sure the Page Builder resource tags render exactly once.
 - The content type must have *Include in routing* and Page Builder enabled.
-- Scope availability with `ContentTypeNames` on the attribute (recommended) — the management MCP server does not respect `IPageTemplateFilter` restrictions.
 - Page-template icons use the `xp-` prefix (`Kentico.Xperience.Admin.Base.Icons`), unlike widget/section icons which use `icon-`.

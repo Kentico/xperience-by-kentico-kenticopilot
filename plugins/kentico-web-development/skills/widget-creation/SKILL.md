@@ -1,7 +1,7 @@
 ---
 name: "widget-creation"
 description: "Knowledge and conventions for building Page Builder widgets in Xperience by Kentico — view component, properties with admin UI form components, view model, Razor view, registration, localization, caching, and content retrieval. Use whenever creating, building, or modifying a Page Builder widget."
-compatibility: "Recommended: Kentico Docs MCP (for verifying API shapes)"
+compatibility: "Requires Kentico Docs MCP (for verifying API shapes)"
 ---
 
 # Page Builder widget creation
@@ -12,7 +12,7 @@ This skill provides the knowledge needed to build a custom Page Builder widget i
 
 1. **Understand the requirements.** Read the user's requirements file and any design file (e.g. exported HTML/Figma), and capture every dimension listed under [What to capture](#what-to-capture) below.
 2. **Study the project first.** Existing widgets are the source of truth for conventions in this repository. Locate them (the bundled examples use `Components/Widgets/` and `Features/**/Widgets/`, but follow whatever layout your project uses) and mirror their namespace layout, file structure, registration style, localization approach, and content-retrieval patterns. When the project's conventions differ from the examples in `references/`, the project wins.
-3. **Verify APIs you are unsure about.** Use the Kentico Docs MCP server and the links in `references/docs.md` to confirm form-component attributes, the `IContentRetriever` API, page-URL retrieval, and content-item system fields before relying on them. Do not guess API shapes.
+3. **Verify APIs via the Kentico Docs MCP.** Use the Kentico Docs MCP server and the links in `references/docs.md` to confirm form-component attributes, the `IContentRetriever` API, page-URL retrieval, and content-item system fields before relying on them. Do not guess API shapes — plausible-looking signatures are often wrong.
 4. **Implement** the widget following the anatomy and rules below.
 5. **Build and test.** Build the web project (locate the `.csproj`/`.sln` the widget belongs to — typically the web application project) and fix any errors related to the new widget. If a build target isn't obvious or the project can't be built in this environment, say so rather than guessing. Verify the widget renders in both edit and live mode.
 
@@ -55,7 +55,6 @@ An inline editor is a separate partial (conventionally under `~/Components/Inlin
 
 - **Follow project conventions over examples.** Reuse existing widgets' patterns for structure, naming, and shared services.
 - **Caching.** Always cache content retrieval unless explicitly told otherwise.
-- **Parameterization.** Parameterize retrieval (e.g. linked items, depth) where needed.
 - **Null/empty handling.** Validate that properties and retrieved data are not null/empty before accessing them.
 - **Edit vs. live mode.** Configuration prompts and "configure this widget" messaging belong in edit mode only (`Context.Kentico().PageBuilder().EditMode`). On the live site the widget must degrade gracefully when data is missing.
 - **Content selection.** To display linked content, prefer the Combined Content Selector / `ContentItemSelectorComponent` over the Web Page Selector.

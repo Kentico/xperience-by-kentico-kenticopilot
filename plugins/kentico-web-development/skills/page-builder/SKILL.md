@@ -11,8 +11,8 @@ This skill provides the knowledge needed to build the structural layers of Page 
 ## Workflow
 
 1. **Understand the requirement.** Decide whether you need a section (a reusable widget-zone layout content editors choose inside an editable area), a page template (a full-page layout editors assign to a page), or both.
-2. **Study the project first.** Existing sections (`Components/Sections/<Name>/`) and page templates (`PageTemplates/`) are the source of truth for conventions in this repository. Mirror their structure, registration style, naming, and localization. When project conventions differ from the docs examples, the project wins.
-3. **Verify APIs you are unsure about** via the Kentico Docs MCP and the links in `references/docs.md` before relying on them.
+2. **Study the project first.** Existing sections and page templates are the source of truth for conventions in this repository (the bundled examples use `Components/Sections/<Name>/` and `PageTemplates/`, but follow whatever layout your project uses). Mirror their structure, registration style, naming, and localization. When project conventions differ from the docs examples, the project wins.
+3. **Verify APIs via the Kentico Docs MCP** and the links in `references/docs.md` before relying on them. Do not guess API shapes — plausible-looking signatures are often wrong.
 4. **Implement** following the patterns below and the examples in `references/`.
 5. **Build and test.** Build the project, fix errors, and verify the layout renders in both edit and live mode.
 
@@ -23,7 +23,7 @@ Sections define the layout of widget zones within an editable area. The system s
 Key facts:
 
 - **Every section must contain at least one widget zone** — rendered with `@await Html.Kentico().WidgetZoneAsync()` (or the `<widget-zone />` Tag Helper). Sections without a widget zone are not supported.
-- **Two flavors:** *basic* (a partial view only) and *view-component-based* (recommended when the section needs business logic, page context, or POST handling). A view-component section's `Invoke`/`InvokeAsync` method must declare a `ComponentViewModel` parameter (or `ComponentViewModel<TProperties>` for sections with properties) — both the synchronous and asynchronous signatures are supported, so pick whichever the logic needs.
+- **Two flavors:** _basic_ (a partial view only) and _view-component-based_ (recommended when the section needs business logic, page context, or POST handling). A view-component section's `Invoke`/`InvokeAsync` method must declare a `ComponentViewModel` parameter (or `ComponentViewModel<TProperties>` for sections with properties) — both the synchronous and asynchronous signatures are supported, so pick whichever the logic needs.
 - **Properties** are optional; define an `ISectionProperties`-style property class and pass its `System.Type` as `PropertiesType` during registration. Access values via `Model.Properties` in the view.
 - **Register** with the `[assembly: RegisterSection(...)]` attribute (`Kentico.PageBuilder.Web.Mvc`). Use a company/project prefix in the identifier. Optional `Description` and `IconClass` (icons use the `icon-` prefix).
 - **Location matters:** section code files must live in the application root (`~/Components/Sections/<SectionName>/`), **not** inside an MVC Area.
@@ -39,9 +39,9 @@ Page templates let content editors assign a full-page MVC layout to a page witho
 
 Key facts:
 
-- **The rendered output must be a full HTML page** — including `<html>`, `<head>`, `<body>`, all stylesheet/script links, and the Page Builder resources (`<page-builder-styles />` in the head, `<page-builder-scripts />` inside the body before `</body>`). This markup can live directly in the template view *or* in a shared layout the template view references (`Layout = "..."`) — use whichever the project's other templates use, and ensure the Page Builder resource tags appear exactly once. Pages using templates do **not** have their own per-page view.
-- **Default vs. preset:** developers create *default* templates in code; editors can save *preset* templates that snapshot Page Builder content on top of a default template. Preset templates do **not** store structured (field) content.
-- **Content type setup:** the content type must have *Include in routing* enabled and Page Builder enabled. The route's action method returns a `TemplateResult` (optionally with a custom model object).
+- **The rendered output must be a full HTML page** — including `<html>`, `<head>`, `<body>`, all stylesheet/script links, and the Page Builder resources (`<page-builder-styles />` in the head, `<page-builder-scripts />` inside the body before `</body>`). This markup can live directly in the template view _or_ in a shared layout the template view references (`Layout = "..."`) — use whichever the project's other templates use, and ensure the Page Builder resource tags appear exactly once. Pages using templates do **not** have their own per-page view.
+- **Default vs. preset:** developers create _default_ templates in code; editors can save _preset_ templates that snapshot Page Builder content on top of a default template. Preset templates do **not** store structured (field) content.
+- **Content type setup:** the content type must have _Include in routing_ enabled and Page Builder enabled. The route's action method returns a `TemplateResult` (optionally with a custom model object).
 - **Model:** the view uses `TemplateViewModel` or `TemplateViewModel<TProperties>`; access properties via `Model.Properties`, page context via `Model.Page`, and a custom model via `Model.GetTemplateModel<T>()`.
 - **Register** with the `[assembly: RegisterPageTemplate(...)]` attribute (`Kentico.PageBuilder.Web.Mvc.PageTemplates`). Scope availability with the `ContentTypeNames` parameter (recommended) rather than `IPageTemplateFilter` where possible. Optional `Description` and `IconClass` (page-template icons use the `xp-` prefix from `Kentico.Xperience.Admin.Base.Icons`).
 - **Location matters:** template code files must live in the application root (`~/PageTemplates/`), **not** inside an MVC Area. Store views in `~/PageTemplates/` named `_<Identifier>.cshtml`.
