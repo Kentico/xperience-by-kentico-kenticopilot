@@ -22,7 +22,7 @@ You are tasked with updating an Xperience by Kentico project to a newer version.
 
 ### 3. Follow the official update procedure
 
-- Read `references/update-docs.md` and fetch the relevant documentation pages via the Kentico Docs MCP.
+- Read `references/update-docs.md` and fetch the relevant documentation pages.
 - Perform the update as documented — do not substitute your own procedure or external tools; everything needed (including CI handling) is built into the product's CLI.
 
 ### 4. Resolve breaking changes
