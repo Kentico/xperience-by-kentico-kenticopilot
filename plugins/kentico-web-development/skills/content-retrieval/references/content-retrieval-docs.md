@@ -1,6 +1,6 @@
 # Content retrieval — documentation map
 
-Look up the page for the task instead of reconstructing API details from memory — signatures and defaults drift between releases. Each link has a **When to read** hint. If the **Kentico Docs MCP** (`kentico_docs_search` / `kentico_docs_fetch`) is available, use it to fetch the current page content; the URLs below are the canonical anchors.
+Each link has a **When to read** hint. Use the **Kentico Docs MCP** (`kentico_docs_search` / `kentico_docs_fetch`) to fetch the current page content.
 
 ## Choosing the API
 
@@ -30,7 +30,7 @@ Look up the page for the task instead of reconstructing API details from memory 
 ## Selectors → turning a selection into data
 
 - **Admin UI form components (selectors reference)**: https://docs.kentico.com/documentation/developers-and-admins/customization/extend-the-administration-interface/ui-form-components/reference-admin-ui-form-components
-  - When to read: a model property uses a selector attribute and you must load the selection. Confirms each selector's C# type and GUID — the Combined content selector (`ContentItemGUID`) and Page selector (`WebPageItemGUID`) are **not interchangeable**; crossing them returns an empty result with no exception.
+  - When to read: a model property uses a selector attribute and you must load the selection. Confirms each selector's C# type and GUID — the Combined content selector (`ContentItemGUID`) and Page selector (`WebPageItemGUID`) are **not interchangeable**.
 
 ## Language, preview, security
 
@@ -69,5 +69,3 @@ Look up the page for the task instead of reconstructing API details from memory 
   - When to read: the query builder's fluent surface (`ForContentType`, `ForContentTypes`, `Where`, `Columns`, `TopN`, `Offset`, `InSmartFolder`, …).
 - **Generate code files (models + `RegisterContentTypeMapping`)**: https://docs.kentico.com/documentation/developers-and-admins/api/generate-code-files-for-system-objects
   - When to read: to produce or understand the generated content-type model classes the retriever binds to.
-- **Runnable API examples**: https://docs.kentico.com/api/
-  - When to read: you want a complete, copy-runnable example rather than a signature.

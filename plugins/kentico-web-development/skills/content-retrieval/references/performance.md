@@ -4,37 +4,30 @@ Per-request cost is driven by how much content-graph the render resolves, not by
 
 ## 1. Linked-item depth is the most expensive dial
 
-`LinkedItemsMaxLevel` (query-builder: `WithLinkedItems(maxLevel)`) defaults to `0` — no linked items. Every level resolves links recursively, so cost grows **combinatorially, not linearly**.
+Linked-item depth — `LinkedItemsMaxLevel` on the retriever's `Retrieve*Parameters`, or `WithLinkedItems(maxLevel)` on the content item query builder (`ContentItemQueryBuilder`) — resolves linked items recursively, so cost grows **combinatorially, not linearly** with each level. Evaluate whether you actually need the depth you set, and keep it to the minimum the render requires.
 
-- Start at `0`; raise depth **only on the specific query** that renders that graph, never globally or "just in case."
-- Treat **depth 3+ as a design smell** that needs justification.
-- Set depth **per query, not on a shared repository method** — use separate "list" vs "detail" retrieval paths so a listing page doesn't pay for a graph only the detail page renders.
+## 2. Caching
 
-## 2. Lean on the retriever's implicit caching — don't defeat it
-
-`IContentRetriever` caches results implicitly (default 10 min via `ContentRetrieverCacheOptions.DefaultCacheExpiration`, or per-call via `RetrievalCacheSettings`). A deep graph *with* caching is fine; the same graph uncached is the failure mode.
-
-- **Prefer `IContentRetriever` for read paths** — the raw `ContentItemQueryBuilder` / `IContentQueryExecutor` has **no implicit caching** (you'd wrap it in `IProgressiveCache` yourself).
-- **Don't use `RetrievalCacheSettings.CacheDisabled`** unless genuinely required. Preview already disables caching automatically — don't disable it "for preview."
-- The retriever **auto-wires linked-item cache dependencies** (`ILinkedItemsDependencyAsyncRetriever` / `IWebPageLinkedItemsDependencyAsyncRetriever`) so cached deep graphs invalidate when a linked item changes; hand-rolled caching around raw queries does not, and goes stale.
+Always cache retrieval results — a deep graph *with* caching is fine; the same graph uncached is the failure mode. Caching is **automatic with `IContentRetriever`** (default 10 min, override via `RetrievalCacheSettings`; it also auto-wires linked-item cache dependencies, so a cached graph invalidates when a linked item changes) and **manual with the raw query API** — `ContentItemQueryBuilder` / `IContentQueryExecutor` don't cache, so you wrap them in `IProgressiveCache` yourself.
 
 ## 3. Custom queries need a unique cache-key suffix
 
-Custom `additionalQueryConfiguration` (`Where` / `TopN` / `OrderBy` / `Columns`) is **not** folded into the auto cache key. Pass a `cacheItemNameSuffix` (on `RetrievalCacheSettings`) built from the parameter names plus their values, or distinct queries collide on one cache entry and serve the wrong content.
+Custom `additionalQueryConfiguration` (`Where` / `TopN` / `OrderBy` / `Columns`) is **not** folded into the auto cache key. Pass a `cacheItemNameSuffix` (on `RetrievalCacheSettings`) built from the parameter values, or distinct queries collide on one cache entry and serve the wrong content.
 
 ## 4. Retrieve only the columns you need
 
-Use `.Columns(...)` (and `UrlPathColumns()` when you only need URL data) instead of pulling every field — most impactful on linked-item queries, where "all columns × all linked types × depth" balloons the payload. Note column projection applies to the top-level type only (see limitation A).
+Use `.Columns(...)` (and `UrlPathColumns()` for URL-only data) instead of pulling every field. Projection reaches the top-level type only, so it won't trim linked-item payloads — for those, see Known limitations.
 
 ## 5. Page large result sets
 
-`TopN(n)` for fixed small sets; `Offset(offset, fetch)` for paging (**requires an `OrderBy`**, **can't be combined with `TopN`**). Don't fetch whole collections and trim in memory inside per-request components.
+`TopN(n)` for fixed small sets; `Offset(offset, fetch)` for paging (**requires `OrderBy`**, **can't combine with `TopN`**). Don't fetch whole collections and trim in memory.
 
 ## Known limitations
 
-**A. Columns can't be limited for linked items.** `Columns()` projects the top-level type only — no API projects columns on linked items or picks which reference field to load links from. So `WithLinkedItems` loads all fields of all linked types up to the depth. *Workaround:* depth `0` + load links with a second retrieval using `LinkedFrom` / `LinkedFromSchemaField` (both on the `additionalQueryConfiguration` hook, so you keep implicit caching), projecting only the columns you need.
+These are edge cases at scale — linked items with caching remain the norm. Consider an alternative approach only for a query that measurably suffers.
 
-**B. Schema / many-content-type queries fan out into `UNION`s.** `RetrieveContentOfContentTypes`, `RetrieveContentOfReusableSchemas`, and the all-pages methods union every included type's field set. Many types sharing one schema plus a non-trivial depth degrades badly. *Workaround:* keep depth and columns tight, and limit content-type-field inclusion via the retriever's parametrization.
+- Column projection (`Columns()`) doesn't reach linked items — depth loads every field of every linked type. Use `LinkedFrom` / `LinkedFromSchemaField` only to prune unwanted branches: cut the linked items you don't need at a given level and load the rest in a separate retrieval.
+- Multi-type / schema retrieval (`RetrieveContentOfContentTypes`, `RetrieveContentOfReusableSchemas`, all-pages methods) unions every included type's own fields, so many types slow down. Set `IncludeContentTypeFields = false` to load only the common fields (metadata + reusable schema) and skip the per-type union.
 
 ## Signatures
 
