@@ -7,11 +7,12 @@ Skills and references for building Xperience by Kentico websites. The plugin cov
 | Skill                          | Description                                                                                                                              |
 | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
 | `agentify`                     | Audits an XbyK project for agentic-development readiness, reports gaps, and applies fixes on request                                     |
+| `design-to-content`            | Guides content modeling — translating designs/wireframes into an Xperience content model                                                |
 | `widget-create-research`       | Analyzes widget requirements and design files, validates them against Xperience documentation, and generates implementation instructions |
 | `widget-create-implementation` | Creates the widget code following the generated instructions and project conventions                                                    |
 | `content-retrieval`            | Decision rules, a docs/API map, and performance guidance for reading published content (pages, reusable items, reusable-schema items) in live-site/MVC code — prefer `IContentRetriever` |
 
-You invoke `agentify` and the two `widget-create-*` skills explicitly — the `widget-create-*` pair forms the two-stage widget workflow described below. The `content-retrieval` skill is a reference skill that activates automatically when you write or review content-retrieval code — you can also invoke it by name. See [Content retrieval](#content-retrieval) for details.
+You invoke `agentify`, `design-to-content`, and the two `widget-create-*` skills explicitly — the `widget-create-*` pair forms the two-stage widget workflow described below. The `content-retrieval` skill is a reference skill that activates automatically when you write or review content-retrieval code — you can also invoke it by name. See [Content retrieval](#content-retrieval) for details.
 
 ## Agentic readiness (`agentify`)
 
@@ -31,6 +32,18 @@ When fixing the **Management MCP** gap, the skill can enable the management API 
 /agentify
 
 Project root: C:/my-project
+```
+
+## Content modeling (`design-to-content`)
+
+Use the `design-to-content` skill when translating designs, wireframes, or Figma files into an Xperience by Kentico content model. The skill points the AI to the relevant Kentico content-modeling documentation and guides decisions about content types, reusable schemas, taxonomies, relationships, and Page Builder structure.
+
+**VS Code GitHub Copilot example**
+
+```
+/design-to-content
+
+I have a Figma design for a news portal. Help me model the content types.
 ```
 
 ## Widget creation workflow (`widget-create-research` + `widget-create-implementation`)
