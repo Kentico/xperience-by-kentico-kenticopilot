@@ -17,7 +17,7 @@ It checks:
 
 - **Agent instructions** (`AGENTS.md` / `CLAUDE.md`) — project overview, dev-environment setup, run & verify instructions, MCP-usage instructions, and pointers to further guidance.
 - **Design / architecture / interactions guidance** — recommending description-driven **passive skills** over static `DESIGN.md` / `ARCHITECTURE.md` / `INTERACTIONS.md` files.
-- **Kentico Docs MCP** and **Kentico Management MCP** — configured and accessible to the agent.
+- **Kentico Docs MCP** and **Kentico Management MCP** — configured and accessible to the agent (see [Configure MCP servers](#configure-mcp-servers) below).
 
 When fixing the **Management MCP** gap, the skill can enable the management API in your app (NuGet package + `Program.cs` + a secret) and add the local MCP server. This is a Kentico **preview, local-development-only** feature — `agentify` confirms before editing application code and never enables it for production.
 
@@ -54,6 +54,10 @@ These prompts provide two-stage AI assistance for building custom Page Builder w
 - AI coding assistant installed (for example, GitHub Copilot or Claude Code)
 - Widget requirements file describing the main use cases and behavior
 - Widget design file (optional, exported from Figma or similar)
+
+## Configure MCP servers
+
+This plugin requires some MCP servers to be set up in your workspace. See [MCP-setup.md](./MCP-setup.md) for the list and copy-paste-ready configuration.
 
 ## Install the plugin
 

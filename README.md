@@ -6,7 +6,7 @@
 
 AI agent prompts and instructions for Xperience by Kentico development. This repository provides pre-configured prompts for common development tasks, helping developers accelerate their workflow with AI coding assistants.
 
-This repository contains plugins (skills, instructions, MCP server configuration) tested for the following AI coding assistants:
+This repository contains plugins (skills, instructions, agents) tested for the following AI coding assistants:
 
 - GitHub Copilot
 - Claude Code

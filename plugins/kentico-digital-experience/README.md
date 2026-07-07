@@ -8,6 +8,10 @@ AI-assisted skills for extending [Automation processes](https://docs.kentico.com
 - AI coding assistant (for example, GitHub Copilot, Copilot CLI, or Claude Code)
 - A short description of what the component should do and what properties (if any) marketers should be able to configure for the step
 
+## Configure MCP servers
+
+This plugin requires some MCP servers to be set up in your workspace. See [MCP-setup.md](./MCP-setup.md) for the list and copy-paste-ready configuration.
+
 ## Install the plugin
 
 ### VS Code (GitHub Copilot)

@@ -16,6 +16,10 @@ These skills provide three-stage assistance for building CD Repository filters:
 - AI coding assistant installed (for example, GitHub Copilot or Claude Code)
 - `gh` CLI (recommended) or local `git` available in your terminal
 
+## Configure MCP servers
+
+This plugin works best with some MCP servers set up in your workspace. See [MCP-setup.md](./MCP-setup.md) for the list and copy-paste-ready configuration.
+
 ## Install the plugin
 
 ### VS Code (GitHub Copilot)
