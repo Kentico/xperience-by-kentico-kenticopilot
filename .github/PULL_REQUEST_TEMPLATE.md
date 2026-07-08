@@ -15,4 +15,3 @@ Fill in the sections that apply and delete the ones that don't.
 - [ ] A new resource is genuinely needed — the same result can't be achieved with an existing resource, a docs link, or a well-written prompt.
 - [ ] The resource avoids features or fields specific to a single AI tool, so it works across different AI assistants.
 - [ ] Plugin and marketplace versions are bumped per the [versioning rules](../docs/Contributing-Setup.md) — any plugin change bumps the marketplace version at least by a patch, and both marketplace files match.
-- [ ] After merge, I will create a GitHub release matching the new marketplace version.

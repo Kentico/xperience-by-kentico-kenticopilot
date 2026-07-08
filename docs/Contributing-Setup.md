@@ -90,4 +90,4 @@ Both marketplace files must always have matching versions and matching plugin en
 
 ## GitHub releases
 
-The GitHub release version is aligned with the marketplace version — every marketplace version bump gets a matching GitHub release. The PR author creates the release right after their PR is merged.
+The GitHub release version is aligned with the marketplace version — every marketplace version bump gets a matching GitHub release. The repository code owners create the release right after the PR is merged to main.
