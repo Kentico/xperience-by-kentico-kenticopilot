@@ -38,13 +38,7 @@ copilot plugin install kentico-digital-experience@xperience-by-kentico-kenticopi
 
 ### `automation-action-create`
 
-Researches the project and the action API, then implements and registers a custom automation action and (optionally) its `IAutomationActionProperties`-implementing properties class. The skill walks the agent through a single conversation:
-
-1. **Reads** the code-quality guardrails bundled with the skill, and fetches the action API contract and supplementary Xperience docs from the live documentation via the Kentico Docs MCP.
-2. **Inspects** the target Xperience by Kentico project for existing actions, namespace conventions, DI patterns, and `.resx` localization.
-3. **Confirms** the missing pieces with you in chat: identifier, display name, icon, tooltip, configurable properties (each with type, form component, default, validation rules, visibility conditions), runtime behavior, and dependencies. Default values may be inferred without confirmation during the initial generation – you can always adjust the output or ask the agent to make any required changes.
-4. **Generates** the action class, the optional `TProperties` class (implementing `IAutomationActionProperties`) with form-component annotations, the assembly-level `RegisterAutomationAction<>` attribute, and any `.resx` strings the project already uses.
-5. **Verifies** by building and grepping for identifier collisions.
+Points the agent to the authoritative Xperience documentation for implementing a custom automation action — the action class, the optional `IAutomationActionProperties`-implementing properties class with form-component annotations, and the `RegisterAutomationAction<>` registration. The agent fetches the relevant pages via the Kentico Docs MCP, mirrors the project's existing conventions, confirms the action's design with you, and implements following the documentation's examples and best practices.
 
 ## Usage
 
@@ -69,32 +63,11 @@ Add an action that resets the lead-scoring counter persisted as
 process data. No configurable properties.
 ```
 
-## Examples
-
-The [`references/example-actions.md`](skills/automation-action-create/references/example-actions.md) file collects canonical action samples covering distinct patterns:
-
-| Example                          | Pattern                                                                          |
-| -------------------------------- | -------------------------------------------------------------------------------- |
-| `SendContactSmsAction`           | Outbound channel integration via Twilio; templated message; reads contact field. |
-| `NotifySalesOnSlackAction`       | Internal-facing webhook POST with templated card.                                |
-| `SyncContactToHubSpotAction`     | Outbound data sync to external CRM; DI-injected `HttpClient`; idempotency.       |
-| `UpdateContactConsentAction`     | Service-based internal write using `IConsentAgreementService`.                   |
-| `UpdateLeadScoreAction`          | Cross-step custom process data sharing via `GetProcessData` / `SetProcessData`.  |
-| `ResetLeadScoreAction`           | No-properties base class pattern (pairs with `UpdateLeadScoreAction`).             |
-
-The first five inherit from `AutomationAction<TProperties>`. `ResetLeadScoreAction` uses the no-properties `AutomationAction` base class.
-
 ## Included files
 
 ### References (read by the agent)
 
-- `references/guardrails.md` – code-quality guardrails beyond the API specification (no secrets in `TProperties`, `ILogger<T>` over `IEventLogService`, typed `HttpClient`, idempotency, marketer-experience conventions).
-- `references/docs.md` – links to the live Xperience documentation the agent fetches via the Kentico Docs MCP, including the **Custom automation steps** page that is the authoritative source for the action API (base classes, registration, `AutomationProcessContext`, `IAutomationProcessData`, form components, validation rules).
-- `references/example-actions.md` – canonical custom action samples (one section per action, with the action and its properties class shown as separate files) that the skill mirrors when generating code.
-
-### Templates
-
-- `skills/automation-action-create/assets/ACTION_TEMPLATE.md` – in-chat scaffold the agent uses when proposing the action's design (not written to disk).
+- `references/docs.md` – links to the live Xperience documentation the agent fetches via the Kentico Docs MCP, including the **Custom automation steps** page that is the authoritative source for the action API, code examples, registration, runtime context, and best practices.
 
 ## Skill customization
 
