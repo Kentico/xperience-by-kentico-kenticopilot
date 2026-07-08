@@ -1,13 +1,18 @@
 # Kentico web development
 
-Skills and references for building Xperience by Kentico websites.
+Skills and references for building Xperience by Kentico websites. The plugin covers an agentic-readiness audit for your project, AI-assisted creation of [Page Builder](https://docs.kentico.com/x/6QWiCQ) widgets, and guidance for [content retrieval](https://docs.kentico.com/documentation/developers-and-admins/development/content-retrieval) in live-site code, with more web-development capabilities planned.
 
-| Skill                          | Description                                                                                          |
-| ------------------------------ | ---------------------------------------------------------------------------------------------------- |
-| `agentify`                     | Audits an XbyK project for agentic-development readiness, reports gaps, and applies fixes on request |
-| `design-to-content`            | Guides content modeling — translating designs/wireframes into an Xperience content model             |
-| `widget-create-research`       | Analyzes requirements and design, generates implementation instructions                              |
-| `widget-create-implementation` | Creates widget code following the generated instructions and project conventions                     |
+## Skills
+
+| Skill                          | Description                                                                                                                              |
+| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `agentify`                     | Audits an XbyK project for agentic-development readiness, reports gaps, and applies fixes on request                                     |
+| `design-to-content`            | Guides content modeling — translating designs/wireframes into an Xperience content model                                                |
+| `widget-create-research`       | Analyzes widget requirements and design files, validates them against Xperience documentation, and generates implementation instructions |
+| `widget-create-implementation` | Creates the widget code following the generated instructions and project conventions                                                    |
+| `content-retrieval`            | Decision rules, a docs/API map, and performance guidance for reading published content (pages, reusable items, reusable-schema items) in live-site/MVC code — prefer `IContentRetriever` |
+
+You invoke `agentify`, `design-to-content`, and the two `widget-create-*` skills explicitly — the `widget-create-*` pair forms the two-stage widget workflow described below. The `content-retrieval` skill is a reference skill that activates automatically when you write or review content-retrieval code — you can also invoke it by name. See [Content retrieval](#content-retrieval) for details.
 
 ## Agentic readiness (`agentify`)
 
@@ -165,6 +170,26 @@ See `examples/widget-creation/` for a complete example of context files for an a
 - Structured requirements file
 - Exported design HTML
 
+## Content retrieval
+
+The `content-retrieval` skill is a **reference skill** — it carries no multi-step workflow and produces no files. It activates automatically when your task involves reading published content in live-site / MVC code: fetching pages or reusable content items, turning a Combined content selector or Page selector value into data, or diagnosing a content query that is slow under load. You can also invoke it explicitly by name.
+
+Instead of generating code from a fixed template, it equips the agent with:
+
+- **Decision rules** — when to use `IContentRetriever` (the default for almost all retrieval) versus the lower-level content item query API, and the single most common bug: Combined content selector GUIDs (`ContentItemGUID`) and Page selector GUIDs (`WebPageItemGUID`) are **not interchangeable**, and crossing them returns an empty result with no exception.
+- **A documentation map** (`references/content-retrieval-docs.md`) — every relevant Xperience docs page and API-reference entry, each with a "when to read" hint, so the agent looks up current signatures instead of reconstructing them from memory.
+- **A performance model** (`references/performance.md`) — how to keep retrieval fast under load (linked-item depth, the retriever's implicit caching, column projection, paging) and the known API limitations.
+
+If the [Kentico Docs MCP server](./.mcp.json) is configured, the skill uses it to fetch the current content of any referenced documentation page.
+
+### Example
+
+```text
+How should I load the items a visitor picked in a Combined content selector on my widget?
+```
+
+The skill supplies the retrieval decision rules and points to the exact docs and API reference for the methods involved.
+
 ## Skill customization
 
-These skill files serve as a baseline for bootstrapping new widgets in Xperience by Kentico solutions. Modify and enhance the files as required by your projects, workflow, and requirements. Place project-specific information into the `references` folder as new files — the skill instructs the agent to read all files in the directory.
+The widget skill files serve as a baseline for bootstrapping new widgets in Xperience by Kentico solutions. Modify and enhance the files as required by your projects, workflow, and requirements. Place project-specific information into a skill's `references` folder as new files — the skills instruct the agent to read all files in the directory.

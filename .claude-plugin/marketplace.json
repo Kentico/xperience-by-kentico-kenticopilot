@@ -35,7 +35,7 @@
       "homepage": "https://github.com/Kentico/xperience-by-kentico-kenticopilot/tree/main/plugins/kentico-web-development",
       "repository": "https://github.com/Kentico/xperience-by-kentico-kenticopilot",
       "license": "MIT",
-      "keywords": ["kentico", "xperience", "web-development", "widget", "page-builder", "cms"],
+      "keywords": ["kentico", "xperience", "web-development", "widget", "page-builder", "content-retrieval", "cms"],
       "strict": false
     },
     {
