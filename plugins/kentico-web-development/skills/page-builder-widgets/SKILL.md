@@ -1,6 +1,6 @@
 ---
 name: "page-builder-widgets"
-description: "Knowledge and conventions for building and modifying Page Builder widgets in Xperience by Kentico — view component, properties with admin UI form components, view model, Razor view, registration, localization, caching, and content retrieval. Use whenever creating, building, or modifying a Page Builder widget."
+description: "Knowledge and conventions for building and modifying Page Builder widgets in Xperience by Kentico — view component, properties with admin UI form components, view model, Razor view, registration, localization, and content retrieval. Use whenever creating, building, or modifying a Page Builder widget."
 compatibility: "Requires Kentico Docs MCP"
 ---
 
@@ -10,7 +10,7 @@ This skill points you to what you need to build or modify a Page Builder widget 
 
 ## Pieces of a widget
 
-- **View component** (`<Name>WidgetViewComponent.cs`) – entry point; receives properties, retrieves content, builds the view model, returns the view. Carries `RegisterWidget` and an `IDENTIFIER` constant.
+- **View component** (`<Name>WidgetViewComponent.cs`) – entry point; receives properties, retrieves content, builds the view model, returns the view. Carries `RegisterWidget` and an `IDENTIFIER` constant. Widgets with no content retrieval or logic (static widgets) can skip the view component entirely and register a plain partial view.
 - **Properties** (`<Name>WidgetProperties.cs`) – implements `IWidgetProperties`; editor-configurable data, each field decorated with an admin UI form component (and optional visibility conditions).
 - **View model** (`<Name>WidgetViewModel.cs`) – exactly what the view needs to render.
 - **Razor view** (`_<Name>Widget.cshtml`) – the markup; reuses project CSS, degrades gracefully when data is missing.
