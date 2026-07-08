@@ -8,11 +8,11 @@ Skills and references for building Xperience by Kentico websites. The plugin cov
 | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | `agentify`          | Audits an XbyK project for agentic-development readiness, reports gaps, and applies fixes on request                                     |
 | `design-to-content` | Guides content modeling — translating designs/wireframes into an Xperience content model                                                |
-| `widget-creation`   | Builds a custom Page Builder **widget** (view component, properties, view model, Razor view, registration, localization)                 |
-| `page-builder`      | Builds Page Builder **structure** — sections (widget-zone layouts) and page templates (full-page layouts)                                |
+| `page-builder-widgets`   | Builds a custom Page Builder **widget** (view component, properties, view model, Razor view, registration)                          |
+| `page-builder-structure` | Builds Page Builder **structure** — sections (widget-zone layouts) and page templates (full-page layouts)                           |
 | `content-retrieval` | Decision rules, a docs/API map, and performance guidance for reading published content (pages, reusable items, reusable-schema items) in live-site/MVC code — prefer `IContentRetriever` |
 
-You invoke `agentify` and `design-to-content` explicitly. `widget-creation` and `page-builder` are **passive-knowledge** skills — the AI loads them automatically when you describe the relevant task; just provide your requirements. The `content-retrieval` skill is a reference skill that activates automatically when you write or review content-retrieval code — you can also invoke it by name. See [Content retrieval](#content-retrieval) for details.
+You invoke `agentify` and `design-to-content` explicitly. `page-builder-widgets` and `page-builder-structure` are **passive-knowledge** skills — the AI loads them automatically when you describe the relevant task; just provide your requirements. The `content-retrieval` skill is a reference skill that activates automatically when you write or review content-retrieval code — you can also invoke it by name. See [Content retrieval](#content-retrieval) for details.
 
 ## Agentic readiness (`agentify`)
 
@@ -46,9 +46,9 @@ Use the `design-to-content` skill when translating designs, wireframes, or Figma
 I have a Figma design for a news portal. Help me model the content types.
 ```
 
-## Page Builder development (`widget-creation` + `page-builder`)
+## Page Builder development (`page-builder-widgets` + `page-builder-structure`)
 
-`widget-creation` and `page-builder` are **passive-knowledge** skills: the AI loads them automatically when you ask it to build the relevant Page Builder component. You don't run them as explicit commands — just describe what you want and provide your requirements. Each skill instructs the AI to first study the existing components in your project and mirror their conventions, then validate any uncertain APIs against the Xperience documentation via the Kentico Docs MCP before implementing.
+`page-builder-widgets` and `page-builder-structure` are **passive-knowledge** skills: the AI loads them automatically when you ask it to build the relevant Page Builder component. You don't run them as explicit commands — just describe what you want and provide your requirements. Each skill instructs the AI to first study the existing components in your project and mirror their conventions, then validate any uncertain APIs against the Xperience documentation via the Kentico Docs MCP before implementing.
 
 ## Prerequisites
 
@@ -95,7 +95,7 @@ Because these are passive-knowledge skills, you trigger them simply by describin
    Create a Page Builder widget based on the requirements in examples/widget-creation/requirements.md
    ```
 
-The AI produces the widget view component, properties class, Razor view, view model, and localized resource strings (creating a `.resx` file and registration class if none exists). If your project already contains widgets, it mirrors their patterns and file structure.
+The AI produces the widget view component, properties class, Razor view, view model, and registration. If your project already contains widgets, it mirrors their patterns and file structure.
 
 ### Create a section or page template
 
@@ -117,16 +117,13 @@ The AI builds the section (view component / partial view, properties, widget zon
 
 Each skill carries its own references that the AI reads on demand:
 
-### `widget-creation`
+### `page-builder-widgets`
 
-- `docs.md` — links to relevant Xperience documentation
-- `example-widgets.md` — example widget implementations
+- `references/docs.md` — a documentation map: links to the relevant Xperience widget documentation, each with a "when to read" hint
 
-### `page-builder`
+### `page-builder-structure`
 
-- `docs.md` — links to section and page-template documentation
-- `example-section.md` — a view-component-based section with a property
-- `example-page-template.md` — a page template with a property
+- `references/docs.md` — a documentation map: links to section and page-template documentation, each with a "when to read" hint
 
 ## Best practices
 
