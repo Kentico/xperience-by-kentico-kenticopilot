@@ -50,13 +50,7 @@ copilot plugin install kentico-kx13-migration@xperience-by-kentico-kenticopilot
 
 ## Configure MCP servers
 
-The bundled `.mcp.json` adds three MCP servers to your workspace:
-
-- [Kentico Docs MCP server](https://docs.kentico.com/x/mcp_server_xp) — verifies XbyK content model and live-site capabilities (content types, reusable field schemas, Content hub, Page Builder, taxonomies).
-- [Context7 MCP server](https://context7.com/websites/kentico_13) — looks up KX13 source API references (page types, form controls, widgets, linked pages) during planning and code generation. Context7 is a third-party service not maintained or supported by Kentico, so your experience may vary.
-- [Playwright MCP server](https://github.com/microsoft/playwright-mcp) — used by the codebase-migration skills to compare migrated pages against the original KX13 site and fix visual discrepancies.
-
-If you installed via the marketplace, ensure the MCP servers are enabled. If you copied the plugin files manually, copy `.mcp.json` to your workspace alongside the plugin folder.
+This plugin requires some MCP servers to be set up in your workspace. See [MCP-setup.md](./MCP-setup.md) for the list and copy-paste-ready configuration.
 
 ---
 

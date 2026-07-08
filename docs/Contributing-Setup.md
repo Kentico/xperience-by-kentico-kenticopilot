@@ -70,20 +70,24 @@ A subagent is a focused worker that runs in its own context window with a custom
 
 Bump when **that plugin's contents** change.
 
-| Bump           | When                                                                                               |
-| -------------- | -------------------------------------------------------------------------------------------------- |
-| Major          | Breaking change — renamed/removed skill, agent, or command; backward-incompatible behavior change. |
-| Minor          | Additive — new skill, agent, command, or hook inside the plugin.                                   |
-| Hotfix (patch) | Bug fix, prompt tightening, doc tweak, internal refactor.                                          |
+| Bump  | When                                                                                                 |
+| ----- | ---------------------------------------------------------------------------------------------------- |
+| Major | Breaking change inside the plugin — renamed/removed skill, agent, or command; incompatible behavior. |
+| Minor | Additive — new skill, agent, command, or hook inside the plugin.                                     |
+| Patch | Slight change inside a resource — bug fix, prompt tightening, doc tweak, internal refactor.          |
 
 ### Marketplace `metadata.version` (top of each marketplace file)
 
-Bump **only when the plugin list itself changes**.
+**Every plugin change bumps the marketplace version** — at least a patch.
 
-| Bump           | When                                                                 |
-| -------------- | -------------------------------------------------------------------- |
-| Major          | Plugin removed or renamed.                                           |
-| Minor          | Plugin added.                                                        |
-| Hotfix (patch) | Metadata-only fix (description typo, keyword change, owner contact). |
+| Bump  | When                                                                    |
+| ----- | ----------------------------------------------------------------------- |
+| Major | Breaking change in plugin structure — plugin removed or renamed.        |
+| Minor | Non-breaking change in plugin structure — plugin added.                 |
+| Patch | Changes inside plugins or README files — no change in plugin structure. |
 
 Both marketplace files must always have matching versions and matching plugin entries.
+
+## GitHub releases
+
+The GitHub release version is aligned with the marketplace version — every marketplace version bump gets a matching GitHub release. The repository code owners create the release right after the PR is merged to main.

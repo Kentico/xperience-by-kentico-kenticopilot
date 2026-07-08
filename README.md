@@ -6,7 +6,7 @@
 
 AI agent prompts and instructions for Xperience by Kentico development. This repository provides pre-configured prompts for common development tasks, helping developers accelerate their workflow with AI coding assistants.
 
-This repository contains plugins (skills, instructions, MCP server configuration) tested for the following AI coding assistants:
+This repository contains plugins (skills, resources, ...) tested for the following AI coding assistants:
 
 - GitHub Copilot
 - Claude Code
@@ -23,9 +23,9 @@ This repository provides plugins, each containing a set of skills for AI coding 
 
 AI-assisted implementation of [Automation components](https://docs.kentico.com/x/automation_custom_xp) in Xperience by Kentico. Currently supports **custom automation actions** (custom step types in the Automation Builder). The AI accepts a description of the action you want to create, then reviews your project conventions and the action API, and generates the action class along with an optional properties model with form-component annotations and the assembly-level `RegisterAutomationAction<>` registration. Full instructions are available in the [README](./plugins/kentico-digital-experience/README.md).
 
-| Skill                       | Description                                                                                                  |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `automation-action`  | Researches the project and the action API, then implements and registers a custom automation action and (optionally) its properties model |
+| Skill               | Description                                                                                                                                |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `automation-action` | Researches the project and the action API, then implements and registers a custom automation action and (optionally) its properties model |
 
 ### Web development
 
