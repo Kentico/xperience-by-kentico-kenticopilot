@@ -36,7 +36,7 @@ copilot plugin install kentico-digital-experience@xperience-by-kentico-kenticopi
 
 ## Skills
 
-### `automation-action-create`
+### `automation-action`
 
 Points the agent to the authoritative Xperience documentation for implementing a custom automation action — the action class, the optional `IAutomationActionProperties`-implementing properties class with form-component annotations, and the `RegisterAutomationAction<>` registration. The agent fetches the relevant pages via the Kentico Docs MCP, mirrors the project's existing conventions, confirms the action's design with you, and implements following the documentation's examples and best practices.
 
@@ -47,7 +47,7 @@ Describe the action you want. The skill probes the project, asks the questions i
 **Claude Code example**
 
 ```
-/automation-action-create
+/automation-action
 
 I need an action that sends a Slack message to a configured webhook
 when a contact reaches this step. Marketers should be able to edit
@@ -57,7 +57,7 @@ the webhook URL and the message template on the step.
 **VS Code GitHub Copilot example**
 
 ```
-/automation-action-create
+/automation-action
 
 Add an action that resets the lead-scoring counter persisted as
 process data. No configurable properties.
