@@ -8,7 +8,7 @@ Linked-item depth — `LinkedItemsMaxLevel` on the retriever's `Retrieve*Paramet
 
 ## 2. Caching
 
-Always cache retrieval results — a deep graph *with* caching is fine; the same graph uncached is the failure mode. Caching is **automatic with `IContentRetriever`** (default 10 min, override via `RetrievalCacheSettings`; it also auto-wires linked-item cache dependencies, so a cached graph invalidates when a linked item changes) and **manual with the raw query API** — `ContentItemQueryBuilder` / `IContentQueryExecutor` don't cache, so you wrap them in `IProgressiveCache` yourself.
+When using `IContentRetriever`, caching is automatic. However, with `ContentItemQueryBuilder` / `IContentQueryExecutor`, you need to handle caching yourself using the `IProgressiveCache`.
 
 ## 3. Custom queries need a unique cache-key suffix
 
