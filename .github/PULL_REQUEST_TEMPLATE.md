@@ -14,4 +14,4 @@ Fill in the sections that apply and delete the ones that don't.
 - [ ] The resource does **not** duplicate the Kentico documentation — it links the relevant docs pages and adds context instead.
 - [ ] A new resource is genuinely needed — the same result can't be achieved with an existing resource, a docs link, or a well-written prompt.
 - [ ] The resource avoids features or fields specific to a single AI tool, so it works across different AI assistants.
-- [ ] Version of the marketplace manifest(s) or plugin(s) has been correctly updated (if applicable).
+- [ ] Plugin and marketplace versions are bumped per the [versioning rules](../docs/Contributing-Setup.md) — any plugin change bumps the marketplace version at least by a patch, and both marketplace files match.
