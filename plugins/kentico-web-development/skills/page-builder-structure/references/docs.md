@@ -28,6 +28,10 @@ Fetch pages via the Kentico Docs MCP.
   - Read when a template or section needs the identifiers of the default widgets (e.g. for an `allowedWidgets` allowlist).
 - **Page template filtering**: <https://docs.kentico.com/documentation/developers-and-admins/development/builders/page-builder/page-templates-for-page-builder/page-template-filtering>
   - Read only to restrict which templates appear per page beyond the `ContentTypeNames` registration parameter (advanced `IPageTemplateFilter`; not respected by the management API/MCP).
+- **Admin UI localization**: <https://docs.kentico.com/documentation/developers-and-admins/customization/admin-ui-localization>
+  - Read when localizing a section's or template's name, description, or property labels — `{$resource.key$}` localization expressions in registration and form-component attributes, and `LocalizationTarget.Builder` resources.
+- **Integrate custom code — resource files**: <https://docs.kentico.com/documentation/developers-and-admins/customization/integrate-custom-code#store-application-resources-in-resource-files>
+  - Read when creating and registering the `.resx` resource files (`RegisterLocalizationResource` attribute) that back the localization expressions.
 - **Reference — tag helpers**: <https://docs.kentico.com/documentation/developers-and-admins/development/reference-tag-helpers>
   - Read when the view needs a tag helper (`<page-builder-styles />`, `<page-builder-scripts />`, editable areas, widget zones).
 - **Content-tree-based routing**: <https://docs.kentico.com/documentation/developers-and-admins/development/routing/content-tree-based-routing/set-up-content-tree-based-routing>

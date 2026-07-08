@@ -28,6 +28,10 @@ These pages cover the core of building a widget. Read them before implementing.
   - Read when a component adds a server endpoint (POST handling) that must be secured.
 - **Reference — Admin UI form components**: <https://docs.kentico.com/documentation/developers-and-admins/customization/extend-the-administration-interface/ui-form-components/reference-admin-ui-form-components>
   - Read when choosing the attribute for a property field and confirming the C# type each selector returns.
+- **Admin UI localization**: <https://docs.kentico.com/documentation/developers-and-admins/customization/admin-ui-localization>
+  - Read when localizing the widget's name, description, or property labels — `{$resource.key$}` localization expressions in registration and form-component attributes, and `LocalizationTarget.Builder` resources.
+- **Integrate custom code — resource files**: <https://docs.kentico.com/documentation/developers-and-admins/customization/integrate-custom-code#store-application-resources-in-resource-files>
+  - Read when creating and registering the `.resx` resource files (`RegisterLocalizationResource` attribute) that back the localization expressions.
 - **Retrieve page content**: <https://docs.kentico.com/documentation/developers-and-admins/development/content-retrieval/retrieve-page-content>
   - Read when the widget fetches pages or reusable content items to display.
 - **Retrieve page URLs**: <https://docs.kentico.com/documentation/developers-and-admins/development/content-retrieval/retrieve-page-content/retrieve-page-urls>
