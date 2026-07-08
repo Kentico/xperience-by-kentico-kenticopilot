@@ -68,13 +68,11 @@ The complete toolkit for upgrading a Kentico Xperience 13 project to Xperience b
 
 > **Location:** [plugins/kentico-project-lifecycle/](./plugins/kentico-project-lifecycle/)
 
-Skills for managing the lifecycle of an Xperience by Kentico solution. The first capability builds scoped [Continuous Deployment Repository](https://docs.kentico.com/x/continuous_deployment) filters from CI Repository changes: the AI discovers your project layout and tooling, then inspects changed CI Repository files from specified PRs or commit ranges and writes a minimal `IncludedObjectTypes` / `ObjectFilters` allowlist — automatically excluding noise from Xperience version updates. Full instructions are available in the [README](./plugins/kentico-project-lifecycle/README.md).
+Skills for managing the lifecycle of an Xperience by Kentico solution. The first capability builds scoped [Continuous Deployment Repository](https://docs.kentico.com/x/continuous_deployment) filters from CI Repository changes: the AI discovers your project layout and tooling, then inspects changed CI Repository files from specified PRs or commit ranges and writes a minimal `repository.config` — automatically excluding noise from Xperience version updates. Full instructions are available in the [README](./plugins/kentico-project-lifecycle/README.md).
 
-| Skill                     | Description                                                                                          |
-| ------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `cd-repository-discovery` | Locates the Xperience app, CI/CD repository paths, and git tooling; saves context to a reusable file |
-| `cd-repository-configure` | Reads the context file and PR/commit changes, then writes a scoped `repository.config`               |
-| `cd-repository-upgrade`   | Migrates a `repository.config` from v1 to v2 syntax                                                  |
+| Skill                     | Description                                                                                                                    |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `cd-repository-configure` | Discovers the project layout, reads changes from selected PRs or commits, writes a scoped `repository.config`, and verifies the generated CD Repository |
 
 ## Upgrading from Kentico Xperience 13?
 

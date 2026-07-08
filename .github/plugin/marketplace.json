@@ -60,14 +60,7 @@
       "homepage": "https://github.com/Kentico/xperience-by-kentico-kenticopilot/tree/main/plugins/kentico-project-lifecycle",
       "repository": "https://github.com/Kentico/xperience-by-kentico-kenticopilot",
       "license": "MIT",
-      "keywords": [
-        "kentico",
-        "xperience",
-        "ci/cd",
-        "continuous-deployment",
-        "project-lifecycle",
-        "cms"
-      ]
+      "keywords": ["kentico", "xperience", "ci/cd", "continuous-deployment", "project-lifecycle", "cms"]
     }
   ]
 }
