@@ -28,7 +28,7 @@ Add the server to the `.mcp.json` file at your workspace root (create the file i
       "command": "npx",
       "args": ["@kentico/management-api-mcp@latest"],
       "env": {
-        "MANAGEMENT_API_URL": "http://localhost:5001/kentico-api/management",
+        "MANAGEMENT_API_URL": "http://localhost:<YourAppPort>/kentico-api/management",
         "MANAGEMENT_API_SECRET": "<YourSecretValue>"
       }
     }
