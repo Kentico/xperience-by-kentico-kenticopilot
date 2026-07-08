@@ -2,7 +2,7 @@
 
 Skills for managing the lifecycle of an Xperience by Kentico solution. The plugin currently covers two areas:
 
-- **Updating your Xperience project** — the `update-xperience` skill updates a project to a newer Xperience by Kentico version by following the official release notes and update documentation.
+- **Updating your Xperience project** — the `update-xperience` skill updates a project to a newer Xperience by Kentico version.
 - **Configuring the [Continuous Deployment (CD) Repository](https://docs.kentico.com/x/continuous_deployment)** — the `cd-repository-*` skills discover your project layout, inspect CI Repository changes from one or more pull requests or commit ranges, and produce a scoped `repository.config` that captures only your feature changes — while automatically excluding noise from Xperience version updates.
 
 More project-lifecycle capabilities are planned.
@@ -64,9 +64,7 @@ The update skill identifies your current and target Xperience versions, reviews 
 To update to a specific version instead of the latest:
 
 ```text
-/update-xperience
-
-Target version: 30.9.2
+/update-xperience 30.9.2
 ```
 
 ### Configure the CD Repository
@@ -195,7 +193,7 @@ If `Export-DeploymentPackage.ps1` is present in the repository, the skill runs i
 
 Skill name: **update-xperience**
 
-Updates an Xperience by Kentico project to a newer version by following the official release notes and update documentation. Reviews the [Changelog](https://docs.kentico.com/changelog) for every version in the update path, follows the feature-specific update guides linked from the release notes, and performs the update per the [official update procedure](https://docs.kentico.com/documentation/developers-and-admins/installation/update-xperience-by-kentico-projects).
+Updates an Xperience by Kentico project to a newer version. Reviews the [Changelog](https://docs.kentico.com/changelog) for every version in the update path, follows the feature-specific update guides linked from the release notes, and performs the update per the [official update procedure](https://docs.kentico.com/documentation/developers-and-admins/installation/update-xperience-by-kentico-projects).
 
 **Argument hint:** Optional target version (defaults to the latest available).
 
