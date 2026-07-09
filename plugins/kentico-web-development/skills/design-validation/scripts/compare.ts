@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// design-validator — compare a live Xperience by Kentico page against a
+// design-validation — compare a live Xperience by Kentico page against a
 // static HTML design and report differences with root-cause hints.
 //
 // CLI entry point: argument parsing, page orchestration, console summary,
@@ -29,7 +29,7 @@ import { buildReport, SEVERITY_ORDER } from './src/reporting/report.ts';
 import type { Severity } from './src/shared/types.ts';
 
 /** Usage text printed by --help. */
-const HELP = `design-validator — compare a live page against a static HTML design
+const HELP = `design-validation — compare a live page against a static HTML design
 
 Usage:
   node compare.ts --design <file|folder> --live <url|folder> [options]

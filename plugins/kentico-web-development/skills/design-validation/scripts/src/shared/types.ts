@@ -1,4 +1,4 @@
-// Shared types for the design-validator pipeline. No runtime code.
+// Shared types for the design-validation pipeline. No runtime code.
 //
 // Data flow: extraction/extract-page.ts produces RawNode trees in the browser,
 // analysis/semantic-tree.ts normalizes them into landmarks → blocks → leaves,

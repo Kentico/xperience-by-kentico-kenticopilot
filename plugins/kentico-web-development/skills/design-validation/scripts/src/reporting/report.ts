@@ -72,7 +72,7 @@ const CLASSIFICATION_RULES: Record<string, { hint: string; reason: string }> = {
 };
 
 /** Tool identification embedded in every report. */
-export const TOOL_INFO = { name: 'design-validator', version: '1.0.0' };
+export const TOOL_INFO = { name: 'design-validation', version: '1.0.0' };
 
 /**
  * Assemble the per-page JSON report: sort findings by severity, assign ids,
