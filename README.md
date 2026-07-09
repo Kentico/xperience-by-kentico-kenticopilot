@@ -68,10 +68,11 @@ The complete toolkit for upgrading a Kentico Xperience 13 project to Xperience b
 
 > **Location:** [plugins/kentico-project-lifecycle/](./plugins/kentico-project-lifecycle/)
 
-Skills for managing the lifecycle of an Xperience by Kentico solution. The first capability builds scoped [Continuous Deployment Repository](https://docs.kentico.com/x/continuous_deployment) filters from CI Repository changes: the AI discovers your project layout and tooling, then inspects changed CI Repository files from specified PRs or commit ranges and writes a minimal `IncludedObjectTypes` / `ObjectFilters` allowlist — automatically excluding noise from Xperience version updates. Full instructions are available in the [README](./plugins/kentico-project-lifecycle/README.md).
+Skills for managing the lifecycle of an Xperience by Kentico solution. The plugin updates projects to newer Xperience versions, and builds scoped [Continuous Deployment Repository](https://docs.kentico.com/x/continuous_deployment) filters from CI Repository changes: the AI discovers your project layout and tooling, then inspects changed CI Repository files from specified PRs or commit ranges and writes a minimal `IncludedObjectTypes` / `ObjectFilters` allowlist — automatically excluding noise from Xperience version updates. Full instructions are available in the [README](./plugins/kentico-project-lifecycle/README.md).
 
 | Skill                     | Description                                                                                          |
 | ------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `update-xperience`        | Updates the project to a newer Xperience version                                                     |
 | `cd-repository-discovery` | Locates the Xperience app, CI/CD repository paths, and git tooling; saves context to a reusable file |
 | `cd-repository-configure` | Reads the context file and PR/commit changes, then writes a scoped `repository.config`               |
 | `cd-repository-upgrade`   | Migrates a `repository.config` from v1 to v2 syntax                                                  |
