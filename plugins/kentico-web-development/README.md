@@ -92,11 +92,11 @@ Because these are passive-knowledge skills, you trigger them simply by describin
 
 ### Create a widget
 
-1. Prepare your context. Create (or point to) a requirements file describing the widget's functionality, presentation options, and error handling. Optionally include a design file. See [`examples/widget-creation/`](../../examples/widget-creation/) for samples.
+1. Prepare your context. Create (or point to) a requirements file describing the widget's functionality, presentation options, and error handling. Optionally include a design file.
 2. Ask the AI to build it, referencing your requirements:
 
    ```
-   Create a Page Builder widget based on the requirements in examples/widget-creation/requirements.md
+   Create a Page Builder widget based on the requirements in requirements.md
    ```
 
 The AI produces the widget view component, properties class, Razor view, view model, and registration. If your project already contains widgets, it mirrors their patterns and file structure.
@@ -134,10 +134,6 @@ Each skill carries its own references that the AI reads on demand:
 - Provide clear, specific requirements, including presentation options and error-handling scenarios.
 - Let the AI study existing components first so new code matches your conventions.
 - Thoroughly review and test the generated code in both edit and live mode.
-
-## Examples
-
-See [`examples/widget-creation/`](../../examples/widget-creation/) for a complete example of widget context files (a structured requirements file and an exported design HTML).
 
 ## Content retrieval
 
