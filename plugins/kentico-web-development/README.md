@@ -1,18 +1,18 @@
 # Kentico web development
 
-Skills and references for building Xperience by Kentico websites. The plugin covers an agentic-readiness audit for your project, AI-assisted creation of [Page Builder](https://docs.kentico.com/x/6QWiCQ) widgets, and guidance for [content retrieval](https://docs.kentico.com/documentation/developers-and-admins/development/content-retrieval) in live-site code, with more web-development capabilities planned.
+Skills and references for building Xperience by Kentico websites. The plugin covers an agentic-readiness audit for your project, content modeling, AI-assisted [Page Builder](https://docs.kentico.com/x/6QWiCQ) development — building widgets and structuring pages with sections and templates — and guidance for [content retrieval](https://docs.kentico.com/documentation/developers-and-admins/development/content-retrieval) in live-site code, with more web-development capabilities planned.
 
 ## Skills
 
-| Skill                          | Description                                                                                                                              |
-| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `agentify`                     | Audits an XbyK project for agentic-development readiness, reports gaps, and applies fixes on request                                     |
-| `design-to-content`            | Guides content modeling — translating designs/wireframes into an Xperience content model                                                |
-| `widget-create-research`       | Analyzes widget requirements and design files, validates them against Xperience documentation, and generates implementation instructions |
-| `widget-create-implementation` | Creates the widget code following the generated instructions and project conventions                                                    |
-| `content-retrieval`            | Decision rules, a docs/API map, and performance guidance for reading published content (pages, reusable items, reusable-schema items) in live-site/MVC code — prefer `IContentRetriever` |
+| Skill               | Description                                                                                                                              |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `agentify`          | Audits an XbyK project for agentic-development readiness, reports gaps, and applies fixes on request                                     |
+| `design-to-content` | Guides content modeling — translating designs/wireframes into an Xperience content model                                                |
+| `page-builder-widgets`   | Builds a custom Page Builder **widget** (view component, properties, view model, Razor view, registration)                          |
+| `page-builder-structure` | Builds Page Builder **structure** — sections (widget-zone layouts) and page templates (full-page layouts)                           |
+| `content-retrieval` | Decision rules, a docs/API map, and performance guidance for reading published content (pages, reusable items, reusable-schema items) in live-site/MVC code — prefer `IContentRetriever` |
 
-You invoke `agentify`, `design-to-content`, and the two `widget-create-*` skills explicitly — the `widget-create-*` pair forms the two-stage widget workflow described below. The `content-retrieval` skill is a reference skill that activates automatically when you write or review content-retrieval code — you can also invoke it by name. See [Content retrieval](#content-retrieval) for details.
+You invoke `agentify` and `design-to-content` explicitly. `page-builder-widgets` and `page-builder-structure` are **passive-knowledge** skills — the AI loads them automatically when you describe the relevant task; just provide your requirements. The `content-retrieval` skill is a reference skill that activates automatically when you write or review content-retrieval code — you can also invoke it by name. See [Content retrieval](#content-retrieval) for details.
 
 ## Agentic readiness (`agentify`)
 
@@ -46,19 +46,15 @@ Use the `design-to-content` skill when translating designs, wireframes, or Figma
 I have a Figma design for a news portal. Help me model the content types.
 ```
 
-## Widget creation workflow (`widget-create-research` + `widget-create-implementation`)
+## Page Builder development (`page-builder-widgets` + `page-builder-structure`)
 
-These prompts provide two-stage AI assistance for building custom Page Builder widgets:
-
-1. **Research stage** - Analyzes your requirements and design, validates them against Xperience documentation, and generates detailed implementation instructions
-2. **Implementation stage** - Creates the widget code following the generated instructions and project conventions
+`page-builder-widgets` and `page-builder-structure` are **passive-knowledge** skills: the AI loads them automatically when you ask it to build the relevant Page Builder component. You don't run them as explicit commands — just describe what you want and provide your requirements. Each skill instructs the AI to first study the existing components in your project and mirror their conventions, then validate any uncertain APIs against the Xperience documentation via the Kentico Docs MCP before implementing.
 
 ## Prerequisites
 
 - Xperience by Kentico project with Page Builder configured
 - AI coding assistant installed (for example, GitHub Copilot or Claude Code)
-- Widget requirements file describing the main use cases and behavior
-- Widget design file (optional, exported from Figma or similar)
+- A description of what you want to build — for a widget, a requirements file describing its functionality, presentation options, and error handling; optionally a design file (e.g. `design.html` exported from Figma)
 
 ## Configure MCP servers
 
@@ -92,87 +88,52 @@ copilot plugin install kentico-web-development@xperience-by-kentico-kenticopilot
 
 ## Usage
 
-### 1. Prepare context files
+Because these are passive-knowledge skills, you trigger them simply by describing the task. The AI recognizes the intent, loads the relevant skill, studies your project, and implements the component.
 
-Create a folder with your widget requirements and design:
+### Create a widget
 
-- **requirements.md** - Describes the widget functionality, presentation options, and technical requirements.
-- (Optional) **design.html** - Visual design and element structure exported from Figma or other design tool.
+1. Prepare your context. Create (or point to) a requirements file describing the widget's functionality, presentation options, and error handling. Optionally include a design file.
+2. Ask the AI to build it, referencing your requirements:
 
-See the `examples/widget-creation/` directory for samples of these files.
+   ```
+   Create a Page Builder widget based on the requirements in requirements.md
+   ```
 
-### 2. Run the research stage
+The AI produces the widget view component, properties class, Razor view, view model, and registration. If your project already contains widgets, it mirrors their patterns and file structure.
 
-The AI analyzes your requirements, validates them against Xperience documentation, and creates a detailed instructions file in your input folder.
+### Create a section or page template
 
-In the prompt, provide the path to your requirements folder. Include all supplementary materials that the agent should follow.
-
-**VS Code GitHub Copilot example**
-
-```
-/widget-create-research
-
-For the requirements described in: examples/widget-creation/requirements.md
-```
-
-### 3. Run the implementation stage
-
-In the prompt, provide the path to the instructions file generated by the research stage. The AI creates the widget following the instructions, project conventions, and Xperience best practices.
-
-_Optional_: The instructions file created in the research stage contains all the information required by the implementation stage. Depending on the scale of your project and the scope of the implementation, consider starting the implementation step from a new conversation to avoid possible LLM context degradation caused by long conversation history and excessive summarization.
-
-**VS Code GitHub Copilot example**
+Describe the layout you need:
 
 ```
-/widget-create-implementation
-
-Follow instructions in: widget-creation/ARTICLE_SHOWCASE.instructions.md
+Add a two-column Page Builder section with a configurable background color
 ```
 
-## Prompt output
+```
+Create a landing-page template with a hero editable area and a theme property
+```
 
-The implementation stage generates:
+The AI builds the section (view component / partial view, properties, widget zones, registration) or page template (full-page view, properties, registration, routing notes) following your project's conventions.
 
-- Widget view component class
-- Widget properties class
-- Razor view file (`.cshtml`)
-- View model class
-- Localized resource strings (creates a .resx file and the corresponding registration class if none found in the workspace)
-
-If your project already contains widgets, the prompt also mimics their implementation patterns and filesystem structure.
+> **Tip:** For large implementations, consider starting a fresh conversation for a new component to avoid context degradation from long histories.
 
 ## Included files
 
-### Instructions
+Each skill carries its own references that the AI reads on demand:
 
-These files provide context to the AI about Xperience by Kentico:
+### `page-builder-widgets`
 
-- `base-pagebuilder.md` - Core Page Builder concepts and APIs
-- `docs.md` - Links to relevant Xperience documentation
-- `example-widgets.md` - Examples of existing widget patterns
+- `references/docs.md` — a documentation map: links to the relevant Xperience widget documentation, each with a "when to read" hint
 
-### Prompts/Commands
+### `page-builder-structure`
 
-- **Research prompt** - Analyzes requirements and generates implementation instructions
-- **Implementation prompt** - Creates the widget code based on instructions
+- `references/docs.md` — a documentation map: links to section and page-template documentation, each with a "when to read" hint
 
-### Template
+## Best practices
 
-- `CREATION_TEMPLATE.md` - Template for generating widget implementation instructions
-
-## Best practices for usage
-
-- Provide clear, specific requirements in your requirements file
-- Include presentation options and error handling scenarios
-- Review the generated instructions before running the implementation stage
-- Thoroughly review and test the generated code
-
-## Examples
-
-See `examples/widget-creation/` for a complete example of context files for an article showcase widget, which includes:
-
-- Structured requirements file
-- Exported design HTML
+- Provide clear, specific requirements, including presentation options and error-handling scenarios.
+- Let the AI study existing components first so new code matches your conventions.
+- Thoroughly review and test the generated code in both edit and live mode.
 
 ## Content retrieval
 
@@ -196,4 +157,4 @@ The skill supplies the retrieval decision rules and points to the exact docs and
 
 ## Skill customization
 
-The widget skill files serve as a baseline for bootstrapping new widgets in Xperience by Kentico solutions. Modify and enhance the files as required by your projects, workflow, and requirements. Place project-specific information into a skill's `references` folder as new files — the skills instruct the agent to read all files in the directory.
+These skills serve as a baseline for bootstrapping Page Builder components in Xperience by Kentico solutions. Modify and enhance them as your projects and workflow require. Place project-specific information into a skill's `references` folder as new files — the skills instruct the AI to read the reference material.

@@ -31,15 +31,15 @@ AI-assisted implementation of [Automation components](https://docs.kentico.com/x
 
 > **Location:** [plugins/kentico-web-development/](./plugins/kentico-web-development/)
 
-Skills and references for building Xperience by Kentico websites. The `agentify` skill audits your project for agentic-development readiness and applies fixes on request. Content modeling guidance translates designs into a content model, a two-stage workflow builds [Page Builder](https://docs.kentico.com/x/6QWiCQ) widgets — the AI researches your requirements against your project structure and the Xperience documentation, then generates the full widget implementation (view component, properties, Razor view, view model, localization) — and a content-retrieval reference skill guides reading published content in live-site code. Full instructions are available in the [README](./plugins/kentico-web-development/README.md).
+Skills and references for building Xperience by Kentico websites. The `agentify` skill audits your project for agentic-development readiness and applies fixes on request. Content modeling guidance translates designs into a content model, passive-knowledge skills build [Page Builder](https://docs.kentico.com/x/6QWiCQ) widgets and structure (sections and page templates) — the AI studies your project's existing components, validates APIs against the Xperience documentation, and generates the implementation following your conventions — and a content-retrieval reference skill guides reading published content in live-site code. Full instructions are available in the [README](./plugins/kentico-web-development/README.md).
 
-| Skill                          | Description                                                                                          |
-| ------------------------------ | ---------------------------------------------------------------------------------------------------- |
-| `agentify`                     | Audits an XbyK project for agentic-development readiness, reports gaps, and applies fixes on request |
-| `design-to-content`            | Guides content modeling — translating designs/wireframes into an Xperience content model             |
-| `widget-create-research`       | Analyzes requirements and design files, generates implementation instructions                        |
-| `widget-create-implementation` | Creates widget code following the generated instructions and project conventions                     |
-| `content-retrieval`            | Decision rules, a docs/API map, and performance guidance for reading published content in live-site/MVC code |
+| Skill               | Description                                                                                          |
+| ------------------- | ---------------------------------------------------------------------------------------------------- |
+| `agentify`          | Audits an XbyK project for agentic-development readiness, reports gaps, and applies fixes on request |
+| `design-to-content` | Guides content modeling — translating designs/wireframes into an Xperience content model             |
+| `widget-creation`   | Builds a custom Page Builder widget (view component, properties, Razor view, view model, localization) |
+| `page-builder`      | Builds Page Builder structure — sections (widget-zone layouts) and page templates (full-page layouts) |
+| `content-retrieval` | Decision rules, a docs/API map, and performance guidance for reading published content in live-site/MVC code |
 
 ### KX13 → Xperience by Kentico migration
 
@@ -68,10 +68,11 @@ The complete toolkit for upgrading a Kentico Xperience 13 project to Xperience b
 
 > **Location:** [plugins/kentico-project-lifecycle/](./plugins/kentico-project-lifecycle/)
 
-Skills for managing the lifecycle of an Xperience by Kentico solution. The first capability builds scoped [Continuous Deployment Repository](https://docs.kentico.com/x/continuous_deployment) filters from CI Repository changes: the AI discovers your project layout and tooling, then inspects changed CI Repository files from specified PRs or commit ranges and writes a minimal `repository.config` — automatically excluding noise from Xperience version updates. Full instructions are available in the [README](./plugins/kentico-project-lifecycle/README.md).
+Skills for managing the lifecycle of an Xperience by Kentico solution. The plugin updates projects to newer Xperience versions, and builds scoped [Continuous Deployment Repository](https://docs.kentico.com/x/continuous_deployment) filters from CI Repository changes: the AI discovers your project layout and tooling, then inspects changed CI Repository files from specified PRs or commit ranges and writes a minimal `repository.config` — automatically excluding noise from Xperience version updates. Full instructions are available in the [README](./plugins/kentico-project-lifecycle/README.md).
 
 | Skill                     | Description                                                                                                                    |
 | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `update-xperience`        | Updates the project to a newer Xperience version                                                                               |
 | `cd-repository-configure` | Discovers the project layout, reads changes from selected PRs or commits, writes a scoped `repository.config`, and verifies the generated CD Repository |
 
 ## Upgrading from Kentico Xperience 13?

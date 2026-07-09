@@ -1,12 +1,17 @@
 # Kentico project lifecycle
 
-Skills for managing the lifecycle of an Xperience by Kentico solution. The plugin currently covers scoped [Continuous Deployment (CD)](https://docs.kentico.com/x/continuous_deployment) configuration — building a `repository.config` that deploys exactly the changes you select and nothing else. More project-lifecycle capabilities are planned.
+Skills for managing the lifecycle of an Xperience by Kentico solution. The plugin currently covers two areas:
+
+- **Updating your Xperience project** — the `update-xperience` skill updates a project to a newer Xperience by Kentico version.
+- **Configuring the [Continuous Deployment (CD) Repository](https://docs.kentico.com/x/continuous_deployment)** — the `cd-repository-configure` skill discovers your project layout, inspects CI Repository changes from one or more pull requests or commit ranges, and writes a `repository.config` that captures only your feature changes — while automatically excluding noise from Xperience version updates.
+
+More project-lifecycle capabilities are planned.
 
 ## Prerequisites
 
-- Xperience by Kentico project with CI/CD Repository enabled
+- Xperience by Kentico project
 - AI coding assistant installed (for example, GitHub Copilot or Claude Code)
-- Local `git` available in your terminal; for PR selectors, tooling that can read your repository host's pull requests (for example, the `gh` CLI for GitHub, or the `az repos` CLI or an MCP server for Azure DevOps)
+- For the CD Repository skill: CI/CD Repository enabled (v2 `repository.config` syntax), and local `git` available in your terminal; for PR selectors, tooling that can read your repository host's pull requests (for example, the `gh` CLI for GitHub, or the `az repos` CLI or an MCP server for Azure DevOps)
 
 ## Configure MCP servers
 
@@ -42,6 +47,10 @@ copilot plugin install kentico-project-lifecycle@xperience-by-kentico-kenticopil
 
 ## Skills
 
+### `update-xperience`
+
+Updates an Xperience by Kentico project to a newer version. Reviews the [Changelog](https://docs.kentico.com/changelog) for every version in the update path, follows the feature-specific update guides linked from the release notes, and performs the update per the [official update procedure](https://docs.kentico.com/documentation/developers-and-admins/installation/update-xperience-by-kentico-projects).
+
 ### `cd-repository-configure`
 
 Builds a scoped CD Repository configuration from the CI Repository changes in selected PRs or a commit range. The skill walks through four stages in a single conversation:
@@ -55,9 +64,27 @@ The skill requires the v2 `repository.config` syntax. If your project still uses
 
 ## Usage
 
+### Update your Xperience project
+
+The update skill identifies your current and target Xperience versions, reviews the release notes for every version in between (including the feature-specific update guides they link to), and follows the official update documentation.
+
+#### VS Code GitHub Copilot example
+
+```text
+/update-xperience
+```
+
+To update to a specific version instead of the latest:
+
+```text
+/update-xperience 30.9.2
+```
+
+### Configure the CD Repository
+
 Provide the PR numbers or the git commit range you want to deploy. When your workspace contains more than one Xperience app, also mention the app path.
 
-**VS Code GitHub Copilot example — single PR**
+#### VS Code GitHub Copilot example — single PR
 
 ```text
 /cd-repository-configure
@@ -65,7 +92,7 @@ Provide the PR numbers or the git commit range you want to deploy. When your wor
 Changes: PR 312
 ```
 
-**VS Code GitHub Copilot example — multiple PRs**
+#### VS Code GitHub Copilot example — multiple PRs
 
 ```text
 /cd-repository-configure
@@ -73,7 +100,7 @@ Changes: PR 312
 Changes: PR 310, PR 311, PR 312
 ```
 
-**VS Code GitHub Copilot example — commit range**
+#### VS Code GitHub Copilot example — commit range
 
 The `..` range operator follows standard git syntax: the start commit is **exclusive** and the end commit is **inclusive**. Use the commit just before your first feature commit as the range start.
 
@@ -102,7 +129,11 @@ An updated `repository.config` scoped to the selected changes, plus a deployment
 
 ## Included files
 
-### References (read by the agent)
+### update-xperience references
+
+- `skills/update-xperience/references/update-docs.md` – map of the Changelog and official update-procedure documentation pages, fetched on demand via the Kentico Docs MCP.
+
+### cd-repository-configure references (read by the agent)
 
 - `references/ci-path-mapping.md` – translations from CI Repository folder names to `repository.config` object types and content item filter elements, plus the known special cases (forms, reusable field schemas, workspaces, `cms.class` ambiguity).
 - `references/repository-config-guidelines.md` – rules for regenerating a minimal deployment-scoped config: allowlist decisions, content item filter dependencies, `RestoreMode` selection, formatting, and the final quality checklist.
