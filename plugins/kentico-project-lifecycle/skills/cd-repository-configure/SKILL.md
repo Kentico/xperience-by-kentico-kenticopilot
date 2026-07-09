@@ -1,6 +1,6 @@
 ---
 name: cd-repository-configure
-description: "Builds a scoped CD Repository deployment configuration (repository.config) from CI Repository changes selected by PR numbers or a commit range, excluding Xperience version-update noise by default. Use when the user wants to deploy specific features, PRs, or commits to another Xperience by Kentico environment, scope repository.config for a Continuous Deployment run, or prepare a CD deployment package."
+description: "Builds a scoped CD Repository configuration from CI Repository changes selected by PR numbers or a commit range, excluding Xperience version-update noise by default. Use when the user wants to deploy specific features, PRs, or commits to another Xperience by Kentico environment, scope repository.config for a Continuous Deployment run, or prepare a CD deployment package."
 argument-hint: "PR number(s) or commit hash range"
 compatibility: "Requires local git and Kentico Docs MCP; PR selectors additionally require tooling for the repository host (CLI or MCP server, e.g., GitHub CLI or Azure DevOps MCP)."
 ---
@@ -50,11 +50,11 @@ Keep only files under the CI Repository path. Exclude every PR or commit classif
 
 ### 4. Generate and verify the deployment content
 
-1. Run `Export-DeploymentPackage.ps1` if it exists in the repository (it wraps the CD store operation). Otherwise run the store directly – see [Store objects to a CD Repository](https://docs.kentico.com/documentation/developers-and-admins/ci-cd/continuous-deployment#store-objects-to-a-cd-repository).
+1. Run `Export-DeploymentPackage.ps1` if it exists in the Xperience app root (it wraps the CD store operation). Otherwise run the store directly – see [Store objects to a CD Repository](https://docs.kentico.com/documentation/developers-and-admins/ci-cd/continuous-deployment#store-objects-to-a-cd-repository).
 2. Verify the generated CD Repository against the configured scope (the store operation fills the CD Repository folder with serialized XML):
 
    ```powershell
-   ./scripts/Verify-CdRepository.ps1 -RepositoryPath "<folder containing repository.config>"
+   skills/cd-repository-configure/scripts/Verify-CdRepository.ps1 -RepositoryPath "<folder containing repository.config>"
    ```
 
 3. If the script fails (exit code 1 – an included code name or content item has no serialized file): re-check the mapping against `references/ci-path-mapping.md`, fix the config, and re-run the store and the verification. Include the script's report in the deployment summary.

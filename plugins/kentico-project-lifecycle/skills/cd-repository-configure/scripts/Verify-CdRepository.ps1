@@ -9,6 +9,9 @@ serialized XML files actually present in the repository and reports:
 
 - [FAIL] Included code names or content item names with no corresponding serialized file
          (catches silent suppression, e.g. a content type missing from ObjectFilters).
+- [FAIL] A content type listed in IncludedContentItemsOfType that is missing from
+         ObjectFilters/IncludedCodeNames ObjectType="cms.contenttype" (when that filter is used) -
+         kxp-cd-store silently drops all content items of that type.
 - [WARN] Included object types / content types with no serialized files, IncludeAll usage,
          and a destructive 'Full' RestoreMode.
 
@@ -132,6 +135,30 @@ if ($contentItemNodes.Count -gt 0) {
         }
         else {
             $failures.Add("ContentItemFilters: no serialized content item matches '$rawName'. Check that the item's content type is listed in BOTH IncludedContentItemsOfType and ObjectFilters/IncludedCodeNames ObjectType=""cms.contenttype"".")
+        }
+    }
+}
+
+# --- IncludedContentItemsOfType vs ObjectFilters cms.contenttype: config-level rule, not symptom-based ---
+# When an ObjectFilters allowlist for cms.contenttype exists, every content type deployed via
+# IncludedContentItemsOfType must also be in that allowlist, or kxp-cd-store silently drops all of
+# its content items. Checked directly against the config so it fires even without ContentItemFilters
+# and even before any store operation has run.
+$contentTypeFilterNodes = $root.SelectNodes("ObjectFilters/IncludedCodeNames[@ObjectType='cms.contenttype']")
+if ($contentTypeFilterNodes.Count -gt 0) {
+    $allowedContentTypePatterns = @(
+        foreach ($node in $contentTypeFilterNodes) {
+            $node.InnerText -split ';' | ForEach-Object { ConvertTo-WildcardPattern $_ } | Where-Object { $_ }
+        }
+    )
+    foreach ($node in $root.SelectNodes('IncludedContentItemsOfType/ContentType')) {
+        $type = $node.InnerText.Trim()
+        if ($type -eq '##WebPageFolders##') { continue }
+        if ($allowedContentTypePatterns | Where-Object { $type -like $_ } | Select-Object -First 1) {
+            $passes.Add("IncludedContentItemsOfType: '$type' is covered by ObjectFilters/IncludedCodeNames (cms.contenttype).")
+        }
+        else {
+            $failures.Add("IncludedContentItemsOfType: '$type' is missing from ObjectFilters/IncludedCodeNames ObjectType=""cms.contenttype"" - kxp-cd-store will silently exclude all content items of this type from the deployment package. Add '$type' to the cms.contenttype code name list.")
         }
     }
 }
