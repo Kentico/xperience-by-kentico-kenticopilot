@@ -5,7 +5,8 @@
   "type": "module",
   "description": "Playwright-based comparison of a live Xperience by Kentico page against a static HTML design",
   "engines": {
-    "node": ">=22.18"
+    "node": ">=22.18.0",
+    "npm": ">=11.10.0"
   },
   "scripts": {
     "setup": "npm ci && npx playwright install chromium",
