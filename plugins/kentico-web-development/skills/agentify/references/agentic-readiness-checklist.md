@@ -14,6 +14,8 @@ This checklist identifies areas which determine how well an Xperience by Kentico
 ## 2. Guidance skills
 
 - This project has a skill that provides guidance on how to handle design-related questions and tasks.
+  - The skill follows the Agent Skills specification: https://agentskills.io/specification
+  - Check each required frontmatter field.
 
 ## 3. Kentico MCPs
 

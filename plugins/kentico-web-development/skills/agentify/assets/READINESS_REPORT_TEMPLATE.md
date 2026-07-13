@@ -18,7 +18,7 @@ Overall readiness: **{Ready / Mostly ready / Needs work}**
 
 - **Evidence:** {evidence supporting the status, e.g. link to file, code snippet, etc.}
 - **Gap:** {what is missing or incomplete}
-- **Recommended fix:** {concrete action; reference the template/guide used}
+- **Recommended fix:** {concrete action this skill will perform for the user, described as what will be created or changed in their project; do not reference this skill's internal template or reference files}
 
 ## Quick tip
 
