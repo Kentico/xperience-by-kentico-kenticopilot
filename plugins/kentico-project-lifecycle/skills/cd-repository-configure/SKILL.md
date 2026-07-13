@@ -1,7 +1,7 @@
 ---
 name: cd-repository-configure
 description: "Builds a scoped CD Repository configuration from CI Repository changes selected by PR numbers or a commit range, excluding Xperience version-update noise by default. Use when the user wants to deploy specific features, PRs, or commits to another Xperience by Kentico environment, scope repository.config for a Continuous Deployment run, or prepare a CD deployment package."
-argument-hint: "PR number(s) or commit hash range"
+argument-hint: "[change-selector]"
 compatibility: "Requires local git and Kentico Docs MCP; PR selectors additionally require tooling for the repository host (CLI or MCP server, e.g., GitHub CLI or Azure DevOps MCP)."
 ---
 
@@ -9,21 +9,18 @@ You are tasked with creating a scoped CD Repository configuration from CI Reposi
 
 ## Input parameters
 
-- **Change selectors** – **either** PR number(s) **or** a git commit range (not both):
-  - **PR mode:** one or more PR numbers (e.g., `PR 312` or `PR 310, PR 311, PR 312`) — for deploying specific, discrete changes.
-  - **Commit mode:** one git commit range (e.g., `abc123..def456` or `abc123^..def456`) — for deploying all changes between two commits.
-- **Paths** *(optional)* – the Xperience app path and/or the CD `repository.config` path.
+- **Change selector** – PR number(s) (e.g., `PR 312`, `PR 310, PR 311, PR 312`) or a git commit range (e.g., `abc123..def456`), not both.
 
 ## Workflow
 
 ### 1. Discover the environment
 
-Resolve the following values, preferring any the user provided. If a value is ambiguous (for example, multiple Xperience apps in the workspace), ask the user instead of guessing.
+Resolve the following values, preferring any the user provided.
 
 - **CI Repository path** – the `App_Data/CIRepository` folder.
-- **CD config path** – the `App_Data/CDRepository/repository.config` file (the Xperience app root is the parent folder of `App_Data`).
+- **CD config path** – the `App_Data/CDRepository/repository.config` file.
 
-Read the `Version` attribute of the `<RepositoryConfiguration>` root element in the CD config file. **If the attribute is missing or `"1"`, stop** and inform the user:
+Read the `Version` attribute of the `<RepositoryConfiguration>` root element in the CD config file. **If the attribute is missing or has value `"1"`, stop** and inform the user:
 
 > The repository.config file uses the legacy v1 syntax. The `cd-repository-configure` skill requires v2 syntax. Migrate the file following [Migrate CI/CD repository.config to v2](https://docs.kentico.com/documentation/developers-and-admins/ci-cd/configure-ci-cd-repositories/config-v2-migration), then run this skill again.
 
@@ -31,49 +28,34 @@ Offer to apply the documented migration steps (back up the original file first).
 
 ### 2. Collect and classify CI changes
 
-- **PR mode** — needs tooling that can read pull requests on the repository's host:
-  1. Identify the host from `git remote get-url origin` (GitHub, Azure DevOps, GitLab, ...).
-  2. Pick an available tool for that host — its CLI (e.g., `gh pr view <number> --json title,body,files` for GitHub, `az repos pr show --id <number>` for Azure DevOps) or an MCP server that exposes its pull requests. If none is available, stop and ask the user to connect one or provide a commit range instead.
-  3. For each PR, get its title, description, and changed files. Classify each PR as **business/feature** or **Xperience update-only** (see Change classification). Track changes per PR.
-- **Commit mode** — uses local git:
-  1. List the commits in the range: `git log <range> --pretty=format:"%H %s"`.
-  2. For each commit, oldest to newest: get its CI changes with `git show <commit-hash> --name-status -- <ciRepositoryPath>` and classify the commit as **business/feature** or **Xperience update-only** (see Change classification). Track changes per commit.
+For a PR selector, read each PR's title, description, and changed files using whatever tooling is available for the repository's host (its CLI or an MCP server exposing pull requests). If none is available, stop and ask the user to connect one or provide a commit range instead.
 
-Keep only files under the CI Repository path. Exclude every PR or commit classified as Xperience update-only unless the user explicitly opts in.
+For a commit range, walk the commits oldest to newest and inspect each one's changes under the CI Repository path.
+
+Classify each PR or commit as **business/feature** or **Xperience update-only** (see Change classification) and track its changes. Keep only files under the CI Repository path. Exclude every PR or commit classified as Xperience update-only unless the user explicitly opts in.
 
 ### 3. Write the scoped configuration
 
 1. Map the remaining CI paths to object types and code names following `references/ci-path-mapping.md`.
 2. Regenerate the config file at the CD config path following `references/repository-config-guidelines.md`. Rebuild the filter sections from scratch for the current deployment scope — do not merge with filters left over from previous deployments.
 3. Validate that the XML is well-formed, remove duplicate or contradicting filters, and run the quality checklist from the guidelines reference.
-4. Diff and explain the exact changes made to `repository.config`.
+4. Track the exact changes made to `repository.config`, to report in the deployment summary.
 
 ### 4. Generate and verify the deployment content
 
-1. Run `Export-DeploymentPackage.ps1` if it exists in the Xperience app root (it wraps the CD store operation). Otherwise run the store directly – see [Store objects to a CD Repository](https://docs.kentico.com/documentation/developers-and-admins/ci-cd/continuous-deployment#store-objects-to-a-cd-repository).
-2. Verify the generated CD Repository against the configured scope (the store operation fills the CD Repository folder with serialized XML):
-
-   ```powershell
-   skills/cd-repository-configure/scripts/Verify-CdRepository.ps1 -RepositoryPath "<folder containing repository.config>"
-   ```
-
-3. If the script fails (exit code 1 – an included code name or content item has no serialized file): re-check the mapping against `references/ci-path-mapping.md`, fix the config, and re-run the store and the verification. Include the script's report in the deployment summary.
+1. Run the project's `Export-DeploymentPackage.ps1` if present in the Xperience app root; otherwise run the store operation directly – see [Store objects to a CD Repository](https://docs.kentico.com/documentation/developers-and-admins/ci-cd/continuous-deployment#store-objects-to-a-cd-repository).
+2. Verify the generated CD Repository against the configured scope with this skill's bundled `Verify-CdRepository.ps1` script (in its `scripts/` folder), passing the folder containing `repository.config` as `-RepositoryPath`.
+3. If the script reports failures, re-check the mapping against `references/ci-path-mapping.md`, fix the config, and re-run the store and the verification. Include the script's report in the deployment summary.
 
 ## Change classification
 
-A change is **Xperience update-only** when it comes from platform or package update work rather than intentional configuration or content modeling changes. Signals:
+Classify each PR/commit as **business/feature** or **Xperience update-only** (platform/package updates, hotfixes, or version migrations with no feature intent) and exclude update-only changes by default. If classification is uncertain, exclude and report it in the summary so the user can opt in.
 
-- The PR/commit title or description indicates an Xperience update, hotfix, NuGet/package bump, or version migration.
-- Bulk CI churn tied to upgrade commits with no explicit feature intent.
-
-Decision rules:
-
-- **Classification uncertain?** Exclude the group and report it in the summary so the user can opt in.
-- **Only content item data changed** (no content type, schema, or other configuration changes)? Suggest [Content sync](https://docs.kentico.com/documentation/business-users/content-sync) as a simpler alternative; continue if the user still wants CD.
+If only content item data changed (no content type or other configuration changes), suggest [Content sync](https://docs.kentico.com/documentation/business-users/content-sync) as a simpler alternative before continuing with CD.
 
 ## Output format
 
-Finish with a deployment summary that follows `assets/DEPLOYMENT_SUMMARY_TEMPLATE.md`. Fill in every placeholder and keep every section; the template's comments explain the per-mode (PR vs. commit range) adjustments.
+Finish with a deployment summary that follows `assets/DEPLOYMENT_SUMMARY_TEMPLATE.md`. Fill in every placeholder and keep every section.
 
 ## References
 

@@ -2,28 +2,25 @@
 
 ## Deployment scope
 
-- **Change selectors:** {PR numbers or commit range, as provided by the user}
+- **Change selector:** {PR numbers or commit range, as provided by the user}
 - **CI Repository:** {path to the CI Repository}
 - **Target config:** {path to repository.config}
 
 ## Analyzed changes
 
-<!-- Commit mode: list every commit in the range in both tables below.
-     PR mode: list the analyzed PRs instead (use a "PR" column in place of "Commit"). -->
-
 ### Included in deployment scope (business/feature)
 
-| Commit | Subject | Note |
-| ------ | ------- | ---- |
-| {short hash} | {subject} | {optional note} |
+| {Commit or PR} | Subject | Note |
+| --------------- | ------- | ---- |
+| {short hash or PR number} | {subject} | {optional note} |
 
 ### Excluded as Xperience update-only
 
-<!-- When nothing was excluded, replace the table with: "No commits were classified as Xperience update-only." -->
+| {Commit or PR} | Subject | Reason for exclusion |
+| --------------- | ------- | --------------------- |
+| {short hash or PR number} | {subject} | {classification signal, e.g. "hotfix version bump in title, bulk CI churn"} |
 
-| Commit | Subject | Reason for exclusion |
-| ------ | ------- | -------------------- |
-| {short hash} | {subject} | {classification signal, e.g. "hotfix version bump in title, bulk CI churn"} |
+{If nothing was excluded, replace the table above with: "No commits were classified as Xperience update-only."}
 
 ## Deployment configuration
 
@@ -43,10 +40,7 @@ whether they were kept or removed and who decided.}
 ## Verification
 
 - **Store / package export:** {run (command or script used) | not run — reason}
-- **Verification script:** {not run — reason | X passed, Y warning(s), Z failure(s)}
-
-<!-- When the script reported warnings or failures, paste the [WARN]/[FAIL] lines verbatim below,
-     each followed by how it was resolved or why it is acceptable. -->
+- **Verification script:** {not run — reason | X passed, Y warning(s), Z failure(s); paste [WARN]/[FAIL] lines verbatim, each followed by how it was resolved or why it is acceptable}
 
 ## Follow-ups
 

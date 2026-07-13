@@ -6,17 +6,15 @@ Guidelines for building the `IncludedObjectTypes` allowlist, object and content 
 
 Each run produces a config scoped to the **current deployment only**. Rebuild `IncludedObjectTypes`, `IncludedContentItemsOfType`, `ContentItemFilters`, and `ObjectFilters` from scratch based on the current change selectors, and re-determine `RestoreMode`. Do not carry over filter entries from the previous config.
 
-- If the existing config contains entries that clearly did not come from a previous run of this skill (for example, manually maintained `ExcludedObjectTypes` or standing exclusions like `cms.settingskey`), surface them explicitly in the diff and ask the user whether to keep them before removing.
+- If the config contains entries that clearly didn't come from a previous run of this skill (for example, manually maintained `ExcludedObjectTypes` or standing exclusions like `cms.settingskey`), surface them in the diff and ask whether to keep them before removing.
 
 ## Decision rules
 
-- If `IncludedObjectTypes` is populated, it is an allowlist: include every required main object type.
-- Child and binding objects follow parent inclusion rules — do not list them separately.
-- Prefer explicit object types over broad `IncludeAll` patterns.
-- Add content-item-specific filters only when content item deployment is intentionally requested.
-- Keep code name filters minimal and precise.
+- **Avoid `IncludeAll`.** Prefer explicit object types and code names — broad `IncludeAll` patterns defeat the purpose of a scoped deployment.
+- If `IncludedObjectTypes` is populated, it is an allowlist: include every required main object type. Child and binding objects follow their parent — do not list them separately.
+- Add content-item-specific filters only when content item deployment is intentionally requested; keep code name filters minimal and precise.
 - Do not add multiple `IncludedCodeNames`/`ExcludedCodeNames` elements for the same object type — use one element with semicolon-separated values.
-- **When `IncludedObjectTypes` contains `cms.contenttype` and `ObjectFilters` has an `IncludedCodeNames ObjectType="cms.contenttype"` entry, every content type listed in `IncludedContentItemsOfType` must also appear in that `ObjectFilters` code name list** — regardless of whether the type definition itself was changed in the included commits. If a type is missing from `ObjectFilters`, `kxp-cd-store` will silently suppress all content items of that type from the deployment package. See [Content type filtering impact on content items](https://docs.kentico.com/documentation/developers-and-admins/ci-cd/configure-ci-cd-repositories#scope-filtering-with-the-objecttype-attribute).
+- **`IncludedContentItemsOfType` types must also appear in `ObjectFilters/IncludedCodeNames ObjectType="cms.contenttype"`** (when that filter is used) — otherwise `kxp-cd-store` silently drops all of that type's content items. See [Content type filtering impact on content items](https://docs.kentico.com/documentation/developers-and-admins/ci-cd/configure-ci-cd-repositories#scope-filtering-with-the-objecttype-attribute).
 
 ## RestoreMode selection
 

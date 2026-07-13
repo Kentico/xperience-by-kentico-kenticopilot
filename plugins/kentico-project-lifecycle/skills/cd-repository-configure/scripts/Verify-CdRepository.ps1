@@ -52,13 +52,14 @@ try {
 }
 catch {
     Write-Host "[FAIL] repository.config is not well-formed XML: $($_.Exception.Message)"
-    exit 1
+    exit 2
 }
 $root = $config.DocumentElement
 
 # Index the repository content once.
+$resolvedConfigPath = (Resolve-Path $ConfigPath).Path
 $allFiles = Get-ChildItem -Path $RepositoryPath -Recurse -File -Filter '*.xml' |
-    Where-Object { $_.FullName -ne (Resolve-Path $ConfigPath).Path }
+    Where-Object { $_.FullName -ne $resolvedConfigPath }
 $allDirs = Get-ChildItem -Path $RepositoryPath -Recurse -Directory
 
 function ConvertTo-WildcardPattern([string]$codeNamePattern) {

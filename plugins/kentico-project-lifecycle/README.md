@@ -135,9 +135,9 @@ An updated `repository.config` scoped to the selected changes, plus a deployment
 
 ### cd-repository-configure references (read by the agent)
 
-- `references/ci-path-mapping.md` – translations from CI Repository folder names to `repository.config` object types and content item filter elements, plus the known special cases (forms, reusable field schemas, workspaces, `cms.class` ambiguity).
-- `references/repository-config-guidelines.md` – rules for regenerating a minimal deployment-scoped config: allowlist decisions, content item filter dependencies, `RestoreMode` selection, formatting, and the final quality checklist.
-- `references/documentation-links.md` – map of the relevant Kentico documentation pages with when-to-read hints, fetched on demand via the Kentico Docs MCP.
+- `skills/cd-repository-configure/references/ci-path-mapping.md` – translations from CI Repository folder names to `repository.config` object types and content item filter elements, plus the known special cases (forms, reusable field schemas, workspaces, `cms.class` ambiguity).
+- `skills/cd-repository-configure/references/repository-config-guidelines.md` – rules for regenerating a minimal deployment-scoped config: allowlist decisions, content item filter dependencies, `RestoreMode` selection, formatting, and the final quality checklist.
+- `skills/cd-repository-configure/references/documentation-links.md` – map of the relevant Kentico documentation pages with when-to-read hints, fetched on demand via the Kentico Docs MCP.
 
 ### Templates
 
