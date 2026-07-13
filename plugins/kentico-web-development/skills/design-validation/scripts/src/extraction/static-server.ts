@@ -43,9 +43,10 @@ export async function serveStatic(rootDir: string): Promise<StaticServer> {
   const server = http.createServer(async (req, res) => {
     try {
       const urlPath = decodeURIComponent(new URL(req.url ?? '/', 'http://localhost').pathname);
-      let filePath = path.join(root, urlPath);
+      let filePath = path.resolve(root, '.' + urlPath);
       // Prevent path traversal outside the served root.
-      if (!filePath.startsWith(root)) {
+      const relative = path.relative(root, filePath);
+      if (relative.startsWith('..') || path.isAbsolute(relative)) {
         res.writeHead(403).end('Forbidden');
         return;
       }

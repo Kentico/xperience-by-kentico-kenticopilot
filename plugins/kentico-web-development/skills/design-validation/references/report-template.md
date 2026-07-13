@@ -8,7 +8,7 @@ One JSON file per page:
 
 | Field | Meaning |
 | --- | --- |
-| `classificationHint` | Suggested root-cause class: `content` \| `serving` \| `styling` — a heuristic; [classification.md](classification.md) makes the final call. |
+| `classificationHint` | Suggested root-cause class: `content` \| `serving` \| `styling` \| `unknown` (no rule matched — inspect both sides manually) — a heuristic; [classification.md](classification.md) makes the final call. |
 | `design` / `live` | Locators per side: `selector`, `snippet`, `value`. Locate by **snippet first** — live selectors reflect developer-defined widget wrappers. |
 | `expected` / `actual` | Design-side vs live-side value. |
 | `details.kind` | Precise finding kind (below). |
