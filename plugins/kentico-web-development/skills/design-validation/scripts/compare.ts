@@ -8,7 +8,7 @@
 // TypeScript type stripping — no build step.
 //
 // Usage:
-//   node compare.ts --design <file|folder> --live <url|folder> [options]
+//   node compare.ts --design <file|folder> --live <url> [options]
 //
 // Run with --help for all options.
 
@@ -32,15 +32,14 @@ import type { Severity } from './src/shared/types.ts';
 const HELP = `design-validation — compare a live page against a static HTML design
 
 Usage:
-  node compare.ts --design <file|folder> --live <url|folder> [options]
+  node compare.ts --design <file|folder> --live <url> [options]
 
 Options:
   --design <path>          Static design HTML file, or a folder — every *.html in the
                            folder is auto-paired with --live (index.html → the base URL,
                            about.html → <base>/about, sub/index.html → <base>/sub)
-  --live <url|folder>      Live page URL, or the site base URL when --design is a folder
-                           (mind Xperience language prefixes: /<lang>/...). A local folder
-                           is served statically instead — useful for local testing.
+  --live <url>             Live page URL, or the site base URL when --design is a folder
+                           (mind Xperience language prefixes: /<lang>/...)
   --only <names>           Comma-separated page names to run (folder-derived pages)
   --viewport <WxH>         Viewport, e.g. 1280x900 (default 1280x900)
   --language <code>        Expected live-page language, e.g. en, cs (detects fallback)
@@ -121,7 +120,7 @@ async function main(): Promise<void> {
     process.exit(0);
   }
   if (!values.design || !values.live) {
-    fail('Provide both --design <file|folder> and --live <url|folder>.');
+    fail('Provide both --design <file|folder> and --live <url>.');
   }
 
   const viewport = values.viewport ? parseViewport(values.viewport) : { width: 1280, height: 900 };
@@ -156,14 +155,7 @@ async function main(): Promise<void> {
     pages = pages.filter((p) => only.has(p.name));
   }
 
-  // Live side: a site URL, or a local folder served the same way as the design
-  // (folder layout must mirror the design folder) — useful for local testing.
-  const liveIsUrl = /^https?:\/\//i.test(values.live);
-  const liveDir = liveIsUrl ? null : path.resolve(values.live);
-  if (liveDir) {
-    const liveInfo = await stat(liveDir).catch(() => null);
-    if (!liveInfo?.isDirectory()) fail(`--live '${values.live}' is neither an http(s) URL nor an existing folder.`);
-  }
+  if (!/^https?:\/\//i.test(values.live)) fail(`--live '${values.live}' is not an http(s) URL.`);
 
   const multipleReports = pages.length > 1;
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
@@ -171,14 +163,13 @@ async function main(): Promise<void> {
   const outDir = values.out ? path.resolve(values.out) : path.join(scriptDir, 'reports');
 
   const designServer = await serveStatic(designRoot);
-  const liveServer = liveDir ? await serveStatic(liveDir) : null;
   const browser = await launchBrowser();
   let worstSeverity: Severity | null = null;
   const failed: { name: string; error: string }[] = [];
   try {
     for (const page of pages) {
       const designUrl = servedUrlFor(designServer.baseUrl, page.rel);
-      const liveUrl = liveServer ? servedUrlFor(liveServer.baseUrl, page.rel) : liveUrlFor(values.live, page.name);
+      const liveUrl = liveUrlFor(values.live, page.name);
       console.log(`Comparing '${page.name}': ${page.rel} vs ${liveUrl} @ ${viewport.width}x${viewport.height}`);
 
       let report;
@@ -252,7 +243,6 @@ async function main(): Promise<void> {
   } finally {
     await browser.close();
     await designServer.close();
-    await liveServer?.close();
   }
 
   if (failed.length > 0) {

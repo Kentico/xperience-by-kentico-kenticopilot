@@ -1,5 +1,5 @@
 // Minimal static file server, so design HTML loads with its relative
-// CSS/asset links intact (and local "live" folders can be compared too).
+// CSS/asset links intact.
 
 import http from 'node:http';
 import { createReadStream } from 'node:fs';

@@ -19,8 +19,7 @@ Every finding is classified into one of three layers, which can each go wrong in
 
 **Not content:**
 
-- The value in Xperience is already correct but the page shows something else — the view renders the wrong field, truncates, or hard-codes text → serving.
-- UI chrome (labels, buttons) is often a missing `.resx` resource string, not a content item → serving.
+- The value in Xperience is already correct but the page shows something else — the view renders the wrong field, truncates, or hard-codes different text → serving.
 
 ## SERVING
 

@@ -4,6 +4,8 @@
 
 ## Setup
 
+Needed only once, before the first run — skip when `<scripts>/node_modules` already exists.
+
 ```
 cd <scripts>
 npm ci
@@ -13,21 +15,20 @@ npx playwright install chromium
 ## Running
 
 ```
-node <scripts>/compare.ts --design <file|folder> --live <url|folder> [options]
+node <scripts>/compare.ts --design <file|folder> --live <url> [options]
 ```
 
-Run with `--help` for all options. Three modes:
+Run with `--help` for all options. Two modes:
 
-- **Single page** — `--design <file>` + `--live <url>`.
-- **Folder batch** — `--design <folder>` + `--live <base-url>`: every `*.html` (recursive) pairs with a URL from its relative path.
-- **Local live folder** — `--live <folder>` is served statically and compared path-for-path.
+- **Single page** — `--design <file>` + `--live <url>`: validate one page against one design file.
+- **Folder batch** — `--design <folder>` + `--live <base-url>`: validate a whole design set in one run; every `*.html` (recursive) pairs with a live URL derived from its relative path (`index.html` → base, `about.html` → `<base>/about`).
 
 Guidance `--help` doesn't spell out:
 
 - Build `--live` URLs with the Xperience language prefix (primary `/page`, others `/<lang>/page`) and pass `--language` to enable fallback detection.
 - Pass a project-local `--out` — the default `<scripts>/reports/` does not survive plugin updates.
 - `--ignore <selector>` excludes dynamic regions (cookie banners, personalization) on both sides.
-- Font families are compared by the first family only — fallback-tail differences are ignored by design.
+- `font-family` values are fallback lists (`"Inter", Arial, sans-serif`); only the first family is compared, so a differing fallback tail never produces a finding.
 
 ## Exit codes
 
