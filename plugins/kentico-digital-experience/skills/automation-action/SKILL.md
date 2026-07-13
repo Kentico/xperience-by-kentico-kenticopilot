@@ -1,6 +1,6 @@
 ---
 name: "automation-action"
-description: "Reference for implementing custom automation process actions in Xperience by Kentico. Use whenever the user wants to add a custom step to marketing automation — a class that runs for every contact reaching the step in the Automation Builder, optionally configurable by marketers through properties."
+description: "Reference for implementing custom automation process actions in Xperience by Kentico. Use whenever the user wants to add a custom step to an automation process — a class that runs for every contact reaching the step in the Automation Builder, optionally configurable by marketers through properties."
 compatibility: "Requires Kentico Docs MCP"
 ---
 
