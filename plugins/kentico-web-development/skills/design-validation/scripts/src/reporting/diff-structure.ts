@@ -4,6 +4,14 @@
 import { snippet } from '../shared/text.ts';
 import type { Block, Finding, MatchResult } from '../shared/types.ts';
 
+/**
+ * The synthetic 'body' landmark (buildSemanticTree's container of last resort
+ * for content outside any real landmark) is not authored markup — it can never
+ * legitimately be "missing", and moves in/out of it are landmark-structure
+ * noise, not content misplacement.
+ */
+const SYNTHETIC_ROLE = 'body';
+
 /** Human-readable block identifier for finding titles. */
 function blockTitle(block: Block): string {
   return block.heading ? `"${snippet(block.heading, 50)}"` : `<${block.tag}> "${snippet(block.aggText, 50)}"`;
@@ -17,6 +25,7 @@ export function diffStructure(match: MatchResult): Finding[] {
   const findings: Finding[] = [];
 
   for (const landmark of match.unmatchedDesignLandmarks) {
+    if (landmark.role === SYNTHETIC_ROLE) continue;
     findings.push({
       category: 'structure',
       kind: 'missing-landmark',
@@ -31,6 +40,7 @@ export function diffStructure(match: MatchResult): Finding[] {
   }
 
   for (const landmark of match.unmatchedLiveLandmarks) {
+    if (landmark.role === SYNTHETIC_ROLE) continue;
     findings.push({
       category: 'structure',
       kind: 'extra-landmark',
@@ -74,7 +84,11 @@ export function diffStructure(match: MatchResult): Finding[] {
 
   // Blocks matched across different landmarks (content placed in the wrong area).
   for (const pair of match.blockPairs) {
-    if (pair.movedFromLandmark) {
+    if (
+      pair.movedFromLandmark &&
+      pair.movedFromLandmark.design !== SYNTHETIC_ROLE &&
+      pair.movedFromLandmark.live !== SYNTHETIC_ROLE
+    ) {
       findings.push({
         category: 'structure',
         kind: 'extra-block',

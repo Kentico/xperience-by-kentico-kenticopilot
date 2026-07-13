@@ -42,37 +42,19 @@ export const STYLE_PROPERTIES = [
   'box-shadow',
 ];
 
-/** Named colors that commonly appear in hand-written design CSS, in canonical rgb()/rgba() form. */
-const NAMED_COLORS: Record<string, string> = {
-  transparent: 'rgba(0, 0, 0, 0)',
-  black: 'rgb(0, 0, 0)',
-  white: 'rgb(255, 255, 255)',
-  red: 'rgb(255, 0, 0)',
-  green: 'rgb(0, 128, 0)',
-  blue: 'rgb(0, 0, 255)',
-};
-
 /**
- * Normalize a CSS color to canonical rgb()/rgba() form. getComputedStyle
- * already returns rgb()/rgba() in Chromium, so this mostly canonicalizes
- * spacing and folds alpha-1 rgba into rgb.
+ * Normalize a CSS color to canonical rgb()/rgba() form. Both sides come from
+ * getComputedStyle, which already returns rgb()/rgba() in Chromium, so this
+ * only canonicalizes spacing and folds alpha-1 rgba into rgb.
  */
 function normalizeColor(value: string): string {
   if (!value) return value;
   const v = value.trim().toLowerCase();
-  if (NAMED_COLORS[v]) return NAMED_COLORS[v];
   const m = v.match(/^rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)\s*(?:,\s*([\d.]+)\s*)?\)$/);
   if (m) {
     const [, r, g, b, a] = m;
     if (a === undefined || Number(a) === 1) return `rgb(${Number(r)}, ${Number(g)}, ${Number(b)})`;
     return `rgba(${Number(r)}, ${Number(g)}, ${Number(b)}, ${Number(a)})`;
-  }
-  const hex = v.match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/);
-  if (hex) {
-    let h = hex[1];
-    if (h.length === 3) h = h.split('').map((c) => c + c).join('');
-    const n = parseInt(h, 16);
-    return `rgb(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255})`;
   }
   return v;
 }
@@ -115,14 +97,22 @@ export function styleValuesEqual(
   if (a === b) return true;
   if (a == null || b == null) return false;
   if (/color/i.test(property)) return normalizeColor(a) === normalizeColor(b);
+  // 'letter-spacing: normal' computes to the keyword but means 0.
+  if (property === 'letter-spacing') {
+    const norm = (v: string) => (v.trim().toLowerCase() === 'normal' ? '0px' : v);
+    a = norm(a);
+    b = norm(b);
+    if (a === b) return true;
+  }
   if (property === 'font-weight') return (WEIGHT_KEYWORDS[a.trim().toLowerCase()] ?? a.trim().toLowerCase()) === (WEIGHT_KEYWORDS[b.trim().toLowerCase()] ?? b.trim().toLowerCase());
   if (property === 'font-family') return primaryFontFamily(a) === primaryFontFamily(b);
   const pa = parsePx(a);
   const pb = parsePx(b);
   if (pa !== null && pb !== null) return Math.abs(pa - pb) <= pxTolerance;
-  // border-radius / box-shadow can hold several lengths: compare piecewise.
-  const partsA = a.split(/\s+/);
-  const partsB = b.split(/\s+/);
+  // border-radius / box-shadow can hold several parts: compare piecewise.
+  // The split is paren-aware so 'rgba(0, 0, 0, 0.5)' stays one token.
+  const partsA = a.split(/\s+(?![^(]*\))/);
+  const partsB = b.split(/\s+(?![^(]*\))/);
   if (partsA.length === partsB.length && partsA.length > 1) {
     return partsA.every((p, i) => styleValuesEqual(property, p, partsB[i], pxTolerance));
   }

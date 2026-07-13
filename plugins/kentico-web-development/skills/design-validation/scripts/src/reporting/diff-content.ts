@@ -77,8 +77,7 @@ export function diffContent(match: MatchResult, { liveMeta, requestedLanguage }:
       } else if (
         pair.design.attrs.href &&
         liveHref &&
-        urlBasename(pair.design.attrs.href) !== urlBasename(liveHref) &&
-        normalizeText(pair.design.text) === normalizeText(pair.live.text)
+        urlBasename(pair.design.attrs.href) !== urlBasename(liveHref)
       ) {
         findings.push({
           category: 'content',
@@ -181,6 +180,27 @@ export function diffContent(match: MatchResult, { liveMeta, requestedLanguage }:
         actual: url,
         details: { kind: 'unresolved-url', url },
       });
+    }
+  }
+
+  // Unresolved URLs on the live page are a serving bug regardless of whether
+  // the containing block matched anything in the design.
+  for (const { block } of match.unmatchedLiveBlocks) {
+    for (const leaf of block.leaves) {
+      const url = leaf.attrs.href ?? leaf.attrs.src;
+      if (isUnresolvedVirtualUrl(url)) {
+        findings.push({
+          category: 'content',
+          kind: 'unresolved-url',
+          severity: 'high',
+          title: `Unresolved virtual URL on the live page: "${url}"`,
+          design: null,
+          live: { ...leaf.locator, value: url },
+          expected: null,
+          actual: url,
+          details: { kind: 'unresolved-url', url },
+        });
+      }
     }
   }
 

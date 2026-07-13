@@ -26,6 +26,7 @@ Run with `--help` for all options. Two modes:
 Guidance `--help` doesn't spell out:
 
 - Build `--live` URLs with the Xperience language prefix (primary `/page`, others `/<lang>/page`) and pass `--language` to enable fallback detection.
+- **Language-fallback detection depends entirely on `<html lang>`**: if the site's layout doesn't set it, no fallback is detected (`--language` is then a no-op).
 - Pass a project-local `--out` — the default `<scripts>/reports/` does not survive plugin updates.
 - `--ignore <selector>` excludes dynamic regions (cookie banners, personalization) on both sides.
 - `font-family` values are fallback lists (`"Inter", Arial, sans-serif`); only the first family is compared, so a differing fallback tail never produces a finding.

@@ -32,6 +32,31 @@ export async function launchBrowser(): Promise<Browser> {
   }
 }
 
+/**
+ * Return the invalid selectors among `selectors`, judged by the browser's own
+ * CSS parser — an invalid --ignore selector would otherwise be silently
+ * ignored during extraction.
+ */
+export async function findInvalidSelectors(browser: Browser, selectors: string[]): Promise<string[]> {
+  if (selectors.length === 0) return [];
+  const context = await browser.newContext();
+  try {
+    const page = await context.newPage();
+    return await page.evaluate((sels: string[]) => {
+      return sels.filter((sel) => {
+        try {
+          document.querySelector(sel);
+          return false;
+        } catch {
+          return true;
+        }
+      });
+    }, selectors);
+  } finally {
+    await context.close();
+  }
+}
+
 /** Page-load settings shared by both sides of a comparison. */
 export interface LoadOptions {
   viewport: { width: number; height: number };

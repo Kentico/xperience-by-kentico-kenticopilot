@@ -53,6 +53,17 @@ export function extractPage({ ignoreSelectors, styleProperties }: ExtractPageOpt
   function isVisible(el: Element, style: CSSStyleDeclaration): boolean {
     if (style.display === 'none' || style.visibility === 'hidden') return false;
     if (el.getAttribute('aria-hidden') === 'true') return false;
+    // Screen-reader-only pattern (.sr-only / .visually-hidden): absolutely
+    // positioned, clipped, at most 1px in size. Such text is not visible.
+    if (style.position === 'absolute' || style.position === 'fixed') {
+      const clipped =
+        (style.clip && style.clip.startsWith('rect(')) ||
+        (style.clipPath && style.clipPath !== 'none');
+      if (clipped) {
+        const rect = el.getBoundingClientRect();
+        if (rect.width <= 1 && rect.height <= 1) return false;
+      }
+    }
     return true;
   }
 

@@ -18,7 +18,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { serveStatic } from './src/extraction/static-server.ts';
-import { launchBrowser, loadAndExtract } from './src/extraction/browser.ts';
+import { findInvalidSelectors, launchBrowser, loadAndExtract } from './src/extraction/browser.ts';
 import { discoverPages, servedUrlFor, liveUrlFor, type DesignPage } from './src/pages.ts';
 import { buildSemanticTree } from './src/analysis/semantic-tree.ts';
 import { matchTrees } from './src/analysis/match-trees.ts';
@@ -158,12 +158,18 @@ async function main(): Promise<void> {
   if (!/^https?:\/\//i.test(values.live)) fail(`--live '${values.live}' is not an http(s) URL.`);
 
   const multipleReports = pages.length > 1;
+  if (multipleReports && values.out && path.extname(values.out).toLowerCase() === '.json') {
+    fail(`--out '${values.out}' must be a directory when --design is a folder (one report per page).`);
+  }
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
   const scriptDir = path.dirname(fileURLToPath(import.meta.url));
   const outDir = values.out ? path.resolve(values.out) : path.join(scriptDir, 'reports');
 
   const designServer = await serveStatic(designRoot);
   const browser = await launchBrowser();
+  for (const sel of await findInvalidSelectors(browser, ignoreSelectors)) {
+    console.warn(`Warning: --ignore selector '${sel}' is not valid CSS and will be ignored.`);
+  }
   let worstSeverity: Severity | null = null;
   const failed: { name: string; error: string }[] = [];
   try {

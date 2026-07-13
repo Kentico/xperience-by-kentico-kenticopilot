@@ -161,17 +161,32 @@ export function matchTrees(designTree: SemanticTree, liveTree: SemanticTree): Ma
 
   // 2b. Cross-landmark rescue: a block "missing" from its landmark may have
   // been rendered under a different landmark on the live site (e.g. content
-  // placed outside <main>). Try unmatched design blocks against unmatched
-  // live blocks from ALL landmarks before declaring them missing.
-  const allUnmatchedDesign = blockMatchResults.flatMap(({ m, role }) =>
-    m.unmatchedA.map((block) => ({ block, role })));
-  const allUnmatchedLive = blockMatchResults.flatMap(({ m, role }) =>
-    m.unmatchedB.map((block) => ({ block, role })));
+  // placed outside <main>, or a landmark-less design vs a live page with real
+  // landmarks). Try unmatched design blocks against unmatched live blocks
+  // from ALL landmarks — including landmarks that had no same-role
+  // counterpart at all — before declaring them missing.
+  const allUnmatchedDesign = [
+    ...blockMatchResults.flatMap(({ m, role }) =>
+      m.unmatchedA.map((block) => ({ block, role, landmarkMatched: true }))),
+    ...result.unmatchedDesignLandmarks.flatMap((l) =>
+      l.blocks.map((block) => ({ block, role: l.role, landmarkMatched: false }))),
+  ];
+  const allUnmatchedLive = [
+    ...blockMatchResults.flatMap(({ m, role }) =>
+      m.unmatchedB.map((block) => ({ block, role, landmarkMatched: true }))),
+    ...result.unmatchedLiveLandmarks.flatMap((l) =>
+      l.blocks.map((block) => ({ block, role: l.role, landmarkMatched: false }))),
+  ];
   const cross = greedyMatch(
     allUnmatchedDesign,
     allUnmatchedLive,
-    (a, b, i, j, ca, cb) => blockScore(a.block, b.block, i, j, ca, cb),
-    BLOCK_MATCH_FLOOR + 0.15, // stricter: different landmark placement needs strong content evidence
+    // Leaving a matched landmark needs strong content evidence; blocks whose
+    // landmark had no counterpart never got an in-landmark chance, so they
+    // match at the normal floor.
+    (a, b, i, j, ca, cb) =>
+      blockScore(a.block, b.block, i, j, ca, cb) -
+      (a.landmarkMatched && b.landmarkMatched ? 0.15 : 0),
+    BLOCK_MATCH_FLOOR,
   );
 
   for (const { m, role } of blockMatchResults) {

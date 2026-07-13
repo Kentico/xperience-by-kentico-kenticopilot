@@ -61,14 +61,16 @@ It activates when you ask to validate, QA, or compare pages against a design, an
 Validate the home and about pages against the designs in ./design — the site runs on https://localhost:5001
 ```
 
-Requirements: Node.js 22.18+ (24 LTS recommended) and npm, the site running in live mode, and the design as local HTML/CSS files. The first run downloads the Playwright Chromium browser (~115 MB). Reports should be written to a project-local folder (`--out`) so they survive plugin updates.
+Requirements: Node.js 22.18+ (24 LTS recommended) and npm 11.10+, the site running in live mode, and the design as local HTML/CSS files. The first run downloads the Playwright Chromium browser (~115 MB). Reports should be written to a project-local folder (`--out`) so they survive plugin updates.
+
+Note that this is **not a visual or pixel-regression tool**: it compares content, structure, and a curated set of computed styles, but does not detect element sizing, `background-image`, or pixel-layout differences — a clean report does not guarantee pixel fidelity.
 
 ## Prerequisites
 
 - Xperience by Kentico project with Page Builder configured
 - AI coding assistant installed (for example, GitHub Copilot or Claude Code)
 - A description of what you want to build — for a widget, a requirements file describing its functionality, presentation options, and error handling; optionally a design file (e.g. `design.html` exported from Figma)
-- For `design-validation`: Node.js 22.18+ (24 LTS recommended) and npm
+- For `design-validation`: Node.js 22.18+ (24 LTS recommended) and npm 11.10+
 
 ## Configure MCP servers
 

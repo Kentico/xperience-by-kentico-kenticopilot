@@ -10,7 +10,8 @@
   },
   "scripts": {
     "setup": "npm ci && npx playwright install chromium",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "test": "node --test"
   },
   "dependencies": {
     "playwright": "1.61.1"
