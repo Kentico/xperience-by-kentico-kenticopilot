@@ -1,6 +1,6 @@
 ---
 name: content-retrieval
-description: "Xperience by Kentico (XbK) content retrieval — reading published content (pages, reusable content items, reusable-schema items) in live-site / MVC code. Use whenever code fetches content, turns a Combined content selector / Page selector selection into data, or when a content query is slow under load."
+description: "Content retrieval in Xperience by Kentico — best practices for retrieving content (pages, reusable content items, reusable-schema items) in code. Use whenever working with code that fetches content, turning a Combined content selector / Page selector selection into data, or debugging slow content retrieval."
 compatibility: "Requires Kentico Docs MCP"
 ---
 
