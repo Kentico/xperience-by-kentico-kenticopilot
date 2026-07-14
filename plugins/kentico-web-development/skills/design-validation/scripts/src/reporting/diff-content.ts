@@ -2,7 +2,7 @@
 // unresolved Xperience '~/' URLs, and language-fallback detection.
 
 import { normalizeText, snippet } from '../shared/text.ts';
-import { isUnresolvedVirtualUrl, urlBasename } from '../shared/urls.ts';
+import { isUnresolvedVirtualUrl, sameUrlTarget } from '../shared/urls.ts';
 import type { Finding, Leaf, MatchResult } from '../shared/types.ts';
 
 /** Human-readable leaf label for finding titles. */
@@ -26,6 +26,13 @@ export interface ContentDiffContext {
  */
 export function diffContent(match: MatchResult, { liveMeta, requestedLanguage }: ContentDiffContext): Finding[] {
   const findings: Finding[] = [];
+
+  // Design selectors of matched text leaves — a block-level link wrapper emits
+  // both a link leaf (full subtree text) and inner text leaves, so a link-level
+  // text finding would double-count a mismatch the inner leaf already reports.
+  const matchedTextSelectors = match.leafPairs
+    .filter((pair) => pair.type === 'text')
+    .map((pair) => pair.design.locator.selector);
 
   // Language fallback: Xperience serves HTTP 200 with fallback-language
   // content when a translation is missing — detect via <html lang>.
@@ -75,9 +82,12 @@ export function diffContent(match: MatchResult, { liveMeta, requestedLanguage }:
           details: { kind: 'unresolved-url', url: liveHref },
         });
       } else if (
+        // Rescued pairs were matched with no similarity evidence — their hrefs
+        // often belong to genuinely different links (see diff-style.ts).
+        !pair.rescued &&
         pair.design.attrs.href &&
         liveHref &&
-        urlBasename(pair.design.attrs.href) !== urlBasename(liveHref)
+        !sameUrlTarget(pair.design.attrs.href, liveHref)
       ) {
         findings.push({
           category: 'content',
@@ -91,7 +101,11 @@ export function diffContent(match: MatchResult, { liveMeta, requestedLanguage }:
           details: { kind: 'text-mismatch', url: liveHref },
         });
       }
-      if (normalizeText(pair.design.text) !== normalizeText(pair.live.text)) {
+      // Skip the coarse link-level text finding when a matched inner text leaf
+      // (block-level link wrapper) already reports the difference fine-grained.
+      const linkSelector = pair.design.locator.selector;
+      const coveredByInnerLeaf = matchedTextSelectors.some((sel) => sel.startsWith(`${linkSelector} > `));
+      if (!coveredByInnerLeaf && normalizeText(pair.design.text) !== normalizeText(pair.live.text)) {
         findings.push({
           category: 'content',
           kind: 'text-mismatch',

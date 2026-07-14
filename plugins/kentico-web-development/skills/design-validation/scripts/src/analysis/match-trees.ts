@@ -3,7 +3,7 @@
 // leaves by content similarity per type (text / link / image).
 
 import { textSimilarity } from '../shared/text.ts';
-import { urlBasename } from '../shared/urls.ts';
+import { sameUrlTarget } from '../shared/urls.ts';
 import type { Block, Landmark, Leaf, MatchResult, SemanticTree } from '../shared/types.ts';
 
 /** Minimum blockScore for two blocks to be considered the same block. */
@@ -54,11 +54,11 @@ function leafScore(
       return 0.8 * textSimilarity(design.text, live.text) + 0.2 * positionSim + headingBonus;
     }
     case 'link': {
-      const hrefSim = urlBasename(design.attrs.href) === urlBasename(live.attrs.href) ? 1 : 0;
+      const hrefSim = sameUrlTarget(design.attrs.href, live.attrs.href) ? 1 : 0;
       return 0.45 * textSimilarity(design.text, live.text) + 0.35 * hrefSim + 0.2 * positionSim;
     }
     case 'image': {
-      const srcSim = urlBasename(design.attrs.src) === urlBasename(live.attrs.src) ? 1 : 0;
+      const srcSim = sameUrlTarget(design.attrs.src, live.attrs.src) ? 1 : 0;
       const altSim = textSimilarity(design.text, live.text);
       return 0.4 * altSim + 0.35 * srcSim + 0.25 * positionSim;
     }

@@ -68,28 +68,36 @@ function collapseWrappers(node: RawNode): RawNode {
  *  - link:  every <a href>, with its text and authored href
  *  - image: every <img>, with alt and authored src
  */
+function makeImageLeaf(node: RawNode): Leaf {
+  return {
+    type: 'image',
+    text: normalizeText(node.attrs.alt ?? ''),
+    attrs: node.attrs,
+    styles: node.styles,
+    headingLevel: null,
+    locator: locatorOf(node, node.attrs.alt ?? node.attrs.src ?? ''),
+  };
+}
+
+function makeLinkLeaf(node: RawNode): Leaf {
+  return {
+    type: 'link',
+    text: subtreeText(node),
+    attrs: node.attrs,
+    styles: node.styles,
+    headingLevel: null,
+    locator: locatorOf(node),
+  };
+}
+
 function collectLeaves(node: RawNode, leaves: Leaf[] = []): Leaf[] {
   if (node.tag === 'img') {
-    leaves.push({
-      type: 'image',
-      text: normalizeText(node.attrs.alt ?? ''),
-      attrs: node.attrs,
-      styles: node.styles,
-      headingLevel: null,
-      locator: locatorOf(node, node.attrs.alt ?? node.attrs.src ?? ''),
-    });
+    leaves.push(makeImageLeaf(node));
     return leaves;
   }
 
   if (node.tag === 'a' && node.attrs.href !== undefined) {
-    leaves.push({
-      type: 'link',
-      text: subtreeText(node),
-      attrs: node.attrs,
-      styles: node.styles,
-      headingLevel: null,
-      locator: locatorOf(node),
-    });
+    leaves.push(makeLinkLeaf(node));
     // Still collect images inside the link (e.g. linked card images).
     for (const c of node.children) collectImagesOnly(c, leaves);
     if (isTextContainer(node)) return leaves; // text covered by the link leaf itself
@@ -151,24 +159,10 @@ function collectTextLeaves(node: RawNode, leaves: Leaf[]): void {
 /** Collect link and image leaves nested inside an already-emitted text leaf. */
 function collectLinksAndImages(node: RawNode, leaves: Leaf[]): void {
   if (node.tag === 'a' && node.attrs.href !== undefined) {
-    leaves.push({
-      type: 'link',
-      text: subtreeText(node),
-      attrs: node.attrs,
-      styles: node.styles,
-      headingLevel: null,
-      locator: locatorOf(node),
-    });
+    leaves.push(makeLinkLeaf(node));
   }
   if (node.tag === 'img') {
-    leaves.push({
-      type: 'image',
-      text: normalizeText(node.attrs.alt ?? ''),
-      attrs: node.attrs,
-      styles: node.styles,
-      headingLevel: null,
-      locator: locatorOf(node, node.attrs.alt ?? node.attrs.src ?? ''),
-    });
+    leaves.push(makeImageLeaf(node));
   }
   for (const c of node.children) collectLinksAndImages(c, leaves);
 }
@@ -176,14 +170,7 @@ function collectLinksAndImages(node: RawNode, leaves: Leaf[]): void {
 /** Collect only image leaves (used inside links, whose text is covered by the link leaf). */
 function collectImagesOnly(node: RawNode, leaves: Leaf[]): void {
   if (node.tag === 'img') {
-    leaves.push({
-      type: 'image',
-      text: normalizeText(node.attrs.alt ?? ''),
-      attrs: node.attrs,
-      styles: node.styles,
-      headingLevel: null,
-      locator: locatorOf(node, node.attrs.alt ?? node.attrs.src ?? ''),
-    });
+    leaves.push(makeImageLeaf(node));
   }
   for (const c of node.children) collectImagesOnly(c, leaves);
 }
@@ -237,10 +224,42 @@ export function buildSemanticTree(extraction: Extraction): SemanticTree {
     return node.children.some((c) => containsLandmark(c));
   }
 
+  /**
+   * Copy of a subtree with nested landmark subtrees removed. Ancestors of a
+   * removed landmark lose their fullText (it includes the removed content), so
+   * subtreeText falls back to reassembling text from the remaining nodes.
+   */
+  function pruneNestedLandmarks(node: RawNode): RawNode {
+    if (!node.children.some((c) => containsLandmark(c))) return node;
+    return {
+      ...node,
+      fullText: undefined,
+      children: node.children
+        .filter((c) => !LANDMARK_ROLES.has(c.role ?? ''))
+        .map((c) => pruneNestedLandmarks(c)),
+    };
+  }
+
+  /**
+   * Collect a landmark node and any landmarks nested inside it, each as its
+   * own top-level entry (parent first, pruned of the nested subtrees) — a nav
+   * inside a header must compare against a nav rendered as a sibling.
+   */
+  function collectLandmark(node: RawNode): void {
+    landmarks.push(makeLandmark(node.role as string, pruneNestedLandmarks(node)));
+    function descend(n: RawNode): void {
+      for (const c of n.children) {
+        if (LANDMARK_ROLES.has(c.role ?? '')) collectLandmark(c);
+        else descend(c);
+      }
+    }
+    descend(node);
+  }
+
   /** Collect landmarks in document order; non-landmark content becomes orphans. */
   function findLandmarks(node: RawNode): void {
     if (LANDMARK_ROLES.has(node.role ?? '')) {
-      landmarks.push(makeLandmark(node.role as string, node));
+      collectLandmark(node);
       return;
     }
     if (node.children.some((c) => containsLandmark(c))) {

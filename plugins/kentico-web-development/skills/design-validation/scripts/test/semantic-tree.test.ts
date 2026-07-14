@@ -92,6 +92,63 @@ test("a landmark's own text becomes a leading block without its children's text"
   );
 });
 
+test('a landmark nested inside another landmark surfaces as its own landmark', () => {
+  // <body><header><nav>Home About</nav><p>Logo</p></header></body>
+  const body = el('body', {
+    children: [
+      el('header', {
+        role: 'banner',
+        children: [
+          el('nav', { role: 'navigation', children: [el('a', { ownText: 'Home About', attrs: { href: '/' } })] }),
+          el('p', { ownText: 'Logo' }),
+        ],
+      }),
+    ],
+  });
+  const { landmarks } = buildSemanticTree(extraction(body));
+
+  const roles = landmarks.map((l) => l.role);
+  assert.deepEqual(roles, ['banner', 'navigation'], 'both the header and the nested nav must be landmarks');
+  const banner = landmarks.find((l) => l.role === 'banner')!;
+  assert.ok(
+    banner.blocks.every((b) => !b.aggText.includes('Home About')),
+    "the nav's content must not remain in the banner's blocks",
+  );
+  const nav = landmarks.find((l) => l.role === 'navigation')!;
+  assert.ok(
+    nav.blocks.some((b) => b.leaves.some((leaf) => leaf.type === 'link' && leaf.text === 'Home About')),
+    "the nav landmark must carry the nav's content",
+  );
+});
+
+test('a landmark nested several levels deep is still surfaced', () => {
+  // <main><section><div><nav>Menu</nav></div><p>Body text</p></section></main>
+  const body = el('body', {
+    children: [
+      el('main', {
+        role: 'main',
+        children: [
+          el('section', {
+            children: [
+              el('div', { children: [el('nav', { role: 'navigation', children: [el('p', { ownText: 'Menu' })] })] }),
+              el('p', { ownText: 'Body text' }),
+            ],
+          }),
+        ],
+      }),
+    ],
+  });
+  const { landmarks } = buildSemanticTree(extraction(body));
+
+  assert.deepEqual(landmarks.map((l) => l.role), ['main', 'navigation']);
+  const main = landmarks.find((l) => l.role === 'main')!;
+  assert.ok(main.blocks.some((b) => b.aggText.includes('Body text')), 'main keeps its own content');
+  assert.ok(
+    main.blocks.every((b) => !b.aggText.includes('Menu')),
+    "the nested nav's content must be pruned from main's blocks",
+  );
+});
+
 test('a bare image next to a landmark is kept as an image leaf', () => {
   // <body><header>…</header><img src="hero.png"></body>
   const body = el('body', {

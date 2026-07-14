@@ -7,8 +7,9 @@ import type { Block, Finding, MatchResult } from '../shared/types.ts';
 /**
  * The synthetic 'body' landmark (buildSemanticTree's container of last resort
  * for content outside any real landmark) is not authored markup — it can never
- * legitimately be "missing", and moves in/out of it are landmark-structure
- * noise, not content misplacement.
+ * legitimately be "missing", and moves out of it are landmark-structure noise
+ * from landmark-less designs. Moves INTO it on the live side are real, though:
+ * the template renders content outside every landmark.
  */
 const SYNTHETIC_ROLE = 'body';
 
@@ -84,16 +85,16 @@ export function diffStructure(match: MatchResult): Finding[] {
 
   // Blocks matched across different landmarks (content placed in the wrong area).
   for (const pair of match.blockPairs) {
-    if (
-      pair.movedFromLandmark &&
-      pair.movedFromLandmark.design !== SYNTHETIC_ROLE &&
-      pair.movedFromLandmark.live !== SYNTHETIC_ROLE
-    ) {
+    if (pair.movedFromLandmark && pair.movedFromLandmark.design !== SYNTHETIC_ROLE) {
+      const livePlacement =
+        pair.movedFromLandmark.live === SYNTHETIC_ROLE
+          ? 'outside any landmark'
+          : `under '${pair.movedFromLandmark.live}'`;
       findings.push({
         category: 'structure',
         kind: 'extra-block',
         severity: 'medium',
-        title: `Block ${blockTitle(pair.design)} is under '${pair.movedFromLandmark.live}' on the live page but under '${pair.movedFromLandmark.design}' in the design`,
+        title: `Block ${blockTitle(pair.design)} is ${livePlacement} on the live page but under '${pair.movedFromLandmark.design}' in the design`,
         design: { ...pair.design.locator, value: pair.movedFromLandmark.design },
         live: { ...pair.live.locator, value: pair.movedFromLandmark.live },
         expected: pair.movedFromLandmark.design,

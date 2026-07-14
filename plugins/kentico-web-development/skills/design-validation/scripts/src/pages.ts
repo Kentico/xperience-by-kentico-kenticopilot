@@ -32,6 +32,21 @@ export async function discoverPages(root: string): Promise<DesignPage[]> {
   }
   await walk(root);
   out.sort((a, b) => a.name.localeCompare(b.name));
+
+  // Duplicate names (about.html + about/index.html, or a/b vs literal a_b)
+  // would map to the same live URL and silently overwrite each other's report.
+  const byName = new Map<string, string[]>();
+  for (const page of out) {
+    const key = page.name.replace(/[\\/]/g, '_');
+    byName.set(key, [...(byName.get(key) ?? []), page.rel]);
+  }
+  const collisions = [...byName.entries()].filter(([, rels]) => rels.length > 1);
+  if (collisions.length > 0) {
+    const details = collisions.map(([name, rels]) => `'${name}' ← ${rels.join(', ')}`).join('; ');
+    throw new Error(
+      `Design pages map to the same name (same live URL and report file): ${details}. Rename or remove the duplicates.`,
+    );
+  }
   return out;
 }
 

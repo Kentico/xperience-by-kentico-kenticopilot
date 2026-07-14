@@ -131,7 +131,7 @@ async function main(): Promise<void> {
   const timeout = values.timeout !== undefined ? Number(values.timeout) : 30000;
   if (Number.isNaN(timeout)) fail('--timeout must be a number of milliseconds.');
   const failOn = values['fail-on'];
-  if (failOn && !(failOn in SEVERITY_ORDER)) fail('--fail-on must be one of: high, medium, low.');
+  if (failOn && !Object.hasOwn(SEVERITY_ORDER, failOn)) fail('--fail-on must be one of: high, medium, low.');
 
   // Design side: a file or a folder of pages, always served locally.
   const designAbs = path.resolve(values.design);
@@ -164,6 +164,13 @@ async function main(): Promise<void> {
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
   const scriptDir = path.dirname(fileURLToPath(import.meta.url));
   const outDir = values.out ? path.resolve(values.out) : path.join(scriptDir, 'reports');
+  // Single page + --out names the report file itself — unless it points at an
+  // existing directory, which keeps the per-page naming inside it.
+  let singleOutFile: string | null = null;
+  if (values.out && !multipleReports) {
+    const outInfo = await stat(path.resolve(values.out)).catch(() => null);
+    if (!outInfo?.isDirectory()) singleOutFile = path.resolve(values.out);
+  }
 
   const designServer = await serveStatic(designRoot);
   const browser = await launchBrowser();
@@ -183,9 +190,14 @@ async function main(): Promise<void> {
       let report;
       try {
         const loadOptions = { viewport, ignoreSelectors, timeout, language };
-        const designResult = await loadAndExtract(browser, designUrl, loadOptions);
-        const liveResult = await loadAndExtract(browser, liveUrl, loadOptions);
+        const [designResult, liveResult] = await Promise.all([
+          loadAndExtract(browser, designUrl, loadOptions),
+          loadAndExtract(browser, liveUrl, loadOptions),
+        ]);
         // An error page is not a comparison target — fail the page, not the batch.
+        if (designResult.httpStatus !== null && designResult.httpStatus >= 400) {
+          throw new Error(`Design page '${page.rel}' returned HTTP ${designResult.httpStatus} from the local server`);
+        }
         if (liveResult.httpStatus !== null && liveResult.httpStatus >= 400) {
           throw new Error(`Live page returned HTTP ${liveResult.httpStatus} for ${liveUrl}`);
         }
@@ -234,10 +246,7 @@ async function main(): Promise<void> {
         continue;
       }
 
-      const outPath =
-        values.out && !multipleReports && path.extname(values.out).toLowerCase() === '.json'
-          ? path.resolve(values.out)
-          : path.join(outDir, `${page.name.replace(/[\\/]/g, '_')}.${timestamp}.json`);
+      const outPath = singleOutFile ?? path.join(outDir, `${page.name.replace(/[\\/]/g, '_')}.${timestamp}.json`);
       await mkdir(path.dirname(outPath), { recursive: true });
       await writeFile(outPath, JSON.stringify(report, null, 2), 'utf8');
       printSummary(report, outPath);

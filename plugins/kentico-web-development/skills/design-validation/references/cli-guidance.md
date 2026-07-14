@@ -21,7 +21,7 @@ node <scripts>/compare.ts --design <file|folder> --live <url> [options]
 Run with `--help` for all options. Two modes:
 
 - **Single page** — `--design <file>` + `--live <url>`: validate one page against one design file.
-- **Folder batch** — `--design <folder>` + `--live <base-url>`: validate a whole design set in one run; every `*.html` (recursive) pairs with a live URL derived from its relative path (`index.html` → base, `about.html` → `<base>/about`). Files prefixed with `_` and the `partials/`, `components/`, `fragments/` and `node_modules/` folders are skipped as design partials without a live URL.
+- **Folder batch** — `--design <folder>` + `--live <base-url>`: validate a whole design set in one run; every `*.html` (recursive) pairs with a live URL derived from its relative path (`index.html` → base, `about.html` → `<base>/about`).
 
 Guidance `--help` doesn't spell out:
 

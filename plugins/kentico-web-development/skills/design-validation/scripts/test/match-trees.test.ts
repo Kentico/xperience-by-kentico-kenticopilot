@@ -129,6 +129,63 @@ test('a block truly absent from the live page is still reported missing', () => 
   );
 });
 
+test("a block rendered outside all landmarks on the live side is flagged as moved to 'body'", () => {
+  const design = tree([
+    landmark('banner', [block(['Home About'], 'Site header')]),
+    landmark('main', [block(['Special offer for all customers'], 'Promo banner')]),
+  ]);
+  const live = tree([
+    landmark('banner', [block(['Home About'], 'Site header')]),
+    landmark('body', [block(['Special offer for all customers'], 'Promo banner')]),
+  ]);
+  const findings = diffStructure(matchTrees(design, live));
+  const moved = findings.find((f) => f.expected === 'main' && f.actual === 'body');
+  assert.ok(moved, "a design 'main' block escaping to the live synthetic 'body' must be reported");
+  assert.ok(moved.title.includes('outside any landmark'), 'the title must describe the misplacement');
+});
+
+function linkLeaf(text: string, href: string, selector: string): Leaf {
+  return { type: 'link', text, attrs: { href }, styles: {}, headingLevel: null, locator: { selector, snippet: text } };
+}
+
+test('a rescued link pair reports the text mismatch but not a wrong target', () => {
+  const designBlock = block(['Same content on both sides'], 'Card');
+  const liveBlock = block(['Same content on both sides'], 'Card');
+  designBlock.leaves.push(linkLeaf('Read more', '/articles', 'div > a'));
+  liveBlock.leaves.push(linkLeaf('Contact us', '/contact', 'div > a'));
+  const match = matchTrees(tree([landmark('main', [designBlock])]), tree([landmark('main', [liveBlock])]));
+
+  const linkPair = match.leafPairs.find((p) => p.type === 'link');
+  assert.ok(linkPair?.rescued, 'the dissimilar singleton links must pair via the rescue pass');
+  const findings = diffContent(match, CONTENT_CONTEXT);
+  assert.ok(
+    !findings.some((f) => f.title.includes('different target')),
+    'a zero-evidence pairing must not claim the href is wrong',
+  );
+  assert.ok(
+    findings.some((f) => f.expected === 'Read more' && f.actual === 'Contact us'),
+    'the rescued pair must still report the text mismatch',
+  );
+});
+
+test('a block-level link wrapper does not double-count one text difference', () => {
+  function wrapperBlock(title: string): Block {
+    const leaves = [
+      linkLeaf(`${title} Description text`, '/card', 'div > a'),
+      { ...textLeaf(title, 3), locator: { selector: 'div > a > h3', snippet: title } },
+    ];
+    return { ...block([]), aggText: title, leaves };
+  }
+  const match = matchTrees(
+    tree([landmark('main', [wrapperBlock('Great Title Here')])]),
+    tree([landmark('main', [wrapperBlock('Great Title Then')])]),
+  );
+
+  const mismatches = diffContent(match, CONTENT_CONTEXT).filter((f) => f.kind === 'text-mismatch');
+  assert.equal(mismatches.length, 1, 'one changed word must produce exactly one text finding');
+  assert.equal(mismatches[0].design?.selector, 'div > a > h3', 'the fine-grained inner leaf must carry it');
+});
+
 test('a genuinely moved block between real landmarks is still flagged', () => {
   const design = tree([
     landmark('banner', [block(['Home About'], 'Site header')]),
