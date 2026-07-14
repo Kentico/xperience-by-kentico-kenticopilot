@@ -175,7 +175,9 @@ async function main(): Promise<void> {
   try {
     for (const page of pages) {
       const designUrl = servedUrlFor(designServer.baseUrl, page.rel);
-      const liveUrl = liveUrlFor(values.live, page.name);
+      // Folder-derived pages map to URLs under the base; a single design file
+      // compares against the --live URL as given.
+      const liveUrl = designInfo.isDirectory() ? liveUrlFor(values.live, page.name) : values.live;
       console.log(`Comparing '${page.name}': ${page.rel} vs ${liveUrl} @ ${viewport.width}x${viewport.height}`);
 
       let report;

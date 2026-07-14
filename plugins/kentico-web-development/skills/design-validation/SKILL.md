@@ -13,7 +13,7 @@ The bundled script compares design vs live deterministically and writes a JSON r
 
 1. Locate the design HTML (file or folder) and the live site URL from the running site or `launchSettings.json`.
 2. Read `references/cli-guidance.md` for setup and run, and `references/report-template.md` for the report format.
-3. Setup all necessary dependencies for scripts (if not done before).
+3. Set up all necessary dependencies for the scripts per the Setup section of `references/cli-guidance.md` (if not done before).
 4. Run the scripts to compare design vs live.
 5. Classify each finding with the playbooks in `references/classification.md`.
 6. Report findings grouped by classification, then severity, with root cause and fix location.

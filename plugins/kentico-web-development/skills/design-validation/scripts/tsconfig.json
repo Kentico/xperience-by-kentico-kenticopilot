@@ -12,6 +12,6 @@
     "skipLibCheck": true,
     "types": ["node"]
   },
-  "include": ["compare.ts", "src/**/*.ts"],
+  "include": ["compare.ts", "src/**/*.ts", "test/**/*.ts"],
   "exclude": ["node_modules"]
 }

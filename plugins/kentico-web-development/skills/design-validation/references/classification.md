@@ -17,6 +17,8 @@ Every finding is classified into one of three layers, which can each go wrong in
 - **Language variant** missing or untranslated.
 - Linked/reusable item: reference missing, or the linked item unpublished in that language.
 
+Verify item existence, field values, publish status, and language variants via the **Kentico Management MCP** when available.
+
 **Not content:**
 
 - The value in Xperience is already correct but the page shows something else — the view renders the wrong field, truncates, or hard-codes different text → serving.

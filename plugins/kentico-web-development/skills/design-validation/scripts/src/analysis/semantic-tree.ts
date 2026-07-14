@@ -214,7 +214,7 @@ function makeLandmark(role: string, rawNode: RawNode): Landmark {
     : [makeBlock(node)]; // landmark with only direct content is its own block
   // Own text directly on the landmark element (rare) becomes a leading block.
   if (node.ownText && node.children.length > 0) {
-    blocks.unshift(makeBlock({ ...node, children: [] }));
+    blocks.unshift(makeBlock({ ...node, children: [], fullText: node.ownText }));
   }
   return {
     role,
@@ -243,9 +243,9 @@ export function buildSemanticTree(extraction: Extraction): SemanticTree {
       landmarks.push(makeLandmark(node.role as string, node));
       return;
     }
-    if (node.children.some((c) => containsLandmark(c)) || node.children.length === 0) {
+    if (node.children.some((c) => containsLandmark(c))) {
       // Mixed container: descend, keeping non-landmark children as orphans.
-      if (node.ownText) orphans.push({ ...node, children: [] });
+      if (node.ownText) orphans.push({ ...node, children: [], fullText: node.ownText });
       for (const c of node.children) findLandmarks(c);
     } else {
       orphans.push(node);
@@ -254,7 +254,9 @@ export function buildSemanticTree(extraction: Extraction): SemanticTree {
 
   if (extraction.tree) {
     for (const child of extraction.tree.children) findLandmarks(child);
-    if (extraction.tree.ownText) orphans.unshift({ ...extraction.tree, children: [] });
+    if (extraction.tree.ownText) {
+      orphans.unshift({ ...extraction.tree, children: [], fullText: extraction.tree.ownText });
+    }
   }
 
   if (orphans.length > 0) {
