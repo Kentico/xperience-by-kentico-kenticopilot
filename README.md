@@ -31,15 +31,16 @@ AI-assisted implementation of [Automation components](https://docs.kentico.com/x
 
 > **Location:** [plugins/kentico-web-development/](./plugins/kentico-web-development/)
 
-Skills and references for building Xperience by Kentico websites. The `agentify` skill audits your project for agentic-development readiness and applies fixes on request. Content modeling guidance translates designs into a content model, passive-knowledge skills build [Page Builder](https://docs.kentico.com/x/6QWiCQ) widgets and structure (sections and page templates) — the AI studies your project's existing components, validates APIs against the Xperience documentation, and generates the implementation following your conventions — and a content-retrieval reference skill guides reading published content in live-site code. Full instructions are available in the [README](./plugins/kentico-web-development/README.md).
+Skills and references for building Xperience by Kentico websites. The `agentify` skill audits your project for agentic-development readiness and applies fixes on request. Content modeling guidance translates designs into a content model, passive-knowledge skills build [Page Builder](https://docs.kentico.com/x/6QWiCQ) widgets and structure (sections and page templates) — the AI studies your project's existing components, validates APIs against the Xperience documentation, and generates the implementation following your conventions — a content-retrieval reference skill guides reading published content in live-site code, and a design-validation skill checks the rendered live site against static HTML designs. Full instructions are available in the [README](./plugins/kentico-web-development/README.md).
 
-| Skill               | Description                                                                                          |
-| ------------------- | ---------------------------------------------------------------------------------------------------- |
-| `agentify`          | Audits an XbyK project for agentic-development readiness, reports gaps, and applies fixes on request |
-| `design-to-content` | Guides content modeling — translating designs/wireframes into an Xperience content model             |
-| `widget-creation`   | Builds a custom Page Builder widget (view component, properties, Razor view, view model, localization) |
-| `page-builder`      | Builds Page Builder structure — sections (widget-zone layouts) and page templates (full-page layouts) |
-| `content-retrieval` | Decision rules, a docs/API map, and performance guidance for reading published content in live-site/MVC code |
+| Skill                    | Description                                                                                          |
+| ------------------------ | ---------------------------------------------------------------------------------------------------- |
+| `agentify`               | Audits an XbyK project for agentic-development readiness, reports gaps, and applies fixes on request |
+| `design-to-content`      | Guides content modeling — translating designs/wireframes into an Xperience content model             |
+| `page-builder-widgets`   | Builds a custom Page Builder widget (view component, properties, Razor view, view model, localization) |
+| `page-builder-structure` | Builds Page Builder structure — sections (widget-zone layouts) and page templates (full-page layouts) |
+| `content-retrieval`      | Decision rules, a docs/API map, and performance guidance for reading published content in live-site/MVC code |
+| `design-validation`      | Compares live pages against static HTML designs (content, structure, computed styles) and classifies each difference as a content, serving, or styling issue |
 
 ### KX13 → Xperience by Kentico migration
 

@@ -1,6 +1,6 @@
 # Kentico web development
 
-Skills and references for building Xperience by Kentico websites. The plugin covers an agentic-readiness audit for your project, content modeling, AI-assisted [Page Builder](https://docs.kentico.com/x/6QWiCQ) development — building widgets and structuring pages with sections and templates — and guidance for [content retrieval](https://docs.kentico.com/documentation/developers-and-admins/development/content-retrieval) in live-site code, with more web-development capabilities planned.
+Skills and references for building Xperience by Kentico websites. The plugin covers an agentic-readiness audit for your project, content modeling, AI-assisted [Page Builder](https://docs.kentico.com/x/6QWiCQ) development — building widgets and structuring pages with sections and templates — guidance for [content retrieval](https://docs.kentico.com/documentation/developers-and-admins/development/content-retrieval) in live-site code, and validation of the live site against static HTML designs, with more web-development capabilities planned.
 
 ## Skills
 
@@ -11,8 +11,9 @@ Skills and references for building Xperience by Kentico websites. The plugin cov
 | `page-builder-widgets`   | Builds a custom Page Builder **widget** (view component, properties, view model, Razor view, registration)                          |
 | `page-builder-structure` | Builds Page Builder **structure** — sections (widget-zone layouts) and page templates (full-page layouts)                           |
 | `content-retrieval` | Decision rules, a docs/API map, and performance guidance for reading published content (pages, reusable items, reusable-schema items) in live-site/MVC code — prefer `IContentRetriever` |
+| `design-validation` | Validates a live site against static HTML designs — a deterministic Playwright comparison (content, structure, computed styles) plus AI classification of each finding as a content, serving, or styling issue |
 
-You invoke `agentify` and `design-to-content` explicitly. `page-builder-widgets` and `page-builder-structure` are **passive-knowledge** skills — the AI loads them automatically when you describe the relevant task; just provide your requirements. The `content-retrieval` skill is a reference skill that activates automatically when you write or review content-retrieval code — you can also invoke it by name. See [Content retrieval](#content-retrieval) for details.
+You invoke `agentify` and `design-to-content` explicitly. `page-builder-widgets` and `page-builder-structure` are **passive-knowledge** skills — the AI loads them automatically when you describe the relevant task; just provide your requirements. The `content-retrieval` skill is a reference skill that activates automatically when you write or review content-retrieval code — you can also invoke it by name. See [Content retrieval](#content-retrieval) for details. The `design-validation` skill activates when you ask to validate or compare pages against a design, and the AI also uses it proactively after page-affecting changes when a static design exists — see [Design validation](#design-validation-design-validation).
 
 ## Agentic readiness (`agentify`)
 
@@ -50,11 +51,26 @@ I have a Figma design for a news portal. Help me model the content types.
 
 `page-builder-widgets` and `page-builder-structure` are **passive-knowledge** skills: the AI loads them automatically when you ask it to build the relevant Page Builder component. You don't run them as explicit commands — just describe what you want and provide your requirements. Each skill instructs the AI to first study the existing components in your project and mirror their conventions, then validate any uncertain APIs against the Xperience documentation via the Kentico Docs MCP before implementing.
 
+## Design validation (`design-validation`)
+
+`design-validation` checks whether the rendered live site actually matches its static HTML design — the development outcome that is otherwise hard to confirm. A bundled Playwright script deterministically compares each design page with the corresponding live page (content text, DOM structure, computed styles) and writes a JSON report; the AI then classifies every difference as a **content** issue (wrong or missing content item, field, or translation), a **serving** issue (missing widget, wrong section or template, unresolved `~/` URLs), or a **styling** issue (CSS), and drives the fix.
+
+It activates when you ask to validate, QA, or compare pages against a design, and the AI also runs it proactively after implementing or changing a page, template, widget, view component, or stylesheet when a static design for the affected page exists.
+
+```
+Validate the home and about pages against the designs in ./design — the site runs on https://localhost:5001
+```
+
+Requirements: Node.js 22.18+ (24 LTS recommended) and npm 11.10+, the site running in live mode, and the design as local HTML/CSS files. The first run downloads the Playwright Chromium browser (~115 MB). Reports should be written to a project-local folder (`--out`) so they survive plugin updates.
+
+Note that this is **not a visual or pixel-regression tool**: it compares content, structure, and a curated set of computed styles, but does not detect element sizing, `background-image`, or pixel-layout differences — a clean report does not guarantee pixel fidelity.
+
 ## Prerequisites
 
 - Xperience by Kentico project with Page Builder configured
 - AI coding assistant installed (for example, GitHub Copilot or Claude Code)
 - A description of what you want to build — for a widget, a requirements file describing its functionality, presentation options, and error handling; optionally a design file (e.g. `design.html` exported from Figma)
+- For `design-validation`: Node.js 22.18+ (24 LTS recommended) and npm 11.10+
 
 ## Configure MCP servers
 
@@ -128,6 +144,13 @@ Each skill carries its own references that the AI reads on demand:
 ### `page-builder-structure`
 
 - `references/docs.md` — a documentation map: links to section and page-template documentation, each with a "when to read" hint
+
+### `design-validation`
+
+- `references/cli-guidance.md` — the comparison script's setup, options, and exit codes
+- `references/report-template.md` — the JSON report structure, finding kinds, and how to interpret them
+- `references/classification.md` — classifying each finding as a content, serving, or styling issue
+- `scripts/` — the Playwright comparison CLI (`compare.ts`, TypeScript run natively by Node)
 
 ## Best practices
 
