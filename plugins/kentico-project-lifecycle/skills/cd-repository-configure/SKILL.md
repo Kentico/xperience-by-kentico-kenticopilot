@@ -49,7 +49,7 @@ Classify each PR or commit as **business/feature** or **Xperience update-only** 
 
 ## Change classification
 
-Classify each PR/commit as **business/feature** or **Xperience update-only** (platform/package updates, hotfixes, or version migrations with no feature intent) and exclude update-only changes by default. If classification is uncertain, exclude and report it in the summary so the user can opt in.
+**Xperience update-only** means platform/package updates, hotfixes, or version migrations with no feature intent. If classification is uncertain, exclude and report it in the summary so the user can opt in.
 
 If only content item data changed (no content type or other configuration changes), suggest [Content sync](https://docs.kentico.com/documentation/business-users/content-sync) as a simpler alternative before continuing with CD.
 
