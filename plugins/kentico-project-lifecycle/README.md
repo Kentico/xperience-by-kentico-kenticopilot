@@ -11,7 +11,7 @@ More project-lifecycle capabilities are planned.
 
 - Xperience by Kentico project
 - AI coding assistant installed (for example, GitHub Copilot or Claude Code)
-- For the CD Repository skill: CI/CD Repository enabled (v2 `repository.config` syntax), and local `git` available in your terminal; for PR selectors, tooling that can read your repository host's pull requests (for example, the `gh` CLI for GitHub, or the `az repos` CLI or an MCP server for Azure DevOps)
+- For the CD Repository skill: CI/CD Repository enabled (v2 `repository.config` syntax), and local `git` and PowerShell available in your terminal; for PR selectors, tooling that can read your repository host's pull requests (for example, the `gh` CLI for GitHub, or the `az repos` CLI or an MCP server for Azure DevOps)
 
 ## Configure MCP servers
 
