@@ -1,6 +1,6 @@
 ---
 name: content-retrieval
-description: "Content retrieval in Xperience by Kentico — best practices for retrieving content (pages, reusable content items, reusable-schema items) in code. Use whenever working with code that fetches content, turning a Combined content selector / Page selector selection into data, or debugging slow content retrieval."
+description: "Content retrieval in Xperience by Kentico — best practices for retrieving content (pages, reusable content items, reusable-schema items) in code. Proactively read this before writing or modifying any code that retrieves content (IContentRetriever, ContentItemQueryBuilder), turning a Combined content selector / Page selector selection into data, or debugging slow content retrieval."
 compatibility: "Requires Kentico Docs MCP"
 ---
 
