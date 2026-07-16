@@ -20,4 +20,5 @@ This skill points you to Kentico's automation-customization documentation. Use i
 
 ## Gotcha
 
-Form-component and validation attributes come from the `Kentico.Xperience.Admin.*.FormAnnotations` namespaces — never from `Kentico.Forms.Web.Mvc`, an obsolete Form Builder namespace with matching class names.
+- Form-component and validation attributes come from the `Kentico.Xperience.Admin.*.FormAnnotations` namespaces — never from `Kentico.Forms.Web.Mvc`, an obsolete Form Builder namespace with matching class names.
+- Prefer using `ILogger<T>` for logging instead of `EventLogService`.
