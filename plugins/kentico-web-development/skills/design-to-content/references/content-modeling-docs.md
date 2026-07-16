@@ -57,6 +57,8 @@ The main content-modeling guide. Follow in order for a full model.
   - When to read: worked example with a relationship diagram (Article, Author, Media, Category).
 - **Model a Product content type**: https://docs.kentico.com/guides/architecture/content-modeling/model-reusable-content/model-a-reusable-product
   - When to read: composing a complex type from smaller reusable types.
+- **Model a reusable Product SKU**: https://docs.kentico.com/guides/architecture/content-modeling/model-reusable-content/model-a-reusable-product-sku
+  - When to read: commerce/SKU products; field naming conventions (type-prefixed, globally unique code names) and complete field definitions with data type + form component pairs.
 
 ## Website content examples
 
@@ -79,13 +81,17 @@ The main content-modeling guide. Follow in order for a full model.
 ## Reference docs (building blocks)
 
 - **Content types**: https://docs.kentico.com/documentation/developers-and-admins/development/content-types
-  - When to read: creating/configuring types, field naming, linking items, file uploads.
+  - When to read: creating/configuring types, linking items, file uploads. Always read the "Field naming guidelines" section — field code names must be globally unique and prefixed with the content type name (e.g. `ArticleTitle`).
 - **Reusable field schemas**: https://docs.kentico.com/documentation/developers-and-admins/development/content-types/reusable-field-schemas
   - When to read: sharing a set of fields across multiple types.
 - **Field editor**: https://docs.kentico.com/documentation/developers-and-admins/customization/field-editor
   - When to read: understanding fields = name + data type + form component.
 - **Data type management**: https://docs.kentico.com/documentation/developers-and-admins/customization/field-editor/data-type-management
-  - When to read: choosing a field's data type.
+  - When to read: choosing a field's data type. Use the correct type (Integer/Decimal number, Date, Boolean, …) — never Text for numeric or date values.
+- **Admin UI form components (reference)**: https://docs.kentico.com/documentation/developers-and-admins/customization/extend-the-administration-interface/ui-form-components/reference-admin-ui-form-components
+  - When to read: assigning form components to fields — the authoritative list of component names and their matching field data types (e.g. Combined content selector ↔ Pages and reusable content). Use exact names from this page only.
+- **UI form component validation rules**: https://docs.kentico.com/documentation/developers-and-admins/customization/extend-the-administration-interface/ui-form-components/ui-form-component-validation-rules
+  - When to read: adding validation/constraints to fields.
 - **Content hub**: https://docs.kentico.com/documentation/business-users/content-hub
   - When to read: where reusable content lives.
 - **Content items**: https://docs.kentico.com/documentation/business-users/content-hub/content-items
