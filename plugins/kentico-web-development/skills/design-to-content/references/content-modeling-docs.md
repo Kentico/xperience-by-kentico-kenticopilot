@@ -57,6 +57,8 @@ The main content-modeling guide. Follow in order for a full model.
   - When to read: worked example with a relationship diagram (Article, Author, Media, Category).
 - **Model a Product content type**: https://docs.kentico.com/guides/architecture/content-modeling/model-reusable-content/model-a-reusable-product
   - When to read: composing a complex type from smaller reusable types.
+- **Model a reusable Product SKU**: https://docs.kentico.com/guides/architecture/content-modeling/model-reusable-content/model-a-reusable-product-sku
+  - When to read: modeling commerce/SKU products; field naming conventions.
 
 ## Website content examples
 
@@ -79,13 +81,17 @@ The main content-modeling guide. Follow in order for a full model.
 ## Reference docs (building blocks)
 
 - **Content types**: https://docs.kentico.com/documentation/developers-and-admins/development/content-types
-  - When to read: creating/configuring types, field naming, linking items, file uploads.
+  - When to read: creating/configuring types, field naming guidelines, linking items, file uploads.
 - **Reusable field schemas**: https://docs.kentico.com/documentation/developers-and-admins/development/content-types/reusable-field-schemas
   - When to read: sharing a set of fields across multiple types.
 - **Field editor**: https://docs.kentico.com/documentation/developers-and-admins/customization/field-editor
   - When to read: understanding fields = name + data type + form component.
 - **Data type management**: https://docs.kentico.com/documentation/developers-and-admins/customization/field-editor/data-type-management
   - When to read: choosing a field's data type.
+- **Admin UI form components (reference)**: https://docs.kentico.com/documentation/developers-and-admins/customization/extend-the-administration-interface/ui-form-components/reference-admin-ui-form-components
+  - When to read: assigning form components to fields — authoritative names of components and their matching data types.
+- **UI form component validation rules**: https://docs.kentico.com/documentation/developers-and-admins/customization/extend-the-administration-interface/ui-form-components/ui-form-component-validation-rules
+  - When to read: adding validation/constraints to fields.
 - **Content hub**: https://docs.kentico.com/documentation/business-users/content-hub
   - When to read: where reusable content lives.
 - **Content items**: https://docs.kentico.com/documentation/business-users/content-hub/content-items
