@@ -1,36 +1,46 @@
 # Usage guide
 
-This guide explains how to use the AI agent skills in this repository for Xperience by Kentico development.
+Use this guide to select and install a KentiCopilot plugin. For task-specific inputs, examples, outputs, and limitations, continue to the selected plugin's README.
 
-## Prerequisites
+## Choose a plugin
 
-Before you start, you need:
+Plugins are installed independently. Select and install those suitable for your use cases.
 
-- An AI coding assistant (e.g., [GitHub Copilot](https://github.com/features/copilot), [Claude Code](https://www.claude.com/product/claude-code))
-- Git installed on your machine
-- Access to an Xperience by Kentico project
+| Plugin | Choose it when you need to... |
+|---|---|
+| [`kentico-digital-experience`](../plugins/kentico-digital-experience/README.md) | Implement a custom Automation action |
+| [`kentico-web-development`](../plugins/kentico-web-development/README.md) | Prepare a project for AI-assisted development, model content, build Page Builder components, retrieve content, or compare a live implementation with a design |
+| [`kentico-kx13-migration`](../plugins/kentico-kx13-migration/README.md) | Audit or migrate content and code from Kentico Xperience 13 |
+| [`kentico-project-lifecycle`](../plugins/kentico-project-lifecycle/README.md) | Update Xperience or create a scoped CD Repository configuration |
+
+## Check the plugin requirements
+
+You need:
+
+- An agent-plugin-compatible AI coding assistant
+- Access to the project the agent will work on
+- Git when a skill needs repository history or when you use the manual installation
+
+Some plugins also require MCP servers, command-line tools, SDKs, or a running application. Check the **Requirements** section in the selected plugin README before invoking a skill.
+
+Plugin installation does not configure MCP servers in the current packages. Each plugin that uses MCP links to an `MCP-setup.md` page with the required or recommended workspace configuration.
 
 ## Install an AI coding assistant
 
-Install an AI coding assistant. This repository provides plugins and skills tested with select popular solutions. To transfer the skills to other assistants, follow the conventions of your specific solution.
+The plugins are tested with:
 
-### GitHub Copilot
+- [GitHub Copilot](https://github.com/features/copilot), using VS Code or Copilot CLI
+- [Claude Code](https://www.claude.com/product/claude-code)
 
-1. Install the [GitHub Copilot extension](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot) for VS Code.
-2. Sign in to your GitHub account.
+Skills follow the [Agent Skills specification](https://agentskills.io/specification). Other compatible assistants can use them, but their installation and invocation syntax may differ.
 
-### Claude Code
+## Install the selected plugin
 
-1. Install [Claude Code](https://www.claude.com/product/claude-code).
-2. Sign in to your Anthropic account.
+This repository is an agent plugin marketplace. Add the marketplace once, then install one or more plugin names from the table above.
 
-## Install plugins from the marketplace
+### VS Code with GitHub Copilot
 
-This repository is an agent plugin marketplace. Install plugins directly without cloning or copying files.
-
-### VS Code (GitHub Copilot)
-
-1. Add the marketplace to your VS Code settings (`settings.json`):
+1. Add the marketplace to VS Code `settings.json`:
 
    ```json
    "chat.plugins.marketplaces": [
@@ -38,71 +48,60 @@ This repository is an agent plugin marketplace. Install plugins directly without
    ]
    ```
 
-2. Open the Extensions sidebar and search `@agentPlugins` to browse available plugins.
-3. Select **Install** on the plugin you need.
+2. Open the Extensions sidebar.
+3. Search for `@agentPlugins`.
+4. Select **Install** on the plugin you need.
+
+See [Configure plugin marketplaces](https://code.visualstudio.com/docs/copilot/customization/agent-plugins#_configure-plugin-marketplaces) for VS Code details.
 
 ### Copilot CLI
 
 ```bash
 copilot plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
-copilot plugin install kentico-digital-experience@xperience-by-kentico-kenticopilot
 copilot plugin install kentico-web-development@xperience-by-kentico-kenticopilot
-copilot plugin install kentico-kx13-migration@xperience-by-kentico-kenticopilot
-copilot plugin install kentico-project-lifecycle@xperience-by-kentico-kenticopilot
 ```
+
+Replace `kentico-web-development` with another plugin name from the selection table when needed.
 
 ### Claude Code
 
-```bash
+```text
 /plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
-/plugin install kentico-digital-experience@xperience-by-kentico-kenticopilot
 /plugin install kentico-web-development@xperience-by-kentico-kenticopilot
-/plugin install kentico-kx13-migration@xperience-by-kentico-kenticopilot
-/plugin install kentico-project-lifecycle@xperience-by-kentico-kenticopilot
 ```
 
-## Copy plugin files manually (alternative)
+Replace `kentico-web-development` with another plugin name from the selection table when needed.
 
-If you prefer not to use the plugin marketplace, copy plugin files directly into your project workspace.
+## Invoke a skill
 
-1. Clone this repository:
+Open the relevant project or workspace in your assistant and describe the outcome you need. Include concrete context such as project paths, requirements files, design files, URLs, versions, PR numbers, or migration-plan paths.
+
+Skills can be activated in two ways:
+
+- **Explicitly**: invoke the skill by name when your assistant exposes it as a command, such as `/update-xperience 31.2.0`.
+- **By task description**: ask for the work naturally. The assistant selects a matching skill from its description, for example `Create a Page Builder widget from requirements.md`.
+
+The plugin README identifies the recommended activation method and provides copyable examples. The skill itself contains the execution instructions; you do not need to open or paste `SKILL.md` into the conversation.
+
+Review generated code, configuration, and reports before using them in a production workflow.
+
+## Manual installation
+
+Use this alternative only when your assistant cannot install from a marketplace or when you need bundled source that is not distributed with the marketplace package.
+
+1. Clone the repository:
 
    ```bash
    git clone https://github.com/Kentico/xperience-by-kentico-kenticopilot.git
    ```
 
-2. Copy the plugin folder for your use case to the root of your project workspace:
+2. Follow your assistant's plugin-loading convention for the selected folder under `plugins/`.
 
-   ```bash
-   # Digital experience (custom automation actions)
-   cp -r plugins/kentico-digital-experience/ YOUR_PROJECT/
+Do not copy every plugin into a project by default. Keeping only the relevant plugin reduces noise and prevents unrelated skills from activating.
 
-   # Web development (Page Builder widget creation)
-   cp -r plugins/kentico-web-development/ YOUR_PROJECT/
+> [!IMPORTANT]
+> The KX13 content auditor includes .NET source under the plugin's `src/` directory. Marketplace installation exposes the skill but does not make that source available in your project workspace. Follow the [content auditor setup](../plugins/kentico-kx13-migration/docs/content-auditor.md) when using `migrate-content-audit`.
 
-   # KX13 → Xperience by Kentico migration
-   # (migrate-content-audit skill + bundled CLI source, content migration, codebase migration)
-   cp -r plugins/kentico-kx13-migration/ YOUR_PROJECT/
+## Upgrading from Kentico Xperience 13
 
-   # Project lifecycle (CD Repository configuration)
-   cp -r plugins/kentico-project-lifecycle/ YOUR_PROJECT/
-   ```
-
-## Use the skills
-
-After installing a plugin (or copying the files manually):
-
-1. Open your project in your AI coding assistant.
-2. Open the README for the plugin you installed (e.g., `plugins/kentico-web-development/README.md`).
-3. Follow the instructions in the README.
-
-Each plugin README explains:
-
-- What the skills do
-- How to trigger them
-- What inputs are expected
-- Example usage scenarios
-
-## Upgrading from Kentico Xperience 13?
-
-For an end-to-end view of how the `kentico-kx13-migration` plugin's three skill groups (content-model audit, content migration, and codebase migration) fit into the [official upgrade walkthrough](https://docs.kentico.com/x/upgrade_walkthrough_guides), see [KX13 upgrade workflow](./KX13-Upgrade-Plugins.md).
+Start with the [KX13 upgrade workflow](./KX13-Upgrade.md). It places the audit, content-migration, and codebase-migration skills in the correct order alongside the [official upgrade walkthrough](https://docs.kentico.com/x/upgrade_walkthrough_guides).

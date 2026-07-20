@@ -1,16 +1,18 @@
 # MCP server setup
 
-The skills in this plugin work best with the following MCP servers. The plugin does not register them automatically — add them to your workspace using the copy-paste snippets below.
+MCP requirements vary by skill. Add the servers needed for your tasks using the configuration below.
 
-## Recommended servers
+## Servers
 
 - **Kentico Docs MCP server**
   - `https://docs.kentico.com/documentation/developers-and-admins/installation/mcp-server`
   - Used to search and fetch the official Xperience by Kentico documentation.
+  - Required by `design-to-content`, `page-builder-widgets`, `page-builder-structure`, and `content-retrieval`.
 
 - **Kentico Management MCP server**
   - `https://docs.kentico.com/documentation/developers-and-admins/api/management-api/configure-management-mcp-server`
   - Used to work with content in a running application (requires per-project setup).
+  - Checked by `agentify` and recommended for `design-validation`.
 
 ## How to add the servers
 

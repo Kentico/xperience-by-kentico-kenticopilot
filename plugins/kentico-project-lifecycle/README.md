@@ -1,74 +1,48 @@
 # Kentico project lifecycle
 
-Skills for managing the lifecycle of an Xperience by Kentico solution. The plugin currently covers two areas:
+Skills for maintaining an Xperience by Kentico solution after initial development: updating Xperience and creating deployment-scoped [Continuous Deployment Repository](https://docs.kentico.com/x/continuous_deployment) configuration.
 
-- **Updating your Xperience project** — the `update-xperience` skill updates a project to a newer Xperience by Kentico version.
-- **Configuring the [Continuous Deployment (CD) Repository](https://docs.kentico.com/x/continuous_deployment)** — the `cd-repository-configure` skill discovers your project layout, inspects CI Repository changes from one or more pull requests or commit ranges, and writes a `repository.config` that captures only your feature changes — while automatically excluding noise from Xperience version updates.
+## Choose a skill
 
-More project-lifecycle capabilities are planned.
+| Skill | Use it to | Activation |
+|---|---|---|
+| `update-xperience` | Update an Xperience project to a target or latest version | Invoke by name |
+| `cd-repository-configure` | Generate and verify `repository.config` filters from selected PRs or commits | Invoke by name with change selectors |
 
-## Prerequisites
+### Xperience updates
 
-- Xperience by Kentico project
-- AI coding assistant installed (for example, GitHub Copilot or Claude Code)
-- For the CD Repository skill: CI/CD Repository enabled (v2 `repository.config` syntax), and local `git` available in your terminal; for PR selectors, tooling that can read your repository host's pull requests (for example, the `gh` CLI for GitHub, or the `az repos` CLI or an MCP server for Azure DevOps)
+`update-xperience` determines the current and target versions, reviews every intervening [Changelog](https://docs.kentico.com/changelog) entry and linked update guide, and follows the [official update procedure](https://docs.kentico.com/documentation/developers-and-admins/installation/update-xperience-by-kentico-projects).
 
-## Configure MCP servers
+### CD Repository configuration
 
-This plugin works best with some MCP servers set up in your workspace. See [MCP-setup.md](./MCP-setup.md) for the list and copy-paste-ready configuration.
+`cd-repository-configure`:
 
-## Install the plugin
+1. Discovers the application, CI Repository, and CD Repository configuration.
+2. Reads and classifies changes from selected PRs or a git commit range.
+3. Regenerates deployment-scoped filters in `repository.config`.
+4. Exports and verifies the serialized deployment content when project tooling permits.
 
-### VS Code (GitHub Copilot)
+Xperience-version-only changes are excluded by default. The skill requires v2 `repository.config` syntax; for v1, it directs you to the [v2 migration guide](https://docs.kentico.com/documentation/developers-and-admins/ci-cd/configure-ci-cd-repositories/config-v2-migration).
 
-Add the marketplace to your VS Code settings (`settings.json`), then browse and install from the Extensions sidebar (`@agentPlugins`):
+## Requirements
 
-```json
-"chat.plugins.marketplaces": [
-    "Kentico/xperience-by-kentico-kenticopilot"
-]
-```
+- An Xperience by Kentico project
+- An AI coding assistant with this plugin installed
+- Kentico Docs MCP, configured as described in [MCP setup](./MCP-setup.md)
+- For CD Repository work:
+  - CI/CD Repository enabled with v2 `repository.config` syntax
+  - Local git
+  - Repository-host tooling for PR selectors, such as `gh`, `az repos`, or a suitable MCP server
 
-For more information, see: [VS Code plugin marketplace](https://code.visualstudio.com/docs/copilot/customization/agent-plugins#_configure-plugin-marketplaces)
+## Install
 
-### Copilot CLI
+Follow the marketplace instructions in the [usage guide](../../docs/Usage-Guide.md#install-the-selected-plugin), using the plugin name `kentico-project-lifecycle`.
 
-```bash
-copilot plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
-copilot plugin install kentico-project-lifecycle@xperience-by-kentico-kenticopilot
-```
-
-### Claude Code
-
-```bash
-/plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
-/plugin install kentico-project-lifecycle@xperience-by-kentico-kenticopilot
-```
-
-## Skills
-
-### `update-xperience`
-
-Updates an Xperience by Kentico project to a newer version. Reviews the [Changelog](https://docs.kentico.com/changelog) for every version in the update path, follows the feature-specific update guides linked from the release notes, and performs the update per the [official update procedure](https://docs.kentico.com/documentation/developers-and-admins/installation/update-xperience-by-kentico-projects).
-
-### `cd-repository-configure`
-
-Builds a scoped CD Repository configuration from the CI Repository changes in selected PRs or a commit range. The skill walks through four stages in a single conversation:
-
-1. **Discovers the project** – locates the Xperience app, the CI Repository, and the CD `repository.config`. Asks only when a value is ambiguous.
-2. **Collects and classifies changes** – reads the CI Repository files changed by the selected PRs (via your repository host's CLI or MCP tooling) or commit range (via local git) and classifies each PR or commit as a business/feature change or Xperience update-only noise (excluded by default).
-3. **Writes the scoped config** – regenerates the `repository.config` filter sections from scratch for the current deployment scope: `RestoreMode`, an `IncludedObjectTypes` allowlist, `IncludedContentItemsOfType`, `ContentItemFilters`, and `ObjectFilters` with precise code names.
-4. **Generates and verifies the deployment content** – runs your `Export-DeploymentPackage.ps1` (or points to the [CD store command](https://docs.kentico.com/documentation/developers-and-admins/ci-cd/continuous-deployment#store-objects-to-a-cd-repository)), then checks the generated CD Repository with the bundled `Verify-CdRepository.ps1` script, which flags configured objects that are missing from the serialized output.
-
-The skill requires the v2 `repository.config` syntax. If your project still uses v1, the skill stops and points you to [Migrate CI/CD repository.config to v2](https://docs.kentico.com/documentation/developers-and-admins/ci-cd/configure-ci-cd-repositories/config-v2-migration) — and can help you apply the documented steps.
-
-## Usage
+## Use the plugin
 
 ### Update your Xperience project
 
 The update skill identifies your current and target Xperience versions, reviews the release notes for every version in between (including the feature-specific update guides they link to), and follows the official update documentation.
-
-#### VS Code GitHub Copilot example
 
 ```text
 /update-xperience
@@ -77,14 +51,12 @@ The update skill identifies your current and target Xperience versions, reviews 
 To update to a specific version instead of the latest:
 
 ```text
-/update-xperience 30.9.2
+/update-xperience <target-version>
 ```
 
 ### Configure the CD Repository
 
 Provide the PR numbers or the git commit range you want to deploy. When your workspace contains more than one Xperience app, also mention the app path.
-
-#### VS Code GitHub Copilot example — single PR
 
 ```text
 /cd-repository-configure
@@ -92,15 +64,11 @@ Provide the PR numbers or the git commit range you want to deploy. When your wor
 Changes: PR 312
 ```
 
-#### VS Code GitHub Copilot example — multiple PRs
-
 ```text
 /cd-repository-configure
 
 Changes: PR 310, PR 311, PR 312
 ```
-
-#### VS Code GitHub Copilot example — commit range
 
 The `..` range operator follows standard git syntax: the start commit is **exclusive** and the end commit is **inclusive**. Use the commit just before your first feature commit as the range start.
 
@@ -112,9 +80,11 @@ Changes: abc1234..def5678
 
 To include `abc1234` itself, use its parent as the range start (`abc1234^..def5678`). To deploy exactly one commit in isolation, use `abc1234^..abc1234`.
 
-## Prompt output
+## Output
 
-An updated `repository.config` scoped to the selected changes, plus a deployment summary covering:
+`update-xperience` produces the project and dependency changes required for the selected version and reports any manual follow-up from the version-specific guidance.
+
+`cd-repository-configure` produces an updated `repository.config` plus a deployment summary covering:
 
 - Analyzed selectors with per-commit/PR classification — included (business/feature) vs. excluded (Xperience update-only), with reasons
 - The chosen `RestoreMode` and the selected object types, code names, and content item filters
@@ -127,22 +97,11 @@ An updated `repository.config` scoped to the selected changes, plus a deployment
 - Review the generated `repository.config` diff before deploying, especially for the first run on a project.
 - The skill rebuilds the deployment filters from scratch on every run; it asks before removing entries it did not create (for example, standing manual exclusions).
 
-## Included files
+## Included resources
 
-### update-xperience references
-
-- `skills/update-xperience/references/update-docs.md` – map of the Changelog and official update-procedure documentation pages, fetched on demand via the Kentico Docs MCP.
-
-### cd-repository-configure references (read by the agent)
-
-- `skills/cd-repository-configure/references/ci-path-mapping.md` – translations from CI Repository folder names to `repository.config` object types and content item filter elements, plus the known special cases (forms, reusable field schemas, workspaces, `cms.class` ambiguity).
-- `skills/cd-repository-configure/references/repository-config-guidelines.md` – rules for regenerating a minimal deployment-scoped config: allowlist decisions, content item filter dependencies, `RestoreMode` selection, formatting, and the final quality checklist.
-- `skills/cd-repository-configure/references/documentation-links.md` – map of the relevant Kentico documentation pages with when-to-read hints, fetched on demand via the Kentico Docs MCP.
-
-### Templates
-
-- `skills/cd-repository-configure/assets/DEPLOYMENT_SUMMARY_TEMPLATE.md` – the deployment summary the skill fills in at the end of every run.
-
-### Scripts
-
-- `skills/cd-repository-configure/scripts/Verify-CdRepository.ps1` – compares the generated CD Repository against the filters in `repository.config` and fails when a configured object or content item has no serialized file (catches silent suppression).
+- [`update-docs.md`](./skills/update-xperience/references/update-docs.md) maps the Changelog and update procedure.
+- [`ci-path-mapping.md`](./skills/cd-repository-configure/references/ci-path-mapping.md) maps CI Repository paths to CD configuration.
+- [`repository-config-guidelines.md`](./skills/cd-repository-configure/references/repository-config-guidelines.md) defines filter and formatting rules.
+- [`documentation-links.md`](./skills/cd-repository-configure/references/documentation-links.md) maps the current CD documentation.
+- [`DEPLOYMENT_SUMMARY_TEMPLATE.md`](./skills/cd-repository-configure/assets/DEPLOYMENT_SUMMARY_TEMPLATE.md) defines the final report.
+- [`Verify-CdRepository.ps1`](./skills/cd-repository-configure/scripts/Verify-CdRepository.ps1) checks that configured objects were serialized.

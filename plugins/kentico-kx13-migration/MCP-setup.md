@@ -1,20 +1,22 @@
 # MCP server setup
 
-The skills in this plugin work best with the following MCP servers. The plugin does not register them automatically — add them to your workspace using the copy-paste snippets below.
+MCP requirements vary by migration stage. Add the servers needed for your migration using the configuration below.
 
-## Recommended servers
+## Servers
 
 - **Kentico Docs MCP server**
   - `https://docs.kentico.com/documentation/developers-and-admins/installation/mcp-server`
   - Used to search and fetch the official Xperience by Kentico documentation.
+  - Required by the codebase-migration skills except `migrate-code-page-visual`.
 
 - **Context7 MCP server**
   - `https://context7.com`
-  - Used to look up KX13 source API references. The KX13 documentation is indexed in the [`websites/kentico_13`](https://context7.com/websites/kentico_13) library.
+  - Optional lookup for KX13 source API references. The KX13 documentation is indexed in the [`websites/kentico_13`](https://context7.com/websites/kentico_13) library.
 
 - **Playwright MCP server**
   - `https://github.com/microsoft/playwright-mcp`
   - Used to compare migrated pages against the original KX13 site and fix visual discrepancies.
+  - Required by `migrate-code-component`, `migrate-code-page`, and `migrate-code-page-visual`.
 
 ## How to add the servers
 

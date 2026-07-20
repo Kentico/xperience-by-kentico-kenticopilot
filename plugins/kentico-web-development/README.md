@@ -1,183 +1,123 @@
 # Kentico web development
 
-Skills and references for building Xperience by Kentico websites. The plugin covers an agentic-readiness audit for your project, content modeling, AI-assisted [Page Builder](https://docs.kentico.com/x/6QWiCQ) development — building widgets and structuring pages with sections and templates — guidance for [content retrieval](https://docs.kentico.com/documentation/developers-and-admins/development/content-retrieval) in live-site code, and validation of the live site against static HTML designs, with more web-development capabilities planned.
+Skills for building and maintaining Xperience by Kentico websites, from project preparation and content modeling through Page Builder implementation, content retrieval, and design QA.
 
-## Skills
+## Choose a skill
 
-| Skill               | Description                                                                                                                              |
-| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `agentify`          | Audits an XbyK project for agentic-development readiness, reports gaps, and applies fixes on request                                     |
-| `design-to-content` | Guides content modeling — translating designs/wireframes into an Xperience content model                                                |
-| `page-builder-widgets`   | Builds a custom Page Builder **widget** (view component, properties, view model, Razor view, registration)                          |
-| `page-builder-structure` | Builds Page Builder **structure** — sections (widget-zone layouts) and page templates (full-page layouts)                           |
-| `content-retrieval` | Decision rules, a docs/API map, and performance guidance for reading published content (pages, reusable items, reusable-schema items) in live-site/MVC code — prefer `IContentRetriever` |
-| `design-validation` | Validates a live site against static HTML designs — a deterministic Playwright comparison (content, structure, computed styles) plus AI classification of each finding as a content, serving, or styling issue |
+| Skill | Use it to | Activation |
+|---|---|---|
+| `agentify` | Audit a project for AI-assisted-development readiness and optionally apply fixes | Invoke by name |
+| `design-to-content` | Turn a design, wireframe, or Figma file into an Xperience content model | Invoke by name |
+| `page-builder-widgets` | Build a Page Builder widget | Describe the component |
+| `page-builder-structure` | Build a section or page template | Describe the component |
+| `content-retrieval` | Write, review, or troubleshoot code that reads published content | Loads for relevant code tasks; can also be invoked by name |
+| `design-validation` | Compare local design HTML with a running site and classify differences | Ask to validate or compare pages |
 
-You invoke `agentify` and `design-to-content` explicitly. `page-builder-widgets` and `page-builder-structure` are **passive-knowledge** skills — the AI loads them automatically when you describe the relevant task; just provide your requirements. The `content-retrieval` skill is a reference skill that activates automatically when you write or review content-retrieval code — you can also invoke it by name. See [Content retrieval](#content-retrieval) for details. The `design-validation` skill activates when you ask to validate or compare pages against a design, and the AI also uses it proactively after page-affecting changes when a static design exists — see [Design validation](#design-validation-design-validation).
+## How the capabilities fit together
 
-## Agentic readiness (`agentify`)
+A design-led implementation typically uses the skills in this order:
 
-`agentify` prepares an Xperience by Kentico project for AI-assisted development. It audits the project against Kentico's agentic-development best practices, writes an `agentic-readiness-report.md`, and — with your confirmation — fixes the gaps it finds.
+1. Run `agentify` once to prepare the project and its agent instructions.
+2. Use `design-to-content` to model structured content from the design.
+3. Ask the agent to build the required widgets, sections, and templates.
+4. Let `content-retrieval` guide any code that loads the modeled content.
+5. Run `design-validation` against the live implementation.
 
-It checks:
+Use only the steps relevant to your task; the skills also work independently.
 
-- **Agent instructions** (`AGENTS.md` / `CLAUDE.md`) — project overview, dev-environment setup, run & verify instructions, MCP-usage instructions, and pointers to further guidance.
-- **Design / architecture / interactions guidance** — recommending description-driven **passive skills** over static `DESIGN.md` / `ARCHITECTURE.md` / `INTERACTIONS.md` files.
-- **Kentico Docs MCP** and **Kentico Management MCP** — configured and accessible to the agent (see [Configure MCP servers](#configure-mcp-servers) below).
+### Agentic readiness
 
-When fixing the **Management MCP** gap, the skill can enable the management API in your app (NuGet package + `Program.cs` + a secret) and add the local MCP server. This is a Kentico **preview, local-development-only** feature — `agentify` confirms before editing application code and never enables it for production.
+`agentify` first asks which AI tool the project uses, then checks project instructions, development and verification guidance, a design-guidance skill, and Kentico Docs/Management MCP configuration. It writes a readiness report and asks before applying recommended fixes.
 
-**Claude Code example**
+With confirmation, it can create tool-appropriate agent instructions and a project-specific design-guidance skill, and follow the official MCP setup procedures. Management MCP setup may require local application integration; the skill follows the linked Kentico procedure rather than inventing setup steps.
 
-```
-/agentify
+### Content modeling
 
-Project root: C:/my-project
-```
+`design-to-content` guides decisions about content types, reusable field schemas, taxonomies, relationships, and Page Builder structure. It points the agent to current Kentico documentation instead of embedding API guidance in the skill.
 
-## Content modeling (`design-to-content`)
+### Page Builder development
 
-Use the `design-to-content` skill when translating designs, wireframes, or Figma files into an Xperience by Kentico content model. The skill points the AI to the relevant Kentico content-modeling documentation and guides decisions about content types, reusable schemas, taxonomies, relationships, and Page Builder structure.
+`page-builder-widgets` and `page-builder-structure` load when you describe a matching implementation task. The agent first studies existing components, mirrors project conventions, and verifies uncertain APIs against current Xperience documentation.
 
-**VS Code GitHub Copilot example**
+### Content retrieval
 
-```
-/design-to-content
+`content-retrieval` is a reference skill rather than a file-generating workflow. It helps the agent choose between `IContentRetriever` and the lower-level content item query API, use the correct selector identifier type, and account for caching, linked-item depth, projection, and paging.
 
-I have a Figma design for a news portal. Help me model the content types.
-```
+### Design validation
 
-## Page Builder development (`page-builder-widgets` + `page-builder-structure`)
+`design-validation` runs a bundled Playwright comparison between static HTML and a running site. It writes one JSON report per page, compares content, meaningful structure, and selected computed styles, then helps the agent classify findings with a root cause and fix location as:
 
-`page-builder-widgets` and `page-builder-structure` are **passive-knowledge** skills: the AI loads them automatically when you ask it to build the relevant Page Builder component. You don't run them as explicit commands — just describe what you want and provide your requirements. Each skill instructs the AI to first study the existing components in your project and mirror their conventions, then validate any uncertain APIs against the Xperience documentation via the Kentico Docs MCP before implementing.
+- **Content**: wrong or missing content, fields, or translations
+- **Serving**: missing widgets, incorrect sections/templates, or unresolved asset URLs
+- **Styling**: CSS differences
 
-## Design validation (`design-validation`)
+This is not a screenshot or pixel-regression tool. It does not establish pixel fidelity or compare every layout dimension and background image.
 
-`design-validation` checks whether the rendered live site actually matches its static HTML design — the development outcome that is otherwise hard to confirm. A bundled Playwright script deterministically compares each design page with the corresponding live page (content text, DOM structure, computed styles) and writes a JSON report; the AI then classifies every difference as a **content** issue (wrong or missing content item, field, or translation), a **serving** issue (missing widget, wrong section or template, unresolved `~/` URLs), or a **styling** issue (CSS), and drives the fix.
+## Requirements
 
-It activates when you ask to validate, QA, or compare pages against a design, and the AI also runs it proactively after implementing or changing a page, template, widget, view component, or stylesheet when a static design for the affected page exists.
+- An Xperience by Kentico project
+- An AI coding assistant with this plugin installed
+- Kentico Docs MCP for documentation-backed skills; see [MCP setup](./MCP-setup.md)
+- Kentico Management MCP for `agentify` readiness and design-validation content investigation
+- Page Builder configured when creating widgets, sections, or templates
+- Clear requirements and, when relevant, local design files
+- For `design-validation`: Node.js 22.18+ (24 LTS recommended), npm 11.10+, local HTML/CSS designs, and the site running in live mode
 
-```
-Validate the home and about pages against the designs in ./design — the site runs on https://localhost:5001
-```
+The first design-validation run downloads Playwright Chromium.
 
-Requirements: Node.js 22.18+ (24 LTS recommended) and npm 11.10+, the site running in live mode, and the design as local HTML/CSS files. The first run downloads the Playwright Chromium browser (~115 MB). Reports should be written to a project-local folder (`--out`) so they survive plugin updates.
+## Install
 
-Note that this is **not a visual or pixel-regression tool**: it compares content, structure, and a curated set of computed styles, but does not detect element sizing, `background-image`, or pixel-layout differences — a clean report does not guarantee pixel fidelity.
+Follow the marketplace instructions in the [usage guide](../../docs/Usage-Guide.md#install-the-selected-plugin), using the plugin name `kentico-web-development`.
 
-## Prerequisites
+## Use the plugin
 
-- Xperience by Kentico project with Page Builder configured
-- AI coding assistant installed (for example, GitHub Copilot or Claude Code)
-- A description of what you want to build — for a widget, a requirements file describing its functionality, presentation options, and error handling; optionally a design file (e.g. `design.html` exported from Figma)
-- For `design-validation`: Node.js 22.18+ (24 LTS recommended) and npm 11.10+
-
-## Configure MCP servers
-
-This plugin requires some MCP servers to be set up in your workspace. See [MCP-setup.md](./MCP-setup.md) for the list and copy-paste-ready configuration.
-
-## Install the plugin
-
-### VS Code (GitHub Copilot)
-
-Add the marketplace to your VS Code settings (`settings.json`), then browse and install from the Extensions sidebar (`@agentPlugins`):
-
-```json
-"chat.plugins.marketplaces": [
-    "Kentico/xperience-by-kentico-kenticopilot"
-]
-```
-
-### Copilot CLI
-
-```bash
-copilot plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
-copilot plugin install kentico-web-development@xperience-by-kentico-kenticopilot
-```
-
-### Claude Code
-
-```bash
-/plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
-/plugin install kentico-web-development@xperience-by-kentico-kenticopilot
-```
-
-## Usage
-
-Because these are passive-knowledge skills, you trigger them simply by describing the task. The AI recognizes the intent, loads the relevant skill, studies your project, and implements the component.
-
-### Create a widget
-
-1. Prepare your context. Create (or point to) a requirements file describing the widget's functionality, presentation options, and error handling. Optionally include a design file.
-2. Ask the AI to build it, referencing your requirements:
-
-   ```
-   Create a Page Builder widget based on the requirements in requirements.md
-   ```
-
-The AI produces the widget view component, properties class, Razor view, view model, and registration. If your project already contains widgets, it mirrors their patterns and file structure.
-
-### Create a section or page template
-
-Describe the layout you need:
-
-```
-Add a two-column Page Builder section with a configurable background color
-```
-
-```
-Create a landing-page template with a hero editable area and a theme property
-```
-
-The AI builds the section (view component / partial view, properties, widget zones, registration) or page template (full-page view, properties, registration, routing notes) following your project's conventions.
-
-> **Tip:** For large implementations, consider starting a fresh conversation for a new component to avoid context degradation from long histories.
-
-## Included files
-
-Each skill carries its own references that the AI reads on demand:
-
-### `page-builder-widgets`
-
-- `references/docs.md` — a documentation map: links to the relevant Xperience widget documentation, each with a "when to read" hint
-
-### `page-builder-structure`
-
-- `references/docs.md` — a documentation map: links to section and page-template documentation, each with a "when to read" hint
-
-### `design-validation`
-
-- `references/cli-guidance.md` — the comparison script's setup, options, and exit codes
-- `references/report-template.md` — the JSON report structure, finding kinds, and how to interpret them
-- `references/classification.md` — classifying each finding as a content, serving, or styling issue
-- `scripts/` — the Playwright comparison CLI (`compare.ts`, TypeScript run natively by Node)
-
-## Best practices
-
-- Provide clear, specific requirements, including presentation options and error-handling scenarios.
-- Let the AI study existing components first so new code matches your conventions.
-- Thoroughly review and test the generated code in both edit and live mode.
-
-## Content retrieval
-
-The `content-retrieval` skill is a **reference skill** — it carries no multi-step workflow and produces no files. It activates automatically when your task involves reading published content in live-site / MVC code: fetching pages or reusable content items, turning a Combined content selector or Page selector value into data, or diagnosing a content query that is slow under load. You can also invoke it explicitly by name.
-
-Instead of generating code from a fixed template, it equips the agent with:
-
-- **Decision rules** — when to use `IContentRetriever` (the default for almost all retrieval) versus the lower-level content item query API, and the single most common bug: Combined content selector GUIDs (`ContentItemGUID`) and Page selector GUIDs (`WebPageItemGUID`) are **not interchangeable**, and crossing them returns an empty result with no exception.
-- **A documentation map** (`references/content-retrieval-docs.md`) — every relevant Xperience docs page and API-reference entry, each with a "when to read" hint, so the agent looks up current signatures instead of reconstructing them from memory.
-- **A performance model** (`references/performance.md`) — how to keep retrieval fast under load (linked-item depth, the retriever's implicit caching, column projection, paging) and the known API limitations.
-
-If the [Kentico Docs MCP server](./.mcp.json) is configured, the skill uses it to fetch the current content of any referenced documentation page.
-
-### Example
+Provide the task and the most concrete inputs available:
 
 ```text
-How should I load the items a visitor picked in a Combined content selector on my widget?
+/agentify
+
+Audit the project in the current workspace.
 ```
 
-The skill supplies the retrieval decision rules and points to the exact docs and API reference for the methods involved.
+```text
+/design-to-content
 
-## Skill customization
+Model the news portal represented by ./design/home.html.
+```
 
-These skills serve as a baseline for bootstrapping Page Builder components in Xperience by Kentico solutions. Modify and enhance them as your projects and workflow require. Place project-specific information into a skill's `references` folder as new files — the skills instruct the AI to read the reference material.
+```text
+Create a Page Builder widget from ./requirements/product-card.md and
+follow the conventions of the existing widgets.
+```
+
+```text
+How should this widget load the items selected through a Combined
+content selector?
+```
+
+```text
+Validate the home and about pages against ./design. The live site is
+running at https://localhost:5001.
+```
+
+For implementation work, the agent produces code matching the project. Audit and validation skills produce reports with recommended next steps.
+
+## Included resources
+
+- `agentify` includes readiness criteria, implementation guidance, and report templates.
+- `design-to-content` includes a map to the content-modeling documentation.
+- `page-builder-widgets` and `page-builder-structure` include documentation maps for their APIs.
+- `content-retrieval` includes [API/documentation guidance](./skills/content-retrieval/references/content-retrieval-docs.md) and a [performance model](./skills/content-retrieval/references/performance.md).
+- `design-validation` includes [CLI guidance](./skills/design-validation/references/cli-guidance.md), [finding classification](./skills/design-validation/references/classification.md), a [report template](./skills/design-validation/references/report-template.md), and the Playwright scripts.
+
+## Limits and review guidance
+
+- Generated Page Builder code must be reviewed and tested in both edit and live mode.
+- Content-modeling output is a design proposal; validate it against editorial and governance requirements.
+- Content-retrieval guidance does not replace profiling representative production workloads.
+- Design validation compares text, meaningful structure, URLs, and selected computed styles. A clean report does not guarantee pixel fidelity.
+- Write validation reports to a project-owned output folder so plugin updates do not replace them.
+
+## Customize the skills
+
+Add project-specific conventions to the relevant skill's `references/` directory. Keep reusable Xperience guidance linked to the authoritative documentation instead of copying it into the plugin.
