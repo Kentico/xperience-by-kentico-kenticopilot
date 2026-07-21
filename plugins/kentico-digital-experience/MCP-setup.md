@@ -1,8 +1,8 @@
 # MCP server setup
 
-The skills in this plugin work best with the following MCP servers. The plugin does not register them automatically — add them to your workspace using the copy-paste snippets below.
+The `automation-action` skill requires the Kentico Docs MCP server. Add it to your workspace using the configuration below.
 
-## Recommended servers
+## Required server
 
 - **Kentico Docs MCP server**
   - `https://docs.kentico.com/documentation/developers-and-admins/installation/mcp-server`

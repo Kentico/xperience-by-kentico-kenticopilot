@@ -4,37 +4,28 @@ This repository contains AI agent skills, instructions, and related materials fo
 
 ## What belongs here
 
-These resources are for **Kentico Xperience developers** and are used through AI assistants and tools (e.g., GitHub Copilot, Claude Code) to help complete tasks more efficiently. Resources intended for non-developers (e.g., marketing, sales, or support) should not be contributed here.
+These resources are for **Kentico Xperience developers** and are used through AI assistants and tools (e.g., GitHub Copilot, Claude Code) to help complete tasks more efficiently. Resources intended for non-developers (e.g., marketing, sales, or support) should not be added here.
 
 Resources must not duplicate information already available in the Kentico documentation. Instead, link the relevant documentation pages and provide additional context.
 
 **Before adding anything**, be clear about the feature's purpose — what it accomplishes and how it will be used — then decide whether a new resource is truly needed, or whether the same result can be achieved with an existing resource, a link to our documentation, or a well-written prompt.
 
-## Repository layout
+## Documentation structure
 
-```
-.
-├── AGENTS.md                       # Conventions (CLAUDE.md points here)
-├── CLAUDE.md                       # Pointer to AGENTS.md
-├── README.md                       # Marketing-facing plugin catalog + install instructions
-├── .claude-plugin/marketplace.json # Claude Code marketplace manifest (lists all plugins)
-├── .github/
-│   ├── plugin/marketplace.json     # GitHub Copilot / VS Code marketplace manifest
-│   └── PULL_REQUEST_TEMPLATE.md    # Reviewer questions every PR answers
-├── docs/                           # Usage, contributing, and the KX13 upgrade workflow
-└── plugins/
-    └── <plugin-name>/
-        ├── README.md               # Plugin overview, install, skill reference
-        ├── src/                    # Optional bundled tooling (e.g. a .NET CLI)
-        ├── agents/                 # Subagent definitions — one Markdown file per subagent (optional)
-        └── skills/
-            ├── _shared/            # References shared by multiple skills in the plugin (optional)
-            └── <skill-name>/
-                ├── SKILL.md        # Required — the skill definition
-                ├── assets/         # Templates and code samples the skill writes/copies (optional)
-                ├── references/     # Skill-specific reference docs the skill reads (optional)
-                └── scripts/        # Helper scripts the skill runs (optional)
-```
+Keep each document focused on one reader need:
+
+| Document | Responsibility |
+|---|---|
+| Root `README.md` | Explain the marketplace, help users choose a plugin, and provide a short installation path |
+| `docs/Usage-Guide.md` | Central installation and skill-activation guidance shared by every plugin |
+| Plugin `README.md` | Explain when to use the plugin, how its skills fit together, requirements, examples, outputs, and limits |
+| Plugin `docs/` | Hold detailed user-facing setup or command references for bundled tooling |
+| `SKILL.md` | Instruct the agent how to execute one task; do not use it as the primary user guide |
+| Skill `references/` | Give the agent focused material it loads only when needed |
+
+Avoid repeating marketplace setup in every plugin README. Link to the usage guide and provide the plugin name instead. Keep exact task parameters and execution guardrails in `SKILL.md`; plugin READMEs should summarize them and show representative prompts rather than restating the full skill.
+
+Cross-skill workflows belong under the repository `docs/` directory when they span a full user journey, such as the KX13 upgrade workflow.
 
 ## Resource types
 
