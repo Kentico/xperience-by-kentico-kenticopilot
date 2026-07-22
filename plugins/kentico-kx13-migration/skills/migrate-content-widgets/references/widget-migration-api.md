@@ -166,7 +166,6 @@ public interface IWidgetPropertyMigration
 | `EditingFormControlModel?.FormComponentIdentifier` | `string?` | The form component identifier for the property (see note below) |
 
 > **`ComponentIdentifier` does NOT exist** on `WidgetPropertyMigrationContext`. The record only has `SiteId` and `EditingFormControlModel`. To scope property transforms by widget type, use the `propertyMigrations` dictionary in `IWidgetMigration.MigrateWidget` (which is already widget-scoped) rather than attempting to filter in `IWidgetPropertyMigration.ShallMigrate`.
->
 > **API Discovery prerequisite:** `EditingFormControlModel` is only populated when `OptInFeatures.QuerySourceInstanceApi` is enabled in appsettings.json and the `ToolApiController.cs` is deployed to the KX13 instance. Without it, the value is `null` and form-component-based matching in `ShallMigrate` will not work. Property-name-based matching still works without API Discovery **only when the property is delegated via the `propertyMigrations` dictionary from an `IWidgetMigration`**. Standalone `IWidgetPropertyMigration` classes (not delegated via `propertyMigrations`) are only invoked when `EditingFormControlModel` is non-null — if the KX13 widget property lacks an `[EditingComponent(...)]` attribute, the property migration is silently skipped.
 
 ### WidgetPropertyMigrationResult

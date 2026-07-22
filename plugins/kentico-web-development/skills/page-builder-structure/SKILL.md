@@ -1,6 +1,6 @@
 ---
 name: "page-builder-structure"
-description: "Knowledge and conventions for Page Builder structure in Xperience by Kentico — sections (widget-zone layouts) and page templates (full-page layouts), including registration, properties, widget zones, default sections, and editable areas. Use when creating or modifying Page Builder sections or page templates, or setting up Page Builder layout structure."
+description: "Knowledge and conventions for Page Builder structure in Xperience by Kentico — sections (widget-zone layouts) and page templates (full-page layouts), including registration, properties, widget zones, default sections, and editable areas. Proactively read this before creating or modifying Page Builder sections or page templates, or setting up Page Builder layout structure."
 compatibility: "Requires Kentico Docs MCP"
 ---
 

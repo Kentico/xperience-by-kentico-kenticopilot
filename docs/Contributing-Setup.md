@@ -62,11 +62,11 @@ Follow the [Agent Skills specification](https://agentskills.io/specification) fo
 
 ### Markdown conventions
 
-- Lint all Markdown with [markdownlint](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint) (`npx markdownlint-cli2 "**/*.md"`); rules are configured in `.markdownlint.json`.
 - `argument-hint` frontmatter uses bracketed lowercase-hyphenated placeholders, `?` marks optional arguments: `argument-hint: "[migration-plan-path] [appsettings-path?]"`.
 - Quote all frontmatter values; order fields `name`, `description`, `argument-hint`, `compatibility`.
 - Placeholders in templates use single curly braces: `{project name}`.
-- Reference in-repo resource files with backtick paths (`` `references/docs.md` ``), not Markdown links; use Markdown links for external URLs.
+- Reference in-repo resource files with backtick paths (`` `references/docs.md` ``), not Markdown links.
+- Use Markdown links for external URLs.
 
 ### Subagent
 
