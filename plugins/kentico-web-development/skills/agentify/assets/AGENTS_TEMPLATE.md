@@ -27,7 +27,7 @@
 
 If you change the site's content model (add or remove fields, define new content types or schemas, etc.), you must run the following commands to regenerate the code files.
 
-{List of relevant commands to run code generation, see: <https://docs.kentico.com/documentation/developers-and-admins/api/generate-code-files-for-system-objects}>
+{List of relevant commands to run code generation, see: <https://docs.kentico.com/documentation/developers-and-admins/api/generate-code-files-for-system-objects>}
 
 ## Coding conventions
 

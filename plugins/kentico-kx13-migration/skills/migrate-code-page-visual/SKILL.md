@@ -10,8 +10,8 @@ You are tasked with ensuring that the migrated page visually matches the origina
 ## Input Parameters
 
 - **Page Name** - The name/path of the page being matched (e.g., 'home', 'doctors').
-- **Legacy Page URL** - The URL of the page in the KX13 project (e.g., '<https://localhost:5001/en-us/home>').
-- **New Page URL** - The URL of the page in the XbyK project (e.g., '<http://localhost:60444/en-us/home>').
+- **Legacy Page URL** - The URL of the page in the KX13 project (e.g., <https://localhost:5001/en-us/home>).
+- **New Page URL** - The URL of the page in the XbyK project (e.g., <http://localhost:60444/en-us/home>).
 
 ## Structure of the projects
 

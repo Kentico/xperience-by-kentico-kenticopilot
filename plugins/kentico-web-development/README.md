@@ -74,7 +74,7 @@ Note that this is **not a visual or pixel-regression tool**: it compares content
 
 ## Configure MCP servers
 
-This plugin requires some MCP servers to be set up in your workspace. See [MCP-setup.md](./MCP-setup.md) for the list and copy-paste-ready configuration.
+This plugin requires some MCP servers to be set up in your workspace. See `MCP-setup.md` for the list and copy-paste-ready configuration.
 
 ## Install the plugin
 
@@ -168,7 +168,7 @@ Instead of generating code from a fixed template, it equips the agent with:
 - **A documentation map** (`references/content-retrieval-docs.md`) — every relevant Xperience docs page and API-reference entry, each with a "when to read" hint, so the agent looks up current signatures instead of reconstructing them from memory.
 - **A performance model** (`references/performance.md`) — how to keep retrieval fast under load (linked-item depth, the retriever's implicit caching, column projection, paging) and the known API limitations.
 
-If the [Kentico Docs MCP server](./.mcp.json) is configured, the skill uses it to fetch the current content of any referenced documentation page.
+If the Kentico Docs MCP server (see `MCP-setup.md`) is configured, the skill uses it to fetch the current content of any referenced documentation page.
 
 ### Example
 

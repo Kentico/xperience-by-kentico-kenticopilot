@@ -10,7 +10,7 @@ You are tasked with the process of migrating the widgets and sections of Page Bu
 ## Input Parameters
 
 - **Page Name** - The name of the page, which widgets need to be migrated (e.g., 'home', 'doctors').
-- **Legacy Page URL** - The URL of the page in the KX13 project (e.g., '<https://localhost:5001/en-us/home>').
+- **Legacy Page URL** - The URL of the page in the KX13 project (e.g., <https://localhost:5001/en-us/home>).
 
 ## Structure of the projects
 

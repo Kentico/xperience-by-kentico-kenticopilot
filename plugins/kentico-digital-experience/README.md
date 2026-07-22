@@ -10,7 +10,7 @@ AI-assisted skills for extending [Automation processes](https://docs.kentico.com
 
 ## Configure MCP servers
 
-This plugin requires some MCP servers to be set up in your workspace. See [MCP-setup.md](./MCP-setup.md) for the list and copy-paste-ready configuration.
+This plugin requires some MCP servers to be set up in your workspace. See `MCP-setup.md` for the list and copy-paste-ready configuration.
 
 ## Install the plugin
 

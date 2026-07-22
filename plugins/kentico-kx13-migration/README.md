@@ -10,7 +10,7 @@ This plugin consolidates the full KX13 upgrade toolkit into three areas:
 | [Content migration](#content-migration) | `migrate-content-plan`, `migrate-content-appsettings`, `migrate-content-classes`, `migrate-content-fields`, `migrate-content-widgets`, `migrate-content-items`, `migrate-content-run`, `migrate-content-eval` | Plans, configures, executes, and evaluates the database **content** migration via the [Kentico Migration Tool](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool). |
 | [Codebase migration](#codebase-migration) | `migrate-code-global`, `migrate-code-component`, `migrate-code-page-widgets`, `migrate-code-page`, `migrate-code-page-visual` | Migrates the live-site **code** — controllers, views, repositories, shared components, and Page Builder rendering. |
 
-For an end-to-end view of how the three areas fit together in a full upgrade, see [KX13 upgrade plugins](../../docs/KX13-Upgrade-Plugins.md) and Kentico's [official upgrade walkthrough](https://docs.kentico.com/x/upgrade_walkthrough_guides).
+For an end-to-end view of how the three areas fit together in a full upgrade, see `docs/KX13-Upgrade-Plugins.md` and Kentico's [official upgrade walkthrough](https://docs.kentico.com/x/upgrade_walkthrough_guides).
 
 ## Prerequisites
 
@@ -50,7 +50,7 @@ copilot plugin install kentico-kx13-migration@xperience-by-kentico-kenticopilot
 
 ## Configure MCP servers
 
-This plugin requires some MCP servers to be set up in your workspace. See [MCP-setup.md](./MCP-setup.md) for the list and copy-paste-ready configuration.
+This plugin requires some MCP servers to be set up in your workspace. See `MCP-setup.md` for the list and copy-paste-ready configuration.
 
 ---
 
@@ -181,10 +181,10 @@ AI-assistant skills for migrating the **database content** of KX13 projects to X
 This area covers the data-migration side of an upgrade — everything the Migration Tool transfers from a KX13 database to an XbyK database, plus the per-project code extensions needed for non-trivial transformations:
 
 - [Migrate data and binary files](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/blob/master/Migration.Tool.CLI/README.md#migration-details-for-specific-object-types) — content types, pages, fields, taxonomies, attachments, media libraries, forms.
-- [Custom class transformations](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/blob/master/Migration.Tool.Extensions/README.md#custom-class-mappings-iclassmapping) — merges, splits, renames, Content Hub conversions, reusable field schemas.
+- [Custom class transformations](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/blob/master/docs/customization/Class-Mappings.md) — merges, splits, renames, Content Hub conversions, reusable field schemas.
 - [Custom tables](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/blob/master/Migration.Tool.CLI/README.md#custom-tables) — migrated as custom module classes by default, or as reusable Content hub items via opt-in. See the `--custom-tables` parameter.
-- [Field transformations](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/blob/master/Migration.Tool.Extensions/README.md#field-migrations-ifieldmigration) — custom form controls, data type changes, HTML sanitization, URL rewrites.
-- [Page Builder widget and section transforms](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/blob/master/Migration.Tool.Extensions/README.md#widget-migrations-iwidgetmigration) — type changes, property restructuring, page-to-widget conversion.
+- [Field transformations](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/blob/master/docs/customization/Field-Migrations.md) — custom form controls, data type changes, HTML sanitization, URL rewrites.
+- [Page Builder widget and section transforms](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/blob/master/docs/customization/Widget-Migrations.md) — type changes, property restructuring, page-to-widget conversion.
 - [Linked-page handling](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/blob/master/Migration.Tool.Extensions/README.md#customize-linked-page-handling) — materialize, drop, or store as content item references.
 - Post-migration evaluation — automated comparison of the migrated database against the plan.
 
@@ -548,4 +548,4 @@ These skill files serve as a baseline for migrating KX13 projects to Xperience b
 
 ## License
 
-Distributed under the MIT License. See [`LICENSE.md`](../../LICENSE.md) for more information.
+Distributed under the MIT License. See `LICENSE.md` for more information.

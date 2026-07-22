@@ -23,7 +23,7 @@ For converters that need lookup dictionaries (e.g., NodeGUID→TagGUID mappings,
 For lookup dictionary **values** that depend on XbyK runtime state (taxonomy tag GUIDs, taxonomy group GUIDs, content item GUIDs):
 
 1. **Check the migration plan first** — the plan's lookup dictionary tables (e.g., Custom Value Transforms) are the trusted source of truth. If the plan contains actual GUIDs (not `TODO`), use them directly in the generated code. Do not ask the user, do not query any database — trust the plan.
-2. **If the plan contains `TODO` placeholders**, use `sqlcmd` to query the XbyK database to resolve them (e.g., `SELECT TagName, CAST(TagGUID AS CHAR(36)) FROM CMS_Tag ...`). If the query succeeds, use the resolved values directly. If the database is unreachable or the taxonomy has not been created yet, generate TODO placeholders in the code with the specific SQL query the user can run later, using templates from [xbyk-query-patterns.md](xbyk-query-patterns.md).
+2. **If the plan contains `TODO` placeholders**, use `sqlcmd` to query the XbyK database to resolve them (e.g., `SELECT TagName, CAST(TagGUID AS CHAR(36)) FROM CMS_Tag ...`). If the query succeeds, use the resolved values directly. If the database is unreachable or the taxonomy has not been created yet, generate TODO placeholders in the code with the specific SQL query the user can run later, using templates from `xbyk-query-patterns.md`.
 
 ## 4d. Resolve Gaps and Ask the User Only When Necessary
 

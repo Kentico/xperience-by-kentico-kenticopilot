@@ -10,7 +10,7 @@ You are tasked with the process of migrating a shared component from the legacy 
 ## Input Parameters
 
 - **Component Name** - The name of the shared component to migrate (e.g., 'breadcrumbs', 'header').
-- **Legacy Page URL** - The URL of the page in the KX13 project that contains the component (e.g., '<https://localhost:5001/en-us/home>').
+- **Legacy Page URL** - The URL of the page in the KX13 project that contains the component (e.g., <https://localhost:5001/en-us/home>).
 
 ## Structure of the projects
 

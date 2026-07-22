@@ -15,7 +15,7 @@ More project-lifecycle capabilities are planned.
 
 ## Configure MCP servers
 
-This plugin works best with some MCP servers set up in your workspace. See [MCP-setup.md](./MCP-setup.md) for the list and copy-paste-ready configuration.
+This plugin works best with some MCP servers set up in your workspace. See `MCP-setup.md` for the list and copy-paste-ready configuration.
 
 ## Install the plugin
 
