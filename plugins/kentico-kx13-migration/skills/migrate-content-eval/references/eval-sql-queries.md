@@ -5,6 +5,7 @@ SQL query catalog for database verification, organized by evaluation category.
 **Execution:** `sqlcmd -S <server> -d <database> -Q "<query>" -W -s "|" -h -1`
 
 **Database key:**
+
 - **KX13** = source (`Settings.KxConnectionString`)
 - **XbyK** = target (`Settings.XbyKApiSettings.ConnectionStrings.CMSConnectionString`)
 

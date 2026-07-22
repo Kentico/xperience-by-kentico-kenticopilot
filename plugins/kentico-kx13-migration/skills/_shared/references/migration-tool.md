@@ -17,7 +17,6 @@ The migration tool transfers only database-stored content and related binary fil
 
 The tool **creates content types and their fields automatically** in the target XbyK instance during the `--page-types` phase. Content types do not need to be pre-created manually — the tool creates them based on source page type definitions plus any `IClassMapping` extensions. Similarly, `--categories` migrates KX13 categories as XbyK taxonomies (including taxonomy tags). Custom tables and module classes are also created automatically by `--custom-modules` or `--custom-tables`.
 
-
 | Source (KX13)        | Target (XbyK)                      | Notes                                                |
 | -------------------- | ---------------------------------- | ---------------------------------------------------- |
 | Sites                | Website channels                   |                                                      |
@@ -40,7 +39,6 @@ The tool **creates content types and their fields automatically** in the target 
 | Setting values       | Settings                           | Only settings that exist in XbyK                     |
 | Customers            | Customers                          | KX13 only; `CommerceConfiguration` required          |
 | Orders               | Orders                             | KX13 only; order statuses must be created manually and mapped via `OrderStatuses` config |
-
 
 ### What Does NOT Migrate
 
@@ -280,7 +278,6 @@ Three approaches for widget migration:
 Built-in system widgets (Rich text, Form) migrate with minimal effort in any mode. Start with them as test cases to validate the migration process before tackling custom widgets.
 
 ## Key Configuration Options (appsettings.json)
-
 
 | Setting                                         | Purpose                                                               |
 | ----------------------------------------------- | --------------------------------------------------------------------- |

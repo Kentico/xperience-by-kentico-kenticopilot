@@ -1,7 +1,7 @@
 ---
-name: migrate-code-page-visual
+name: "migrate-code-page-visual"
 description: "Ensures a migrated page visually matches the original Kentico Xperience 13 page. Uses Playwright to compare both pages and iteratively fixes styling, layout, and content differences. Use when a page migration results in visual discrepancies that need to be corrected."
-argument-hint: "Name of the page, the legacy page URL, and the new page URL"
+argument-hint: "[page-name] [legacy-page-url] [new-page-url]"
 compatibility: "Requires Playwright MCP"
 ---
 
@@ -10,8 +10,8 @@ You are tasked with ensuring that the migrated page visually matches the origina
 ## Input Parameters
 
 - **Page Name** - The name/path of the page being matched (e.g., 'home', 'doctors').
-- **Legacy Page URL** - The URL of the page in the KX13 project (e.g., 'https://localhost:5001/en-us/home').
-- **New Page URL** - The URL of the page in the XbyK project (e.g., 'http://localhost:60444/en-us/home').
+- **Legacy Page URL** - The URL of the page in the KX13 project (e.g., '<https://localhost:5001/en-us/home>').
+- **New Page URL** - The URL of the page in the XbyK project (e.g., '<http://localhost:60444/en-us/home>').
 
 ## Structure of the projects
 
@@ -67,7 +67,7 @@ The page migration from KX13 to XbyK has been completed in the previous step. Th
 
 When done, provide the user with this exact output (without any additional text):
 
-```
+```markdown
 # Migration Complete
 Page visual match adjustment has been successfully completed.
 

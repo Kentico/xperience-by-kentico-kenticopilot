@@ -7,7 +7,7 @@ These categories cover structural decisions that affect migration complexity. Th
 
 Scan for these categories in order. Skip any category that does not apply to the source model.
 
-### Auto-resolution rules (target model provided)
+## Auto-resolution rules (target model provided)
 
 When a target XbyK content model is provided, most categories can be resolved by inspecting the target model without asking the user:
 

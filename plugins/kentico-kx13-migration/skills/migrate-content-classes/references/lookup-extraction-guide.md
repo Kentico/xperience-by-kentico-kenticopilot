@@ -39,7 +39,7 @@ Do **not** ask the user for taxonomy tag GUIDs, taxonomy group GUIDs, or other l
 
 When asking about genuinely ambiguous items, always include a **suggested resolution** — for example:
 
-```
+```text
 The plan's Field Changes table lists SpecialtyText as "text" but the Source Content Model
 field table shows it as "longtext". Which data type should the ConvertFrom converter expect?
 ```

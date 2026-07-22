@@ -8,7 +8,7 @@ Concise reference for understanding the two log files produced by the Kentico Mi
 
 Located in the directory specified by `Settings.MigrationProtocolPath` in appsettings.json.
 
-**Entry boundary:** Entries are multi-line (JSON with newlines). Split by timestamp at line start: `^\d{8}_\d{6}: `
+**Entry boundary:** Entries are multi-line (JSON with newlines). Split by timestamp at line start: `^\d{8}_\d{6}:`
 
 **Entry types:**
 
@@ -32,6 +32,7 @@ Located in the same directory as the protocol log.
 **Levels:** `info`, `warn`, `fail`
 
 **Command lifecycle:** Use `Source.Behaviors.RequestHandlingBehavior` (outer layer) for timing, not `Core.KX13` (inner):
+
 - Start: `Handling {CommandName}`
 - End: `Handled {CommandName} in elapsed: HH:MM:SS.mmmmmmm`
 

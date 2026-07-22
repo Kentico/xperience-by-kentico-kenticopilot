@@ -48,9 +48,9 @@ Points the agent to the authoritative Xperience documentation for implementing a
 
 Describe the action you want. The skill probes the project, asks the questions it needs, and writes the files.
 
-**Claude Code example**
+### Claude Code example
 
-```
+```text
 /automation-action
 
 I need an action that sends a Slack message to a configured webhook
@@ -58,9 +58,9 @@ when a contact reaches this step. Marketers should be able to edit
 the webhook URL and the message template on the step.
 ```
 
-**VS Code GitHub Copilot example**
+### VS Code GitHub Copilot example
 
-```
+```text
 /automation-action
 
 Add an action that resets the lead-scoring counter persisted as

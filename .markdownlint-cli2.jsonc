@@ -1,0 +1,7 @@
+{
+  // Lint config lives in .markdownlint.json (also picked up by the VS Code markdownlint extension).
+  "ignores": [
+    "**/node_modules/**",
+    "plugins/kentico-kx13-migration/src/**"
+  ]
+}

@@ -27,9 +27,9 @@ It checks:
 
 When fixing the **Management MCP** gap, the skill can enable the management API in your app (NuGet package + `Program.cs` + a secret) and add the local MCP server. This is a Kentico **preview, local-development-only** feature — `agentify` confirms before editing application code and never enables it for production.
 
-**Claude Code example**
+### Claude Code example
 
-```
+```text
 /agentify
 
 Project root: C:/my-project
@@ -39,9 +39,9 @@ Project root: C:/my-project
 
 Use the `design-to-content` skill when translating designs, wireframes, or Figma files into an Xperience by Kentico content model. The skill points the AI to the relevant Kentico content-modeling documentation and guides decisions about content types, reusable schemas, taxonomies, relationships, and Page Builder structure.
 
-**VS Code GitHub Copilot example**
+### VS Code GitHub Copilot example
 
-```
+```text
 /design-to-content
 
 I have a Figma design for a news portal. Help me model the content types.
@@ -57,7 +57,7 @@ I have a Figma design for a news portal. Help me model the content types.
 
 It activates when you ask to validate, QA, or compare pages against a design, and the AI also runs it proactively after implementing or changing a page, template, widget, view component, or stylesheet when a static design for the affected page exists.
 
-```
+```text
 Validate the home and about pages against the designs in ./design — the site runs on https://localhost:5001
 ```
 
@@ -111,7 +111,7 @@ Because these are passive-knowledge skills, you trigger them simply by describin
 1. Prepare your context. Create (or point to) a requirements file describing the widget's functionality, presentation options, and error handling. Optionally include a design file.
 2. Ask the AI to build it, referencing your requirements:
 
-   ```
+   ```text
    Create a Page Builder widget based on the requirements in requirements.md
    ```
 
@@ -121,11 +121,11 @@ The AI produces the widget view component, properties class, Razor view, view mo
 
 Describe the layout you need:
 
-```
+```text
 Add a two-column Page Builder section with a configurable background color
 ```
 
-```
+```text
 Create a landing-page template with a hero editable area and a theme property
 ```
 

@@ -2,31 +2,30 @@
 
 ## Migration Strategy & Planning
 
-- **Plan your strategy for migrating features**: https://docs.kentico.com/guides/upgrade-to-xbyk/upgrade-from-kx13/plan-your-strategy-for-migrating-features
-- **Upgrade walkthrough**: https://docs.kentico.com/x/upgrade_walkthrough_guides
-- **Upgrade FAQ**: https://docs.kentico.com/guides/upgrade-to-xbyk/upgrade-from-kx13/upgrade-faq
+- **Plan your strategy for migrating features**: <https://docs.kentico.com/guides/upgrade-to-xbyk/upgrade-from-kx13/plan-your-strategy-for-migrating-features>
+- **Upgrade walkthrough**: <https://docs.kentico.com/x/upgrade_walkthrough_guides>
+- **Upgrade FAQ**: <https://docs.kentico.com/guides/upgrade-to-xbyk/upgrade-from-kx13/upgrade-faq>
 
 ## Migration Tool
 
-- **Supported Data**: https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/blob/master/docs/Supported-Data.md
-- **Migration Tool CLI README**: https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/blob/master/Migration.Tool.CLI/README.md
-- **Migration Tool Extensions**: https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/tree/master/Migration.Tool.Extensions
-- **Migration details for specific object types**: https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/blob/master/Migration.Tool.CLI/README.md#migration-details-for-specific-object-types
+- **Supported Data**: <https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/blob/master/docs/Supported-Data.md>
+- **Migration Tool CLI README**: <https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/blob/master/Migration.Tool.CLI/README.md>
+- **Migration Tool Extensions**: <https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/tree/master/Migration.Tool.Extensions>
+- **Migration details for specific object types**: <https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/blob/master/Migration.Tool.CLI/README.md#migration-details-for-specific-object-types>
 
 ## Widget Migration
 
-- **Upgrade widgets introduction**: https://docs.kentico.com/guides/upgrade-to-xbyk/upgrade-deep-dives/upgrade-widgets-introduction
-- **Transform widget properties**: https://docs.kentico.com/guides/upgrade-to-xbyk/upgrade-deep-dives/transform-widget-properties
-- **Migrate widget data to Content hub**: https://docs.kentico.com/guides/upgrade-to-xbyk/upgrade-deep-dives/migrate-widget-data-to-content-hub
-- **Convert child pages to widgets**: https://docs.kentico.com/guides/upgrade-to-xbyk/upgrade-deep-dives/convert-child-pages-to-widgets
+- **Upgrade widgets introduction**: <https://docs.kentico.com/guides/upgrade-to-xbyk/upgrade-deep-dives/upgrade-widgets-introduction>
+- **Transform widget properties**: <https://docs.kentico.com/guides/upgrade-to-xbyk/upgrade-deep-dives/transform-widget-properties>
+- **Migrate widget data to Content hub**: <https://docs.kentico.com/guides/upgrade-to-xbyk/upgrade-deep-dives/migrate-widget-data-to-content-hub>
+- **Convert child pages to widgets**: <https://docs.kentico.com/guides/upgrade-to-xbyk/upgrade-deep-dives/convert-child-pages-to-widgets>
 
 ## Content Model Deep Dives
 
-- **Transfer page hierarchy to Content hub**: https://docs.kentico.com/guides/upgrade-to-xbyk/upgrade-deep-dives/transfer-page-hierarchy-to-content-hub
-- **Remodel page types as reusable field schemas**: https://docs.kentico.com/guides/upgrade-to-xbyk/upgrade-deep-dives/remodel-page-types-as-reusable-field-schemas
-- **Speed up remodeling with AI**: https://docs.kentico.com/guides/upgrade-to-xbyk/upgrade-deep-dives/speed-up-remodeling-with-ai
-- **Optimize images during upgrade**: https://docs.kentico.com/guides/upgrade-to-xbyk/upgrade-deep-dives/optimize-images-during-upgrade
-
+- **Transfer page hierarchy to Content hub**: <https://docs.kentico.com/guides/upgrade-to-xbyk/upgrade-deep-dives/transfer-page-hierarchy-to-content-hub>
+- **Remodel page types as reusable field schemas**: <https://docs.kentico.com/guides/upgrade-to-xbyk/upgrade-deep-dives/remodel-page-types-as-reusable-field-schemas>
+- **Speed up remodeling with AI**: <https://docs.kentico.com/guides/upgrade-to-xbyk/upgrade-deep-dives/speed-up-remodeling-with-ai>
+- **Optimize images during upgrade**: <https://docs.kentico.com/guides/upgrade-to-xbyk/upgrade-deep-dives/optimize-images-during-upgrade>
 
 ## XbyK Content Model
 
