@@ -6,7 +6,7 @@ Instructions for generating the HTML evaluation report from findings and the HTM
 
 1. Phase 2 evaluation results (12 categories with status, summary, evidence, and remediation)
 2. [LOG_ANALYSIS_REPORT_TEMPLATE.html](../assets/LOG_ANALYSIS_REPORT_TEMPLATE.html) — HTML template with placeholder tokens
-3. [actionable-suggestions.md](actionable-suggestions.md) — issue → remediation mapping with fix types and skill routing
+3. `actionable-suggestions.md` — issue → remediation mapping with fix types and skill routing
 
 ## Template Placeholders
 

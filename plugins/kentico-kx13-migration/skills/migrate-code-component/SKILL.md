@@ -1,7 +1,7 @@
 ---
-name: migrate-code-component
+name: "migrate-code-component"
 description: "Migrates a reusable shared component (header, footer, navigation, breadcrumbs, etc.) from a Kentico Xperience 13 project to Xperience by Kentico. Locates the component in the source project and migrates it together with all dependencies. Use when migrating shared layout elements like headers, footers, or navigation."
-argument-hint: "Name of the shared component and the legacy page URL where it appears"
+argument-hint: "[component-name] [legacy-page-url]"
 compatibility: "Requires Kentico Docs MCP and Playwright MCP"
 ---
 
@@ -10,7 +10,7 @@ You are tasked with the process of migrating a shared component from the legacy 
 ## Input Parameters
 
 - **Component Name** - The name of the shared component to migrate (e.g., 'breadcrumbs', 'header').
-- **Legacy Page URL** - The URL of the page in the KX13 project that contains the component (e.g., 'https://localhost:5001/en-us/home').
+- **Legacy Page URL** - The URL of the page in the KX13 project that contains the component (e.g., <https://localhost:5001/en-us/home>).
 
 ## Structure of the projects
 
@@ -54,7 +54,7 @@ Whenever unsure about anything, you can use Kentico Docs MCP to search for relev
 
 When done, provide the user with this exact output (without any additional text):
 
-```
+```markdown
 # Migration Complete
 Shared component migration from the legacy project to the new one has been successfully completed.
 

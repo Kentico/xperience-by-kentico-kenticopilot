@@ -1,7 +1,7 @@
 ---
-name: migrate-code-page-widgets
+name: "migrate-code-page-widgets"
 description: "Migrates Page Builder widgets and sections from a Kentico Xperience 13 page to Xperience by Kentico. Identifies and converts all widget and section components used by the specified page. Use when migrating Page Builder features for a specific page before migrating the page logic itself."
-argument-hint: "Name of the page in the content tree and the legacy page URL"
+argument-hint: "[page-name] [legacy-page-url]"
 compatibility: "Requires Kentico Docs MCP"
 ---
 
@@ -10,7 +10,7 @@ You are tasked with the process of migrating the widgets and sections of Page Bu
 ## Input Parameters
 
 - **Page Name** - The name of the page, which widgets need to be migrated (e.g., 'home', 'doctors').
-- **Legacy Page URL** - The URL of the page in the KX13 project (e.g., 'https://localhost:5001/en-us/home').
+- **Legacy Page URL** - The URL of the page in the KX13 project (e.g., <https://localhost:5001/en-us/home>).
 
 ## Structure of the projects
 
@@ -55,7 +55,7 @@ Whenever unsure about anything, use Kentico Docs MCP to search for relevant info
 
 When done, provide the user with this exact output (without any additional text):
 
-```
+```markdown
 # Migration Complete
 Page builder widget migration from the legacy project to the new one has been successfully completed.
 

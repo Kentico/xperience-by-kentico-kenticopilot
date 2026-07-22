@@ -1,4 +1,4 @@
-# Migration Detail — [Project Name]
+# Migration Detail — {Project Name}
 
 ## Source Content Model
 
@@ -6,13 +6,13 @@
 
 | Class Name               | Display Name   | Used At                  | Notes |
 | ------------------------ | -------------- | ------------------------ | ----- |
-| [Namespace.PageTypeName] | [Display Name] | [URL paths or locations] |       |
+| {Namespace.PageTypeName} | {Display Name} | {URL paths or locations} |       |
 
-#### [Namespace.PageTypeName] — Fields
+#### {Namespace.PageTypeName} — Fields
 
 | Field Name      | Data Type | Form Control | Notes   |
-| --------------- | --------- | ------------ | ------- | ------- | ------- | -------- | ---- | ------ | ---- | ----------------- | ----------------- | ------------------------------------------------ |
-| [FieldCodeName] | [text     | longtext     | integer | decimal | boolean | datetime | guid | binary | file | docrelationships] | [FormControlName] | [Field purpose, relationships, special behavior] |
+| --------------- | --------- | ------------ | ------- |
+| {FieldCodeName} | {text / longtext / integer / decimal / boolean / datetime / guid / binary / file / docrelationships} | {FormControlName} | {Field purpose, relationships, special behavior} |
 
 <!-- Repeat the field table for each page type -->
 
@@ -22,7 +22,7 @@ KX13 page types can inherit from parent classes (`ClassInheritsFromClassID`). Pa
 
 | Child Class            | Parent Class            | Inherited Fields                |
 | ---------------------- | ----------------------- | ------------------------------- |
-| [Namespace.ChildClass] | [Namespace.ParentClass] | [Inherited field names or none] |
+| {Namespace.ChildClass} | {Namespace.ParentClass} | {Inherited field names or none} |
 
 <!-- Include this section when ANY page type in the source has a non-null ClassInheritsFromClassID.
   - List every inheritance relationship, including transitive ones (grandchild → child → parent).
@@ -42,13 +42,13 @@ KX13 `docrelationships` fields store their data in the `CMS_Relationship` table,
 
 | Relationship Name | Display Name | Source Page Type | Source Field | Notes |
 | ----------------- | ------------ | ---------------- | ------------ | ----- |
-| [ClassName_FieldGUID] | [Display Name] | [Namespace.PageType] | [FieldName] | [RelatedPagesLimit, StartingPath, allowed objects] |
+| {ClassName_FieldGUID} | {Display Name} | {Namespace.PageType} | {FieldName} | {RelatedPagesLimit, StartingPath, allowed objects} |
 
 **Relationship Data:**
 
 | Left Node Path | Left Class | Right Node Path | Right Class | Relationship Display Name | Order |
 | -------------- | ---------- | --------------- | ----------- | ------------------------- | ----- |
-| [/path/to/source] | [Namespace.SourceType] | [/path/to/target] | [Namespace.TargetType] | [Display Name] | [n] |
+| {/path/to/source} | {Namespace.SourceType} | {/path/to/target} | {Namespace.TargetType} | {Display Name} | {n} |
 
 <!-- Include this section when the source audit contains a "Page Relationships (CMS_Relationship)" section.
   - This data is critical for planning ConvertFrom transforms on docrelationships fields.
@@ -72,41 +72,41 @@ KX13 `docrelationships` fields store their data in the `CMS_Relationship` table,
 
 | Class Name                  | Display Name   | Notes                    |
 | --------------------------- | -------------- | ------------------------ |
-| [Namespace.CustomTableName] | [Display Name] | [What this table stores] |
+| {Namespace.CustomTableName} | {Display Name} | {What this table stores} |
 
-#### [Namespace.CustomTableName] — Fields
+#### {Namespace.CustomTableName} — Fields
 
 | Field Name      | Data Type   | Notes           |
 | --------------- | ----------- | --------------- |
-| [FieldCodeName] | [data type] | [Field purpose] |
+| {FieldCodeName} | {data type} | {Field purpose} |
 
 ### Module Classes
 
 | Class Name                  | Display Name   | Notes                               |
 | --------------------------- | -------------- | ----------------------------------- |
-| [Namespace.ModuleClassName] | [Display Name] | [What this module class represents] |
+| {Namespace.ModuleClassName} | {Display Name} | {What this module class represents} |
 
 ### Page Builder Components
 
 **Page templates:**
 
-- [TemplateName] — properties: [list or "none"]
+- {TemplateName} — properties: {list or "none"}
 
 **Sections:**
 
 | Type Identifier          | Properties                |
 | ------------------------ | ------------------------- |
-| [Namespace.Section.Name] | [Property list or "none"] |
+| {Namespace.Section.Name} | {Property list or "none"} |
 
 **Custom widgets:**
 
 | Type Identifier         | Properties                  |
 | ----------------------- | --------------------------- |
-| [Namespace.Widget.Name] | [Property names with types] |
+| {Namespace.Widget.Name} | {Property names with types} |
 
 **Built-in KX13 widgets:**
 
-- [List built-in widgets in use, e.g., Kentico.Widget.RichText, Kentico.FormWidget]
+- {List built-in widgets in use, e.g., Kentico.Widget.RichText, Kentico.FormWidget}
 
 ---
 
@@ -118,7 +118,7 @@ KX13 `docrelationships` fields store their data in the `CMS_Relationship` table,
 
 | Class Name                  | Display Name   | Reusable Field Schemas | Created By                | Notes                                |
 | --------------------------- | -------------- | ---------------------- | ------------------------- | ------------------------------------ |
-| [Namespace.ContentTypeName] | [Display Name] | [Schema names or "—"]  | [Migration tool / Manual] | [Purpose and relationship to source] |
+| {Namespace.ContentTypeName} | {Display Name} | {Schema names or "—"}  | {Migration tool / Manual} | {Purpose and relationship to source} |
 
 <!-- Created By:
   - Migration tool: has a source class mapped via IClassMapping — the tool creates this type during --page-types
@@ -129,13 +129,13 @@ KX13 `docrelationships` fields store their data in the `CMS_Relationship` table,
 
 | Class Name                  | Display Name   | Created By                | Notes                |
 | --------------------------- | -------------- | ------------------------- | -------------------- |
-| [Namespace.ContentTypeName] | [Display Name] | [Migration tool / Manual] | [Origin and purpose] |
+| {Namespace.ContentTypeName} | {Display Name} | {Migration tool / Manual} | {Origin and purpose} |
 
 ### Reusable Field Schemas
 
 | Schema Name  | Applied To          | Created By                                                         | Description              |
 | ------------ | ------------------- | ------------------------------------------------------------------ | ------------------------ |
-| [SchemaName] | [Content type list] | [Migration tool (ReusableSchemaBuilder in IClassMapping) / Manual] | [Fields and their types] |
+| {SchemaName} | {Content type list} | {Migration tool (ReusableSchemaBuilder in IClassMapping) / Manual} | {Fields and their types} |
 
 ### Taxonomies
 
@@ -143,7 +143,7 @@ KX13 `docrelationships` fields store their data in the `CMS_Relationship` table,
 
 | Taxonomy Name  | Tags         | Created By                                                                           | Notes                                       |
 | -------------- | ------------ | ------------------------------------------------------------------------------------ | ------------------------------------------- |
-| [TaxonomyName] | [Tag values] | [Migration tool (`--categories`) / Manual (pre-migration) / Manual (post-migration)] | [What KX13 construct it replaces, or "New"] |
+| {TaxonomyName} | {Tag values} | {Migration tool (`--categories`) / Manual (pre-migration) / Manual (post-migration)} | {What KX13 construct it replaces, or "New"} |
 
 <!-- Created By for taxonomies:
   - Migration tool (--categories): migrated from KX13 categories
@@ -161,7 +161,7 @@ KX13 `docrelationships` fields store their data in the `CMS_Relationship` table,
 
 | Source Class            | Target Class            | Notes                                 |
 | ----------------------- | ----------------------- | ------------------------------------- |
-| [Namespace.SourceClass] | [Namespace.TargetClass] | [Field-level changes, rename details] |
+| {Namespace.SourceClass} | {Namespace.TargetClass} | {Field-level changes, rename details} |
 
 **appsettings.json fragment:**
 
@@ -175,27 +175,27 @@ All source page types that map to XbyK webpage content types via `IClassMapping`
 
 | Source Class               | Target Class                  | Type    | Notes                         |
 | -------------------------- | ----------------------------- | ------- | ----------------------------- |
-| [Namespace.SourcePageType] | [Namespace.TargetContentType] | website | [Field restructuring details] |
+| {Namespace.SourcePageType} | {Namespace.TargetContentType} | website | {Field restructuring details} |
 
 ### Merge Mappings
 
-#### [Namespace.MergedContentType] — [Display Name]
+#### {Namespace.MergedContentType} — {Display Name}
 
 **Requires:** Code extension `IClassMapping` (`MultiClassMapping`)
 
-- **Target type**: [website|reusable]
-- **Notes**: [Why these are merged, data implications]
+- **Target type**: {website / reusable}
+- **Notes**: {Why these are merged, data implications}
 
 | Source Class                | Is Template |
 | --------------------------- | ----------- |
-| [Namespace.SourcePageType1] | Yes         |
-| [Namespace.SourcePageType2] | No          |
+| {Namespace.SourcePageType1} | Yes         |
+| {Namespace.SourcePageType2} | No          |
 
 Field mapping within `MultiClassMapping`:
 
 | Source Class       | Source Field | Target Field      | Notes                    |
 | ------------------ | ------------ | ----------------- | ------------------------ |
-| [Namespace.Source] | [FieldName]  | [TargetFieldName] | [Transformation details] |
+| {Namespace.Source} | {FieldName}  | {TargetFieldName} | {Transformation details} |
 
 ### Exclusions
 
@@ -203,7 +203,7 @@ Field mapping within `MultiClassMapping`:
 
 | Source Class              | Reason                                        |
 | ------------------------- | --------------------------------------------- |
-| [Namespace.ExcludedClass] | [Why excluded and how it's handled otherwise] |
+| {Namespace.ExcludedClass} | {Why excluded and how it's handled otherwise} |
 
 <!-- IMPORTANT: Before finalizing exclusions, cross-reference against the Class Inheritance
   Hierarchy section above. If a class listed here is a parent of any migrated class,
@@ -232,7 +232,7 @@ Taxonomies created automatically by the migration tool from KX13 categories (`--
 
 | KX13 Category                | Target Taxonomy      | Target Tags           | Notes                                |
 | ---------------------------- | -------------------- | --------------------- | ------------------------------------ |
-| [KX13 category name or path] | [XbyK Taxonomy Name] | [Migrated tag values] | [Mapping notes, tag name transforms] |
+| {KX13 category name or path} | {XbyK Taxonomy Name} | {Migrated tag values} | {Mapping notes, tag name transforms} |
 
 #### New Taxonomies (manual creation required)
 
@@ -240,7 +240,7 @@ Taxonomies with no KX13 category equivalent. Must be created manually — either
 
 | Taxonomy Name  | Tags         | Purpose                         | Referenced By                     | Created By                                         |
 | -------------- | ------------ | ------------------------------- | --------------------------------- | -------------------------------------------------- |
-| [TaxonomyName] | [Tag values] | [What this taxonomy classifies] | [Content types that reference it] | [Manual (pre-migration) / Manual (post-migration)] |
+| {TaxonomyName} | {Tag values} | {What this taxonomy classifies} | {Content types that reference it} | {Manual (pre-migration) / Manual (post-migration)} |
 
 <!-- Created By for new taxonomies:
   - Manual (pre-migration): must exist before --pages because field transforms reference tag GUIDs
@@ -254,8 +254,8 @@ Taxonomies with no KX13 category equivalent. Must be created manually — either
 ### Field Changes (IClassMapping)
 
 | Source Class            | Source Field      | Target Class            | Target Field      | Rename | Data Type Change | Notes                           |
-| ----------------------- | ----------------- | ----------------------- | ----------------- | ------ | ---------------- | ------------------------------- | ------------------------------------------- |
-| [Namespace.SourceClass] | [SourceFieldName] | [Namespace.TargetClass] | [TargetFieldName] | [Yes   | No]              | [e.g., longtext → richtexthtml] | [Form control change, direct mapping, etc.] |
+| ----------------------- | ----------------- | ----------------------- | ----------------- | ------ | ---------------- | ------------------------------- |
+| {Namespace.SourceClass} | {SourceFieldName} | {Namespace.TargetClass} | {TargetFieldName} | {Yes / No} | {e.g., longtext → richtexthtml} | {Form control change, direct mapping, etc.} |
 
 ### SEO Metadata Fields
 
@@ -264,7 +264,7 @@ Taxonomies with no KX13 category equivalent. Must be created manually — either
 
 | Source Field (KX13 extended) | Target Field (Schema) | Applied To          |
 | ---------------------------- | --------------------- | ------------------- |
-| [DocumentPageTitle]          | [SEOMetaTitle]        | [Content type list] |
+| {DocumentPageTitle}          | {SEOMetaTitle}        | {Content type list} |
 
 ### File / Attachment Fields
 
@@ -272,7 +272,7 @@ By default, `file`/`DirectUploadControl` fields automatically migrate as `Legacy
 
 | Source Class            | Source Field | Target Field                      | Notes                                            |
 | ----------------------- | ------------ | --------------------------------- | ------------------------------------------------ |
-| [Namespace.SourceClass] | [FieldName]  | [TargetFieldName] (content item asset) | [Auto-migrated as Legacy.Attachment reference; optional post-migration curation into custom asset type] |
+| {Namespace.SourceClass} | {FieldName}  | {TargetFieldName} (content item asset) | {Auto-migrated as Legacy.Attachment reference; optional post-migration curation into custom asset type} |
 
 ### Custom Form Control Fields
 
@@ -280,7 +280,7 @@ Source form controls not covered by the migration tool's built-in Field Type and
 
 | Source Class            | Source Field | Source Data Type + Form Control | Target Data Type + Form Component | Handling Mechanism                                                                                           |
 | ----------------------- | ------------ | ------------------------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| [Namespace.SourceClass] | [FieldName]  | [e.g., text + countrySelector]  | [e.g., text + Text input]         | [Built-in catch-all / `FieldMigrations` config / `IFieldMigration` code / `WithFieldPatch` in IClassMapping] |
+| {Namespace.SourceClass} | {FieldName}  | {e.g., text + countrySelector}  | {e.g., text + Text input}         | {Built-in catch-all / `FieldMigrations` config / `IFieldMigration` code / `WithFieldPatch` in IClassMapping} |
 
 <!-- Handling Mechanism options:
   - Built-in catch-all: the built-in mapping has a catch-all entry for this data type
@@ -308,7 +308,7 @@ Source form controls not covered by the migration tool's built-in Field Type and
 
 | Source Class            | Source Field | Target Field      | Transformation                                                                             |
 | ----------------------- | ------------ | ----------------- | ------------------------------------------------------------------------------------------ |
-| [Namespace.SourceClass] | [FieldName]  | [TargetFieldName] | [Detailed description of the transformation logic, including complexity notes if relevant] |
+| {Namespace.SourceClass} | {FieldName}  | {TargetFieldName} | {Detailed description of the transformation logic, including complexity notes if relevant} |
 
 <!-- Include implementation hints:
   - ConvertFrom targeting which source field
@@ -333,8 +333,8 @@ Source form controls not covered by the migration tool's built-in Field Type and
 **Requires:** Code extension `ContentItemDirectorBase.DirectLinkedNode()`
 
 | Scope                                | Strategy     | Notes |
-| ------------------------------------ | ------------ | ----- | ---------------- | -------------------------------------------------- |
-| [Namespace.PageType or path pattern] | [materialize | drop  | store_reference] | [Deduplication implications, linked node behavior] |
+| ------------------------------------ | ------------ | ----- |
+| {Namespace.PageType or path pattern} | {materialize / drop / store_reference} | {Deduplication implications, linked node behavior} |
 
 ### Child Pages as Ancestor References
 
@@ -344,7 +344,7 @@ References are populated automatically during `--pages` — not as a post-migrat
 
 | Parent Class            | Child Class            | Source Path       | Reference Field     | Notes                                             |
 | ----------------------- | ---------------------- | ----------------- | ------------------- | ------------------------------------------------- |
-| [Namespace.ParentClass] | [Namespace.ChildClass] | [/path/pattern/*] | [FieldNameOnParent] | [Direct child / folder skipping, filtering notes] |
+| {Namespace.ParentClass} | {Namespace.ChildClass} | {/path/pattern/*} | {FieldNameOnParent} | {Direct child / folder skipping, filtering notes} |
 
 <!--
   - Parent Class: the page type on which LinkChildren is called in Direct()
@@ -363,7 +363,7 @@ Every linked page in the KX13 page tree must have an explicit migration strategy
 
 | Source Path            | Source Class         | Linked To (Original Path) | Strategy                               | Notes                                    |
 | ---------------------- | -------------------- | ------------------------- | -------------------------------------- | ---------------------------------------- |
-| [/path/to/linked-page] | [Namespace.PageType] | [/path/to/original-page]  | [materialize / drop / store_reference] | [Why this strategy, deduplication notes] |
+| {/path/to/linked-page} | {Namespace.PageType} | {/path/to/original-page}  | {materialize / drop / store_reference} | {Why this strategy, deduplication notes} |
 
 <!--
   Strategies:
@@ -378,9 +378,9 @@ Every linked page in the KX13 page tree must have an explicit migration strategy
 
 | Source Class               | Source Path      | Target Widget Type           | Ancestor Level | Editable Area     | Section Type            | Zone  |
 | -------------------------- | ---------------- | ---------------------------- | -------------- | ----------------- | ----------------------- | ----- |
-| [Namespace.SourcePageType] | [/path/filter/*] | [Namespace.WidgetIdentifier] | -1             | [area-identifier] | [SectionTypeIdentifier] | first |
+| {Namespace.SourcePageType} | {/path/filter/*} | {Namespace.WidgetIdentifier} | -1             | {area-identifier} | {SectionTypeIdentifier} | first |
 
-**Property mapping**: [How page fields map to widget properties]
+**Property mapping**: {How page fields map to widget properties}
 
 ---
 
@@ -390,8 +390,8 @@ Every linked page in the KX13 page tree must have an explicit migration strategy
 
 **Configures:** `appsettings.json` → `OptInFeatures.QuerySourceInstanceApi`
 
-- **Enabled**: [Yes|No]
-- **Purpose**: [Why it's enabled/disabled]
+- **Enabled**: {Yes / No}
+- **Purpose**: {Why it's enabled/disabled}
 - **Setup**: Automated — `ToolApiController.cs` is deployed to the KX13 instance by the appsettings skill during configuration generation. Ensure the KX13 instance is built and running before executing `--pages`.
 
 ### Built-in Widget Migration
@@ -409,7 +409,7 @@ No `IWidgetMigration` code needed for these:
 
 | Source Identifier     | Target Identifier    | Property Changes                                      |
 | --------------------- | -------------------- | ----------------------------------------------------- |
-| [Source.Section.Name] | [Target.SectionName] | [Detailed property mapping with transformation logic] |
+| {Source.Section.Name} | {Target.SectionName} | {Detailed property mapping with transformation logic} |
 
 ### Custom Widget Type Mappings
 
@@ -417,7 +417,7 @@ No `IWidgetMigration` code needed for these:
 
 | Source Identifier    | Target Identifier   | Notes                                                                                            |
 | -------------------- | ------------------- | ------------------------------------------------------------------------------------------------ |
-| [Source.Widget.Name] | [Target.WidgetName] | [Detailed property mapping, GUID resolution, special handling, and complexity notes if relevant] |
+| {Source.Widget.Name} | {Target.WidgetName} | {Detailed property mapping, GUID resolution, special handling, and complexity notes if relevant} |
 
 ### Widget Property Transforms
 
@@ -425,7 +425,7 @@ No `IWidgetMigration` code needed for these:
 
 | Widget Identifier  | Property Name  | Transformation                                | Notes                             |
 | ------------------ | -------------- | --------------------------------------------- | --------------------------------- |
-| [WidgetIdentifier] | [PropertyName] | [Detailed transformation logic with examples] | [Edge cases, lookup requirements] |
+| {WidgetIdentifier} | {PropertyName} | {Detailed transformation logic with examples} | {Edge cases, lookup requirements} |
 
 ---
 
@@ -454,5 +454,5 @@ Full configuration to generate from this plan:
 ### Code Extensions to Implement
 
 | Extension       | Class          | Description             |
-| --------------- | -------------- | ----------------------- | ---------------- | ------------------------ | ---------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| [ExtensionName] | [IClassMapping | ContentItemDirectorBase | IWidgetMigration | IWidgetPropertyMigration | IFieldMigration] | [Detailed description of what this extension does, fields it handles, transforms it performs, and complexity notes if relevant] |
+| --------------- | -------------- | ----------------------- |
+| {ExtensionName} | {IClassMapping / ContentItemDirectorBase / IWidgetMigration / IWidgetPropertyMigration / IFieldMigration} | {Detailed description of what this extension does, fields it handles, transforms it performs, and complexity notes if relevant} |

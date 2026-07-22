@@ -10,7 +10,7 @@ This plugin consolidates the full KX13 upgrade toolkit into three areas:
 | [Content migration](#content-migration) | `migrate-content-plan`, `migrate-content-appsettings`, `migrate-content-classes`, `migrate-content-fields`, `migrate-content-widgets`, `migrate-content-items`, `migrate-content-run`, `migrate-content-eval` | Plans, configures, executes, and evaluates the database **content** migration via the [Kentico Migration Tool](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool). |
 | [Codebase migration](#codebase-migration) | `migrate-code-global`, `migrate-code-component`, `migrate-code-page-widgets`, `migrate-code-page`, `migrate-code-page-visual` | Migrates the live-site **code** — controllers, views, repositories, shared components, and Page Builder rendering. |
 
-For an end-to-end view of how the three areas fit together in a full upgrade, see [KX13 upgrade plugins](../../docs/KX13-Upgrade-Plugins.md) and Kentico's [official upgrade walkthrough](https://docs.kentico.com/x/upgrade_walkthrough_guides).
+For an end-to-end view of how the three areas fit together in a full upgrade, see `docs/KX13-Upgrade-Plugins.md` and Kentico's [official upgrade walkthrough](https://docs.kentico.com/x/upgrade_walkthrough_guides).
 
 ## Prerequisites
 
@@ -50,7 +50,7 @@ copilot plugin install kentico-kx13-migration@xperience-by-kentico-kenticopilot
 
 ## Configure MCP servers
 
-This plugin requires some MCP servers to be set up in your workspace. See [MCP-setup.md](./MCP-setup.md) for the list and copy-paste-ready configuration.
+This plugin requires some MCP servers to be set up in your workspace. See `MCP-setup.md` for the list and copy-paste-ready configuration.
 
 ---
 
@@ -95,9 +95,10 @@ After this one-time setup, invoke the `migrate-content-audit` skill from your AI
 
 Prompt name: **migrate-content-audit**
 Parameters:
-  - *scope* (optional): Which areas to export. Defaults to a full export when omitted (e.g., "page types and forms", "page builder components", "everything").
-  - *filters* (optional): Site, class-name, or content-tree scoping (e.g., "site DancingGoatMvc", "DancingGoat.* page types", "under /Articles").
-  - *output-path* (optional): Destination directory for the JSON and report. Defaults to `audit-results/` under the auditor project.
+
+- *scope* (optional): Which areas to export. Defaults to a full export when omitted (e.g., "page types and forms", "page builder components", "everything").
+- *filters* (optional): Site, class-name, or content-tree scoping (e.g., "site DancingGoatMvc", "DancingGoat.* page types", "under /Articles").
+- *output-path* (optional): Destination directory for the JSON and report. Defaults to `audit-results/` under the auditor project.
 
 Interprets the request, picks the matching [CLI flags](#cli-usage), runs the auditor against the configured KX13 database, and presents the resulting JSON files (and the Markdown report on full exports). The output is the canonical input for the [`migrate-content-plan`](#migrate-content-plan) prompt — the typical first step of a KX13 → XbyK upgrade.
 
@@ -106,7 +107,7 @@ Interprets the request, picks the matching [CLI flags](#cli-usage), runs the aud
 
 **VS Code GitHub Copilot example:**
 
-```
+```text
 /migrate-content-audit
 
 Audit the DancingGoatMvc site as the starting point for migrating it to
@@ -156,7 +157,7 @@ KX13 has three primary places where developers store custom data, plus extension
 
 #### Auditor project structure
 
-```
+```text
 src/
 ├── KX13.ContentAuditor.CLI/            # Console entry point, argument parsing, JSON export
 ├── KX13.ContentAuditor.Application/    # Orchestration service (ContentModelService)
@@ -180,10 +181,10 @@ AI-assistant skills for migrating the **database content** of KX13 projects to X
 This area covers the data-migration side of an upgrade — everything the Migration Tool transfers from a KX13 database to an XbyK database, plus the per-project code extensions needed for non-trivial transformations:
 
 - [Migrate data and binary files](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/blob/master/Migration.Tool.CLI/README.md#migration-details-for-specific-object-types) — content types, pages, fields, taxonomies, attachments, media libraries, forms.
-- [Custom class transformations](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/blob/master/Migration.Tool.Extensions/README.md#custom-class-mappings-iclassmapping) — merges, splits, renames, Content Hub conversions, reusable field schemas.
+- [Custom class transformations](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/blob/master/docs/customization/Class-Mappings.md) — merges, splits, renames, Content Hub conversions, reusable field schemas.
 - [Custom tables](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/blob/master/Migration.Tool.CLI/README.md#custom-tables) — migrated as custom module classes by default, or as reusable Content hub items via opt-in. See the `--custom-tables` parameter.
-- [Field transformations](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/blob/master/Migration.Tool.Extensions/README.md#field-migrations-ifieldmigration) — custom form controls, data type changes, HTML sanitization, URL rewrites.
-- [Page Builder widget and section transforms](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/blob/master/Migration.Tool.Extensions/README.md#widget-migrations-iwidgetmigration) — type changes, property restructuring, page-to-widget conversion.
+- [Field transformations](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/blob/master/docs/customization/Field-Migrations.md) — custom form controls, data type changes, HTML sanitization, URL rewrites.
+- [Page Builder widget and section transforms](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/blob/master/docs/customization/Widget-Migrations.md) — type changes, property restructuring, page-to-widget conversion.
 - [Linked-page handling](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/blob/master/Migration.Tool.Extensions/README.md#customize-linked-page-handling) — materialize, drop, or store as content item references.
 - Post-migration evaluation — automated comparison of the migrated database against the plan.
 
@@ -200,7 +201,7 @@ For a full capability comparison, see Kentico's [Plan your strategy for migratin
 
 Place the KX13 source, XbyK target, Migration Tool, and the migrate-content-audit output in a single workspace:
 
-```
+```text
 <workspace-root>/
 ├── KX13/                            # KX13 source project
 ├── XbyK/                            # XbyK target project
@@ -228,14 +229,15 @@ The "VS Code GitHub Copilot example" blocks below read as one continuous narrati
 
 Prompt name: **migrate-content-plan**  
 Parameters:
-  - *source-content-model-path*: Path to the source content model (typically the directory of `migrate-content-audit` JSON output, or a markdown description of the source).
-  - *target-content-model-path* (optional): Path to a target XbyK content model description. When provided, the plan compares source vs. target and surfaces structural divergences.
+
+- *source-content-model-path*: Path to the source content model (typically the directory of `migrate-content-audit` JSON output, or a markdown description of the source).
+- *target-content-model-path* (optional): Path to a target XbyK content model description. When provided, the plan compares source vs. target and surfaces structural divergences.
 
 Produces `migration-overview.md` and `migration-detail.md` covering content types, field mappings, widget transformations, page relationships, exclusions, taxonomy planning, manual steps, and the execution plan. Uses the official Kentico Docs MCP server (when configured) to verify XbyK capabilities.
 
 **VS Code GitHub Copilot example:**
 
-```
+```text
 /migrate-content-plan
 
 I just finished migrate-content-audit on my DancingGoatMvc database.
@@ -248,7 +250,8 @@ Produce the migration plan from the JSON output in ./audit-results/.
 
 Prompt name: **migrate-content-appsettings**  
 Parameters:
-  - *migration-plan-path*: Path to the `migration-detail.md` produced by *migrate-content-plan*.
+
+- *migration-plan-path*: Path to the `migration-detail.md` produced by *migrate-content-plan*.
 
 Generates the Migration Tool's `appsettings.json` (connection strings, `ConvertClassesToContentHub`, `EntityConfigurations`, `OptInFeatures.QuerySourceInstanceApi`, `OptInFeatures.CustomMigration.FieldMigrations`, `AssetRootFolders`, `MigrationProtocolPath`) and a markdown summary that traces every setting back to a plan section. When KX13 and XbyK projects are present in the workspace, infrastructure values (connection strings, source instance URI) are discovered automatically; otherwise, placeholders are emitted.
 
@@ -256,7 +259,7 @@ If the plan calls for [Source instance API discovery](https://github.com/Kentico
 
 **VS Code GitHub Copilot example:**
 
-```
+```text
 /migrate-content-appsettings
 
 The plan in ./migration-detail.md is ready. Generate the migration
@@ -271,13 +274,14 @@ Run all four codegen skills — each skill inspects the plan and automatically s
 
 Prompt name: **migrate-content-classes**  
 Parameters:
-  - *migration-plan-path*: Path to the `migration-detail.md`.
+
+- *migration-plan-path*: Path to the `migration-detail.md`.
 
 Generates `IClassMapping` and (optional) `ReusableSchemaBuilder` C# code in the `Migration.Tool.Extensions` project, plus the corresponding DI registration. Handles class merges, splits, field renames, value conversions (`ConvertFrom`), data-type/form-control patches (`WithFieldPatch`), and Content Hub conversions. After generation, the skill builds the project and reports any unresolved TODOs (typically taxonomy tag GUIDs that have to be resolved post-creation).
 
 **VS Code GitHub Copilot example:**
 
-```
+```text
 /migrate-content-classes
 
 Generate the IClassMapping and ReusableSchemaBuilder C# extensions
@@ -289,13 +293,14 @@ for the page types and reusable field schemas described in
 
 Prompt name: **migrate-content-fields**  
 Parameters:
-  - *migration-plan-path*: Path to the `migration-detail.md`.
+
+- *migration-plan-path*: Path to the `migration-detail.md`.
 
 Generates `IFieldMigration` C# code for cross-class field transforms — custom form controls without an XbyK equivalent, data-type conversions that span multiple classes, HTML sanitization, and URL/path rewrites. Use this when a transform applies globally across classes; for class-scoped definition changes, *migrate-content-classes* with `WithFieldPatch` is usually sufficient.
 
 **VS Code GitHub Copilot example:**
 
-```
+```text
 /migrate-content-fields
 
 Generate the IFieldMigration extensions for the cross-class field
@@ -307,13 +312,14 @@ and the legacy form-control conversions the plan flags).
 
 Prompt name: **migrate-content-widgets**  
 Parameters:
-  - *migration-plan-path*: Path to `migration-detail.md`.
+
+- *migration-plan-path*: Path to `migration-detail.md`.
 
 Generates `IWidgetMigration` and `IWidgetPropertyMigration` C# code for custom widget and section transforms — type renames, property restructuring, consolidation, property-value conversions.
 
 **VS Code GitHub Copilot example:**
 
-```
+```text
 /migrate-content-widgets
 
 Generate the IWidgetMigration and IWidgetPropertyMigration extensions
@@ -324,13 +330,14 @@ for the custom widgets that ./migration-detail.md flags for transforms.
 
 Prompt name: **migrate-content-items**  
 Parameters:
-  - *migration-plan-path*: Path to the `migration-detail.md`.
+
+- *migration-plan-path*: Path to the `migration-detail.md`.
 
 Generates `ContentItemDirectorBase` C# code that controls per-item migration behavior during the `--pages` step: linked-page strategies (`Materialize`, `Drop`, `StoreReferenceInAncestor`), child-as-reference linking (`LinkChildren`), page-to-widget conversion, and conditional template overrides. Filters operate on numeric `NodeClassID`, so the migration plan must include `ClassID` values for the involved page types.
 
 **VS Code GitHub Copilot example:**
 
-```
+```text
 /migrate-content-items
 
 Generate the ContentItemDirectorBase extensions for the linked-page
@@ -346,7 +353,8 @@ Treat `migrate-content-run` and `migrate-content-eval` as a loop. Almost every n
 
 Prompt name: **migrate-content-run**  
 Parameters:
-  - *migration-plan-path*: Path to the `migration-detail.md`.
+
+- *migration-plan-path*: Path to the `migration-detail.md`.
 
 Executes a **single combined `migrate` CLI invocation** with all required flags from the plan's Execution Plan section (`--sites`, `--custom-modules`, `--users`, `--page-types`, `--pages`, `--categories`, `--media-libraries`, `--forms`, etc.) — the migration tool orders the flags internally based on their dependency tree, so this skill never runs flags as separate sequential commands. The skill monitors stdout/stderr, applies pre-flight checks, validates each step with SQL queries, and writes structured logs to `MigrationProtocolPath`. For the full set of CLI parameters and their dependencies, see the official [Migrate Command Parameters](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/blob/master/Migration.Tool.CLI/README.md#migrate-command-parameters).
 
@@ -355,7 +363,7 @@ Executes a **single combined `migrate` CLI invocation** with all required flags 
 
 **VS Code GitHub Copilot example:**
 
-```
+```text
 /migrate-content-run
 
 Migration.Tool.Extensions builds clean and the KX13 source app is
@@ -367,14 +375,15 @@ target database following ./migration-detail.md.
 
 Prompt name: **migrate-content-eval**  
 Parameters:
-  - *migration-plan-detail-path*: Path to the `migration-detail.md`.
-  - *appsettings-path* (optional): Path to a non-default `appsettings.json` if the migration was run with a different configuration.
+
+- *migration-plan-detail-path*: Path to the `migration-detail.md`.
+- *appsettings-path* (optional): Path to a non-default `appsettings.json` if the migration was run with a different configuration.
 
 Reads the protocol and console logs from `migrate-content-run`, queries both the KX13 and XbyK databases, and compares the result against the plan across 12 categories (configuration overview, content types, reusable field schemas, taxonomies, content item counts and orphans, field verification, page issues, users, media, forms, custom modules, overall health). Emits a self-contained HTML report with per-category pass/fail/warn status and routing back to the appropriate skill (`migrate-content-appsettings`, code-gen skills, or manual fix-up) for each finding.
 
 **VS Code GitHub Copilot example:**
 
-```
+```text
 /migrate-content-eval
 
 migrate-content-run finished. Compare the migrated XbyK database against
@@ -405,7 +414,7 @@ The following areas are not covered and must be handled manually: custom modules
 
 Place your KX13 and XbyK projects in the same workspace:
 
-```
+```text
 KX13/          # Kentico Xperience 13 project files
 XbyK/          # Xperience by Kentico project files
 ```
@@ -433,7 +442,7 @@ Migrates global code, generates code files, and sets up the project foundation:
 
 **VS Code GitHub Copilot example:**
 
-```
+```text
 /migrate-code-global
 ```
 
@@ -441,8 +450,9 @@ Migrates global code, generates code files, and sets up the project foundation:
 
 Prompt name: **migrate-code-component**  
 Parameters:
-  - *componentName*: The name of the shared element to migrate. For example: header, footer, navigation menu, sidebar.
-  - *legacyPageUrl*: The URL of the page in the source project.
+
+- *componentName*: The name of the shared element to migrate. For example: header, footer, navigation menu, sidebar.
+- *legacyPageUrl*: The URL of the page in the source project.
 
 Migrates reusable components like headers, footers, and navigation elements. The prompt locates the specified element in the source project and migrates it together with all dependencies (views, layouts, logic, etc.).
 
@@ -450,7 +460,7 @@ Migrates reusable components like headers, footers, and navigation elements. The
 
 **VS Code GitHub Copilot example:**
 
-```
+```text
 /migrate-code-component
 
 componentName: breadcrumbs
@@ -461,8 +471,9 @@ legacyPageUrl: https://localhost:5001/en-us/home
 
 Prompt name: **migrate-code-page-widgets**  
 Parameters:
-  - *pageName*: The name in the content tree of the source project.
-  - *legacyPageUrl*: The URL of the page in the source project.
+
+- *pageName*: The name in the content tree of the source project.
+- *legacyPageUrl*: The URL of the page in the source project.
 
 Migrates Page Builder [widgets](https://docs.kentico.com/x/7gWiCQ) and [sections](https://docs.kentico.com/x/9AWiCQ) used by the specified page. Can be omitted if the page doesn't use Page Builder features.
 
@@ -470,7 +481,7 @@ Migrates Page Builder [widgets](https://docs.kentico.com/x/7gWiCQ) and [sections
 
 **VS Code GitHub Copilot example:**
 
-```
+```text
 /migrate-code-page-widgets
 
 pageName: home
@@ -481,8 +492,9 @@ legacyPageUrl: https://localhost:5001/en-us/home
 
 Prompt name: **migrate-code-page**  
 Parameters:
-  - *pageName*: The name in the content tree of the source project.
-  - *legacyPageUrl*: The URL of the page in the source project.
+
+- *pageName*: The name in the content tree of the source project.
+- *legacyPageUrl*: The URL of the page in the source project.
 
 Migrates the code of individual pages: controllers, views, layouts, and dependencies.
 
@@ -490,7 +502,7 @@ Migrates the code of individual pages: controllers, views, layouts, and dependen
 
 **VS Code GitHub Copilot example:**
 
-```
+```text
 /migrate-code-page
 
 pageName: home
@@ -501,9 +513,10 @@ legacyPageUrl: https://localhost:5001/en-us/home
 
 Prompt name: **migrate-code-page-visual**  
 Parameters:
-  - *pageName*: The name in the content tree of the source project.
-  - *legacyPageUrl*: The URL of the page in the source project.
-  - *newPageUrl*: The URL of the page in the target project.
+
+- *pageName*: The name in the content tree of the source project.
+- *legacyPageUrl*: The URL of the page in the source project.
+- *newPageUrl*: The URL of the page in the target project.
 
 Ensures the migrated page visually matches the original KX13 page. Use if *migrate-code-page* doesn't successfully replicate the look and feel. The prompt uses Playwright to identify differences in both pages and aligns the migrated page to match the source.
 
@@ -511,7 +524,7 @@ Ensures the migrated page visually matches the original KX13 page. Use if *migra
 
 **VS Code GitHub Copilot example:**
 
-```
+```text
 /migrate-code-page-visual
 
 pageName: home
@@ -535,4 +548,4 @@ These skill files serve as a baseline for migrating KX13 projects to Xperience b
 
 ## License
 
-Distributed under the MIT License. See [`LICENSE.md`](../../LICENSE.md) for more information.
+Distributed under the MIT License. See `LICENSE.md` for more information.

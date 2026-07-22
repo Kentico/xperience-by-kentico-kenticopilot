@@ -1,4 +1,4 @@
-# Migration Overview — [Project Name]
+# Migration Overview — {Project Name}
 
 ## Manual Steps
 
@@ -8,7 +8,7 @@ Steps that must be completed **before** running the migration tool. These are it
 
 | Step                                   | Reason                                   |
 | -------------------------------------- | ---------------------------------------- |
-| [Description of what needs to be done] | [Why this is necessary before migration] |
+| {Description of what needs to be done} | {Why this is necessary before migration} |
 
 <!-- Examples:
   - Create taxonomy tags (e.g. DayOfWeek: Monday–Sunday) needed by field transforms during migration — include a note to fill in the tag GUIDs in the detail document's lookup table, e.g.: "Create **DayOfWeek** taxonomy with 7 tags (Monday–Sunday). After creation, fill in the tag GUIDs in the lookup table in [migration-detail](./migration-detail)."
@@ -22,7 +22,7 @@ Steps that should be completed **after** the migration tool finishes. These addr
 
 | Step                                   | Reason                                  |
 | -------------------------------------- | --------------------------------------- |
-| [Description of what needs to be done] | [Why this is necessary after migration] |
+| {Description of what needs to be done} | {Why this is necessary after migration} |
 
 <!-- Examples:
   - Create thin wrapper pages (e.g., DoctorDetailPage for each migrated Doctor content item)
@@ -42,7 +42,7 @@ Content types and taxonomies that exist only in the target model. The migration 
 
 | Content Type                | Type               | When to Create                 | Reason                                   |
 | --------------------------- | ------------------ | ------------------------------ | ---------------------------------------- |
-| [Namespace.ContentTypeName] | [website/reusable] | [Pre-migration/Post-migration] | [Why this type has no source equivalent] |
+| {Namespace.ContentTypeName} | {website/reusable} | {Pre-migration/Post-migration} | {Why this type has no source equivalent} |
 
 <!-- Examples:
   - MedioClinic.ImageAsset (reusable) — Post-migration — Centralizes all images; no single KX13 type maps to it
@@ -54,7 +54,7 @@ Content types and taxonomies that exist only in the target model. The migration 
 
 | Taxonomy Name  | When to Create                 | Reason                                 |
 | -------------- | ------------------------------ | -------------------------------------- |
-| [TaxonomyName] | [Pre-migration/Post-migration] | [Why this taxonomy has no KX13 source] |
+| {TaxonomyName} | {Pre-migration/Post-migration} | {Why this taxonomy has no KX13 source} |
 
 <!-- When to Create:
   - Pre-migration: if taxonomy tags are needed by field transforms (ConvertFrom) during migration
@@ -67,7 +67,7 @@ KX13 features not supported by the migration tool that need manual handling or a
 
 | Feature        | KX13 Usage                | XbyK Alternative                                   |
 | -------------- | ------------------------- | -------------------------------------------------- |
-| [Feature Name] | [How it was used in KX13] | [Recommended approach in XbyK, or 'not available'] |
+| {Feature Name} | {How it was used in KX13} | {Recommended approach in XbyK, or 'not available'} |
 
 <!-- Examples:
   - Newsletter subscription widget → Replace with Form widget + third-party email service
@@ -82,11 +82,11 @@ KX13 features not supported by the migration tool that need manual handling or a
 
 | Extension Type             | Count | Summary                                                                              |
 | -------------------------- | ----- | ------------------------------------------------------------------------------------ |
-| `IClassMapping`            | [N]   | [Brief summary of what these mappings do; include complexity notes inline if needed] |
-| `ContentItemDirectorBase`  | [N]   | [Brief summary of relationship handling; include complexity notes inline if needed]  |
-| `IWidgetMigration`         | [N]   | [Brief summary of widget transformations; include complexity notes inline if needed] |
-| `IWidgetPropertyMigration` | [N]   | [Brief summary of property transforms; include complexity notes inline if needed]    |
-| `IFieldMigration`          | [N]   | [Brief summary of field migrations; include complexity notes inline if needed]       |
+| `IClassMapping`            | {N}   | {Brief summary of what these mappings do; include complexity notes inline if needed} |
+| `ContentItemDirectorBase`  | {N}   | {Brief summary of relationship handling; include complexity notes inline if needed}  |
+| `IWidgetMigration`         | {N}   | {Brief summary of widget transformations; include complexity notes inline if needed} |
+| `IWidgetPropertyMigration` | {N}   | {Brief summary of property transforms; include complexity notes inline if needed}    |
+| `IFieldMigration`          | {N}   | {Brief summary of field migrations; include complexity notes inline if needed}       |
 
 ---
 
@@ -98,7 +98,7 @@ Source page types and module classes that become reusable content items in the C
 
 | Source Class            | Target Class            | Summary                             |
 | ----------------------- | ----------------------- | ----------------------------------- |
-| [Namespace.SourceClass] | [Namespace.TargetClass] | [Brief description of what changes] |
+| {Namespace.SourceClass} | {Namespace.TargetClass} | {Brief description of what changes} |
 
 ### Webpage Mappings
 
@@ -106,7 +106,7 @@ Source page types that map to XbyK webpage content types.
 
 | Source Class               | Target Class                  | Summary                             |
 | -------------------------- | ----------------------------- | ----------------------------------- |
-| [Namespace.SourcePageType] | [Namespace.TargetContentType] | [Brief description of what changes] |
+| {Namespace.SourcePageType} | {Namespace.TargetContentType} | {Brief description of what changes} |
 
 ### Merge Mappings
 
@@ -114,7 +114,7 @@ Multiple source types merged into a single target type.
 
 | Target Class            | Source Classes                           | Summary                                  |
 | ----------------------- | ---------------------------------------- | ---------------------------------------- |
-| [Namespace.TargetClass] | [Namespace.Source1], [Namespace.Source2] | [Why they are merged and what to expect] |
+| {Namespace.TargetClass} | {Namespace.Source1}, {Namespace.Source2} | {Why they are merged and what to expect} |
 
 ### Exclusions
 
@@ -122,7 +122,7 @@ Source types excluded from migration.
 
 | Source Class              | Reason                                                 |
 | ------------------------- | ------------------------------------------------------ |
-| [Namespace.ExcludedClass] | [Why this is excluded and how it is handled otherwise] |
+| {Namespace.ExcludedClass} | {Why this is excluded and how it is handled otherwise} |
 
 <!-- If any source page types use class inheritance (ClassInheritsFromClassID),
   note which classes are NOT excluded despite having 0 instances because they
@@ -140,7 +140,7 @@ Taxonomies created automatically from KX13 categories by the migration tool (`--
 
 | KX13 Category        | Target Taxonomy      | Summary                            |
 | -------------------- | -------------------- | ---------------------------------- |
-| [KX13 category name] | [XbyK Taxonomy Name] | [Brief description of tag mapping] |
+| {KX13 category name} | {XbyK Taxonomy Name} | {Brief description of tag mapping} |
 
 #### New Taxonomies
 
@@ -148,13 +148,13 @@ Taxonomies with no KX13 category source. Must be created manually or programmati
 
 | Taxonomy Name  | Purpose                         | Referenced By                     | Created By                                         |
 | -------------- | ------------------------------- | --------------------------------- | -------------------------------------------------- |
-| [TaxonomyName] | [What this taxonomy classifies] | [Content types that reference it] | [Manual (pre-migration) / Manual (post-migration)] |
+| {TaxonomyName} | {What this taxonomy classifies} | {Content types that reference it} | {Manual (pre-migration) / Manual (post-migration)} |
 
 ### Reusable Field Schemas
 
 | Schema Name  | Applied To                   | Fields             |
 | ------------ | ---------------------------- | ------------------ |
-| [SchemaName] | [Which content types use it] | [Brief field list] |
+| {SchemaName} | {Which content types use it} | {Brief field list} |
 
 ---
 
@@ -166,7 +166,7 @@ Summary of notable field transformations. Detailed mappings and code examples ar
 
 | Source Class            | Transformation                                                                                                    |
 | ----------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| [Namespace.SourceClass] | [Brief description: e.g., "Split DocumentName → FirstName + LastName"; include complexity notes inline if needed] |
+| {Namespace.SourceClass} | {Brief description: e.g., "Split DocumentName → FirstName + LastName"; include complexity notes inline if needed} |
 
 ### Attachment Fields
 
@@ -174,7 +174,7 @@ Source file/attachment fields and their migration path. By default, file fields 
 
 | Source Class            | Source Field | Migration Path                          | Post-Migration Action                  |
 | ----------------------- | ------------ | --------------------------------------- | -------------------------------------- |
-| [Namespace.SourceClass] | [FieldName]  | Legacy.Attachment → [Final target type] | [Optional curation or "None needed"]   |
+| {Namespace.SourceClass} | {FieldName}  | Legacy.Attachment → {Final target type} | {Optional curation or "None needed"}   |
 
 ---
 
@@ -182,8 +182,8 @@ Source file/attachment fields and their migration path. By default, file fields 
 
 ### Source Instance API Discovery
 
-- **Enabled**: [Yes/No]
-- **Notes**: [Brief setup requirements]
+- **Enabled**: {Yes/No}
+- **Notes**: {Brief setup requirements}
 
 ### Built-in Widgets
 
@@ -191,7 +191,7 @@ Built-in KX13 widgets that migrate automatically with no custom code.
 
 | Source Widget       | XbyK Equivalent    |
 | ------------------- | ------------------ |
-| [Source identifier] | [XbyK widget name] |
+| {Source identifier} | {XbyK widget name} |
 
 ### Custom Widget Mappings
 
@@ -199,13 +199,13 @@ Custom widgets requiring `IWidgetMigration` code.
 
 | Source Widget       | Target Widget       | Summary                                                                        |
 | ------------------- | ------------------- | ------------------------------------------------------------------------------ |
-| [Source identifier] | [Target identifier] | [Brief description of what changes; include complexity notes inline if needed] |
+| {Source identifier} | {Target identifier} | {Brief description of what changes; include complexity notes inline if needed} |
 
 ### Section Mappings
 
 | Source Section      | Target Section      | Summary                                                                            |
 | ------------------- | ------------------- | ---------------------------------------------------------------------------------- |
-| [Source identifier] | [Target identifier] | [Brief description of property changes; include complexity notes inline if needed] |
+| {Source identifier} | {Target identifier} | {Brief description of property changes; include complexity notes inline if needed} |
 
 ---
 
@@ -215,7 +215,7 @@ Summary of how page relationships and linked pages are handled.
 
 | Source Pattern                           | Strategy                           | Summary                             |
 | ---------------------------------------- | ---------------------------------- | ----------------------------------- |
-| [Description of the source relationship] | [materialize/drop/store_reference] | [Brief explanation of what happens] |
+| {Description of the source relationship} | {materialize/drop/store_reference} | {Brief explanation of what happens} |
 
 ---
 

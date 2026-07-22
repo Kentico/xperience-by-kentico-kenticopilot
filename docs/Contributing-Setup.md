@@ -12,7 +12,7 @@ Resources must not duplicate information already available in the Kentico docume
 
 ## Repository layout
 
-```
+```text
 .
 ├── AGENTS.md                       # Conventions (CLAUDE.md points here)
 ├── CLAUDE.md                       # Pointer to AGENTS.md
@@ -59,6 +59,14 @@ New plugins must be registered in **both** marketplace manifests.
 A skill packages a repeatable task as instructions an AI assistant loads on demand.
 
 Follow the [Agent Skills specification](https://agentskills.io/specification) for the `SKILL.md` format, frontmatter fields, and directory layout. Also follow [Skill creation — best practices](https://agentskills.io/skill-creation/best-practices) for scoping, progressive disclosure, and what to put in `references/` vs `assets/`.
+
+### Markdown conventions
+
+- `argument-hint` frontmatter uses bracketed lowercase-hyphenated placeholders, `?` marks optional arguments: `argument-hint: "[migration-plan-path] [appsettings-path?]"`.
+- Quote all frontmatter values; order fields `name`, `description`, `argument-hint`, `compatibility`.
+- Placeholders in templates use single curly braces: `{project name}`.
+- Reference in-repo resource files with backtick paths (`` `references/docs.md` ``), not Markdown links.
+- Use Markdown links for external URLs.
 
 ### Subagent
 

@@ -32,7 +32,7 @@ Search the workspace for KX13 and XbyK projects:
 
 This sub-step applies only when `QuerySourceInstanceApi` will be needed (determined in Step 4). Gather the information now but defer actual file writes to Step 5:
 
-- Read [toolapi-deployment-reference.md](toolapi-deployment-reference.md) for deployment procedures
+- Read `toolapi-deployment-reference.md` for deployment procedures
 - Check if `ToolApiController.cs` already exists in the KX13 project's `Controllers` folder
 - If not present, prepare deployment:
   - Based on framework detection from 1b, select the correct controller variant:
