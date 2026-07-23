@@ -46,10 +46,9 @@ This repository is an agent plugin marketplace. Install plugins directly without
 ```bash
 copilot plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
 copilot plugin install kentico-digital-experience@xperience-by-kentico-kenticopilot
-copilot plugin install widget-creation@xperience-by-kentico-kenticopilot
-copilot plugin install kx13-content-audit@xperience-by-kentico-kenticopilot
-copilot plugin install kx13-content-migration@xperience-by-kentico-kenticopilot
-copilot plugin install kx13-codebase-migration@xperience-by-kentico-kenticopilot
+copilot plugin install kentico-web-development@xperience-by-kentico-kenticopilot
+copilot plugin install kentico-kx13-migration@xperience-by-kentico-kenticopilot
+copilot plugin install kentico-project-lifecycle@xperience-by-kentico-kenticopilot
 ```
 
 ### Claude Code
@@ -57,10 +56,9 @@ copilot plugin install kx13-codebase-migration@xperience-by-kentico-kenticopilot
 ```bash
 /plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
 /plugin install kentico-digital-experience@xperience-by-kentico-kenticopilot
-/plugin install widget-creation@xperience-by-kentico-kenticopilot
-/plugin install kx13-content-audit@xperience-by-kentico-kenticopilot
-/plugin install kx13-content-migration@xperience-by-kentico-kenticopilot
-/plugin install kx13-codebase-migration@xperience-by-kentico-kenticopilot
+/plugin install kentico-web-development@xperience-by-kentico-kenticopilot
+/plugin install kentico-kx13-migration@xperience-by-kentico-kenticopilot
+/plugin install kentico-project-lifecycle@xperience-by-kentico-kenticopilot
 ```
 
 ## Copy plugin files manually (alternative)
@@ -79,17 +77,15 @@ If you prefer not to use the plugin marketplace, copy plugin files directly into
    # Digital experience (custom automation actions)
    cp -r plugins/kentico-digital-experience/ YOUR_PROJECT/
 
-   # Widget creation
-   cp -r plugins/widget-creation/ YOUR_PROJECT/
+   # Web development (Page Builder widget creation)
+   cp -r plugins/kentico-web-development/ YOUR_PROJECT/
 
-   # KX13 content auditor (skill + bundled CLI source)
-   cp -r plugins/kx13-content-audit/ YOUR_PROJECT/
+   # KX13 → Xperience by Kentico migration
+   # (migrate-content-audit skill + bundled CLI source, content migration, codebase migration)
+   cp -r plugins/kentico-kx13-migration/ YOUR_PROJECT/
 
-   # KX13 content migration
-   cp -r plugins/kx13-content-migration/ YOUR_PROJECT/
-
-   # KX13 codebase migration
-   cp -r plugins/kx13-codebase-migration/ YOUR_PROJECT/
+   # Project lifecycle (CD Repository configuration)
+   cp -r plugins/kentico-project-lifecycle/ YOUR_PROJECT/
    ```
 
 ## Use the skills
@@ -97,7 +93,7 @@ If you prefer not to use the plugin marketplace, copy plugin files directly into
 After installing a plugin (or copying the files manually):
 
 1. Open your project in your AI coding assistant.
-2. Open the README for the plugin you installed (e.g., `plugins/widget-creation/README.md`).
+2. Open the README for the plugin you installed (e.g., `plugins/kentico-web-development/README.md`).
 3. Follow the instructions in the README.
 
 Each plugin README explains:
@@ -109,4 +105,4 @@ Each plugin README explains:
 
 ## Upgrading from Kentico Xperience 13?
 
-For an end-to-end view of how the KX13-related plugins (`kx13-content-migration`, `kx13-codebase-migration`) and the `kx13-content-audit` CLI tool fit into the [official upgrade walkthrough](https://docs.kentico.com/x/upgrade_walkthrough_guides), see [KX13 upgrade plugins](./KX13-Upgrade-Plugins.md).
+For an end-to-end view of how the `kentico-kx13-migration` plugin's three skill groups (content-model audit, content migration, and codebase migration) fit into the [official upgrade walkthrough](https://docs.kentico.com/x/upgrade_walkthrough_guides), see [KX13 upgrade workflow](./KX13-Upgrade-Plugins.md).

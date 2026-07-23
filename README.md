@@ -6,7 +6,7 @@
 
 AI agent prompts and instructions for Xperience by Kentico development. This repository provides pre-configured prompts for common development tasks, helping developers accelerate their workflow with AI coding assistants.
 
-This repository contains plugins (skills, instructions, MCP server configuration) tested for the following AI coding assistants:
+This repository contains plugins (skills, resources, ...) tested for the following AI coding assistants:
 
 - GitHub Copilot
 - Claude Code
@@ -23,72 +23,58 @@ This repository provides plugins, each containing a set of skills for AI coding 
 
 AI-assisted implementation of [Automation components](https://docs.kentico.com/x/automation_custom_xp) in Xperience by Kentico. Currently supports **custom automation actions** (custom step types in the Automation Builder). The AI accepts a description of the action you want to create, then reviews your project conventions and the action API, and generates the action class along with an optional properties model with form-component annotations and the assembly-level `RegisterAutomationAction<>` registration. Full instructions are available in the [README](./plugins/kentico-digital-experience/README.md).
 
-| Skill                       | Description                                                                                                  |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `automation-action-create`  | Researches the project and the action API, then implements and registers a custom automation action and (optionally) its properties model |
+| Skill               | Description                                                                                                                                |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `automation-action` | Researches the project and the action API, then implements and registers a custom automation action and (optionally) its properties model |
 
-### Widget creation
+### Web development
 
-> **Location:** [plugins/widget-creation/](./plugins/widget-creation/)
+> **Location:** [plugins/kentico-web-development/](./plugins/kentico-web-development/)
 
-Two-stage workflow for building [Page Builder](https://docs.kentico.com/x/6QWiCQ) widgets. The AI first researches your requirements against your project structure and the Xperience documentation, then generates the full widget implementation (view component, properties, Razor view, view model, localization). Full instructions are available in the [README](./plugins/widget-creation/README.md).
+Skills and references for building Xperience by Kentico websites. The `agentify` skill audits your project for agentic-development readiness and applies fixes on request. Content modeling guidance translates designs into a content model, passive-knowledge skills build [Page Builder](https://docs.kentico.com/x/6QWiCQ) widgets and structure (sections and page templates) — the AI studies your project's existing components, validates APIs against the Xperience documentation, and generates the implementation following your conventions — a content-retrieval reference skill guides reading published content in live-site code, and a design-validation skill checks the rendered live site against static HTML designs. Full instructions are available in the [README](./plugins/kentico-web-development/README.md).
 
-| Skill                          | Description                                                                      |
-| ------------------------------ | -------------------------------------------------------------------------------- |
-| `widget-create-research`       | Analyzes requirements and design files, generates implementation instructions    |
-| `widget-create-implementation` | Creates widget code following the generated instructions and project conventions |
+| Skill                    | Description                                                                                          |
+| ------------------------ | ---------------------------------------------------------------------------------------------------- |
+| `agentify`               | Audits an XbyK project for agentic-development readiness, reports gaps, and applies fixes on request |
+| `design-to-content`      | Guides content modeling — translating designs/wireframes into an Xperience content model             |
+| `page-builder-widgets`   | Builds a custom Page Builder widget (view component, properties, Razor view, view model, localization) |
+| `page-builder-structure` | Builds Page Builder structure — sections (widget-zone layouts) and page templates (full-page layouts) |
+| `content-retrieval`      | Decision rules, a docs/API map, and performance guidance for reading published content in live-site/MVC code |
+| `design-validation`      | Compares live pages against static HTML designs (content, structure, computed styles) and classifies each difference as a content, serving, or styling issue |
 
-### Content migration support KX13 → XbyK
+### KX13 → Xperience by Kentico migration
 
-> **Location:** [plugins/kx13-content-migration/](./plugins/kx13-content-migration/)
+> **Location:** [plugins/kentico-kx13-migration/](./plugins/kentico-kx13-migration/)
 
-AI-assisted migration of Kentico Xperience 13 **content** (page types, fields, widgets, linked pages, page relationships) to Xperience by Kentico, driving the [Kentico Migration Tool](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool). Full instructions are available in the [README](./plugins/kx13-content-migration/README.md).
+The complete toolkit for upgrading a Kentico Xperience 13 project to Xperience by Kentico — content-model auditing, database **content** migration (driving the [Kentico Migration Tool](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool)), and live-site **codebase** migration. Full instructions are available in the [README](./plugins/kentico-kx13-migration/README.md). See also [KX13 upgrade plugins](./docs/KX13-Upgrade-Plugins.md) for the end-to-end path.
 
-| Skill | Description |
-|---|---|
-| `migrate-plan` | Produces a Migration Overview and Migration Detail document from the source content model |
-| `migrate-appsettings` | Generates the Migration Tool's `appsettings.json` |
-| `migrate-classes` | Generates `IClassMapping` / `ReusableSchemaBuilder` C# extensions |
-| `migrate-fields` | Generates `IFieldMigration` C# extensions for field value and definition transforms |
-| `migrate-widgets` | Generates `IWidgetMigration` / `IWidgetPropertyMigration` C# extensions |
-| `migrate-content-items` | Generates `ContentItemDirectorBase` C# for linked pages, child references, page-to-widget conversions |
-| `migrate-run` | Executes a single combined `migrate` CLI invocation with all required flags (the tool orders them internally), monitors output, applies fixes |
-| `migrate-eval` | Evaluates the migrated XbyK database against the plan and produces an HTML report |
+| Skill                         | Description                                                                                                                                                     |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `migrate-content-audit`       | Runs a bundled .NET 8 CLI that reads a KX13 database and exports the content model as JSON + a Markdown report (the canonical input for `migrate-content-plan`) |
+| `migrate-content-plan`        | Produces a Migration Overview and Migration Detail document from the source content model                                                                       |
+| `migrate-content-appsettings` | Generates the Migration Tool's `appsettings.json`                                                                                                               |
+| `migrate-content-classes`     | Generates `IClassMapping` / `ReusableSchemaBuilder` C# extensions                                                                                               |
+| `migrate-content-fields`      | Generates `IFieldMigration` C# extensions for field value and definition transforms                                                                             |
+| `migrate-content-widgets`     | Generates `IWidgetMigration` / `IWidgetPropertyMigration` C# extensions                                                                                         |
+| `migrate-content-items`       | Generates `ContentItemDirectorBase` C# for linked pages, child references, page-to-widget conversions                                                           |
+| `migrate-content-run`         | Executes a single combined `migrate` CLI invocation with all required flags (the tool orders them internally), monitors output, applies fixes                   |
+| `migrate-content-eval`        | Evaluates the migrated XbyK database against the plan and produces an HTML report                                                                               |
+| `migrate-code-global`         | Sets up the Xperience by Kentico project foundation (code generation, localization, routing, Page Builder)                                                      |
+| `migrate-code-page`           | Migrates a page's controller, views, repositories, and dependencies                                                                                             |
+| `migrate-code-page-widgets`   | Migrates Page Builder widgets and sections for a specified page                                                                                                 |
+| `migrate-code-component`      | Migrates reusable components (header, footer, etc.) with dependencies                                                                                           |
+| `migrate-code-page-visual`    | Compares old and new pages visually with Playwright, fixes discrepancies                                                                                        |
 
-### KX13 content auditor
+### Project lifecycle
 
-> **Location:** [plugins/kx13-content-audit/](./plugins/kx13-content-audit/)
+> **Location:** [plugins/kentico-project-lifecycle/](./plugins/kentico-project-lifecycle/)
 
-Reads a Kentico Xperience 13 database and exports the content model as structured JSON files plus a Markdown report. The output is the canonical input for the [content migration plan](./plugins/kx13-content-migration/README.md). The plugin ships an AI skill that drives a bundled .NET 8 CLI; the CLI source lives in the plugin folder and needs to be cloned alongside the plugin install. Full instructions are available in the [README](./plugins/kx13-content-audit/README.md).
+Skills for managing the lifecycle of an Xperience by Kentico solution. The plugin updates projects to newer Xperience versions, and builds scoped [Continuous Deployment Repository](https://docs.kentico.com/x/continuous_deployment) filters from CI Repository changes: the AI discovers your project layout and tooling, then inspects changed CI Repository files from specified PRs or commit ranges and writes a minimal `repository.config` — automatically excluding noise from Xperience version updates. Full instructions are available in the [README](./plugins/kentico-project-lifecycle/README.md).
 
-| Skill | Description |
-|---|---|
-| `content-audit` | Interprets the user's request, runs the auditor CLI with the right flags, and presents the JSON and Markdown output |
-
-### KX13 codebase migration
-
-> **Location:** [plugins/kx13-codebase-migration/](./plugins/kx13-codebase-migration/)
-
-AI-assisted migration of Kentico Xperience 13 live-site code (pages, widgets, shared components) to Xperience by Kentico. Full instructions are available in the [README](./plugins/kx13-codebase-migration/README.md).
-
-| Skill                      | Description                                                                                                |
-| -------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| `migrate-global-code`      | Sets up the Xperience by Kentico project foundation (code generation, localization, routing, Page Builder) |
-| `migrate-page`             | Migrates a page's controller, views, repositories, and dependencies                                        |
-| `migrate-page-widgets`     | Migrates Page Builder widgets and sections for a specified page                                            |
-| `migrate-shared-component` | Migrates reusable components (header, footer, etc.) with dependencies                                      |
-| `migrate-page-visual`      | Compares old and new pages visually with Playwright, fixes discrepancies                                   |
-
-### Configure CD Repository
-
-> **Location:** [plugins/configure-cd-repository/](./plugins/configure-cd-repository/)
-
-Two-stage workflow for building scoped [Continuous Deployment Repository](https://docs.kentico.com/x/continuous_deployment) filters from CI Repository changes. The AI first discovers your project layout and tooling, then inspects changed CI Repository files from specified PRs or commit ranges and writes a minimal `IncludedObjectTypes` / `ObjectFilters` allowlist — automatically excluding noise from Xperience version updates. Full instructions are available in the [README](./plugins/configure-cd-repository/README.md).
-
-| Skill                     | Description                                                                                          |
-| ------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `cd-repository-discovery` | Locates the Xperience app, CI/CD repository paths, and git tooling; saves context to a reusable file |
-| `cd-repository-configure` | Reads the context file and PR/commit changes, then writes a scoped `repository.config`               |
+| Skill                     | Description                                                                                                                    |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `update-xperience`        | Updates the project to a newer Xperience version                                                                               |
+| `cd-repository-configure` | Discovers the project layout, reads changes from selected PRs or commits, writes a scoped `repository.config`, and verifies the generated CD Repository |
 
 ## Upgrading from Kentico Xperience 13?
 
@@ -122,11 +108,9 @@ This repository is an [agent plugin marketplace](https://code.visualstudio.com/d
 ```bash
 copilot plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
 copilot plugin install kentico-digital-experience@xperience-by-kentico-kenticopilot
-copilot plugin install widget-creation@xperience-by-kentico-kenticopilot
-copilot plugin install kx13-content-audit@xperience-by-kentico-kenticopilot
-copilot plugin install kx13-content-migration@xperience-by-kentico-kenticopilot
-copilot plugin install kx13-codebase-migration@xperience-by-kentico-kenticopilot
-copilot plugin install configure-cd-repository@xperience-by-kentico-kenticopilot
+copilot plugin install kentico-web-development@xperience-by-kentico-kenticopilot
+copilot plugin install kentico-kx13-migration@xperience-by-kentico-kenticopilot
+copilot plugin install kentico-project-lifecycle@xperience-by-kentico-kenticopilot
 ```
 
 ### Claude Code
@@ -134,11 +118,9 @@ copilot plugin install configure-cd-repository@xperience-by-kentico-kenticopilot
 ```bash
 /plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
 /plugin install kentico-digital-experience@xperience-by-kentico-kenticopilot
-/plugin install widget-creation@xperience-by-kentico-kenticopilot
-/plugin install kx13-content-audit@xperience-by-kentico-kenticopilot
-/plugin install kx13-content-migration@xperience-by-kentico-kenticopilot
-/plugin install kx13-codebase-migration@xperience-by-kentico-kenticopilot
-/plugin install configure-cd-repository@xperience-by-kentico-kenticopilot
+/plugin install kentico-web-development@xperience-by-kentico-kenticopilot
+/plugin install kentico-kx13-migration@xperience-by-kentico-kenticopilot
+/plugin install kentico-project-lifecycle@xperience-by-kentico-kenticopilot
 ```
 
 For more details, see the [Usage Guide](./docs/Usage-Guide.md).

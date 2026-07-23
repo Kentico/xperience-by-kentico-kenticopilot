@@ -2,64 +2,100 @@
 
 This repository contains AI agent skills, instructions, and related materials for Xperience by Kentico development assistance. This guide explains how to contribute changes to these materials.
 
-## Required software
+## What belongs here
 
-### Text editor
+These resources are for **Kentico Xperience developers** and are used through AI assistants and tools (e.g., GitHub Copilot, Claude Code) to help complete tasks more efficiently. Resources intended for non-developers (e.g., marketing, sales, or support) should not be contributed here.
 
-You need a text editor to work with Markdown and skill files. We recommend [VS Code](https://code.visualstudio.com/) for its Markdown support and helpful extensions.
+Resources must not duplicate information already available in the Kentico documentation. Instead, link the relevant documentation pages and provide additional context.
 
-### AI coding assistants
+**Before adding anything**, be clear about the feature's purpose — what it accomplishes and how it will be used — then decide whether a new resource is truly needed, or whether the same result can be achieved with an existing resource, a link to our documentation, or a well-written prompt.
 
-Test your skill changes with AI assistants. This repository currently provides skills tested with:
+## Repository layout
 
-- [GitHub Copilot](https://github.com/features/copilot)
-- [Claude Code](https://www.claude.com/product/claude-code)
+```text
+.
+├── AGENTS.md                       # Conventions (CLAUDE.md points here)
+├── CLAUDE.md                       # Pointer to AGENTS.md
+├── README.md                       # Marketing-facing plugin catalog + install instructions
+├── .claude-plugin/marketplace.json # Claude Code marketplace manifest (lists all plugins)
+├── .github/
+│   ├── plugin/marketplace.json     # GitHub Copilot / VS Code marketplace manifest
+│   └── PULL_REQUEST_TEMPLATE.md    # Reviewer questions every PR answers
+├── docs/                           # Usage, contributing, and the KX13 upgrade workflow
+└── plugins/
+    └── <plugin-name>/
+        ├── README.md               # Plugin overview, install, skill reference
+        ├── src/                    # Optional bundled tooling (e.g. a .NET CLI)
+        ├── agents/                 # Subagent definitions — one Markdown file per subagent (optional)
+        └── skills/
+            ├── _shared/            # References shared by multiple skills in the plugin (optional)
+            └── <skill-name>/
+                ├── SKILL.md        # Required — the skill definition
+                ├── assets/         # Templates and code samples the skill writes/copies (optional)
+                ├── references/     # Skill-specific reference docs the skill reads (optional)
+                └── scripts/        # Helper scripts the skill runs (optional)
+```
 
-Testing with these tools helps validate that your changes work as intended.
+## Resource types
 
-## Repository structure
+There are three basic types of resource you can add. Use this table to help you get started:
 
-- `.claude-plugin/marketplace.json` — Claude Code marketplace manifest (lists all plugins)
-- `.github/plugin/marketplace.json` — GitHub Copilot / VS Code marketplace manifest (lists all plugins)
-- `plugins/` — Plugin folders organized by use case (e.g., `widget-creation/`, `kx13-codebase-migration/`)
-  - `.mcp.json` — MCP server configuration for the plugin
-  - `skills/` — SKILL.md files defining individual agent skills
-- `examples/` — Example files passed to LLMs as context for corresponding scenarios
-- `docs/` — Usage and contributing documentation
+| Resource | Lives in                            | Name format                        | `kentico-` prefix     | Touches manifests? |
+| -------- | ----------------------------------- | ---------------------------------- | --------------------- | ------------------ |
+| Plugin   | `plugins/<name>/`                   | lowercase, hyphenated              | **Yes**               | Register in both   |
+| Skill    | `plugins/<plugin>/skills/<name>/`   | lowercase, hyphenated, descriptive | No (scoped by plugin) | No                 |
+| Subagent | `plugins/<plugin>/agents/<name>.md` | lowercase, hyphenated, descriptive | No (scoped by plugin) | No                 |
 
-## Contributing to skill files
+**Shared conventions** (apply to every resource): keep each one lean and tightly scoped — a plugin to one domain, a skill or subagent to a single task; write descriptions that trigger the resource reliably but aren't so long they become overwhelming; and avoid features or fields specific to a single AI tool, since these resources are used by different AI assistants. All files related to a resource live inside that resource's folder.
 
-### Skill engineering best practices
+### Plugin
 
-When you create or modify skill files:
+A plugin is a coherent group of resources for one domain — for example web development, KX13 migration, or project lifecycle. Add a new plugin only when the capability does not fit the theme of any existing plugin.
 
-- Write clear, specific instructions
-- Include context and examples
-- Test skills with the target AI assistant
-- Follow the structure of existing SKILL.md files (YAML frontmatter with `name`, `description`, and `compatibility`; include `argument-hint` when the skill takes arguments)
+New plugins must be registered in **both** marketplace manifests.
 
-## Development workflow
+### Skill
 
-1. Fork this repository.
-2. Create a new branch with one of the following prefixes:
+A skill packages a repeatable task as instructions an AI assistant loads on demand.
 
-   - `feat/` - new functionality
-   - `refactor/` - restructuring of existing features
-   - `fix/` - bugfixes
+Follow the [Agent Skills specification](https://agentskills.io/specification) for the `SKILL.md` format, frontmatter fields, and directory layout. Also follow [Skill creation — best practices](https://agentskills.io/skill-creation/best-practices) for scoping, progressive disclosure, and what to put in `references/` vs `assets/`.
 
-3. Validate your Markdown formatting:
+### Markdown conventions
 
-   - Verify proper syntax and link validity
-   - Follow existing file organization patterns
+- `argument-hint` frontmatter uses bracketed lowercase-hyphenated placeholders, `?` marks optional arguments: `argument-hint: "[migration-plan-path] [appsettings-path?]"`.
+- Quote all frontmatter values; order fields `name`, `description`, `argument-hint`, `compatibility`.
+- Placeholders in templates use single curly braces: `{project name}`.
+- Reference in-repo resource files with backtick paths (`` `references/docs.md` ``), not Markdown links.
+- Use Markdown links for external URLs.
 
-4. Commit your changes with a commit message following the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/#summary) convention.
+### Subagent
 
-   - See the [Conventional Commits documentation](https://www.conventionalcommits.org/en/v1.0.0/#summary) for guidelines
+A subagent is a focused worker that runs in its own context window with a custom system prompt and a restricted tool set. Each subagent is defined as a single Markdown file inside the plugin's `agents/` directory.
 
-5. Create a pull request on GitHub, targeting this repository.
+## Versioning the marketplace manifests
 
-   - Write a clear description of the changes
-   - Include screenshots or recordings demonstrating prompt testing results (if applicable)
-   - Verify prompt clarity and documentation quality
-   - Indicate if new instructions affect existing workflows
-   - Resolve all comments before the PR is merged
+### Per-plugin `version` (inside each plugin entry)
+
+Bump when **that plugin's contents** change.
+
+| Bump  | When                                                                                                 |
+| ----- | ---------------------------------------------------------------------------------------------------- |
+| Major | Breaking change inside the plugin — renamed/removed skill, agent, or command; incompatible behavior. |
+| Minor | Additive — new skill, agent, command, or hook inside the plugin.                                     |
+| Patch | Slight change inside a resource — bug fix, prompt tightening, doc tweak, internal refactor.          |
+
+### Marketplace `metadata.version` (top of each marketplace file)
+
+**Every plugin change bumps the marketplace version** — at least a patch.
+
+| Bump  | When                                                                    |
+| ----- | ----------------------------------------------------------------------- |
+| Major | Breaking change in plugin structure — plugin removed or renamed.        |
+| Minor | Non-breaking change in plugin structure — plugin added.                 |
+| Patch | Changes inside plugins or README files — no change in plugin structure. |
+
+Both marketplace files must always have matching versions and matching plugin entries.
+
+## GitHub releases
+
+The GitHub release version is aligned with the marketplace version — every marketplace version bump gets a matching GitHub release. The repository code owners create the release right after the PR is merged to main.

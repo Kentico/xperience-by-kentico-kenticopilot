@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Migration Evaluation Report — {{PROJECT_NAME}}</title>
+  <style>
+    :root {
+      --pass-bg: #e8f5e9;
+      --pass-fg: #2e7d32;
+      --pass-border: #a5d6a7;
+      --fail-bg: #ffebee;
+      --fail-fg: #c62828;
+      --fail-border: #ef9a9a;
+      --warn-bg: #fff8e1;
+      --warn-fg: #f57f17;
+      --warn-border: #ffe082;
+      --info-bg: #e3f2fd;
+      --info-fg: #1565c0;
+      --info-border: #90caf9;
+      --na-bg: #f5f5f5;
+      --na-fg: #616161;
+      --na-border: #e0e0e0;
+      --bg: #ffffff;
+      --text: #212121;
+      --text-secondary: #757575;
+      --border: #e0e0e0;
+      --section-bg: #fafafa;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    header {
+      border-bottom: 3px solid var(--text);
+      padding-bottom: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    header h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+    }
+
+    h2 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-top: 2rem;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Summary cards */
+    .summary-cards {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      flex: 1;
+      min-width: 120px;
+      padding: 1.25rem 1rem;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 1.5rem;
+      border: 2px solid;
+    }
+
+    .card .label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0.25rem;
+    }
+
+    .card.pass  { background: var(--pass-bg); color: var(--pass-fg); border-color: var(--pass-border); }
+    .card.fail  { background: var(--fail-bg); color: var(--fail-fg); border-color: var(--fail-border); }
+    .card.warn  { background: var(--warn-bg); color: var(--warn-fg); border-color: var(--warn-border); }
+    .card.info  { background: var(--info-bg); color: var(--info-fg); border-color: var(--info-border); }
+    .card.na    { background: var(--na-bg);   color: var(--na-fg);   border-color: var(--na-border); }
+
+    /* Status badges */
+    .badge {
+      display: inline-block;
+      padding: 0.15rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      vertical-align: middle;
+    }
+
+    .badge.pass { background: var(--pass-bg); color: var(--pass-fg); }
+    .badge.fail { background: var(--fail-bg); color: var(--fail-fg); }
+    .badge.warn { background: var(--warn-bg); color: var(--warn-fg); }
+    .badge.info { background: var(--info-bg); color: var(--info-fg); }
+    .badge.na   { background: var(--na-bg);   color: var(--na-fg); }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+    }
+
+    th, td {
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+
+    th {
+      background: var(--section-bg);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    tr:nth-child(even) td { background: #fafafa; }
+
+    td.pass { background: var(--pass-bg); }
+    td.fail { background: var(--fail-bg); font-weight: 600; }
+    td.warn { background: var(--warn-bg); }
+    td.info { background: var(--info-bg); }
+    td.na   { background: var(--na-bg); }
+
+    /* Summary sentence */
+    .summary-sentence {
+      font-size: 0.95rem;
+      margin-bottom: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    /* Action required callout */
+    .callout {
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      margin: 0.75rem 0;
+      font-size: 0.875rem;
+    }
+
+    .callout.fail {
+      background: var(--fail-bg);
+      border-left: 4px solid var(--fail-fg);
+      color: var(--fail-fg);
+    }
+
+    .callout.warn {
+      background: var(--warn-bg);
+      border-left: 4px solid var(--warn-fg);
+      color: var(--warn-fg);
+    }
+
+    .callout.info {
+      background: var(--info-bg);
+      border-left: 4px solid var(--info-fg);
+      color: var(--info-fg);
+    }
+
+    .callout strong { display: block; margin-bottom: 0.25rem; }
+    .callout ul { margin-top: 0.25rem; padding-left: 1.25rem; }
+    .callout li { margin-bottom: 0.15rem; }
+
+    /* Section container */
+    .eval-section {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .eval-section h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Monospace for class/field names */
+    code {
+      font-family: "Cascadia Code", "Fira Code", Consolas, monospace;
+      font-size: 0.85em;
+      background: #f0f0f0;
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+
+    /* Action items section */
+    .action-items {
+      background: var(--section-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .action-items h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+
+    .action-items ol {
+      padding-left: 1.5rem;
+    }
+
+    .action-items li {
+      margin-bottom: 0.5rem;
+    }
+
+    .action-items .remediation-type {
+      display: inline-block;
+      padding: 0.1rem 0.4rem;
+      border-radius: 3px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-left: 0.25rem;
+    }
+
+    .action-items .remediation-type.config { background: #e8eaf6; color: #283593; }
+    .action-items .remediation-type.code { background: #fce4ec; color: #880e4f; }
+    .action-items .remediation-type.manual { background: #fff3e0; color: #e65100; }
+
+    /* Timing table */
+    .timing-table td:last-child {
+      font-family: "Cascadia Code", "Fira Code", Consolas, monospace;
+      font-size: 0.85em;
+      text-align: right;
+    }
+
+    footer {
+      margin-top: 3rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    /* Print styles */
+    @media print {
+      body { max-width: 100%; padding: 1rem; }
+      .eval-section { break-inside: avoid; }
+      .card { border: 1px solid #999; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Migration Evaluation Report</h1>
+    <p class="subtitle">{{PROJECT_NAME}} &mdash; Generated {{TIMESTAMP}}</p>
+    <p class="subtitle">Protocol log: <code>{{PROTOCOL_LOG_PATH}}</code></p>
+    <p class="subtitle">Console log: <code>{{CONSOLE_LOG_PATH}}</code></p>
+    <p class="subtitle">Migration plan: <code>{{PLAN_PATH}}</code></p>
+  </header>
+
+  <section id="summary">
+    <h2>Summary</h2>
+    <div class="summary-cards">
+      <div class="card pass">{{PASS_COUNT}}<span class="label">Pass</span></div>
+      <div class="card fail">{{FAIL_COUNT}}<span class="label">Fail</span></div>
+      <div class="card warn">{{WARN_COUNT}}<span class="label">Warn</span></div>
+      <div class="card na">{{NA_COUNT}}<span class="label">N/A</span></div>
+    </div>
+    <table>
+      <thead>
+        <tr><th>#</th><th>Category</th><th>Status</th><th>Details</th></tr>
+      </thead>
+      <tbody>
+        {{SUMMARY_ROWS}}
+        <!-- One row per category, e.g.:
+        <tr><td>1</td><td>Configuration & Run Overview</td><td class="pass"><span class="badge pass">PASS</span></td><td>All 9 commands completed</td></tr>
+        -->
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ============================================================
+       Category sections 1-12: one <section> per eval category.
+       Each section must contain:
+       - Status badge + summary sentence
+       - Log Evidence subsection
+       - Database Verification subsection
+       - Plan Cross-Reference subsection
+       - Action Required callout (for FAIL/WARN only)
+       ============================================================ -->
+
+  <section id="cat-1-config-run">
+    <h2>1. Configuration &amp; Run Overview</h2>
+    <div class="eval-section">
+      {{CAT_1_BODY}}
+    </div>
+  </section>
+
+  <section id="cat-2-content-types">
+    <h2>2. Content Types</h2>
+    <div class="eval-section">
+      {{CAT_2_BODY}}
+    </div>
+  </section>
+
+  <section id="cat-3-reusable-schemas">
+    <h2>3. Reusable Field Schemas</h2>
+    <div class="eval-section">
+      {{CAT_3_BODY}}
+    </div>
+  </section>
+
+  <section id="cat-4-taxonomies-tags">
+    <h2>4. Taxonomies &amp; Tags</h2>
+    <div class="eval-section">
+      {{CAT_4_BODY}}
+    </div>
+  </section>
+
+  <section id="cat-5-content-counts">
+    <h2>5. Content Item Counts &amp; Orphans</h2>
+    <div class="eval-section">
+      {{CAT_5_BODY}}
+    </div>
+  </section>
+
+  <section id="cat-6-field-verification">
+    <h2>6. Field Verification</h2>
+    <div class="eval-section">
+      {{CAT_6_BODY}}
+    </div>
+  </section>
+
+  <section id="cat-7-page-issues">
+    <h2>7. Page Migration Issues</h2>
+    <div class="eval-section">
+      {{CAT_7_BODY}}
+    </div>
+  </section>
+
+  <section id="cat-8-users-roles">
+    <h2>8. Users &amp; Roles</h2>
+    <div class="eval-section">
+      {{CAT_8_BODY}}
+    </div>
+  </section>
+
+  <section id="cat-9-media">
+    <h2>9. Media &amp; Attachments</h2>
+    <div class="eval-section">
+      {{CAT_9_BODY}}
+    </div>
+  </section>
+
+  <section id="cat-10-forms">
+    <h2>10. Forms</h2>
+    <div class="eval-section">
+      {{CAT_10_BODY}}
+    </div>
+  </section>
+
+  <section id="cat-11-custom-modules">
+    <h2>11. Custom Modules</h2>
+    <div class="eval-section">
+      {{CAT_11_BODY}}
+    </div>
+  </section>
+
+  <section id="cat-12-overall-health">
+    <h2>12. Overall Health</h2>
+    <div class="eval-section">
+      {{CAT_12_BODY}}
+    </div>
+  </section>
+
+  <section id="action-items">
+    <h2>Prioritized Action Items</h2>
+    <div class="action-items">
+      {{ACTION_ITEMS_BODY}}
+      <!-- Build as ordered list: FAILs first, then WARNs.
+           Each item gets a remediation-type badge (Config / Code / Manual)
+           and a specific next step with skill routing. Example:
+        <ol>
+          <li><span class="badge fail">FAIL</span> Taxonomy tag JSON casing — <code>"identifier"</code> (lowercase) in <code>MedioClinic_Doctor</code> <span class="remediation-type code">Code</span><br>Fix: Re-run <code>migrate-content-classes</code> skill — use PascalCase in ConvertFrom</li>
+          <li><span class="badge warn">WARN</span> Orphaned content type <code>MedioClinic.DayOfWeek</code> <span class="remediation-type manual">Manual</span><br>Fix: Delete in XbyK Administration &gt; Content types</li>
+        </ol>
+      -->
+    </div>
+  </section>
+
+  <footer>
+    <p>Generated by <strong>migrate-content-eval</strong> skill &mdash; <em>Database verification included. For items marked N/A, re-run <code>migrate-content-eval</code> after resolving connectivity issues.</em></p>
+  </footer>
+</body>
+</html>
