@@ -1,0 +1,55 @@
+name: Create release
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .claude-plugin/marketplace.json
+      - .github/plugin/marketplace.json
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Read and validate version from marketplace manifests
+        id: version
+        run: |
+          claude_version=$(jq -r '.metadata.version // empty' .claude-plugin/marketplace.json)
+          github_version=$(jq -r '.metadata.version // empty' .github/plugin/marketplace.json)
+
+          if [ "$claude_version" != "$github_version" ]; then
+            echo "::error::Version mismatch: .claude-plugin/marketplace.json has '$claude_version' but .github/plugin/marketplace.json has '$github_version'. They must match."
+            exit 1
+          fi
+
+          if ! echo "$claude_version" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "::error::Invalid version '$claude_version' in .claude-plugin/marketplace.json. Expected semver like 2.0.0 (no leading 'v')."
+            exit 1
+          fi
+
+          echo "version=$claude_version" >> "$GITHUB_OUTPUT"
+
+      - name: Create release if tag does not exist
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: v${{ steps.version.outputs.version }}
+        run: |
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
+            echo "Release $TAG already exists, skipping."
+          elif gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$TAG" > /dev/null 2>&1; then
+            echo "::error::Tag $TAG exists but has no release. Delete the tag or bump the version — creating a release now would point at the old tag commit, not $GITHUB_SHA."
+            exit 1
+          else
+            gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --title "$TAG" --generate-notes
+          fi
