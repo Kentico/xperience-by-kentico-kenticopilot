@@ -101,7 +101,3 @@ Do not copy every plugin into a project by default. Keeping only the relevant pl
 
 > [!IMPORTANT]
 > The KX13 content auditor includes .NET source under the plugin's `src/` directory. Marketplace installation exposes the skill but does not make that source available in your project workspace. Follow the [content auditor setup](../plugins/kentico-kx13-migration/docs/content-auditor.md) when using `migrate-content-audit`.
-
-## Upgrading from Kentico Xperience 13
-
-Start with the [KX13 upgrade workflow](./KX13-Upgrade.md). It places the audit, content-migration, and codebase-migration skills in the correct order alongside the [official upgrade walkthrough](https://docs.kentico.com/x/upgrade_walkthrough_guides).

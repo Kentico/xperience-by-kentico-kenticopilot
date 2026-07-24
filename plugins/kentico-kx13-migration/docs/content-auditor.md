@@ -1,16 +1,16 @@
 # KX13 content auditor
 
-The KX13 content auditor reads a Kentico Xperience 13 database and exports its content model as structured JSON plus a Markdown report. The `migrate-content-audit` skill runs the auditor for an AI-assisted migration; you can also invoke the .NET CLI directly for troubleshooting, scripting, or CI.
+The KX13 content auditor reads a Kentico Xperience 13 (KX13) database and exports its content model as structured JSON plus a Markdown report. The `migrate-content-audit` skill runs the auditor for an AI-assisted migration. You can also invoke the .NET CLI directly for troubleshooting, scripting, or CI pipelines.
 
 The output is the canonical input for `migrate-content-plan`.
 
 ## What is included
 
-- `migrate-content-audit`: interprets the requested scope and filters, invokes the CLI, and summarizes the result.
-- `src/KX13.ContentAuditor.CLI`: parses command-line options and hosts the application.
-- `src/KX13.ContentAuditor.Application`: orchestrates exports and reporting.
-- `src/KX13.ContentAuditor.DataAccess`: reads and analyzes the KX13 database.
-- `src/KX13.ContentAuditor.Tests`: covers CLI option parsing, content-model orchestration, schema parsing, content-reference analysis, and Page Builder component discovery.
+- `migrate-content-audit` – interprets the requested scope and filters, invokes the CLI, and summarizes the result.
+- `src/KX13.ContentAuditor.CLI` – parses command-line options and hosts the application.
+- `src/KX13.ContentAuditor.Application` – orchestrates exports and reporting.
+- `src/KX13.ContentAuditor.DataAccess` – reads and analyzes the KX13 database.
+- `src/KX13.ContentAuditor.Tests` – covers CLI option parsing, content-model orchestration, schema parsing, content-reference analysis, and Page Builder component discovery.
 
 ## Requirements
 
@@ -85,11 +85,11 @@ With no flags, the CLI exports the full content model and report. Combine area f
 | `--custom-tables` | Export custom tables, fields, and alternative forms |
 | `--forms` | Export BizForms, fields, validation, and alternative forms |
 | `--relationships` | Export page relationships and Pages-field links |
-| `--report` | Add the Markdown report to a selective export; implied for a full export |
+| `--report` | Add the Markdown report to a selective export. Implied for a full export |
 | `--site-name <name>` | Filter by site code name |
-| `--class-name <pattern>` | Filter by class name; supports `*` and comma-separated patterns |
+| `--class-name <pattern>` | Filter by class name. Supports `*` and comma-separated patterns |
 | `--page-path <prefix>` | Filter the content tree by node alias path prefix |
-| `--output <path>` | Set the output directory; defaults to `audit-results/` under the auditor project root, or under the current working directory when the project root cannot be resolved |
+| `--output <path>` | Set the output directory. Defaults to `audit-results/` under the auditor project root, or under the current working directory when the project root cannot be resolved |
 
 Run the CLI with `--help` for its current command reference.
 
@@ -110,12 +110,12 @@ The auditor writes only the files relevant to the selected scope:
 | Non-fatal audit errors, when present | `failures.json` |
 | Human-readable summary | `content-model-report.md` |
 
-The exact JSON file set is controlled by the selected area flags. Results default to `audit-results/` under the auditor project root, falling back to the current working directory when the project root cannot be resolved. The auditor project ignores its default results directory.
+The selected area flags control the exact JSON file set. Results default to `audit-results/` under the auditor project root, falling back to the current working directory when the project root cannot be resolved. The auditor project ignores its default results directory.
 
 ## Scope and limitations
 
 The auditor captures the content model and references needed for migration planning. It does not replace the Kentico Migration Tool and does not migrate data.
 
-Custom fields added to system objects such as `cms.user`, `cms.member`, or `cms.role` are outside the auditor's model export. The Migration Tool handles supported system-class fields through its custom-module migration; additional fields may require custom migration logic.
+Custom fields added to system objects such as `cms.user`, `cms.member`, or `cms.role` are outside the auditor's model export. The Migration Tool handles supported system-class fields through its custom-module migration. Additional fields may require custom migration logic.
 
-Categories, commerce data, marketing entities, custom-module UI, and access-control behavior require separate review in the [KX13 upgrade workflow](../../../docs/KX13-Upgrade.md).
+Categories, commerce data, marketing entities, custom-module UI, and access-control behavior require separate review in the [KX13 upgrade workflow](../README.md#upgrade-workflow).

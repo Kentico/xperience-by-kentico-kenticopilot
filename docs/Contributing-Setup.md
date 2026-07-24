@@ -17,7 +17,6 @@ Keep each document focused on one reader need:
 | Document | Responsibility |
 |---|---|
 | Root `README.md` | Explain the marketplace, help users choose a plugin, and provide a short installation path |
-| `docs/Usage-Guide.md` | Central installation and skill-activation guidance shared by every plugin |
 | Plugin `README.md` | Explain when to use the plugin, how its skills fit together, requirements, examples, outputs, and limits |
 | Plugin `docs/` | Hold detailed user-facing setup or command references for bundled tooling |
 | `SKILL.md` | Instruct the agent how to execute one task; do not use it as the primary user guide |

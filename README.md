@@ -10,16 +10,17 @@ The plugins are tested with GitHub Copilot and Claude Code. The skills follow th
 
 ## Choose a plugin
 
-Install only the plugin that matches your task. The plugin README is the source of truth for its requirements, invocation examples, outputs, and limits.
+This repository contains several plugins, each addressing a specific product area or scenario. See each plugin's README for its requirements, invocation examples, outputs, and limitations.
 
-| Plugin | Use it for | Included skills |
-|---|---|---|
-| [`kentico-digital-experience`](./plugins/kentico-digital-experience/README.md) | Extending Xperience digital-experience features, currently custom Automation actions | `automation-action` |
-| [`kentico-web-development`](./plugins/kentico-web-development/README.md) | Preparing a project for agentic development, modeling content, building Page Builder components, retrieving content, and checking an implementation against a design | `agentify`, `design-to-content`, `page-builder-widgets`, `page-builder-structure`, `content-retrieval`, `design-validation` |
-| [`kentico-kx13-migration`](./plugins/kentico-kx13-migration/README.md) | Auditing and migrating a Kentico Xperience 13 project, including content and live-site code | `migrate-content-*`, `migrate-code-*` |
-| [`kentico-project-lifecycle`](./plugins/kentico-project-lifecycle/README.md) | Updating an Xperience project and configuring scoped Continuous Deployment Repository content | `update-xperience`, `cd-repository-configure` |
+> [!TIP]
+> Upgrading from Kentico Xperience 13? Start with the [kentico-kx13-migration](./plugins/kentico-kx13-migration/README.md) plugin.
 
-Upgrading from Kentico Xperience 13? Start with the [KX13 upgrade workflow](./docs/KX13-Upgrade.md).
+| Plugin | Use case |
+|---|---|
+| [`kentico-web-development`](./plugins/kentico-web-development/README.md) | Preparing a project for agentic development, modeling content, building Page Builder components, retrieving content, and checking an implementation against a design |
+| [`kentico-digital-experience`](./plugins/kentico-digital-experience/README.md) | Extending digital experience features for Xperience by Kentico |
+| [`kentico-kx13-migration`](./plugins/kentico-kx13-migration/README.md) | Auditing and migrating a Kentico Xperience 13 project, including content and live-site code |
+| [`kentico-project-lifecycle`](./plugins/kentico-project-lifecycle/README.md) | Updating an Xperience project and configuring scoped Continuous Deployment Repository content |
 
 ## Requirements
 
@@ -65,7 +66,6 @@ The commands install `kentico-web-development` as an example; substitute another
 |---|---|
 | Install a plugin and invoke its skills | [Usage guide](./docs/Usage-Guide.md) |
 | Choose and run a specific capability | The relevant [plugin README](#choose-a-plugin) |
-| Plan a full KX13 upgrade | [KX13 upgrade workflow](./docs/KX13-Upgrade.md) |
 | Add or change a plugin or skill | [Contributing setup](./docs/Contributing-Setup.md) |
 
 ## Contributing
