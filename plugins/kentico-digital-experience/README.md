@@ -76,7 +76,7 @@ the conventions of the components already in this project.
 
 ### Add a property to an existing action
 
-Name the action and the setting. The agent finds the existing classes and extends them rather than starting over.
+Describe the action and the setting. The agent finds the existing classes and extends them rather than starting over.
 
 ```text
 Add a retry-count setting to the CrmSyncAction, editable by marketers,
@@ -85,7 +85,7 @@ with a default of 3 and a maximum of 10.
 
 ## Write effective prompts
 
-Both of these prompts produce a working action. The second one gets there sooner, because the agent already knows the answers to the obvious questions.
+Both of these prompts produce a working output. However, providing the agent with more context significantly reduces guesswork and increases output quality and standards adherence. Compare:
 
 | Prompt | What happens |
 |---|---|
@@ -95,19 +95,11 @@ Both of these prompts produce a working action. The second one gets there sooner
 > [!TIP]
 > The same applies to every KentiCopilot skill. See [Write specific prompts](../../docs/Usage-Guide.md#write-specific-prompts) for the general guidance, including the habits that slow a session down.
 
-## What you get
-
-The agent creates the pieces described in [Custom automation steps](https://docs.kentico.com/x/automation_custom_steps_xp), matching your project's namespace, localization, dependency-injection, and logging conventions:
-
-- **Action class** – holds the logic that runs when a contact reaches the step.
-- **Properties class** – defines what marketers configure, and the [form components](https://docs.kentico.com/x/8ASiCQ) that build the configuration dialog. Created only when the step needs settings.
-- **Registration** – the assembly attribute that makes the step available in the Automation Builder.
-
 ## Review the output
 
 Treat generated code the way you'd treat a pull request from someone new to the project. The following things are worth reviewing:
 
-**Form annotation namespace** -- Form component attributes need to come from the `Kentico.Xperience.Admin.*.FormAnnotations` namespaces. An obsolete Form Builder namespace, `Kentico.Forms.Web.Mvc`, contains attributes with the same names. Check the `using` directives on the properties class.
+**Form annotation namespace** -- The [form component](https://docs.kentico.com/x/8ASiCQ) attributes that build the configuration dialog need to come from the `Kentico.Xperience.Admin.*.FormAnnotations` namespaces. An obsolete Form Builder namespace, `Kentico.Forms.Web.Mvc`, contains attributes with the same names. Check the `using` directives on the properties class.
 
 **Execution time limit** -- Actions are cancelled after two minutes, so a step calling a slow external service can be cut off mid-run. If the generated code talks to anything outside the application, read [Best practices](https://docs.kentico.com/x/automation_custom_steps_xp) for the timeout behavior and what to do instead.
 

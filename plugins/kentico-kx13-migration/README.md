@@ -97,21 +97,62 @@ The codebase-migration skills cover both walkthrough areas as a single iterative
 
 ## Content-model audit
 
-`migrate-content-audit` runs the bundled .NET auditor against the KX13 database and exports the source model. Use its output as the input to `migrate-content-plan`.
+`migrate-content-audit` runs the bundled .NET auditor against the KX13 database and exports the source model as JSON plus a Markdown report. Use its output as the input to `migrate-content-plan`. The auditor captures the content model and the references between its parts, and it migrates nothing.
 
-> [!IMPORTANT]
-> Installation copies the auditor's .NET source under `src/` along with the skill, but into your assistant's plugin directory rather than your workspace, and that directory is replaced whenever the plugin updates. Set the auditor up before the first run.
-
-See the [content auditor guide](./docs/content-auditor.md) for setup, CLI flags, output files, scope, and test coverage.
-
-### migrate-content-audit
+The auditor ships with the plugin. Ask the agent to set it. It will guide you through the process and for all required information:
 
 ```text
 /migrate-content-audit
 
-Audit the DancingGoatMvc site as the starting point for migrating it to
-Xperience by Kentico. Export the full content model into ./audit-results/
+Set up the content auditor and audit my KX13 database.
 ```
+
+Once the setup is complete, continue by describing the audit requirements:
+
+```text
+Audit the DancingGoatMvc site as the starting point for migrating it to Xperience by Kentico. Export the full content model into ./audit-results/
+```
+
+Narrower requests work too, such as auditing page types and forms for classes matching `DancingGoat.*`, or exporting only the content tree below a given path. By default, the audit exports the full content model and the report.
+
+### Auditor prerequisites
+
+- KX13 Refresh 5 (hotfix 13.0.64) or newer
+- .NET 8 SDK or newer
+- The KX13 database connection string, supplied through the environment
+
+Set the connection string as `ConnectionStrings__ConnectionString` in the environment your assistant runs in:
+
+```bash
+export ConnectionStrings__ConnectionString="Data Source=YOUR_SERVER;Initial Catalog=YOUR_KX13_DB;Integrated Security=True;Encrypt=False;"
+```
+
+On Windows PowerShell:
+
+```powershell
+$env:ConnectionStrings__ConnectionString = "Data Source=YOUR_SERVER;Initial Catalog=YOUR_KX13_DB;Integrated Security=True;Encrypt=False;"
+```
+
+Add `Encrypt=False` if your SQL client encounters a certificate error.
+
+> [!IMPORTANT]
+> The plugin installation copies the auditor source code to the plugin source directory, which gets overwritten every time you update the plugin.
+
+### Audit output
+
+The auditor writes only the files relevant to the selected scope, into the specified output directory.
+
+By default, results land in `audit-results/` under the auditor project root, which sits inside the installed plugin. Ask for a path in your own repository instead.
+
+### Run the CLI directly
+
+For troubleshooting, scripting, or a CI pipeline, run the auditor without the skill from a clone of this repository:
+
+```bash
+dotnet run --project src/KX13.ContentAuditor.CLI -- --help
+```
+
+`--help` lists the current flags for export scope, filtering, and output location. This path also covers a [manual installation](../../docs/Usage-Guide.md#manual-installation) and work on the auditor itself, where the directory is yours and a JSON settings file is an option.
 
 ---
 
@@ -125,7 +166,7 @@ Place the source, target, Migration Tool, and audit output in one workspace:
 <workspace-root>/
 ├── KX13/                            # KX13 source project
 ├── XbyK/                            # XbyK target project
-├── audit-results/                   # Optional: migrate-content-audit JSON + report
+├── audit-results/                   # Content auditor output: migrate-content-audit JSON + report
 ├── kentico-migration-tool/
 │   ├── Migration.Tool.CLI/          # appsettings.json is generated here
 │   └── Migration.Tool.Extensions/   # Generated C# extensions are placed here
@@ -133,7 +174,7 @@ Place the source, target, Migration Tool, and audit output in one workspace:
 ```
 
 > [!TIP]
-> Other layouts can work, but this structure reduces discovery ambiguity.
+> We recommend using this structure when using coding assistants to help with project migration. This organization helps agents navigate and find files effectively.
 
 The skills run in four phases. The configure, generate, run, and evaluate phases form an iterative loop.
 
@@ -297,6 +338,7 @@ newPageUrl: http://localhost:60444/en-us/home
 - Complete content migration before generating target entity classes.
 - Run page skills in order: widgets when applicable, page implementation, then visual alignment when needed.
 - Keep the KX13 site accessible at the URL supplied to the skills.
+- Keep the Playwright viewport size consistent across runs. Comparing one page at two window sizes reports differences that originate in the window rather than in the migration.
 - Let each skill manage the XbyK process it starts. Verify the process state before invoking the next skill.
 - Review and test generated code before moving to the next page.
 
@@ -310,6 +352,7 @@ The plugin assists with the content and live-site portions of the [upgrade workf
 - **Custom-module UI pages**, KX13 alternative-form deltas, and ACLs. `migrate-content-classes` can route custom-table data into reusable content types via `ConvertClassesToContentHub` to skip the UI work entirely. Otherwise, the UI pages must be built manually per [Adjust your code and adapt your project](https://docs.kentico.com/x/migrate_your_code_guides#rehome-custom-tables).
 - **External sign-in information** (Facebook/Google/etc.) and the member registration/authentication code path itself. Basic member records migrate via the `--members` parameter. The live-site auth code must be rewritten to work with the new `Member` object type and ASP.NET Identity per [Adjust your code and adapt your project](https://docs.kentico.com/x/migrate_your_code_guides#alter-auth-and-user-management).
 - **Integration bus**, license keys, and `web.config`/`appsettings.json` settings – not migrated.
+- **Custom fields on system objects** such as `cms.user`, `cms.member`, or `cms.role` – outside the auditor's model export. The Migration Tool handles supported system-class fields through its custom-module migration, and anything beyond those needs custom migration logic.
 - **Image optimization during migration** (target format, quality, dimensions per content type) – requires editing `Migration.Tool.Source/AssetFacade.cs` directly per [Optimize images during your upgrade](https://docs.kentico.com/x/optimize_images_during_upgrade_guides). Not currently automated by any skill.
 
 Use Kentico's [feature migration strategy](https://docs.kentico.com/x/plan_your_strategy_for_migrating_features_guides) and [code adaptation guide](https://docs.kentico.com/x/migrate_your_code_guides) to plan those areas.

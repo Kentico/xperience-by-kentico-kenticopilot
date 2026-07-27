@@ -5,7 +5,7 @@ This plugin uses the MCP servers listed below. Add them to your AI coding assist
 | Server | Provides | Status |
 |---|---|---|
 | [Kentico Docs MCP server](https://docs.kentico.com/x/mcp_server_xp) | Search and retrieval over the official Xperience by Kentico documentation | Required |
-| [Kentico Management MCP server](https://docs.kentico.com/x/configure_management_mcp_xp) | Read and write access to content in a running application | Recommended |
+| [Kentico Management MCP server](https://docs.kentico.com/x/configure_management_mcp_xp) | Read and write access to content in a running application | Required |
 
 Documentation lookups keep content models and generated components aligned with the current APIs. Management MCP enables object creation and manipulation.
 
