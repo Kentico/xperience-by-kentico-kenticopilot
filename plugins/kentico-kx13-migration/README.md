@@ -99,7 +99,10 @@ The codebase-migration skills cover both walkthrough areas as a single iterative
 
 `migrate-content-audit` runs the bundled .NET auditor against the KX13 database and exports the source model. Use its output as the input to `migrate-content-plan`.
 
-The marketplace package exposes the skill, but the .NET source under `src/` must also be available in the workspace. See the [content auditor guide](./docs/content-auditor.md) for setup, CLI flags, output files, scope, and test coverage.
+> [!IMPORTANT]
+> Installation copies the auditor's .NET source under `src/` along with the skill, but into your assistant's plugin directory rather than your workspace, and that directory is replaced whenever the plugin updates. Set the auditor up before the first run.
+
+See the [content auditor guide](./docs/content-auditor.md) for setup, CLI flags, output files, scope, and test coverage.
 
 ### migrate-content-audit
 

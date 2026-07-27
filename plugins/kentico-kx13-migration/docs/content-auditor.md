@@ -17,15 +17,27 @@ The output is the canonical input for `migrate-content-plan`.
 - Kentico Xperience 13 Refresh 5 (hotfix 13.0.64) or newer
 - Access to the KX13 database
 - .NET 8 SDK or newer
-- The auditor source from this repository
+- A writable copy of the auditor source in your migration workspace, placed by the setup below
 
 > [!IMPORTANT]
-> Installing the marketplace plugin makes the skill available to the agent, but does not place the bundled .NET source in your project workspace. Clone this repository or otherwise make `plugins/kentico-kx13-migration/src/` available before invoking `migrate-content-audit`.
+> Installing the plugin copies the auditor source along with the skill, but it lands in your assistant's plugin directory rather than in your workspace. That directory is replaced whenever the plugin updates, so a connection string or a build output written there disappears at the next update. Copy the source into the workspace once, before the first run.
 
 ## Set up the auditor
 
-1. Clone this repository into or next to the migration workspace.
-2. Configure the connection string in `src/KX13.ContentAuditor.CLI/appsettings.json`:
+1. Copy the auditor source into your workspace at `kentico-kx13-migration/src/`. The skill builds and runs from that path.
+
+   Your assistant knows its own plugin directory as `${CLAUDE_PLUGIN_ROOT}`, so it can make the copy for you:
+
+   ```text
+   Copy the KX13 content auditor source from ${CLAUDE_PLUGIN_ROOT}/src
+   to kentico-kx13-migration/src/ in this workspace.
+   ```
+
+   With a [manual installation](../../../docs/Usage-Guide.md#manual-installation), copy `plugins/kentico-kx13-migration/src/` out of your clone to the same place.
+
+   The copy is a working tool rather than part of the migrated project, so keep it out of the project's version control.
+
+2. Configure the connection string in `kentico-kx13-migration/src/KX13.ContentAuditor.CLI/appsettings.json`:
 
    ```json
    {

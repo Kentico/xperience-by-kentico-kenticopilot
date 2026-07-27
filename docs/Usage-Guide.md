@@ -2,33 +2,31 @@
 
 Use this guide to select and install a KentiCopilot plugin. For task-specific inputs, examples, outputs, and limitations, continue to the selected plugin's README.
 
-## Install an AI coding assistant
-
-The plugins are tested with:
-
-- [GitHub Copilot](https://github.com/features/copilot), using VS Code or Copilot CLI
-- [Claude Code](https://www.claude.com/product/claude-code)
-
-Skills follow the [Agent Skills specification](https://agentskills.io/specification). Other compatible assistants can use them, but their installation and invocation syntax may differ.
-
 ## Choose a plugin
 
 Plugins are installed independently. Select and install those suitable for your use cases.
 
-| Plugin | Choose it when you need to... |
-|---|---|
-| [`kentico-digital-experience`](../plugins/kentico-digital-experience/README.md) | Implement a custom Automation action |
-| [`kentico-web-development`](../plugins/kentico-web-development/README.md) | Prepare a project for AI-assisted development, model content, build Page Builder components, retrieve content, or compare a live implementation with a design |
-| [`kentico-kx13-migration`](../plugins/kentico-kx13-migration/README.md) | Audit or migrate content and code from Kentico Xperience 13 |
-| [`kentico-project-lifecycle`](../plugins/kentico-project-lifecycle/README.md) | Update Xperience or create a scoped CD Repository configuration |
+> [!NOTE]
+> **What is a plugin**
+>
+> A plugin is a self-contained directory that bundles skills, agents, hooks, and MCP server definitions into one unit your assistant installs and runs as a single step. The alternative is configuring each of those pieces by hand. For more details, see the [open plugin](https://open-plugins.com/) documentation.
 
-## Check the plugin requirements
+| Plugin | What it does |
+|---|---|
+| [`kentico-digital-experience`](../plugins/kentico-digital-experience/README.md) | Extend Xperience digital experience workflows with custom components, such as Automation actions that add custom step types to the Automation Builder |
+| [`kentico-web-development`](../plugins/kentico-web-development/README.md) | Build Xperience websites with AI assistance. Model content from designs, build Page Builder widgets and templates, write content retrieval code, and validate the result against the original design |
+| [`kentico-kx13-migration`](../plugins/kentico-kx13-migration/README.md) | Migrate Kentico Xperience 13 projects to Xperience by Kentico by auditing the source content model, driving the Migration Tool, and porting live-site code |
+| [`kentico-project-lifecycle`](../plugins/kentico-project-lifecycle/README.md) | Manage Xperience by Kentico project lifecycle. Update Xperience projects to a target version and generate deployment-scoped CI/CD repository.config filters from selected pull requests or commits |
+
+## Check the usage requirements
 
 You need:
 
-- An agent-plugin-compatible AI coding assistant
+- An AI coding assistant that supports agent plugins, tested here with [GitHub Copilot](https://github.com/features/copilot) using VS Code or Copilot CLI, and with [Claude Code](https://www.claude.com/product/claude-code)
 - Access to the project the agent will work on
 - Git when a skill needs repository history or when you use the manual installation
+
+Skills follow the [Agent Skills specification](https://agentskills.io/specification). Other compatible assistants can use them, but their installation and invocation syntax may differ.
 
 Some plugins also require MCP servers, command-line tools, SDKs, or a running application. Check the **Requirements** section in the selected plugin README before invoking a skill.
 
@@ -39,9 +37,9 @@ Plugin installation does not configure MCP servers in the current packages. Each
 This repository is an agent plugin marketplace. Add the marketplace once, then install one or more plugin names from the table above.
 
 > [!NOTE]
-> **What a plugin marketplace is**
+> **What is a plugin marketplace**
 >
-> A marketplace is a catalog of plugins that lives in a git repository. It names each plugin it offers and where the files for it sit, which is why adding the marketplace by itself installs nothing. You add the catalog once, install the plugins you want from it by name, and your assistant copies each one into its own plugin directory outside your project. Later releases reach you through the same catalog, so you update an installed plugin instead of tracking the repository it came from.
+> A marketplace is a catalog of plugins for coding assistants, usually hosted in a git repository. Each marketplace publishes an index of the plugins it offers and where the files for each one sit. You add a marketplace once, then install the plugins you want from it by name. See the [marketplace specification](https://open-plugins.com/plugin-builders/marketplace) for the format.
 
 ### VS Code with GitHub Copilot
 
@@ -77,6 +75,20 @@ Replace `kentico-web-development` with another plugin name from the selection ta
 
 Replace `kentico-web-development` with another plugin name from the selection table when needed.
 
+### Manual installation
+
+Use this alternative only when your assistant cannot install from a marketplace.
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/Kentico/xperience-by-kentico-kenticopilot.git
+   ```
+
+2. Follow your assistant's plugin or skill-loading conventions for the selected folder under `plugins/`.
+
+Do not copy every plugin into a project by default. Keeping only the relevant plugin reduces noise and prevents unrelated skills from burdening agent context.
+
 ## Invoke a skill
 
 A skill is a set of instructions your assistant loads when a request matches it. Nothing needs configuring per task, and you don't need to know a skill exists to benefit from one.
@@ -94,7 +106,7 @@ Review generated code, configuration, and reports before using them in a product
 
 ## Write specific prompts
 
-A skill covers the procedure for a task, but it knows nothing about your project. Which existing component to follow, where the design file lives, and which parts of the result matter to you are things only you can tell the assistant. [Work effectively with KentiCopilot](https://docs.kentico.com/x/work_effectively_kenticopilot_guides) explains how much difference this makes. The prompts below apply it to the skills in this repository.
+A skill covers the procedure for a task, but it knows nothing about your project. Which existing component to follow, where the design file lives, and which parts of the result matter to you are things only you can tell the assistant. The prompts below show a few examples using the skills from this repository.
 
 | Instead of | Write |
 |---|---|
@@ -115,20 +127,3 @@ Each plugin README includes prompt examples for its own skills.
 
 > [!TIP]
 > How you set up the work matters more than how you word any single prompt. See [Work effectively with KentiCopilot](https://docs.kentico.com/x/work_effectively_kenticopilot_guides) for the habits that get the most out of the plugins.
-
-## Manual installation
-
-Use this alternative only when your assistant cannot install from a marketplace or when you need bundled source that is not distributed with the marketplace package.
-
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/Kentico/xperience-by-kentico-kenticopilot.git
-   ```
-
-2. Follow your assistant's plugin-loading convention for the selected folder under `plugins/`.
-
-Do not copy every plugin into a project by default. Keeping only the relevant plugin reduces noise and prevents unrelated skills from activating.
-
-> [!IMPORTANT]
-> The KX13 content auditor includes .NET source under the plugin's `src/` directory. Marketplace installation exposes the skill but does not make that source available in your project workspace. Follow the [content auditor setup](../plugins/kentico-kx13-migration/docs/content-auditor.md) when using `migrate-content-audit`.
