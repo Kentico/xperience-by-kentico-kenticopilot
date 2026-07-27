@@ -1,8 +1,8 @@
 ---
-name: migrate-content-items
-description: Generates C# ContentItemDirectorBase extension code for controlling per-item migration behavior in the Kentico Migration Tool. Use when the user wants to handle linked pages (materialize/drop/store reference), convert pages to widgets, link child pages as content item references, override page templates, or apply conditional migration logic based on node path, class name, or hierarchy.
-compatibility: Requires dotnet CLI and optionally sqlcmd for resolving plan gaps (e.g., missing linked page audit or class IDs).
+name: "migrate-content-items"
+description: "Generates C# ContentItemDirectorBase extension code for controlling per-item migration behavior in the Kentico Migration Tool. Use when the user wants to handle linked pages (materialize/drop/store reference), convert pages to widgets, link child pages as content item references, override page templates, or apply conditional migration logic based on node path, class name, or hierarchy."
 argument-hint: "[migration-plan-path]"
+compatibility: "Requires dotnet CLI and optionally sqlcmd for resolving plan gaps (e.g., missing linked page audit or class IDs)."
 ---
 
 # Content Item Director Code Generation
@@ -13,10 +13,10 @@ Produces ready-to-use C# code files for the Migration.Tool.Extensions project. T
 
 ### Step 1: Read Reference Materials
 
-- Read [content-item-director-api.md](references/content-item-director-api.md) for the complete API patterns, method signatures, and annotated code samples.
-- If you need pattern examples for implementation, read [CONTENT_ITEM_DIRECTOR_EXAMPLE.cs](assets/CONTENT_ITEM_DIRECTOR_EXAMPLE.cs) for a complete annotated reference implementation showing all patterns.
-- If you need context on the migration tool's extension points or configuration, read [migration-tool.md](../_shared/references/migration-tool.md).
-- If you need documentation links, read [migration-docs.md](../_shared/references/migration-docs.md).
+- Read `references/content-item-director-api.md` for the complete API patterns, method signatures, and annotated code samples.
+- If you need pattern examples for implementation, read `assets/CONTENT_ITEM_DIRECTOR_EXAMPLE.cs` for a complete annotated reference implementation showing all patterns.
+- If you need context on the migration tool's extension points or configuration, read `../_shared/references/migration-tool.md`.
+- If you need documentation links, read `../_shared/references/migration-docs.md`.
 - If a Kentico documentation lookup tool is available, use it for additional context on content item directors, linked page handling, or page-to-widget conversion.
 
 ### Step 2: Analyze Input
@@ -27,6 +27,7 @@ Produces ready-to-use C# code files for the Migration.Tool.Extensions project. T
   - If the plan explicitly states no linked pages exist (e.g., "No linked pages exist" or "NodeLinkedNodeID is null for all pages"), **trust the plan** and skip the database query. No `DirectLinkedNode` override is needed.
   - If the plan includes a linked page audit with specific rows, use those rows directly — do not re-query the database for confirmation.
   - **Only query the KX13 database** when the plan does not mention linked pages at all (section missing or silent on the topic):
+
     ```sql
     SELECT t.NodeAliasPath, t.ClassName, t.NodeLinkedNodeID,
            t2.NodeAliasPath AS LinkedToPath, t2.ClassName AS LinkedToClass
@@ -34,6 +35,7 @@ Produces ready-to-use C# code files for the Migration.Tool.Extensions project. T
     JOIN CMS_Tree t2 ON t.NodeLinkedNodeID = t2.NodeID
     WHERE t.NodeLinkedNodeID IS NOT NULL
     ```
+
   - When linked pages do exist, every one MUST have an explicit handling directive. The default behavior (Materialize) creates duplicate content items silently.
 - Ask clarifying questions if widget placement details (editable area name, section type), ancestor levels, or conditional logic scope are ambiguous.
 

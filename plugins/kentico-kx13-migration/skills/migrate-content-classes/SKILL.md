@@ -1,8 +1,8 @@
 ---
-name: migrate-content-classes
-description: Generates C# IClassMapping and ReusableSchemaBuilder code for custom class transformations in the Kentico Migration Tool (KX13 to XbyK). Use for page type remodeling, merges, splits, field renames, value conversions, or Content Hub conversions.
-compatibility: Requires dotnet CLI and optionally sqlcmd for resolving plan gaps.
+name: "migrate-content-classes"
+description: "Generates C# IClassMapping and ReusableSchemaBuilder code for custom class transformations in the Kentico Migration Tool (KX13 to XbyK). Use for page type remodeling, merges, splits, field renames, value conversions, or Content Hub conversions."
 argument-hint: "[migration-plan-path]"
+compatibility: "Requires dotnet CLI and optionally sqlcmd for resolving plan gaps."
 ---
 
 # Class Transformation Code Generation
@@ -13,10 +13,10 @@ Produces ready-to-use C# code files for the Migration.Tool.Extensions project. T
 
 ### Step 1: Read Reference Materials
 
-- Read [class-mapping-api.md](references/class-mapping-api.md) for the complete API patterns, annotated code samples, and converter snippets.
-- If you need pattern examples for implementation, read [CLASS_MAPPING_EXAMPLE.cs](assets/CLASS_MAPPING_EXAMPLE.cs) for a complete annotated reference implementation showing all patterns.
-- If you need context on the migration tool's extension points or configuration, read [migration-tool.md](../_shared/references/migration-tool.md).
-- If you need documentation links, read [migration-docs.md](../_shared/references/migration-docs.md).
+- Read `references/class-mapping-api.md` for the complete API patterns, annotated code samples, and converter snippets.
+- If you need pattern examples for implementation, read `assets/CLASS_MAPPING_EXAMPLE.cs` for a complete annotated reference implementation showing all patterns.
+- If you need context on the migration tool's extension points or configuration, read `../_shared/references/migration-tool.md`.
+- If you need documentation links, read `../_shared/references/migration-docs.md`.
 - If a Kentico documentation lookup tool is available, use it for additional context on XbyK content types, reusable field schemas, or the Migration Tool API.
 
 ### Step 2: Analyze Input
@@ -38,11 +38,11 @@ Determine the set of code files needed:
 
 Before generating code, extract all lookup values that converters will need directly from the migration plan document. The plan is the trusted source of truth for field names, GUIDs, class names, and data types — do not query databases when the plan already provides the information. If the plan is contradictory, incomplete, or silent on a value, use `sqlcmd` to query the KX13 or XbyK database to resolve the gap.
 
-Follow the detailed extraction procedures in [lookup-extraction-guide.md](references/lookup-extraction-guide.md) to extract source field names, converter lookup keys, XbyK-dependent values (using plan GUIDs or TODO placeholders), and determine when to ask the user or query the database for clarification.
+Follow the detailed extraction procedures in `references/lookup-extraction-guide.md` to extract source field names, converter lookup keys, XbyK-dependent values (using plan GUIDs or TODO placeholders), and determine when to ask the user or query the database for clarification.
 
 ### Step 5: Handle docrelationships Fields
 
-When the migration plan identifies `docrelationships` fields (relationship-based fields that store data in `CMS_Relationship` rather than the coupled data table), follow the detailed patterns in [docrelationships-guide.md](references/docrelationships-guide.md). Key points: use factory DI registration with `ModelFacade` and `CmsRelationshipService`, the `WithoutSource` + `ConvertFrom` + `WithFieldPatch` pattern, and avoid using the `docrelationships` field name as `ConvertFrom` source when the target is not a page reference. See also Sample 11 in `class-mapping-api.md`.
+When the migration plan identifies `docrelationships` fields (relationship-based fields that store data in `CMS_Relationship` rather than the coupled data table), follow the detailed patterns in `references/docrelationships-guide.md`. Key points: use factory DI registration with `ModelFacade` and `CmsRelationshipService`, the `WithoutSource` + `ConvertFrom` + `WithFieldPatch` pattern, and avoid using the `docrelationships` field name as `ConvertFrom` source when the target is not a page reference. See also Sample 11 in `class-mapping-api.md`.
 
 ### Step 6: Generate Class Mapping Code
 
@@ -52,12 +52,14 @@ For each target content type, generate a static class with a builder method retu
 - `BuildField().SetFrom()` for direct field renames.
 - `BuildField().ConvertFrom()` for value transformations — include null handling and explanatory comments.
 - **CRITICAL: When `ConvertFrom` needs `WithFieldPatch`, NEVER use fluent chaining like `.ConvertFrom(includeDefinition: false).WithFieldPatch()`.** This causes a `NullReferenceException` at runtime because no `FormFieldInfo` exists. Instead, **always** use the three-step pattern with a local variable:
+
   ```csharp
   var field = m.BuildField("TargetField");
   field.WithoutSource("text");  // creates the FormFieldInfo
   field.ConvertFrom(source, "SourceField", false, converter);
   field.WithFieldPatch(f => { /* safe — f is not null */ });
   ```
+
   This applies to ALL `ConvertFrom` fields that need metadata patches — not just taxonomy or docrelationships fields. The only safe alternatives are `ConvertFrom(includeDefinition: true)` (which copies the source definition) or `SetFrom(isTemplate: true)` (which also copies the definition).
 - `BuildField().WithFieldPatch()` for metadata changes (caption, data type, form control). **Always include `f.Visible = true` and `f.Enabled = true`** in every `WithFieldPatch` call — the migration tool's `FormDefinitionPatcher` can reset field visibility.
 - `BuildField().WithFactory()` for entirely new field definitions.
@@ -95,7 +97,7 @@ The conflict occurs only when a **custom table** class appears in both `ConvertC
 2. If the build fails, analyze the error messages, fix all issues in the generated code, and rebuild.
 3. Repeat up to 3 times. If the build still fails after 3 attempts, present the full build output and error details to the user for manual resolution.
 
-After a successful build, verify registration completeness and WithFieldPatch safety per [build-verification.md](references/build-verification.md). If any fixes are applied, rebuild and re-verify.
+After a successful build, verify registration completeness and WithFieldPatch safety per `references/build-verification.md`. If any fixes are applied, rebuild and re-verify.
 
 ### Step 10: Present and Refine
 
@@ -134,8 +136,8 @@ For each remaining TODO in the generated code, provide:
 - `ConvertFrom` converters must handle null and unexpected types defensively with explanatory comments.
 - `WithoutSource` fields must have `AllowEmpty = true`.
 - File naming: `{TargetClassName}ClassMapping.cs`; namespace: `Migration.Tool.Extensions.ClassMappings` (user can override). One extension method per file.
-- For all other coding conventions (string constants, `using` directives, XML doc comments), follow the patterns in [CLASS_MAPPING_EXAMPLE.cs](assets/CLASS_MAPPING_EXAMPLE.cs).
-- Extract all lookup values from the migration plan (Step 4). The migration plan is the trusted source of truth for all lookup values including taxonomy tag GUIDs and taxonomy group GUIDs. If the plan contains actual GUIDs, use them directly in the generated code. If the plan contains `TODO` placeholders, generate `TODO` placeholders in the code with suggested SQL queries from [xbyk-query-patterns.md](references/xbyk-query-patterns.md). If the plan is contradictory, incomplete, or silent on a value, use `sqlcmd` to query the KX13 or XbyK database to resolve it. Only ask the user when the ambiguity cannot be resolved from the plan or database.
+- For all other coding conventions (string constants, `using` directives, XML doc comments), follow the patterns in `assets/CLASS_MAPPING_EXAMPLE.cs`.
+- Extract all lookup values from the migration plan (Step 4). The migration plan is the trusted source of truth for all lookup values including taxonomy tag GUIDs and taxonomy group GUIDs. If the plan contains actual GUIDs, use them directly in the generated code. If the plan contains `TODO` placeholders, generate `TODO` placeholders in the code with suggested SQL queries from `references/xbyk-query-patterns.md`. If the plan is contradictory, incomplete, or silent on a value, use `sqlcmd` to query the KX13 or XbyK database to resolve it. Only ask the user when the ambiguity cannot be resolved from the plan or database.
 - Do not regenerate `appsettings.json` fragments — only generate C# code.
 - If a Kentico documentation lookup tool is available, verify uncertain API details before generating code.
 - This skill generates class mapping and reusable schema code only — `ContentItemDirectorBase`, `IFieldMigration`, `IWidgetMigration`, and `IWidgetPropertyMigration` are separate extension points not covered here.
@@ -144,6 +146,7 @@ For each remaining TODO in the generated code, provide:
 
 - **API typo:** Use the exact spelling `UseResusableSchema` — this is the actual method name in the API.
 - **`ConvertFrom` + `WithFieldPatch` crash:** Never combine `ConvertFrom(includeDefinition: false)` with `WithFieldPatch` — it receives a null `FormFieldInfo` and throws a `NullReferenceException` at runtime. This applies to **all field types** (text, longtext, taxonomy, etc.), not just docrelationships. The anti-pattern to detect and avoid:
+
   ```csharp
   // WRONG — NullReferenceException at runtime:
   m.BuildField("Target").ConvertFrom(src, "Field", false, converter).WithFieldPatch(f => { ... });
@@ -151,7 +154,9 @@ For each remaining TODO in the generated code, provide:
   m.BuildField("Target").ConvertFrom(src, "Field", false, converter)
       .ConvertFrom(src2, "Field", false, converter).WithFieldPatch(f => { ... });
   ```
+
   Instead, use `WithoutSource(dataType)` to create the field definition first, then chain `ConvertFrom` for the value converter, then chain `WithFieldPatch` for metadata patches. **Always use a local variable** to make the three-step sequence explicit:
+
   ```csharp
   // CORRECT — WithoutSource creates FormFieldInfo before WithFieldPatch:
   var field = m.BuildField("Target");
@@ -159,6 +164,7 @@ For each remaining TODO in the generated code, provide:
   field.ConvertFrom(src, "Field", false, converter);
   field.WithFieldPatch(f => { ... });
   ```
+
   Note: `WithFactory` is only available on `IReusableFieldBuilder` (schema fields), not on `FieldBuilder` (class mapping fields).
 - **`ConvertClassesToContentHub` + coded `IClassMapping` conflict (custom tables only):** `ClassMappingProvider.EnsureSettings()` auto-generates mappings only for **custom tables** (`ClassIsCustomTable=1`) in `ConvertClassesToContentHub`. Page types are not affected. If a custom table class has both a coded `IClassMapping` and a `ConvertClassesToContentHub` entry, `AppendConfiguredMapping()` throws a "Duplicate class mapping" error. **Resolution:** Remove the custom table class from `ConvertClassesToContentHub` — the `IClassMapping` alone handles the conversion. Step 8 verifies this and recommends the appsettings change if needed.
 - **Renamed fields are silent failures:** Default migration only copies fields when source and target names match. Every field rename in the migration plan needs an explicit `SetFrom` or `ConvertFrom` — otherwise the target field is silently empty with no error.

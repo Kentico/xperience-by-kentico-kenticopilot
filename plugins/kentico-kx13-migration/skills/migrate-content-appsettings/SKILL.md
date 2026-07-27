@@ -1,8 +1,8 @@
 ---
-name: migrate-content-appsettings
-description: Generates appsettings.json for the Kentico Migration Tool CLI. Use when configuring migration settings, ConvertClassesToContentHub, EntityConfigurations, FieldMigrations, or QuerySourceInstanceApi.
-compatibility: Requires dotnet CLI, filesystem access, and optionally sqlcmd for resolving plan gaps.
+name: "migrate-content-appsettings"
+description: "Generates appsettings.json for the Kentico Migration Tool CLI. Use when configuring migration settings, ConvertClassesToContentHub, EntityConfigurations, FieldMigrations, or QuerySourceInstanceApi."
 argument-hint: "[migration-plan-path]"
+compatibility: "Requires dotnet CLI, filesystem access, and optionally sqlcmd for resolving plan gaps."
 ---
 
 # Appsettings.json Configuration Generation
@@ -15,21 +15,21 @@ Produces a complete, valid appsettings.json configuration file for the Kentico M
 
 If the user provides paths to KX13/XbyK projects, or if such projects can be found in the workspace, discover infrastructure values automatically instead of using placeholders. If no projects are available, skip this step entirely and use `<PLACEHOLDER>` values (the default behavior).
 
-Follow the detailed discovery procedures in [infrastructure-discovery.md](references/infrastructure-discovery.md) to locate KX13/XbyK projects, extract connection strings, CMS root paths, SourceInstanceUri, framework type, and NuGet version compatibility. If `QuerySourceInstanceApi` will be needed (determined in Step 4), also prepare ToolApiController deployment per [toolapi-deployment-reference.md](references/toolapi-deployment-reference.md).
+Follow the detailed discovery procedures in `references/infrastructure-discovery.md` to locate KX13/XbyK projects, extract connection strings, CMS root paths, SourceInstanceUri, framework type, and NuGet version compatibility. If `QuerySourceInstanceApi` will be needed (determined in Step 4), also prepare ToolApiController deployment per `references/toolapi-deployment-reference.md`.
 
 ### Step 2: Read Core Reference Materials
 
-- Read [appsettings-reference.md](references/appsettings-reference.md) for the complete per-setting schema documentation, types, constraints, and examples.
-- Read [APPSETTINGS_EXAMPLE.json](assets/APPSETTINGS_EXAMPLE.json) for a concrete MedioClinic example showing all content-related settings in context.
+- Read `references/appsettings-reference.md` for the complete per-setting schema documentation, types, constraints, and examples.
+- Read `assets/APPSETTINGS_EXAMPLE.json` for a concrete MedioClinic example showing all content-related settings in context.
 - If a Kentico documentation lookup tool is available, use it for additional context on configuration options or migration tool behavior.
-- If you need context on the migration tool's extension points or configuration, read [migration-tool.md](../_shared/references/migration-tool.md).
-- If you need documentation links, read [migration-docs.md](../_shared/references/migration-docs.md).
+- If you need context on the migration tool's extension points or configuration, read `../_shared/references/migration-tool.md`.
+- If you need documentation links, read `../_shared/references/migration-docs.md`.
 
 **Load on demand (only when needed):**
 
-- Read [toolapi-deployment-reference.md](references/toolapi-deployment-reference.md) only when QuerySourceInstanceApi is applicable (Step 1c or Step 4).
-- Read [cli-parameters-reference.md](references/cli-parameters-reference.md) when determining CLI execution order for the summary (Step 7).
-- Read [documentation-links.md](references/documentation-links.md) when the user needs pointers to official Kentico documentation.
+- Read `references/toolapi-deployment-reference.md` only when QuerySourceInstanceApi is applicable (Step 1c or Step 4).
+- Read `references/cli-parameters-reference.md` when determining CLI execution order for the summary (Step 7).
+- Read `references/documentation-links.md` when the user needs pointers to official Kentico documentation.
 
 ### Step 3: Analyze Input
 
@@ -66,7 +66,7 @@ Evaluate each of the 9 content-related settings from the reference against the i
 
 **Always include (infrastructure):**
 
-10. **MigrationProtocolPath** — Always include this setting. It specifies the file path where the migration tool writes a structured protocol log (the tool inserts a timestamp into the filename automatically, e.g., `protocol20240115_1430.txt`). The parent directory is auto-created by the tool if it does not exist. This protocol log is **required by the migrate-content-eval skill** to evaluate migration results across multiple categories (page types, widgets, users, modules, totals). Without it, post-migration evaluation cannot be performed. Construct the value as an absolute path under the **migration workspace root** — the common parent directory that contains the KX13 source, XbyK target, and migration tool projects as siblings: `<WorkspaceRoot>/MigrationProtocol/protocol.txt`. This keeps the protocol log independent of any single project and accessible to all skills that consume it. When infrastructure discovery (Step 1) identifies the workspace layout, resolve the workspace root and construct the absolute path automatically. **Note:** this setting is marked `[Obsolete]` in the migration tool source in favor of standard logging, but remains functional and is required for protocol-based evaluation.
+ 1. **MigrationProtocolPath** — Always include this setting. It specifies the file path where the migration tool writes a structured protocol log (the tool inserts a timestamp into the filename automatically, e.g., `protocol20240115_1430.txt`). The parent directory is auto-created by the tool if it does not exist. This protocol log is **required by the migrate-content-eval skill** to evaluate migration results across multiple categories (page types, widgets, users, modules, totals). Without it, post-migration evaluation cannot be performed. Construct the value as an absolute path under the **migration workspace root** — the common parent directory that contains the KX13 source, XbyK target, and migration tool projects as siblings: `<WorkspaceRoot>/MigrationProtocol/protocol.txt`. This keeps the protocol log independent of any single project and accessible to all skills that consume it. When infrastructure discovery (Step 1) identifies the workspace layout, resolve the workspace root and construct the absolute path automatically. **Note:** this setting is marked `[Obsolete]` in the migration tool source in favor of standard logging, but remains functional and is required for protocol-based evaluation.
 
 Only include settings that have actual values. Omit settings that are not relevant — no empty arrays, empty objects, or placeholder-only values.
 
@@ -75,7 +75,7 @@ Always include infrastructure settings (including `MigrationProtocolPath`) — w
 If `QuerySourceInstanceApi` is determined to be applicable and Step 1c prepared ToolApiController deployment, proceed with the deployment now:
 
 - Copy the controller file to the KX13 project's `Controllers` folder with the generated secret
-- Register the `ToolExtendedFeatures` route in the appropriate file (see [toolapi-deployment-reference.md](references/toolapi-deployment-reference.md))
+- Register the `ToolExtendedFeatures` route in the appropriate file (see `references/toolapi-deployment-reference.md`)
 
 ### Step 5: Generate appsettings.json
 
@@ -93,7 +93,7 @@ Produce a complete JSON configuration:
 
 ### Step 6: Validate Generated Configuration
 
-Before presenting to the user, run every check in [validation-checklist.md](references/validation-checklist.md) against the generated JSON. If any check fails, fix the issue and re-validate before proceeding.
+Before presenting to the user, run every check in `references/validation-checklist.md` against the generated JSON. If any check fails, fix the issue and re-validate before proceeding.
 
 ### Step 7: Present and Refine
 

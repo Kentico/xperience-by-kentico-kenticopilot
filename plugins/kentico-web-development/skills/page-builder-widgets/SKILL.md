@@ -1,6 +1,6 @@
 ---
 name: "page-builder-widgets"
-description: "Knowledge and conventions for building and modifying Page Builder widgets in Xperience by Kentico — view component, properties with admin UI form components, view model, Razor view, registration, localization, and content retrieval. Use whenever creating, building, or modifying a Page Builder widget."
+description: "Knowledge and conventions for building and modifying Page Builder widgets in Xperience by Kentico — view component, properties with admin UI form components, view model, Razor view, registration, localization, and content retrieval. Proactively read this before creating, building, or modifying a Page Builder widget."
 compatibility: "Requires Kentico Docs MCP"
 ---
 

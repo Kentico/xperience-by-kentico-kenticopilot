@@ -17,8 +17,7 @@ Keep each document focused on one reader need:
 | Document | Responsibility |
 |---|---|
 | Root `README.md` | Explain the marketplace, help users choose a plugin, and provide a short installation path |
-| Plugin `README.md` | Explain when to use the plugin, how its skills fit together, requirements, examples, outputs, and limits |
-| Plugin `docs/` | Hold detailed user-facing setup or command references for bundled tooling |
+| Plugin `README.md` | Explain when to use the plugin, how its skills fit together, requirements, examples, and how to review what it produces |
 | `SKILL.md` | Instruct the agent how to execute one task; do not use it as the primary user guide |
 | Skill `references/` | Give the agent focused material it loads only when needed |
 
@@ -49,6 +48,14 @@ New plugins must be registered in **both** marketplace manifests.
 A skill packages a repeatable task as instructions an AI assistant loads on demand.
 
 Follow the [Agent Skills specification](https://agentskills.io/specification) for the `SKILL.md` format, frontmatter fields, and directory layout. Also follow [Skill creation — best practices](https://agentskills.io/skill-creation/best-practices) for scoping, progressive disclosure, and what to put in `references/` vs `assets/`.
+
+### Markdown conventions
+
+- `argument-hint` frontmatter uses bracketed lowercase-hyphenated placeholders, `?` marks optional arguments: `argument-hint: "[migration-plan-path] [appsettings-path?]"`.
+- Quote all frontmatter values; order fields `name`, `description`, `argument-hint`, `compatibility`.
+- Placeholders in templates use single curly braces: `{project name}`.
+- Reference in-repo resource files with backtick paths (`` `references/docs.md` ``), not Markdown links.
+- Use Markdown links for external URLs.
 
 ### Subagent
 

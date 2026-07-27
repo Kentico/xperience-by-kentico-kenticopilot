@@ -6,7 +6,7 @@
 
 Needed only once, before the first run — skip when `<scripts>/node_modules` already exists.
 
-```
+```sh
 cd <scripts>
 npm ci
 npx playwright install chromium
@@ -14,7 +14,7 @@ npx playwright install chromium
 
 ## Running
 
-```
+```sh
 node <scripts>/compare.ts --design <file|folder> --live <url> [options]
 ```
 

@@ -6,37 +6,37 @@ Fetch pages via the Kentico Docs MCP.
 
 These pages cover the core of building a widget. Read them before implementing.
 
-- **Widgets for Page Builder (overview)**: https://docs.kentico.com/documentation/developers-and-admins/development/builders/page-builder/widgets-for-page-builder
-- **Widget properties**: https://docs.kentico.com/documentation/developers-and-admins/development/builders/page-builder/widgets-for-page-builder/widget-properties
-- **Inline editors for widget properties**: https://docs.kentico.com/documentation/developers-and-admins/development/builders/page-builder/widgets-for-page-builder/inline-editors-for-widget-properties
-- **Rich text inline editors**: https://docs.kentico.com/documentation/developers-and-admins/development/builders/page-builder/widgets-for-page-builder/rich-text-inline-editors
-- **Extending widgets**: https://docs.kentico.com/documentation/developers-and-admins/development/builders/page-builder/widgets-for-page-builder/extend-widgets
+- **Widgets for Page Builder (overview)**: <https://docs.kentico.com/documentation/developers-and-admins/development/builders/page-builder/widgets-for-page-builder>
+- **Widget properties**: <https://docs.kentico.com/documentation/developers-and-admins/development/builders/page-builder/widgets-for-page-builder/widget-properties>
+- **Inline editors for widget properties**: <https://docs.kentico.com/documentation/developers-and-admins/development/builders/page-builder/widgets-for-page-builder/inline-editors-for-widget-properties>
+- **Rich text inline editors**: <https://docs.kentico.com/documentation/developers-and-admins/development/builders/page-builder/widgets-for-page-builder/rich-text-inline-editors>
+- **Extending widgets**: <https://docs.kentico.com/documentation/developers-and-admins/development/builders/page-builder/widgets-for-page-builder/extend-widgets>
 
 ### Worked examples
 
-- **Example widget development**: https://docs.kentico.com/documentation/developers-and-admins/development/builders/page-builder/widgets-for-page-builder/example-widget-development
-- **Building a simple CTA widget**: https://docs.kentico.com/guides/development/page-builder/build-simple-cta-widget
-- **Define an advanced widget**: https://docs.kentico.com/guides/development/page-builder/define-advanced-widget
+- **Example widget development**: <https://docs.kentico.com/documentation/developers-and-admins/development/builders/page-builder/widgets-for-page-builder/example-widget-development>
+- **Building a simple CTA widget**: <https://docs.kentico.com/guides/development/page-builder/build-simple-cta-widget>
+- **Define an advanced widget**: <https://docs.kentico.com/guides/development/page-builder/define-advanced-widget>
 
 ## References — consult when needed
 
-- **Reference — default Page Builder widgets**: https://docs.kentico.com/documentation/developers-and-admins/development/builders/page-builder/reference-default-page-builder-widgets
+- **Reference — default Page Builder widgets**: <https://docs.kentico.com/documentation/developers-and-admins/development/builders/page-builder/reference-default-page-builder-widgets>
   - Read when mimicking a built-in widget's behavior or configuration.
-- **Reference — tag helpers**: https://docs.kentico.com/documentation/developers-and-admins/development/reference-tag-helpers
+- **Reference — tag helpers**: <https://docs.kentico.com/documentation/developers-and-admins/development/reference-tag-helpers>
   - Read when the Razor view needs a tag helper (e.g. rendering asset/media URLs).
-- **Secure custom endpoints**: https://docs.kentico.com/documentation/developers-and-admins/customization/secure-custom-endpoints
+- **Secure custom endpoints**: <https://docs.kentico.com/documentation/developers-and-admins/customization/secure-custom-endpoints>
   - Read when a component adds a server endpoint (POST handling) that must be secured.
-- **Reference — Admin UI form components**: https://docs.kentico.com/documentation/developers-and-admins/customization/extend-the-administration-interface/ui-form-components/reference-admin-ui-form-components
+- **Reference — Admin UI form components**: <https://docs.kentico.com/documentation/developers-and-admins/customization/extend-the-administration-interface/ui-form-components/reference-admin-ui-form-components>
   - Read when choosing the attribute for a property field and confirming the C# type each selector returns.
-- **Admin UI localization**: https://docs.kentico.com/documentation/developers-and-admins/customization/admin-ui-localization
+- **Admin UI localization**: <https://docs.kentico.com/documentation/developers-and-admins/customization/admin-ui-localization>
   - Read when localizing the widget's name, description, or property labels — `{$resource.key$}` localization expressions in registration and form-component attributes, and `LocalizationTarget.Builder` resources.
-- **Integrate custom code — resource files**: https://docs.kentico.com/documentation/developers-and-admins/customization/integrate-custom-code#store-application-resources-in-resource-files
+- **Integrate custom code — resource files**: <https://docs.kentico.com/documentation/developers-and-admins/customization/integrate-custom-code#store-application-resources-in-resource-files>
   - Read when creating and registering the `.resx` resource files (`RegisterLocalizationResource` attribute) that back the localization expressions.
-- **Retrieve page content**: https://docs.kentico.com/documentation/developers-and-admins/development/content-retrieval/retrieve-page-content
+- **Retrieve page content**: <https://docs.kentico.com/documentation/developers-and-admins/development/content-retrieval/retrieve-page-content>
   - Read when the widget fetches pages or reusable content items to display.
-- **Retrieve page URLs**: https://docs.kentico.com/documentation/developers-and-admins/development/content-retrieval/retrieve-page-content/retrieve-page-urls
+- **Retrieve page URLs**: <https://docs.kentico.com/documentation/developers-and-admins/development/content-retrieval/retrieve-page-content/retrieve-page-urls>
   - Read when the widget renders a page's live URL.
-- **ContentItemFields** (system fields of reusable content items): https://api-reference.kentico.com/api/CMS.ContentEngine.ContentItemFields.html
+- **ContentItemFields** (system fields of reusable content items): <https://api-reference.kentico.com/api/CMS.ContentEngine.ContentItemFields.html>
   - Read when you need a reusable item's system fields. API-reference page — not indexed by the Docs MCP; use web search.
-- **WebPageFields** (system fields of web pages): https://api-reference.kentico.com/api/CMS.Websites.WebPageFields.html
+- **WebPageFields** (system fields of web pages): <https://api-reference.kentico.com/api/CMS.Websites.WebPageFields.html>
   - Read when you need a web page's system fields. API-reference page — not indexed by the Docs MCP; use web search.

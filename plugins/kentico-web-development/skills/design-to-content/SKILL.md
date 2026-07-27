@@ -1,6 +1,6 @@
 ---
 name: "design-to-content"
-description: "Reference for content modeling in Xperience by Kentico. Use whenever the user is designing content types, turning a design/wireframe/Figma into a content model, deciding structured vs unstructured content, planning reusable content, taxonomies, relationships between types, or Page Builder modeling."
+description: "Reference for content modeling in Xperience by Kentico. Proactively read this before designing content types, turning a design/wireframe/Figma into a content model, deciding structured vs unstructured content, planning reusable content, taxonomies, relationships between types, or Page Builder modeling."
 compatibility: "Requires Kentico Docs MCP"
 ---
 

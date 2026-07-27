@@ -1,7 +1,7 @@
 ---
 name: "migrate-content-audit"
 description: "Audits a Kentico Xperience 13 (KX13) project's content model based on the project's database and generates structured Markdown and JSON reports. Use when the user asks to audit, analyze, export, or inspect a KX13 database, content model, page types, content tree, forms, custom tables, or page builder usage."
-argument-hint: "Optional export scope (sites, page types, report, etc.) and filters (site name, class name pattern, content tree path)"
+argument-hint: "[export-scope?] [filters?]"
 compatibility: "Requires .NET 8 SDK and access to a Kentico Xperience 13 SQL Server database."
 ---
 
@@ -42,7 +42,7 @@ If the user asks for everything, or gives no specific scope, run a **full export
 | User says (examples)                                    | CLI flag                       |
 | ------------------------------------------------------- | ------------------------------ |
 | "for site DancingGoatMvc" / "only the DancingGoat site" | `--site-name DancingGoatMvc`   |
-| "DancingGoat._ page types" / "class DancingGoat._"      | `--class-name "DancingGoat.*"` |
+| "DancingGoat._page types" / "class DancingGoat._"      | `--class-name "DancingGoat.*"` |
 | "under /Articles" / "the articles section"              | `--page-path /Articles`        |
 | "output to ./my-folder"                                 | `--output ./my-folder`         |
 
@@ -97,7 +97,7 @@ workspace-relative path: the installed plugin lives outside the workspace.
 
 ### 3. Run the CLI
 
-```
+```sh
 dotnet run --project <CLI> -- [area-flags] [filter-flags] --output <path>
 ```
 

@@ -35,6 +35,7 @@ endpoints.MapControllerRoute(
 ```
 
 **Key details:**
+
 - The controller uses ASP.NET Core `Microsoft.AspNetCore.Mvc.Controller` base class.
 - It requires `IHttpContextAccessor` via constructor injection (typically already registered in KX13 projects).
 - The `IsLocal` check restricts access to localhost requests only.
@@ -60,6 +61,7 @@ routes.MapRoute(
 ```
 
 **Key details:**
+
 - The controller uses `System.Web.Mvc.Controller` base class.
 - Locality check uses `HttpContext.Request.IsLocal`.
 - JSON serialization uses `Newtonsoft.Json` via a custom `ToJsonResult` helper.
@@ -69,6 +71,7 @@ routes.MapRoute(
 The secret authenticates requests between the migration tool and the KX13 instance.
 
 **Requirements:**
+
 - Cryptographically random, minimum 32 bytes
 - Base64-encoded (produces ~44 characters)
 - The **same secret** must appear in both:
@@ -76,11 +79,13 @@ The secret authenticates requests between the migration tool and the KX13 instan
   2. `appsettings.json` — `Settings.OptInFeatures.QuerySourceInstanceApi.Connections[].Secret`
 
 **Generation example (PowerShell):**
+
 ```powershell
 [System.Convert]::ToBase64String([System.Security.Cryptography.RandomNumberGenerator]::GetBytes(32))
 ```
 
 **Generation example (C#):**
+
 ```csharp
 Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
 ```
@@ -91,7 +96,7 @@ Never reuse the default placeholder secret from the migration tool repository.
 
 After deploying the controller, building, and starting the KX13 instance:
 
-```
+```http
 POST http://localhost:<PORT>/ToolApi/Test
 Content-Type: application/json
 
@@ -101,6 +106,7 @@ Content-Type: application/json
 **Expected response:** `{"pong": true}`
 
 **Troubleshooting:**
+
 - **404 Not Found** — route not registered, or registered after a catch-all route that intercepts the request first. Verify the `ToolExtendedFeatures` route is placed before other routes.
 - **403 Forbidden** — secret mismatch or request is not from localhost. Verify the secret matches and the request originates from the local machine.
 

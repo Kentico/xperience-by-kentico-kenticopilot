@@ -1,8 +1,8 @@
 ---
-name: cd-repository-configure
+name: "cd-repository-configure"
 description: "Builds a scoped CD Repository configuration from CI Repository changes selected by PR numbers or a commit range, excluding Xperience version-update noise by default. Use when the user wants to deploy specific features, PRs, or commits to another Xperience by Kentico environment, scope repository.config for a Continuous Deployment run, or prepare a CD deployment package."
 argument-hint: "[change-selector]"
-compatibility: "Requires local git and Kentico Docs MCP; PR selectors additionally require tooling for the repository host (CLI or MCP server, e.g., GitHub CLI or Azure DevOps MCP)."
+compatibility: "Requires local git, PowerShell, and Kentico Docs MCP; PR selectors additionally require tooling for the repository host (CLI or MCP server, e.g., GitHub CLI or Azure DevOps MCP)."
 ---
 
 You are tasked with creating a scoped CD Repository configuration from CI Repository changes.

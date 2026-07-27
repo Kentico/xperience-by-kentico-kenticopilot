@@ -45,7 +45,7 @@ Kentico.Migration.Tool.exe migrate --sites
 
 ### Parameter Dependencies
 
-```
+```text
 --sites (none)
   └── --custom-modules (--sites)
   │     └── --users (--sites, --custom-modules)
@@ -215,7 +215,7 @@ Rebuild after fixing.
 
 **Fix:** Increase `Connect Timeout` in both connection strings in appsettings.json:
 
-```
+```text
 Connect Timeout=120
 ```
 

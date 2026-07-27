@@ -101,6 +101,7 @@ The codebase-migration skills cover both walkthrough areas as a single iterative
 
 The auditor ships with the plugin. Ask the agent to set it. It will guide you through the process and for all required information:
 
+
 ```text
 /migrate-content-audit
 
@@ -162,7 +163,7 @@ These skills drive the [Kentico Migration Tool](https://github.com/Kentico/xperi
 
 Place the source, target, Migration Tool, and audit output in one workspace:
 
-```
+```text
 <workspace-root>/
 ├── KX13/                            # KX13 source project
 ├── XbyK/                            # XbyK target project
@@ -229,6 +230,7 @@ The exact parameters and execution guardrails live in each skill's `SKILL.md`. I
 Create the migration plan from ./audit-results/.
 ```
 
+
 ```text
 /migrate-content-appsettings
 
@@ -237,11 +239,13 @@ Generate the Migration Tool configuration from ./migration-detail.md.
 
 ### Example: execute and evaluate
 
+
 ```text
 /migrate-content-run
 
 Run the migration described by ./migration-detail.md.
 ```
+
 
 ```text
 /migrate-content-eval
@@ -269,7 +273,7 @@ These skills migrate the live-site foundation and presentation code. Content mig
 
 Place the source and target projects in the same workspace:
 
-```
+```text
 KX13/          # Kentico Xperience 13 project files
 XbyK/          # Xperience by Kentico project files
 ```
@@ -296,11 +300,13 @@ Skip `migrate-code-page-widgets` for pages that do not use Page Builder. Use `mi
 
 ### Example: initialize the target
 
+
 ```text
 /migrate-code-global
 ```
 
 ### Example: migrate a shared component
+
 
 ```text
 /migrate-code-component
@@ -311,6 +317,7 @@ legacyPageUrl: https://localhost:5001/en-us/home
 
 ### Example: migrate a Page Builder page
 
+
 ```text
 /migrate-code-page-widgets
 
@@ -318,12 +325,14 @@ pageName: home
 legacyPageUrl: https://localhost:5001/en-us/home
 ```
 
+
 ```text
 /migrate-code-page
 
 pageName: home
 legacyPageUrl: https://localhost:5001/en-us/home
 ```
+
 
 ```text
 /migrate-code-page-visual
@@ -365,4 +374,4 @@ These skill files serve as a baseline for migrating KX13 projects to Xperience b
 
 ## License
 
-Distributed under the MIT License. See [`LICENSE.md`](../../LICENSE.md) for more information.
+Distributed under the MIT License. See `LICENSE.md` for more information.

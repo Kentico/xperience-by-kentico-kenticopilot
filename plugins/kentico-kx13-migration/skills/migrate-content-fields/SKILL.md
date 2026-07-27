@@ -1,8 +1,8 @@
 ---
-name: migrate-content-fields
-description: Generates C# IFieldMigration extension code for custom field value and definition transformations (form controls, data types, HTML cleanup, path updates) for page types, module classes, system objects, and forms during KX13→XbyK migration. Use when the user needs to handle custom form controls with no XbyK equivalent, cross-class field transforms, HTML sanitization, URL path rewriting, or data type conversions that apply globally across multiple classes.
-compatibility: Requires dotnet CLI and optionally sqlcmd for resolving plan gaps. Optionally uses a Kentico documentation lookup tool for API verification.
+name: "migrate-content-fields"
+description: "Generates C# IFieldMigration extension code for custom field value and definition transformations (form controls, data types, HTML cleanup, path updates) for page types, module classes, system objects, and forms during KX13→XbyK migration. Use when the user needs to handle custom form controls with no XbyK equivalent, cross-class field transforms, HTML sanitization, URL path rewriting, or data type conversions that apply globally across multiple classes."
 argument-hint: "[migration-plan-path]"
+compatibility: "Requires dotnet CLI and optionally sqlcmd for resolving plan gaps. Optionally uses a Kentico documentation lookup tool for API verification."
 ---
 
 # Field Transformation Code Generation
@@ -13,10 +13,10 @@ Produces ready-to-use C# code files for the Migration.Tool.Extensions project. T
 
 ### Step 1: Read Reference Materials
 
-- Read [field-migration-api.md](references/field-migration-api.md) for the complete API patterns and decision guides.
-- If you need pattern examples for implementation, read [FIELD_MIGRATION_EXAMPLE.cs](assets/FIELD_MIGRATION_EXAMPLE.cs) for a complete annotated reference implementation.
-- If you need context on the migration tool's extension points or configuration, read [migration-tool.md](../_shared/references/migration-tool.md).
-- If you need documentation links for the Kentico Migration Tool, read [migration-docs.md](../_shared/references/migration-docs.md).
+- Read `references/field-migration-api.md` for the complete API patterns and decision guides.
+- If you need pattern examples for implementation, read `assets/FIELD_MIGRATION_EXAMPLE.cs` for a complete annotated reference implementation.
+- If you need context on the migration tool's extension points or configuration, read `../_shared/references/migration-tool.md`.
+- If you need documentation links for the Kentico Migration Tool, read `../_shared/references/migration-docs.md`.
 - If a Kentico documentation lookup tool is available, use it for additional context on XbyK form components, data types, or the Migration Tool API.
 
 ### Step 2: Analyze Input
@@ -33,7 +33,7 @@ Determine the set of `IFieldMigration` classes needed:
 - One `IFieldMigration` class per logical transformation concern (e.g., one for custom rich text editors, one for HTML cleanup, one for date format conversion).
 - Group related form controls or data types into a single migration when they share the same transformation logic.
 - One `ServiceCollectionExtensions` class for DI registration.
-- **Cross-reference the built-in mapping table** in [migration-tool.md](../_shared/references/migration-tool.md) — the migration tool has default `FieldMigration` entries for standard data type + form control combinations (e.g., `text + TextBoxControl → TextInput`, `longtext + HtmlAreaControl → RichTextEditor`). It also has catch-all entries per data type (e.g., `text + _other_ → TextInput`, `longtext + _other_ → TextArea`). If a source form control matches a built-in entry or catch-all AND the target data type doesn't change, no `IFieldMigration` is needed.
+- **Cross-reference the built-in mapping table** in `../_shared/references/migration-tool.md` — the migration tool has default `FieldMigration` entries for standard data type + form control combinations (e.g., `text + TextBoxControl → TextInput`, `longtext + HtmlAreaControl → RichTextEditor`). It also has catch-all entries per data type (e.g., `text + _other_ → TextInput`, `longtext + _other_ → TextArea`). If a source form control matches a built-in entry or catch-all AND the target data type doesn't change, no `IFieldMigration` is needed.
 - **Check for data type changes**: Built-in catch-all mappings preserve the source data type — they do not change it. If a field requires a data type change (e.g., `text → longtext`) AND a form control change, the catch-all won't produce the correct result. Use `IFieldMigration` code, `appsettings.json` `FieldMigrations` config, or `IClassMapping.WithFieldPatch` instead.
 - **Check the migration plan's Custom Form Control Fields section** (if present) — fields marked with handling mechanism "IFieldMigration code" need code generation. Fields marked "Built-in catch-all", "FieldMigrations config", or "WithFieldPatch" do not.
 - **Skip** code generation for:

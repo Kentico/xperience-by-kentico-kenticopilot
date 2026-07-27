@@ -1,7 +1,7 @@
 ---
-name: migrate-code-page
+name: "migrate-code-page"
 description: "Migrates a page from a Kentico Xperience 13 project to Xperience by Kentico. Converts controllers, views, layouts, content retrieval, and all dependencies for the specified page. Use when migrating the business and presentation logic of a specific page after its Page Builder widgets have been migrated."
-argument-hint: "Name of the page in the content tree and the legacy page URL"
+argument-hint: "[page-name] [legacy-page-url]"
 compatibility: "Requires Kentico Docs MCP and Playwright MCP"
 ---
 
@@ -10,7 +10,7 @@ You are tasked with the process of migrating a page from the legacy project to t
 ## Input Parameters
 
 - **Page Name** - The name of the page to migrate (e.g., 'home', 'doctors').
-- **Legacy Page URL** - The URL of the page in the KX13 project (e.g., 'https://localhost:5001/en-us/home').
+- **Legacy Page URL** - The URL of the page in the KX13 project (e.g., <https://localhost:5001/en-us/home>).
 
 ## Structure of the projects
 
@@ -54,7 +54,7 @@ Whenever unsure about anything, you can use Kentico Docs MCP to search for relev
 
 When done, provide the user with this exact output (without any additional text):
 
-```
+```markdown
 # Migration Complete
 Page migration from the legacy project to the new one has been successfully completed.
 

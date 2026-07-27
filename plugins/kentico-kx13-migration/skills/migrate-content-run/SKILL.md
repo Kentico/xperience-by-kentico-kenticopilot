@@ -1,8 +1,8 @@
 ---
-name: migrate-content-run
-description: Runs the Kentico Migration Tool CLI to migrate content from KX13 to XbyK. Use when the user wants to run migration steps, execute the migration tool, or process a migration plan through the CLI.
-compatibility: Requires dotnet CLI, sqlcmd, and network access to KX13 and XbyK SQL Server databases.
+name: "migrate-content-run"
+description: "Runs the Kentico Migration Tool CLI to migrate content from KX13 to XbyK. Use when the user wants to run migration steps, execute the migration tool, or process a migration plan through the CLI."
 argument-hint: "[migration-plan-path]"
+compatibility: "Requires dotnet CLI, sqlcmd, and network access to KX13 and XbyK SQL Server databases."
 ---
 
 # Migration Tool Execution
@@ -22,9 +22,9 @@ Before running this skill, the following must already be complete:
 
 ### Step 1: Read Reference Materials and Validate Setup
 
-- Read [migration-tool-run-reference.md](references/migration-tool-run-reference.md) for CLI usage, parameter details, error patterns, and troubleshooting guidance.
-- If you need context on the migration tool's extension points or CLI parameter dependencies, read [migration-tool.md](../_shared/references/migration-tool.md).
-- If you need documentation links, read [migration-docs.md](../_shared/references/migration-docs.md).
+- Read `references/migration-tool-run-reference.md` for CLI usage, parameter details, error patterns, and troubleshooting guidance.
+- If you need context on the migration tool's extension points or CLI parameter dependencies, read `../_shared/references/migration-tool.md`.
+- If you need documentation links, read `../_shared/references/migration-docs.md`.
 - Read the migration plan file provided by the user to understand:
   - The **Execution Plan** section — which CLI parameters to run and in what order
   - Any **Pre-Migration** manual steps that must be completed first
@@ -32,7 +32,7 @@ Before running this skill, the following must already be complete:
 
 ### Step 2: Pre-Flight Checks
 
-Before running any migration command, verify the environment is ready. Complete all checks in [pre-flight-checks.md](references/pre-flight-checks.md): locate the CLI project, validate appsettings.json (connection strings, semicolon-separated strings, QuerySourceInstanceApi reachability, MigrationProtocolPath), validate the build, check NuGet version compatibility, scan for TODO placeholders in code, and confirm pre-migration manual steps with the user. Do not proceed if any critical check fails.
+Before running any migration command, verify the environment is ready. Complete all checks in `references/pre-flight-checks.md`: locate the CLI project, validate appsettings.json (connection strings, semicolon-separated strings, QuerySourceInstanceApi reachability, MigrationProtocolPath), validate the build, check NuGet version compatibility, scan for TODO placeholders in code, and confirm pre-migration manual steps with the user. Do not proceed if any critical check fails.
 
 ### Step 3: Build the Migration Command
 
@@ -55,7 +55,7 @@ The standard content migration flags are:
 
 Example combined command:
 
-```
+```sh
 dotnet run -- migrate --nowait --sites --custom-modules --users --page-types --pages --categories --media-libraries --forms 2>&1 | tee <protocol-dir>/migration-run.log
 ```
 
@@ -69,7 +69,7 @@ Tell the user which flags are included in the command, what the migration will d
 
 Execute the single combined migration command using `dotnet run` from the CLI project directory, capturing console output to a log file:
 
-```
+```sh
 dotnet run -- migrate --nowait --sites --custom-modules --users --page-types --pages --categories --media-libraries --forms 2>&1 | tee <protocol-dir>/migration-run.log
 ```
 
@@ -79,18 +79,18 @@ dotnet run -- migrate --nowait --sites --custom-modules --users --page-types --p
 
 #### 4c. Monitor Output
 
-Watch the output for success, failure, and warning indicators. Refer to [migration-tool-run-reference.md](references/migration-tool-run-reference.md) for the full output pattern reference. The tool processes each flag sequentially within the single run and reports progress for each.
+Watch the output for success, failure, and warning indicators. Refer to `references/migration-tool-run-reference.md` for the full output pattern reference. The tool processes each flag sequentially within the single run and reports progress for each.
 
 #### 4d. Diagnose Errors
 
-If the run fails at any point, analyze the error output and apply the appropriate fix from [migration-tool-run-reference.md](references/migration-tool-run-reference.md).
+If the run fails at any point, analyze the error output and apply the appropriate fix from `references/migration-tool-run-reference.md`.
 
 After applying a fix:
 
 - Rebuild the project if code was changed (`dotnet build`)
 - Re-run the **same combined command** with `--bypass-dependency-check` appended (steps that already completed will be skipped or updated idempotently):
 
-```
+```sh
 dotnet run -- migrate --nowait --sites --custom-modules --users --page-types --pages --categories --media-libraries --forms --bypass-dependency-check 2>&1 | tee <protocol-dir>/migration-run2.log
 ```
 
@@ -106,7 +106,7 @@ After the run completes, record:
 
 #### 4f. Post-Run Validation
 
-After the migration run succeeds, run **all** validation queries from [post-step-validation.md](references/post-step-validation.md) against the XbyK database using `sqlcmd`. Cross-reference results against the migration plan and flag any discrepancies (missing types, orphan pages, missing taxonomies).
+After the migration run succeeds, run **all** validation queries from `references/post-step-validation.md` against the XbyK database using `sqlcmd`. Cross-reference results against the migration plan and flag any discrepancies (missing types, orphan pages, missing taxonomies).
 
 ### Step 5: Post-Execution Summary
 

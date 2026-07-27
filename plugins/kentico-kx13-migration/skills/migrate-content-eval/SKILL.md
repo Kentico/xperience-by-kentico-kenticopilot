@@ -1,8 +1,8 @@
 ---
-name: migrate-content-eval
-description: Evaluates migration results across 12 categories by gathering data from logs, databases, and migration plan. Generates a self-contained HTML report with per-category pass/fail/warn status, prioritized remediation guidance, and next-step routing to close the migration loop.
-compatibility: Requires sqlcmd CLI and network access to KX13 and XbyK databases. Requires parse-migration-logs.ps1 script.
+name: "migrate-content-eval"
+description: "Evaluates migration results across 12 categories by gathering data from logs, databases, and migration plan. Generates a self-contained HTML report with per-category pass/fail/warn status, prioritized remediation guidance, and next-step routing to close the migration loop."
 argument-hint: "[migration-plan-detail-path] [appsettings-path?]"
+compatibility: "Requires sqlcmd CLI and network access to KX13 and XbyK databases. Requires parse-migration-logs.ps1 script."
 ---
 
 # Migration Evaluation
@@ -40,9 +40,11 @@ Verify required files exist before proceeding.
 #### 1a. Parse Logs
 
 Run the log parsing script, passing the log directory. The script discovers all `protocol*.txt` and `migration-run*.log` files, processes them chronologically, and merges results across runs (later runs override earlier failures per entity):
-```
+
+```powershell
 & skills/migrate-content-eval/scripts/parse-migration-logs.ps1 -LogDir <log-dir>
 ```
+
 Read output at `<log-dir>/parsed-log-summary.yaml`.
 
 If script fails, mark all log-based checks as **N/A** — do not attempt manual regex parsing.
@@ -50,6 +52,7 @@ If script fails, mark all log-based checks as **N/A** — do not attempt manual 
 #### 1b. Establish Database Connections
 
 Read `appsettings.json`. Extract connection strings:
+
 - **KX13**: `Settings.KxConnectionString`
 - **XbyK**: `Settings.XbyKApiSettings.ConnectionStrings.CMSConnectionString`
 
@@ -61,7 +64,7 @@ If a connection fails, note which categories will have partial data. Do NOT stop
 
 #### 1c. Parse Migration Plan
 
-Read the migration plan detail. Split by `## ` (H2) and `### ` (H3) headings. Parse markdown tables (split by `|`, trim cells). Extract expected entities:
+Read the migration plan detail. Split by `##` (H2) and `###` (H3) headings. Parse markdown tables (split by `|`, trim cells). Extract expected entities:
 
 | Plan Section | What to Extract |
 |---|---|
@@ -77,13 +80,13 @@ If a section is not found, mark that evaluation category as **N/A**.
 
 #### 1d. Run All SQL Queries
 
-Read [eval-sql-queries.md](references/eval-sql-queries.md). Execute all queries for the 12 categories. Log all `sqlcmd` output to `<log-dir>/eval-queries.log`.
+Read `references/eval-sql-queries.md`. Execute all queries for the 12 categories. Log all `sqlcmd` output to `<log-dir>/eval-queries.log`.
 
 Use parseable output: `sqlcmd -S <server> -d <database> -Q "<query>" -W -s "|" -h -1`
 
 ### Phase 2: Evaluate 12 Categories
 
-Read [evaluation-categories.md](references/evaluation-categories.md) for the full per-category evaluation logic. For each category, compare gathered data against plan expectations and assign status:
+Read `references/evaluation-categories.md` for the full per-category evaluation logic. For each category, compare gathered data against plan expectations and assign status:
 
 | # | Category | Primary Sources |
 |---|----------|----------------|
@@ -105,9 +108,10 @@ Status values: **PASS** (matches), **FAIL** (critical mismatch), **WARN** (non-c
 ### Phase 3: Generate HTML Report
 
 Read these references:
-- [report-generation.md](references/report-generation.md) for template filling instructions and per-category HTML fragment structure
-- [actionable-suggestions.md](references/actionable-suggestions.md) for issue → remediation mapping with fix types and skill routing
-- [LOG_ANALYSIS_REPORT_TEMPLATE.html](assets/LOG_ANALYSIS_REPORT_TEMPLATE.html) for the HTML template
+
+- `references/report-generation.md` for template filling instructions and per-category HTML fragment structure
+- `references/actionable-suggestions.md` for issue → remediation mapping with fix types and skill routing
+- `assets/LOG_ANALYSIS_REPORT_TEMPLATE.html` for the HTML template
 
 For each of the 12 categories, build an HTML fragment replacing the corresponding `{{CAT_N_BODY}}` token. Build prioritized action items (`{{ACTION_ITEMS_BODY}}`): FAIL items first with remediation type badge, then WARN items. Deduplicate across categories.
 
@@ -133,6 +137,7 @@ Then route next steps based on results:
 | **Mixed FAIL + WARN** | Address FAILs first (config before code). WARNs can wait until FAILs are resolved. |
 
 Be specific when routing. Examples:
+
 - "Re-run `migrate-content-classes` skill for `MedioClinic.DoctorProfile` to fix taxonomy JSON casing"
 - "Re-run `migrate-content-appsettings` skill — `EntityConfigurations` keys use dots instead of underscores"
 - "Manually delete orphaned content type `MedioClinic.DayOfWeek` in XbyK Administration > Content types"

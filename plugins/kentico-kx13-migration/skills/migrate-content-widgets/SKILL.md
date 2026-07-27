@@ -1,8 +1,8 @@
 ---
-name: migrate-content-widgets
-description: Generates C# IWidgetMigration and IWidgetPropertyMigration extension code for custom widget and section type transformations (rename, restructure, consolidate, property conversion) during KX13→XbyK migration. Use when the user needs to change widget types, restructure widget data, or convert section types.
-compatibility: Requires dotnet CLI and the Migration.Tool.Extensions project structure.
+name: "migrate-content-widgets"
+description: "Generates C# IWidgetMigration and IWidgetPropertyMigration extension code for custom widget and section type transformations (rename, restructure, consolidate, property conversion) during KX13→XbyK migration. Use when the user needs to change widget types, restructure widget data, or convert section types."
 argument-hint: "[migration-plan-path]"
+compatibility: "Requires dotnet CLI and the Migration.Tool.Extensions project structure."
 ---
 
 # Widget Transformation Code Generation
@@ -13,10 +13,10 @@ Produces ready-to-use C# code files for the Migration.Tool.Extensions project. T
 
 ### Step 1: Read Reference Materials
 
-- Read [widget-migration-api.md](references/widget-migration-api.md) for the complete API patterns, annotated code samples, and decision guides.
-- If you need pattern examples for implementation, read [WIDGET_MIGRATION_EXAMPLE.cs](assets/WIDGET_MIGRATION_EXAMPLE.cs) for a complete annotated reference implementation showing all patterns.
-- If you need context on the migration tool's extension points or configuration, read [migration-tool.md](../_shared/references/migration-tool.md).
-- If you need documentation links for further research, read [migration-docs.md](../_shared/references/migration-docs.md).
+- Read `references/widget-migration-api.md` for the complete API patterns, annotated code samples, and decision guides.
+- If you need pattern examples for implementation, read `assets/WIDGET_MIGRATION_EXAMPLE.cs` for a complete annotated reference implementation showing all patterns.
+- If you need context on the migration tool's extension points or configuration, read `../_shared/references/migration-tool.md`.
+- If you need documentation links for further research, read `../_shared/references/migration-docs.md`.
 - If a Kentico documentation lookup tool is available, use it for additional context on widget migration APIs, Page Builder JSON structure, or advanced patterns like content item creation during migration.
 
 ### Step 2: Analyze Input
