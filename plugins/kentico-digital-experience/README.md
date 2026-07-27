@@ -1,53 +1,120 @@
 # Kentico digital experience
 
-Skills for extending [Automation processes](https://docs.kentico.com/x/automation_xp) with [custom components](https://docs.kentico.com/x/automation_custom_xp). The plugin currently supports custom Automation actions: custom step types available in the Automation Builder.
+Extend the digital marketing features of Xperience by Kentico with custom components, written by your AI coding assistant.
 
-## Skills
+Marketers configure these features using the component types available to them. When they need behavior Xperience doesn't provide out of the box, such as posting to a chat channel or calling an internal service, a developer adds a custom component. This plugin hands that work to your coding assistant. You explain what the component does and which settings marketers control, and the agent writes the implementation together with the registration that makes it available in the admin UI.
+
+## Choose a skill
 
 | Skill | Use it to | Activation |
 |---|---|---|
-| `automation-action` | Implement and register a custom Automation action, including optional marketer-configurable properties | Invoke by name or describe the action |
+| `automation-action` | Implement and register a custom automation action, with optional marketer-configurable properties | Invoke by name, or describe the step you need |
 
-The skill studies the existing project conventions, reads the current Xperience API documentation, confirms the proposed action design, and then implements it.
+For the other kinds of automation customization, see the [customization overview](https://docs.kentico.com/x/automation_custom_xp).
+
+> [!TIP]
+> New to agent skills? The **Activation** column tells you how to reach each one. For what that means in practice, read [Invoke a skill](../../docs/Usage-Guide.md#invoke-a-skill).
 
 ## Requirements
 
+- An Xperience by Kentico project with [Automation](https://docs.kentico.com/x/automation_xp) in use
 - An AI coding assistant with this plugin installed
-- A description of the action's behavior and any properties marketers need to configure
-- The MCP servers listed in [MCP setup](./MCP-setup.md)
+- The [Documentation MCP server](https://docs.kentico.com/x/mcp_server_xp), configured as described in [MCP setup](./MCP-setup.md)
+- A description of what the step does, and of any settings marketers need to change
 
 ## Install
 
 Follow the marketplace instructions in the [usage guide](../../docs/Usage-Guide.md#install-the-selected-plugin), using the plugin name `kentico-digital-experience`.
 
-## Use the plugin
+## Build your first action
 
-Describe the action and its configurable properties. The agent inspects the project, asks only for missing design decisions, and writes the implementation.
+This sequence produces one working action, configurable by marketers. See the other sections for more use cases and prompt examples.
 
-**Example**
+1. Open the solution containing your Xperience web project in your AI coding assistant.
 
-```
+2. Describe the step and its settings in the prompt. The more specific you are, the fewer questions the agent needs to ask. For examples, see [Write effective prompts](#write-effective-prompts).
+
+   ```text
+   /automation-action
+
+   Create an action that sends a Slack message to a configured webhook
+   when a contact reaches this step. Marketers need to edit the webhook
+   URL and the message template.
+   ```
+
+3. Answer the design questions. The agent reads the current Xperience documentation and studies how your project is organized, then confirms the design before writing anything. Expect it to ask about whatever you left open, such as how the step behaves when the external call fails.
+
+4. Review the generated code. The agent reports which files it created. Read [Review the output](#review-the-output).
+
+5. Build the project and restart the application, then open the **Automation** application and add your step to a process. Confirm the step appears under its display name and that its properties render in the configuration dialog.
+
+At this point the step is available to every marketer working in the Automation Builder, and it runs for each contact that reaches it.
+
+## Common tasks
+
+For actions with no configuration surface, the agent skips the properties class entirely.
+
+```text
 /automation-action
 
-Create an action that sends a Slack message to a configured webhook
-when a contact reaches this step. Marketers should be able to edit the
-webhook URL and message template.
+Add an action that writes an information-level log entry with the
+contact's email address. No marketer-facing settings.
 ```
 
-## Output
+**Configuration driven by a requirements file.** Providing examples, specification documents, or an existing implementation is better than handwritten instructions. The agent reads the source instead of your summary of it, which produces a closer match.
 
-Depending on the requested action, the agent creates:
+```text
+/automation-action
 
-- The action class
-- An optional properties class implementing `IAutomationActionProperties`, including form-component annotations
-- Assembly-level `RegisterAutomationAction<>` registration
+Implement the action described in ./requirements/crm-sync.md and follow
+the conventions of the components already in this project.
+```
 
-The agent follows the project's namespace, localization, dependency-injection, and logging conventions.
+**A new property on an existing action.** Name the action and the setting. The agent finds the existing classes and extends them rather than starting over.
 
-## Included resources
+```text
+Add a retry-count setting to the CrmSyncAction, editable by marketers,
+with a default of 3 and a maximum of 10.
+```
 
-- [`skills/automation-action/references/docs.md`](./skills/automation-action/references/docs.md) maps the task to the current Xperience documentation and API examples.
+## Write effective prompts
 
-## Customize the skill
+Both of these prompts produce a working action. The second one gets there sooner, because the agent already knows the answers to the obvious questions.
 
-Add project-specific conventions, such as resource-string organization, namespace structure, or common dependencies, to the skill's `references/` directory.
+| Prompt | What happens |
+|---|---|
+| `Create an action that sends an email` | The agent works out the recipient, the source of the content, and which parts marketers control. Expect several rounds of questions. |
+| `Create an action that sends the contact a transactional email chosen by the marketer from a dropdown of published email templates` | The agent proposes a design right away and asks only about what you left open. |
+
+> [!TIP]
+> The same applies to every KentiCopilot skill. See [Write specific prompts](../../docs/Usage-Guide.md#write-specific-prompts) for the general guidance, including the habits that slow a session down.
+
+## What you get
+
+The agent creates the pieces described in [Custom automation steps](https://docs.kentico.com/x/automation_custom_steps_xp), matching your project's namespace, localization, dependency-injection, and logging conventions:
+
+- **Action class** – holds the logic that runs when a contact reaches the step.
+- **Properties class** – defines what marketers configure, and the [form components](https://docs.kentico.com/x/8ASiCQ) that build the configuration dialog. Created only when the step needs settings.
+- **Registration** – the assembly attribute that makes the step available in the Automation Builder.
+
+## Review the output
+
+Treat generated code the way you'd treat a pull request from someone new to the project. The following things are worth reviewing:
+
+**The form annotation namespace.** Form component attributes need to come from the `Kentico.Xperience.Admin.*.FormAnnotations` namespaces. An obsolete Form Builder namespace, `Kentico.Forms.Web.Mvc`, contains attributes with the same names. Check the `using` directives on the properties class.
+
+**The execution time limit.** Actions are cancelled after two minutes, so a step calling a slow external service can be cut off mid-run. If the generated code talks to anything outside the application, read [Best practices](https://docs.kentico.com/x/automation_custom_steps_xp) for the timeout behavior and what to do instead.
+
+Other things to keep an eye on:
+
+- Use `ILogger<T>` for [logging](https://docs.kentico.com/documentation/developers-and-admins/development/logging).
+- Check the failure path, and what happens when the same contact enters the step twice.
+- Consider [data protection](https://docs.kentico.com/x/zIB1CQ) issues for anything the step sends outside the application.
+- Open the configuration dialog in the **Automation** application and verify the output.
+
+## Customize
+
+Record project-specific conventions in your project's agent instruction files. The agent otherwise infers coding conventions from surrounding code each time. Instructions kept in the project apply to every task and survive plugin updates.
+
+> [!TIP]
+> Durable project context, exploring before generating, and verifying against the running site all improve outcomes more than prompt engineering or skill customization. See [Work effectively](../../docs/Usage-Guide.md#work-effectively) for details.

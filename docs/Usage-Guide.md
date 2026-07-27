@@ -2,6 +2,15 @@
 
 Use this guide to select and install a KentiCopilot plugin. For task-specific inputs, examples, outputs, and limitations, continue to the selected plugin's README.
 
+## Install an AI coding assistant
+
+The plugins are tested with:
+
+- [GitHub Copilot](https://github.com/features/copilot), using VS Code or Copilot CLI
+- [Claude Code](https://www.claude.com/product/claude-code)
+
+Skills follow the [Agent Skills specification](https://agentskills.io/specification). Other compatible assistants can use them, but their installation and invocation syntax may differ.
+
 ## Choose a plugin
 
 Plugins are installed independently. Select and install those suitable for your use cases.
@@ -25,18 +34,14 @@ Some plugins also require MCP servers, command-line tools, SDKs, or a running ap
 
 Plugin installation does not configure MCP servers in the current packages. Each plugin that uses MCP links to an `MCP-setup.md` page with the required or recommended workspace configuration.
 
-## Install an AI coding assistant
-
-The plugins are tested with:
-
-- [GitHub Copilot](https://github.com/features/copilot), using VS Code or Copilot CLI
-- [Claude Code](https://www.claude.com/product/claude-code)
-
-Skills follow the [Agent Skills specification](https://agentskills.io/specification). Other compatible assistants can use them, but their installation and invocation syntax may differ.
-
 ## Install the selected plugin
 
 This repository is an agent plugin marketplace. Add the marketplace once, then install one or more plugin names from the table above.
+
+> [!NOTE]
+> **What a plugin marketplace is**
+>
+> A marketplace is a catalog of plugins that lives in a git repository. It names each plugin it offers and where the files for it sit, which is why adding the marketplace by itself installs nothing. You add the catalog once, install the plugins you want from it by name, and your assistant copies each one into its own plugin directory outside your project. Later releases reach you through the same catalog, so you update an installed plugin instead of tracking the repository it came from.
 
 ### VS Code with GitHub Copilot
 
@@ -74,6 +79,8 @@ Replace `kentico-web-development` with another plugin name from the selection ta
 
 ## Invoke a skill
 
+A skill is a set of instructions your assistant loads when a request matches it. Nothing needs configuring per task, and you don't need to know a skill exists to benefit from one.
+
 Open the relevant project or workspace in your assistant and describe the outcome you need. Include concrete context such as project paths, requirements files, design files, URLs, versions, PR numbers, or migration-plan paths.
 
 Skills can be activated in two ways:
@@ -84,6 +91,30 @@ Skills can be activated in two ways:
 The plugin README identifies the recommended activation method and provides copyable examples. The skill itself contains the execution instructions; you do not need to open or paste `SKILL.md` into the conversation.
 
 Review generated code, configuration, and reports before using them in a production workflow.
+
+## Write specific prompts
+
+A skill covers the procedure for a task, but it knows nothing about your project. Which existing component to follow, where the design file lives, and which parts of the result matter to you are things only you can tell the assistant. [Work effectively with KentiCopilot](https://docs.kentico.com/x/work_effectively_kenticopilot_guides) explains how much difference this makes. The prompts below apply it to the skills in this repository.
+
+| Instead of | Write |
+|---|---|
+| `Create a widget` | `Create a widget matching ./designs/hero.png, following the conventions of the existing widgets in ./Components/Widgets` |
+| `Model the content` | `Model the article listing from ./designs/news.fig, reusing the existing Article content type instead of creating a second one` |
+| `Migrate the site` | `Migrate the KX13 instance at ./legacy using the plan in ./migration-plan.md, content types first` |
+
+Point the assistant at your sources instead of describing them. When you name a requirements document, a design export, or an existing implementation, the assistant reads the real thing rather than your summary of it.
+
+Here are several habits, sourced from accepted and reviewed research, that reliably lead to poor outcomes when working with coding assistants:
+
+- **Asking for several unrelated things in one prompt.** The assistant works on them together, and the result becomes harder to review. Ask for one outcome, review it, and continue from there.
+- **Describing what you don't want.** *Don't use inline styles* leaves the assistant to guess the alternative. Name the target instead, as in *use the SCSS variables in ./Assets/styles*.
+- **Assuming shared context.** The assistant doesn't know which command builds your project, where your site runs, or which of two similar components is the current one. Say so in the prompt, or record it in your project's agent instructions.
+- **Approving a plan you only skimmed.** Corrections are cheapest before the assistant writes any code. Read the design the assistant proposes and change it there.
+
+Each plugin README includes prompt examples for its own skills.
+
+> [!TIP]
+> How you set up the work matters more than how you word any single prompt. See [Work effectively with KentiCopilot](https://docs.kentico.com/x/work_effectively_kenticopilot_guides) for the habits that get the most out of the plugins.
 
 ## Manual installation
 
