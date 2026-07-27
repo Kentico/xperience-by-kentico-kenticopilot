@@ -1,62 +1,64 @@
 # Kentico project lifecycle
 
-Skills for maintaining an Xperience by Kentico solution after initial development: updating Xperience and creating deployment-scoped [Continuous Deployment Repository](https://docs.kentico.com/x/continuous_deployment) configuration.
+Keep an Xperience by Kentico solution current and move changes between environments in a controlled way.
+
+The skills in this plugin cover project lifecycle management such as applying [Xperience updates](https://docs.kentico.com/x/DwKQC) and the [Continuous Deployment](https://docs.kentico.com/x/YgaiCQ) side of a [CI/CD](https://docs.kentico.com/x/YAaiCQ) setup.
 
 ## Choose a skill
 
 | Skill | Use it to | Activation |
 |---|---|---|
-| `update-xperience` | Update an Xperience project to a target or latest version | Invoke by name |
-| `cd-repository-configure` | Generate and verify `repository.config` filters from selected PRs or commits | Invoke by name with change selectors |
+| `update-xperience` | Update an Xperience project to a target version, or to the latest release | Invoke by name, or ask to update the project |
+| `cd-repository-configure` | Build a `repository.config` scoped to the changes you deploy, then export and verify the deployment content | Invoke by name, or describe the changes to deploy |
 
-### Xperience updates
+For enabling the repositories themselves, and for the full filtering reference, see [Configure CI/CD repositories](https://docs.kentico.com/x/ygAcCQ).
 
-`update-xperience` determines the current and target versions, reviews every intervening [Changelog](https://docs.kentico.com/changelog) entry and linked update guide, and follows the [official update procedure](https://docs.kentico.com/x/DwKQC).
-
-### CD Repository configuration
-
-`cd-repository-configure`:
-
-1. Discovers the application, CI Repository, and CD Repository configuration.
-2. Reads and classifies changes from selected PRs or a git commit range.
-3. Regenerates deployment-scoped filters in `repository.config`.
-4. Exports and verifies the serialized deployment content when project tooling permits.
-
-Xperience-version-only changes are excluded by default. The skill requires v2 `repository.config` syntax; for v1, it directs you to the [v2 migration guide](https://docs.kentico.com/x/cicd_config_v2_migration).
+> [!TIP]
+> New to agent skills? The **Activation** column tells you how to reach each one. For what that means in practice, read [Invoke a skill](../../docs/Usage-Guide.md#invoke-a-skill).
 
 ## Requirements
 
 - An Xperience by Kentico project
 - An AI coding assistant with this plugin installed
-- Kentico Docs MCP, configured as described in [MCP setup](./MCP-setup.md)
-- For CD Repository work:
-  - CI/CD Repository enabled with v2 `repository.config` syntax
-  - Local git
-  - Repository-host tooling for PR selectors, such as `gh`, `az repos`, or a suitable MCP server
+- The [Documentation MCP server](https://docs.kentico.com/x/mcp_server_xp), configured as described in [MCP setup](./MCP-setup.md)
 
 ## Install
 
 Follow the marketplace instructions in the [usage guide](../../docs/Usage-Guide.md#install-the-selected-plugin), using the plugin name `kentico-project-lifecycle`.
 
-## Use the plugin
+## Run your first update
 
-### Update your Xperience project
+This example shows how to use the skills in this plugin to update an Xperience by Kentico project to the latest version.
 
-The update skill identifies your current and target Xperience versions, reviews the release notes for every version in between (including the feature-specific update guides they link to), and follows the official update documentation.
+1. Use the `update-xperience` skill in your coding assistant to start the project update.
+
+   ```text
+   /update-xperience
+   ```
+
+   The agent reads your `Kentico.Xperience.*` package references to establish the current version, then reads every [Changelog](https://docs.kentico.com/x/6wocCQ) entry between that version and the latest release, together with the update guides those entries link to. The agent follows the documented [update procedure](https://docs.kentico.com/x/DwKQC) rather than a procedure of its own.
+
+2. The agent performs the update and outputs a final report. The report states what changed and which release-note items required action, including any manual follow-up that stays unapplied until you do it yourself.
+
+3. Review all changes.
+
+4. Start the application, then confirm the administration and the live site both come up on the new version.
+
+The project now runs the target version with the code changes its release notes called for, and the report records everything the release notes left to you.
+
+## Common tasks
+
+### Update to a specific version
+
+Pass the version when you need a known target, such as the version another environment already runs.
 
 ```text
-/update-xperience
+/update-xperience 31.2.0
 ```
 
-To update to a specific version instead of the latest:
+### Configure a scoped deployment
 
-```text
-/update-xperience <target-version>
-```
-
-### Configure the CD Repository
-
-Provide the PR numbers or the git commit range you want to deploy. When your workspace contains more than one Xperience app, also mention the app path.
+The skill rebuilds `repository.config` for the changes you select. For restoring the package on the target environment, see [Deploy to the SaaS environment](https://docs.kentico.com/x/IgKQC).
 
 ```text
 /cd-repository-configure
@@ -64,13 +66,19 @@ Provide the PR numbers or the git commit range you want to deploy. When your wor
 Changes: PR 312
 ```
 
+### Deploy several pull requests together
+
+One configuration describes one deployment, so pull requests that travel together get selected together.
+
 ```text
 /cd-repository-configure
 
 Changes: PR 310, PR 311, PR 312
 ```
 
-The `..` range operator follows standard git syntax: the start commit is **exclusive** and the end commit is **inclusive**. Use the commit just before your first feature commit as the range start.
+### Select changes by commit range
+
+The `..` operator follows standard git syntax, so the start commit is **exclusive** and the end commit is **inclusive**. Use the commit before your first feature commit as the range start. To include `abc1234` itself, use its parent, as in `abc1234^..def5678`. To deploy one commit on its own, use `abc1234^..abc1234`.
 
 ```text
 /cd-repository-configure
@@ -78,30 +86,21 @@ The `..` range operator follows standard git syntax: the start commit is **exclu
 Changes: abc1234..def5678
 ```
 
-To include `abc1234` itself, use its parent as the range start (`abc1234^..def5678`). To deploy exactly one commit in isolation, use `abc1234^..abc1234`.
+## Write effective prompts
 
-## Output
+Both of these prompts produce a working output. However, providing the agent with more context significantly reduces guesswork and increases output quality and standards adherence. Compare:
 
-`update-xperience` produces the project and dependency changes required for the selected version and reports any manual follow-up from the version-specific guidance.
+| Prompt | What happens |
+|---|---|
+| `/cd-repository-configure Changes: PR 312` | The agent discovers the repository paths and reads the pull request. Expect questions about which project to configure and about anything the pull request leaves ambiguous. |
+| `/cd-repository-configure Changes: PR 312. The Xperience project is ./src/DancingGoat, and the PR adds a content type together with the content items that use it.` | The agent maps the changed CI paths straight away, and includes the content items on purpose instead of asking whether you want them. |
 
-`cd-repository-configure` produces an updated `repository.config` plus a deployment summary covering:
+> [!TIP]
+> The same recommendations apply to every KentiCopilot skill. See [Write specific prompts](../../docs/Usage-Guide.md#write-specific-prompts) for the general guidance, including the habits that slow a session down.
 
-- Analyzed selectors with per-commit/PR classification — included (business/feature) vs. excluded (Xperience update-only), with reasons
-- The chosen `RestoreMode` and the selected object types, code names, and content item filters
-- Exactly what changed in `repository.config`
-- Results of the deployment package export and the verification script, when run
+## Customize
 
-## Best practices
+Record project-specific conventions in your project's agent instruction files. The agent otherwise infers your update and deployment conventions from the repository each time. Instructions kept in the project apply to every task and survive plugin updates.
 
-- Keep Xperience version-update PRs separate from feature PRs where possible — this makes classification unambiguous and exclusion automatic.
-- Review the generated `repository.config` diff before deploying, especially for the first run on a project.
-- The skill rebuilds the deployment filters from scratch on every run; it asks before removing entries it did not create (for example, standing manual exclusions).
-
-## Included resources
-
-- [`update-docs.md`](./skills/update-xperience/references/update-docs.md) maps the Changelog and update procedure.
-- [`ci-path-mapping.md`](./skills/cd-repository-configure/references/ci-path-mapping.md) maps CI Repository paths to CD configuration.
-- [`repository-config-guidelines.md`](./skills/cd-repository-configure/references/repository-config-guidelines.md) defines filter and formatting rules.
-- [`documentation-links.md`](./skills/cd-repository-configure/references/documentation-links.md) maps the current CD documentation.
-- [`DEPLOYMENT_SUMMARY_TEMPLATE.md`](./skills/cd-repository-configure/assets/DEPLOYMENT_SUMMARY_TEMPLATE.md) defines the final report.
-- [`Verify-CdRepository.ps1`](./skills/cd-repository-configure/scripts/Verify-CdRepository.ps1) checks that configured objects were serialized.
+> [!TIP]
+> Durable project context, exploring before generating, and verifying against the running site all improve outcomes more than prompt engineering or skill customization. See [Work effectively with KentiCopilot](https://docs.kentico.com/x/work_effectively_kenticopilot_guides) for details.

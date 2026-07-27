@@ -114,12 +114,12 @@ A skill covers the procedure for a task, but it knows nothing about your project
 | `Model the content` | `Model the article listing from ./designs/news.fig, reusing the existing Article content type instead of creating a second one` |
 | `Migrate the site` | `Migrate the KX13 instance at ./legacy using the plan in ./migration-plan.md, content types first` |
 
-Point the assistant at your sources instead of describing them. When you name a requirements document, a design export, or an existing implementation, the assistant reads the real thing rather than your summary of it.
+Point the assistant at your sources, design documents, implementations, and other supplementary materials. Specific examples beat a well written prompt.
 
 Here are several habits, sourced from accepted and reviewed research, that reliably lead to poor outcomes when working with coding assistants:
 
 - **Asking for several unrelated things in one prompt.** The assistant works on them together, and the result becomes harder to review. Ask for one outcome, review it, and continue from there.
-- **Describing what you don't want.** *Don't use inline styles* leaves the assistant to guess the alternative. Name the target instead, as in *use the SCSS variables in ./Assets/styles*.
+- **Describing what you don't want.** *Don't use inline styles* leaves the assistant to guess the alternative. Describe the desired output instead and include examples if possible, as in *use the SCSS variables in ./Assets/styles*.
 - **Assuming shared context.** The assistant doesn't know which command builds your project, where your site runs, or which of two similar components is the current one. Say so in the prompt, or record it in your project's agent instructions.
 - **Approving a plan you only skimmed.** Corrections are cheapest before the assistant writes any code. Read the design the assistant proposes and change it there.
 
