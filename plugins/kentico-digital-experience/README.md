@@ -65,7 +65,7 @@ contact's email address. No marketer-facing settings.
 
 ### Drive the configuration from a requirements file
 
-Providing examples, specification documents, or an existing implementation is better than handwritten instructions. The agent reads the source instead of your summary of it, which produces a closer match.
+Point the agent at examples, specification documents, or an existing implementation. The agent reads the source instead of your summary of it, which produces a closer match.
 
 ```text
 /automation-action
@@ -115,4 +115,4 @@ Other things to keep an eye on during review:
 Record project-specific conventions in your project's agent instruction files. The agent otherwise infers coding conventions from surrounding code each time. Instructions kept in the project apply to every task and survive plugin updates.
 
 > [!TIP]
-> Durable project context, exploring before generating, and verifying against the running site all improve outcomes more than prompt engineering or skill customization. See [Work effectively with KentiCopilot](https://docs.kentico.com/x/work_effectively_kenticopilot_guides) for details.
+> Durable project context, exploring before generating, and verifying against the running site all improve task outcomes. See [Work effectively with KentiCopilot](https://docs.kentico.com/x/work_effectively_kenticopilot_guides) for details.

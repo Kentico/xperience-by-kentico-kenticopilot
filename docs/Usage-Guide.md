@@ -126,4 +126,4 @@ Here are several habits, sourced from accepted and reviewed research, that relia
 Each plugin README includes prompt examples for its own skills.
 
 > [!TIP]
-> How you set up the work matters more than how you word any single prompt. See [Work effectively with KentiCopilot](https://docs.kentico.com/x/work_effectively_kenticopilot_guides) for the habits that get the most out of the plugins.
+> How you set up the task strongly influences its result. See [Work effectively with KentiCopilot](https://docs.kentico.com/x/work_effectively_kenticopilot_guides) for the habits that get the most out of the plugins.

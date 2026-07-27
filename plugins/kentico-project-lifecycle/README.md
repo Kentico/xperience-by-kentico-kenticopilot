@@ -103,4 +103,4 @@ Both of these prompts produce a working output. However, providing the agent wit
 Record project-specific conventions in your project's agent instruction files. The agent otherwise infers your update and deployment conventions from the repository each time. Instructions kept in the project apply to every task and survive plugin updates.
 
 > [!TIP]
-> Durable project context, exploring before generating, and verifying against the running site all improve outcomes more than prompt engineering or skill customization. See [Work effectively with KentiCopilot](https://docs.kentico.com/x/work_effectively_kenticopilot_guides) for details.
+> Durable project context, exploring before generating, and verifying against the running site all improve task outcomes. See [Work effectively with KentiCopilot](https://docs.kentico.com/x/work_effectively_kenticopilot_guides) for details.
