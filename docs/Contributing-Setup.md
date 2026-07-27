@@ -54,7 +54,8 @@ Follow the [Agent Skills specification](https://agentskills.io/specification) fo
 - `argument-hint` frontmatter uses bracketed lowercase-hyphenated placeholders, `?` marks optional arguments: `argument-hint: "[migration-plan-path] [appsettings-path?]"`.
 - Quote all frontmatter values; order fields `name`, `description`, `argument-hint`, `compatibility`.
 - Placeholders in templates use single curly braces: `{project name}`.
-- Reference in-repo resource files with backtick paths (`` `references/docs.md` ``), not Markdown links.
+- In `SKILL.md` and files under `references/` and `assets/`, reference in-repo resource files with backtick paths (`` `references/docs.md` ``) rather than Markdown links. The agent reads a path; a link only adds syntax around one.
+- On the surfaces people read — the root `README.md`, every plugin `README.md` and `MCP-setup.md`, and the pages under `docs/` — link every in-repo file a reader might open, with the path relative to the linking file. A plugin README references the repository licence as `` [`LICENSE.md`](../../LICENSE.md) ``. Readers meet these documents rendered on GitHub, where an unlinked path is a dead end. Keep backticks alone for a class of file rather than one file, as in "each plugin's `MCP-setup.md`", and for generated output such as `migration-detail.md`.
 - Use Markdown links for external URLs.
 
 ### Subagent

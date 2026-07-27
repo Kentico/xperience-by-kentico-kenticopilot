@@ -371,7 +371,3 @@ Use Kentico's [feature migration strategy](https://docs.kentico.com/x/plan_your_
 ## Skill customization
 
 These skill files serve as a baseline for migrating KX13 projects to Xperience by Kentico. Modify and enhance the files as required by your implementation, workflow, and requirements. The reference materials under `skills/_shared/references/` and each skill's `references/` directory are the most useful starting points for adapting the prompts to project-specific conventions or constraints.
-
-## License
-
-Distributed under the MIT License. See `LICENSE.md` for more information.
