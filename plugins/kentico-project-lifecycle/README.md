@@ -11,7 +11,7 @@ Skills for maintaining an Xperience by Kentico solution after initial developmen
 
 ### Xperience updates
 
-`update-xperience` determines the current and target versions, reviews every intervening [Changelog](https://docs.kentico.com/changelog) entry and linked update guide, and follows the [official update procedure](https://docs.kentico.com/documentation/developers-and-admins/installation/update-xperience-by-kentico-projects).
+`update-xperience` determines the current and target versions, reviews every intervening [Changelog](https://docs.kentico.com/changelog) entry and linked update guide, and follows the [official update procedure](https://docs.kentico.com/x/DwKQC).
 
 ### CD Repository configuration
 
@@ -22,7 +22,7 @@ Skills for maintaining an Xperience by Kentico solution after initial developmen
 3. Regenerates deployment-scoped filters in `repository.config`.
 4. Exports and verifies the serialized deployment content when project tooling permits.
 
-Xperience-version-only changes are excluded by default. The skill requires v2 `repository.config` syntax; for v1, it directs you to the [v2 migration guide](https://docs.kentico.com/documentation/developers-and-admins/ci-cd/configure-ci-cd-repositories/config-v2-migration).
+Xperience-version-only changes are excluded by default. The skill requires v2 `repository.config` syntax; for v1, it directs you to the [v2 migration guide](https://docs.kentico.com/x/cicd_config_v2_migration).
 
 ## Requirements
 
