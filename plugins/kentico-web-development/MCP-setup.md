@@ -1,22 +1,17 @@
 # MCP server setup
 
-MCP requirements vary by skill. Add the servers needed for your tasks using the configuration below.
+This plugin uses the MCP servers listed below. Add them to your AI coding assistant.
 
-## Servers
+| Server | Provides | Status |
+|---|---|---|
+| [Kentico Docs MCP server](https://docs.kentico.com/x/mcp_server_xp) | Search and retrieval over the official Xperience by Kentico documentation | Required |
+| [Kentico Management MCP server](https://docs.kentico.com/x/configure_management_mcp_xp) | Read and write access to content in a running application | Recommended |
 
-- **Kentico Docs MCP server**
-  - `https://docs.kentico.com/documentation/developers-and-admins/installation/mcp-server`
-  - Used to search and fetch the official Xperience by Kentico documentation.
-  - Required by `design-to-content`, `page-builder-widgets`, `page-builder-structure`, and `content-retrieval`.
+Documentation lookups keep content models and generated components aligned with the current APIs. Management MCP enables object creation and manipulation.
 
-- **Kentico Management MCP server**
-  - `https://docs.kentico.com/documentation/developers-and-admins/api/management-api/configure-management-mcp-server`
-  - Used to work with content in a running application (requires per-project setup).
-  - Checked by `agentify` and recommended for `design-validation`.
+The Management server also requires changes to the application itself. Follow the steps in the [product documentation](https://docs.kentico.com/x/configure_management_mcp_xp).
 
-## How to add the servers
-
-Add the server to the `.mcp.json` file at your workspace root (create the file if it doesn't exist):
+In assistants that read a workspace configuration file, the definitions go in `.mcp.json` at your workspace root. Create the file if it doesn't exist:
 
 ```json
 {
@@ -38,6 +33,6 @@ Add the server to the `.mcp.json` file at your workspace root (create the file i
 }
 ```
 
-## Other AI assistants
+Plugin installation does not create this configuration. See [Check the usage requirements](../../docs/Usage-Guide.md#check-the-usage-requirements) in the usage guide.
 
-The definitions above are standard HTTP/stdio MCP servers — consult your assistant's MCP documentation for where to place the equivalent configuration.
+These are standard HTTP and stdio MCP servers. For the equivalent configuration and its location, see your assistant's MCP documentation.

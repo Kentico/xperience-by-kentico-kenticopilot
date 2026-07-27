@@ -1,16 +1,14 @@
 # MCP server setup
 
-The skills in this plugin require the Kentico Docs MCP server. Add it to your workspace using the configuration below.
+This plugin uses the MCP servers listed below. Add them to your AI coding assistant.
 
-## Required server
+| Server | Provides | Status |
+|---|---|---|
+| [Kentico Docs MCP server](https://docs.kentico.com/x/mcp_server_xp) | Search and retrieval over the official Xperience by Kentico documentation | Required |
 
-- **Kentico Docs MCP server**
-  - `https://docs.kentico.com/documentation/developers-and-admins/installation/mcp-server`
-  - Used to search and fetch the official Xperience by Kentico documentation.
+Documentation lookups cover the changelog entries, update guides, and Continuous Deployment guidance that a target version depends on.
 
-## How to add the servers
-
-Add the server to the `.mcp.json` file at your workspace root (create the file if it doesn't exist):
+In assistants that read a workspace configuration file, the definitions go in `.mcp.json` at your workspace root. Create the file if it doesn't exist:
 
 ```json
 {
@@ -23,6 +21,6 @@ Add the server to the `.mcp.json` file at your workspace root (create the file i
 }
 ```
 
-## Other AI assistants
+Plugin installation does not create this configuration. See [Check the usage requirements](../../docs/Usage-Guide.md#check-the-usage-requirements) in the usage guide.
 
-The definitions above are standard HTTP/stdio MCP servers — consult your assistant's MCP documentation for where to place the equivalent configuration.
+These are standard HTTP MCP servers. For the equivalent configuration and its location, see your assistant's MCP documentation.
