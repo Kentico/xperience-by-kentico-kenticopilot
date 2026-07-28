@@ -1,24 +1,16 @@
 # MCP server setup
 
-The skills in this plugin work best with the following MCP servers. The plugin does not register them automatically — add them to your workspace using the copy-paste snippets below.
+This plugin uses the MCP servers listed below. Add them to your AI coding assistant.
 
-## Recommended servers
+| Server | Provides | Status |
+|---|---|---|
+| [Kentico Docs MCP server](https://docs.kentico.com/x/mcp_server_xp) | Search and retrieval over the official Xperience by Kentico documentation | Required for code migration |
+| [Playwright MCP server](https://github.com/microsoft/playwright-mcp) | Browser automation for comparing rendered pages | Required for visual comparison |
+| [Context7 MCP server](https://context7.com) | Lookup over indexed third-party library documentation, including Kentico Xperience 13 | Optional |
 
-- **Kentico Docs MCP server**
-  - `https://docs.kentico.com/documentation/developers-and-admins/installation/mcp-server`
-  - Used to search and fetch the official Xperience by Kentico documentation.
+Documentation lookups confirm the target APIs. Browser automation compares a migrated page with the original KX13 page. Context7 covers KX13-era APIs. The KX13 documentation is indexed as the [`websites/kentico_13`](https://context7.com/websites/kentico_13) library.
 
-- **Context7 MCP server**
-  - `https://context7.com`
-  - Used to look up KX13 source API references. The KX13 documentation is indexed in the [`websites/kentico_13`](https://context7.com/websites/kentico_13) library.
-
-- **Playwright MCP server**
-  - `https://github.com/microsoft/playwright-mcp`
-  - Used to compare migrated pages against the original KX13 site and fix visual discrepancies.
-
-## How to add the servers
-
-Add the server to the `.mcp.json` file at your workspace root (create the file if it doesn't exist):
+In assistants that read a workspace configuration file, the definitions go in `.mcp.json` at your workspace root. Create the file if it doesn't exist:
 
 ```json
 {
@@ -27,19 +19,19 @@ Add the server to the `.mcp.json` file at your workspace root (create the file i
       "type": "http",
       "url": "https://docs.kentico.com/mcp"
     },
-    "context7": {
-      "type": "http",
-      "url": "https://mcp.context7.com/mcp"
-    },
     "playwright-mcp": {
       "type": "stdio",
       "command": "npx",
       "args": ["@playwright/mcp@latest", "--viewport-size=1920x1080"]
+    },
+    "context7": {
+      "type": "http",
+      "url": "https://mcp.context7.com/mcp"
     }
   }
 }
 ```
 
-## Other AI assistants
+Plugin installation does not create this configuration. See [Check the usage requirements](../../docs/Usage-Guide.md#check-the-usage-requirements) in the usage guide.
 
-The definitions above are standard HTTP/stdio MCP servers — consult your assistant's MCP documentation for where to place the equivalent configuration.
+These are standard HTTP and stdio MCP servers. For the equivalent configuration and its location, see your assistant's MCP documentation.

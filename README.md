@@ -1,95 +1,40 @@
 # Xperience by Kentico: KentiCopilot
 
-[![Kentico Labs](https://img.shields.io/badge/Kentico_Labs-grey?labelColor=orange&logo=data:image/svg+xml;base64,PHN2ZyBjbGFzcz0ic3ZnLWljb24iIHN0eWxlPSJ3aWR0aDogMWVtOyBoZWlnaHQ6IDFlbTt2ZXJ0aWNhbC1hbGlnbjogbWlkZGxlO2ZpbGw6IGN1cnJlbnRDb2xvcjtvdmVyZmxvdzogaGlkZGVuOyIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik05NTYuMjg4IDgwNC40OEw2NDAgMjc3LjQ0VjY0aDMyYzE3LjYgMCAzMi0xNC40IDMyLTMycy0xNC40LTMyLTMyLTMyaC0zMjBjLTE3LjYgMC0zMiAxNC40LTMyIDMyczE0LjQgMzIgMzIgMzJIMzg0djIxMy40NEw2Ny43MTIgODA0LjQ4Qy00LjczNiA5MjUuMTg0IDUxLjIgMTAyNCAxOTIgMTAyNGg2NDBjMTQwLjggMCAxOTYuNzM2LTk4Ljc1MiAxMjQuMjg4LTIxOS41MnpNMjQxLjAyNCA2NDBMNDQ4IDI5NS4wNFY2NGgxMjh2MjMxLjA0TDc4Mi45NzYgNjQwSDI0MS4wMjR6IiAgLz48L3N2Zz4=)](https://github.com/Kentico/.github/blob/main/SUPPORT.md#labs-limited-support)
+[![Kentico support](https://img.shields.io/badge/Kentico-Supported-0078D4)](#support)
 
-## Description
+## What is KentiCopilot?
 
-AI agent prompts and instructions for Xperience by Kentico development. This repository provides pre-configured prompts for common development tasks, helping developers accelerate their workflow with AI coding assistants.
+KentiCopilot is an agent plugin marketplace for Xperience by Kentico development. Each plugin packages task-specific skills, reference material, and optional helper tooling that an AI coding assistant loads when relevant.
 
-This repository contains plugins (skills, resources, ...) tested for the following AI coding assistants:
+The plugins are tested with GitHub Copilot and Claude Code. The skills follow the open [Agent Skills specification](https://agentskills.io/specification) and can be adapted to other compatible assistants.
 
-- GitHub Copilot
-- Claude Code
+## Choose a plugin
 
-Skills are transferable to other solutions. Follow the conventions of your specific assistant.
+This repository contains several plugins, each addressing a specific product area or scenario. See each plugin's README for its requirements, invocation examples, outputs, and limitations.
 
-## Available plugins
+> [!TIP]
+> Upgrading from Kentico Xperience 13? Start with the [kentico-kx13-migration](./plugins/kentico-kx13-migration/README.md) plugin.
 
-This repository provides plugins, each containing a set of skills for AI coding assistants. See the plugin README files for full details.
-
-### Digital experience
-
-> **Location:** [plugins/kentico-digital-experience/](./plugins/kentico-digital-experience/)
-
-AI-assisted implementation of [Automation components](https://docs.kentico.com/x/automation_custom_xp) in Xperience by Kentico. Currently supports **custom automation actions** (custom step types in the Automation Builder). The AI accepts a description of the action you want to create, then reviews your project conventions and the action API, and generates the action class along with an optional properties model with form-component annotations and the assembly-level `RegisterAutomationAction<>` registration. Full instructions are available in the [README](./plugins/kentico-digital-experience/README.md).
-
-| Skill               | Description                                                                                                                                |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| `automation-action` | Researches the project and the action API, then implements and registers a custom automation action and (optionally) its properties model |
-
-### Web development
-
-> **Location:** [plugins/kentico-web-development/](./plugins/kentico-web-development/)
-
-Skills and references for building Xperience by Kentico websites. The `agentify` skill audits your project for agentic-development readiness and applies fixes on request. Content modeling guidance translates designs into a content model, passive-knowledge skills build [Page Builder](https://docs.kentico.com/x/6QWiCQ) widgets and structure (sections and page templates) — the AI studies your project's existing components, validates APIs against the Xperience documentation, and generates the implementation following your conventions — a content-retrieval reference skill guides reading published content in live-site code, and a design-validation skill checks the rendered live site against static HTML designs. Full instructions are available in the [README](./plugins/kentico-web-development/README.md).
-
-| Skill                    | Description                                                                                          |
-| ------------------------ | ---------------------------------------------------------------------------------------------------- |
-| `agentify`               | Audits an XbyK project for agentic-development readiness, reports gaps, and applies fixes on request |
-| `design-to-content`      | Guides content modeling — translating designs/wireframes into an Xperience content model             |
-| `page-builder-widgets`   | Builds a custom Page Builder widget (view component, properties, Razor view, view model, localization) |
-| `page-builder-structure` | Builds Page Builder structure — sections (widget-zone layouts) and page templates (full-page layouts) |
-| `content-retrieval`      | Decision rules, a docs/API map, and performance guidance for reading published content in live-site/MVC code |
-| `design-validation`      | Compares live pages against static HTML designs (content, structure, computed styles) and classifies each difference as a content, serving, or styling issue |
-
-### KX13 → Xperience by Kentico migration
-
-> **Location:** [plugins/kentico-kx13-migration/](./plugins/kentico-kx13-migration/)
-
-The complete toolkit for upgrading a Kentico Xperience 13 project to Xperience by Kentico — content-model auditing, database **content** migration (driving the [Kentico Migration Tool](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool)), and live-site **codebase** migration. Full instructions are available in the [README](./plugins/kentico-kx13-migration/README.md). See also [KX13 upgrade plugins](./docs/KX13-Upgrade-Plugins.md) for the end-to-end path.
-
-| Skill                         | Description                                                                                                                                                     |
-| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `migrate-content-audit`       | Runs a bundled .NET 8 CLI that reads a KX13 database and exports the content model as JSON + a Markdown report (the canonical input for `migrate-content-plan`) |
-| `migrate-content-plan`        | Produces a Migration Overview and Migration Detail document from the source content model                                                                       |
-| `migrate-content-appsettings` | Generates the Migration Tool's `appsettings.json`                                                                                                               |
-| `migrate-content-classes`     | Generates `IClassMapping` / `ReusableSchemaBuilder` C# extensions                                                                                               |
-| `migrate-content-fields`      | Generates `IFieldMigration` C# extensions for field value and definition transforms                                                                             |
-| `migrate-content-widgets`     | Generates `IWidgetMigration` / `IWidgetPropertyMigration` C# extensions                                                                                         |
-| `migrate-content-items`       | Generates `ContentItemDirectorBase` C# for linked pages, child references, page-to-widget conversions                                                           |
-| `migrate-content-run`         | Executes a single combined `migrate` CLI invocation with all required flags (the tool orders them internally), monitors output, applies fixes                   |
-| `migrate-content-eval`        | Evaluates the migrated XbyK database against the plan and produces an HTML report                                                                               |
-| `migrate-code-global`         | Sets up the Xperience by Kentico project foundation (code generation, localization, routing, Page Builder)                                                      |
-| `migrate-code-page`           | Migrates a page's controller, views, repositories, and dependencies                                                                                             |
-| `migrate-code-page-widgets`   | Migrates Page Builder widgets and sections for a specified page                                                                                                 |
-| `migrate-code-component`      | Migrates reusable components (header, footer, etc.) with dependencies                                                                                           |
-| `migrate-code-page-visual`    | Compares old and new pages visually with Playwright, fixes discrepancies                                                                                        |
-
-### Project lifecycle
-
-> **Location:** [plugins/kentico-project-lifecycle/](./plugins/kentico-project-lifecycle/)
-
-Skills for managing the lifecycle of an Xperience by Kentico solution. The plugin updates projects to newer Xperience versions, and builds scoped [Continuous Deployment Repository](https://docs.kentico.com/x/continuous_deployment) filters from CI Repository changes: the AI discovers your project layout and tooling, then inspects changed CI Repository files from specified PRs or commit ranges and writes a minimal `repository.config` — automatically excluding noise from Xperience version updates. Full instructions are available in the [README](./plugins/kentico-project-lifecycle/README.md).
-
-| Skill                     | Description                                                                                                                    |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `update-xperience`        | Updates the project to a newer Xperience version                                                                               |
-| `cd-repository-configure` | Discovers the project layout, reads changes from selected PRs or commits, writes a scoped `repository.config`, and verifies the generated CD Repository |
-
-## Upgrading from Kentico Xperience 13?
-
-If you are upgrading a KX13 project to Xperience by Kentico, see [KX13 upgrade plugins](./docs/KX13-Upgrade-Plugins.md) for the recommended end-to-end path and where each plugin slots into the [official upgrade walkthrough](https://docs.kentico.com/x/upgrade_walkthrough_guides).
+| Plugin | Use case |
+|---|---|
+| [`kentico-web-development`](./plugins/kentico-web-development/README.md) | Preparing a project for agentic development, modeling content, building Page Builder components, retrieving content, and checking an implementation against a design |
+| [`kentico-digital-experience`](./plugins/kentico-digital-experience/README.md) | Extending digital experience features for Xperience by Kentico |
+| [`kentico-kx13-migration`](./plugins/kentico-kx13-migration/README.md) | Auditing and migrating a Kentico Xperience 13 project, including content and live-site code |
+| [`kentico-project-lifecycle`](./plugins/kentico-project-lifecycle/README.md) | Updating an Xperience project and configuring scoped Continuous Deployment Repository content |
 
 ## Requirements
 
-- [Xperience by Kentico](https://docs.kentico.com) 30.6.0 or newer
-- An AI coding assistant, for example:
-  - [GitHub Copilot](https://github.com/features/copilot)
-  - [Claude Code](https://www.claude.com/product/claude-code)
+- An AI coding assistant with agent plugin support, such as [GitHub Copilot](https://github.com/features/copilot) or [Claude Code](https://www.claude.com/product/claude-code)
+- An Xperience project relevant to the selected plugin
+- Any plugin-specific tools listed in that plugin's README
 
 ## Install as a plugin
 
-This repository is an [agent plugin marketplace](https://code.visualstudio.com/docs/copilot/customization/agent-plugins). Install plugins directly from the marketplace — no need to clone the repository or copy files manually.
+This repository is an [agent plugin marketplace](https://code.visualstudio.com/docs/copilot/customization/agent-plugins). Add the marketplace once, then install the plugin you selected.
+
+> [!TIP]
+> 
+> For installation alternatives, including installing a single skill without the marketplace, see the [Usage guide](./docs/Usage-Guide.md).
 
 ### VS Code (GitHub Copilot)
 
@@ -107,29 +52,24 @@ This repository is an [agent plugin marketplace](https://code.visualstudio.com/d
 
 ```bash
 copilot plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
-copilot plugin install kentico-digital-experience@xperience-by-kentico-kenticopilot
 copilot plugin install kentico-web-development@xperience-by-kentico-kenticopilot
-copilot plugin install kentico-kx13-migration@xperience-by-kentico-kenticopilot
-copilot plugin install kentico-project-lifecycle@xperience-by-kentico-kenticopilot
 ```
 
 ### Claude Code
 
-```bash
+```text
 /plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
-/plugin install kentico-digital-experience@xperience-by-kentico-kenticopilot
 /plugin install kentico-web-development@xperience-by-kentico-kenticopilot
-/plugin install kentico-kx13-migration@xperience-by-kentico-kenticopilot
-/plugin install kentico-project-lifecycle@xperience-by-kentico-kenticopilot
 ```
 
-For more details, see the [Usage Guide](./docs/Usage-Guide.md).
+The commands install `kentico-web-development` as an example; substitute another plugin name from the catalog when needed.
 
-## Contributing
+## Documentation
 
-To see the guidelines for Contributing to Kentico open source software, please see [Kentico's `CONTRIBUTING.md`](https://github.com/Kentico/.github/blob/main/CONTRIBUTING.md) for more information and follow the [Kentico's `CODE_OF_CONDUCT`](https://github.com/Kentico/.github/blob/main/CODE_OF_CONDUCT.md).
-
-Instructions and technical details for contributing to **this** project can be found in [Contributing Setup](./docs/Contributing-Setup.md).
+| If you want to... | Read |
+|---|---|
+| Install a plugin and invoke its skills | [Usage guide](./docs/Usage-Guide.md) |
+| Choose and run a specific capability | The relevant [plugin README](#choose-a-plugin) |
 
 ## License
 
@@ -137,10 +77,8 @@ Distributed under the MIT License. See [`LICENSE.md`](./LICENSE.md) for more inf
 
 ## Support
 
-[![Kentico Labs](https://img.shields.io/badge/Kentico_Labs-grey?labelColor=orange&logo=data:image/svg+xml;base64,PHN2ZyBjbGFzcz0ic3ZnLWljb24iIHN0eWxlPSJ3aWR0aDogMWVtOyBoZWlnaHQ6IDFlbTt2ZXJ0aWNhbC1hbGlnbjogbWlkZGxlO2ZpbGw6IGN1cnJlbnRDb2xvcjtvdmVyZmxvdzogaGlkZGVuOyIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik05NTYuMjg4IDgwNC40OEw2NDAgMjc3LjQ0VjY0aDMyYzE3LjYgMCAzMi0xNC40IDMyLTMycy0xNC40LTMyLTMyLTMyaC0zMjBjLTE3LjYgMC0zMiAxNC40LTMyIDMyczE0LjQgMzIgMzIgMzJIMzg0djIxMy40NEw2Ny43MTIgODA0LjQ4Qy00LjczNiA5MjUuMTg0IDUxLjIgMTAyNCAxOTIgMTAyNGg2NDBjMTQwLjggMCAxOTYuNzM2LTk4Ljc1MiAxMjQuMjg4LTIxOS41MnpNMjQxLjAyNCA2NDBMNDQ4IDI5NS4wNFY2NGgxMjh2MjMxLjA0TDc4Mi45NzYgNjQwSDI0MS4wMjR6IiAgLz48L3N2Zz4=)](https://github.com/Kentico/.github/blob/main/SUPPORT.md#labs-limited-support)
+[![Kentico support](https://img.shields.io/badge/Kentico-Supported-0078D4)](#support)
 
-This project has **Kentico Labs limited support**.
-
-See [`SUPPORT.md`](https://github.com/Kentico/.github/blob/main/SUPPORT.md#full-support) for more information.
+Kentico maintains this repository and responds to issues raised here. Fixes and updates are delivered on a best-effort basis.
 
 For any security issues see [`SECURITY.md`](https://github.com/Kentico/.github/blob/main/SECURITY.md).
