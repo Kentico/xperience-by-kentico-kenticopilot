@@ -34,7 +34,7 @@ Plugin installation does not configure MCP servers in the current packages. Each
 
 ## Install the selected plugin
 
-This repository is an agent plugin marketplace. Add the marketplace once, then install one or more plugin names from the table above.
+This repository is an agent plugin marketplace. Add the marketplace to your coding assistant, then install the plugins using names from [Choose a plugin](#choose-a-plugin).
 
 > [!NOTE]
 > **What is a plugin marketplace**
@@ -64,7 +64,7 @@ copilot plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
 copilot plugin install kentico-web-development@xperience-by-kentico-kenticopilot
 ```
 
-Replace `kentico-web-development` with another plugin name from the selection table when needed.
+Replace `kentico-web-development` with another plugin name from [Choose a plugin](#choose-a-plugin).
 
 ### Claude Code
 
@@ -73,7 +73,20 @@ Replace `kentico-web-development` with another plugin name from the selection ta
 /plugin install kentico-web-development@xperience-by-kentico-kenticopilot
 ```
 
-Replace `kentico-web-development` with another plugin name from the selection table when needed.
+Replace `kentico-web-development` with another plugin name from [Choose a plugin](#choose-a-plugin).
+
+### Install individual skills with the skills CLI
+
+You can also use the [skills CLI](https://github.com/vercel-labs/skills) to install only individual skills.
+
+```bash
+npx skills add Kentico/xperience-by-kentico-kenticopilot --skill automation-action --agent claude-code github-copilot cursor
+```
+
+> [!NOTE]
+> **Skills CLI limitations**
+>
+> The CLI copies skill files and leaves a skills-lock.json tracking its installed version. No other plugin files outside the targeted skill folders are included.
 
 ### Manual installation
 

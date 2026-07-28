@@ -32,6 +32,10 @@ This repository contains several plugins, each addressing a specific product are
 
 This repository is an [agent plugin marketplace](https://code.visualstudio.com/docs/copilot/customization/agent-plugins). Add the marketplace once, then install the plugin you selected.
 
+> [!TIP]
+> 
+> For installation alternatives, including installing a single skill without the marketplace, see the [Usage guide](./docs/Usage-Guide.md).
+
 ### VS Code (GitHub Copilot)
 
 1. Add the marketplace to your VS Code settings (`settings.json`):
@@ -58,7 +62,7 @@ copilot plugin install kentico-web-development@xperience-by-kentico-kenticopilot
 /plugin install kentico-web-development@xperience-by-kentico-kenticopilot
 ```
 
-The commands install `kentico-web-development` as an example; substitute another plugin name from the catalog when needed. For installation alternatives and how skills are activated, see the [Usage guide](./docs/Usage-Guide.md).
+The commands install `kentico-web-development` as an example; substitute another plugin name from the catalog when needed.
 
 ## Documentation
 
