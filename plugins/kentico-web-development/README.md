@@ -4,19 +4,19 @@ Build Xperience websites with AI assistance. Model content from designs, build [
 
 ## Choose a skill
 
-| Skill | Use it to | Activation |
-|---|---|---|
-| `agentify` | Audit a project for AI-assisted-development readiness, and apply the fixes on request | Invoke by name |
-| `design-to-content` | Turn a design, wireframe, or Figma file into an Xperience content model | Invoke by name |
-| `page-builder-widgets` | Build a Page Builder widget | Describe the component |
-| `page-builder-structure` | Build a section or a page template | Describe the component |
-| `content-retrieval` | Write, review, or troubleshoot code that reads published content | Loads for relevant code tasks, or invoke by name |
-| `design-validation` | Compare local design HTML with a running site and classify the differences | Ask to validate or compare pages |
+| Skill | Use it to |
+|---|---|
+| `agentify` | Audit a project for AI-assisted-development readiness, and apply the fixes on request |
+| `design-to-content` | Turn a design, wireframe, or Figma file into an Xperience content model |
+| `page-builder-widgets` | Build a Page Builder widget |
+| `page-builder-structure` | Build a section or a page template |
+| `content-retrieval` | Write, review, or troubleshoot code that reads published content |
+| `design-validation` | Compare local design HTML with a running site and classify the differences |
 
 The skills are designed to work independently. However, a project that starts from a design usually needs them in the order listed, beginning with an `agentify` audit and ending with a validation run against the design.
 
 > [!TIP]
-> New to agent skills? The **Activation** column tells you how to reach each one. For what that means in practice, read [Invoke a skill](../../docs/Usage-Guide.md#invoke-a-skill).
+> New to agent skills? Agents activate skills as necessary based on the assigned task. Alternatively, you can use slash commands and other methods depending on your assistant. For what that means in practice, read [Invoke a skill](../../docs/Usage-Guide.md#invoke-a-skill).
 
 ## Requirements
 

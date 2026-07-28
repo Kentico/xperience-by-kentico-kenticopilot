@@ -113,7 +113,7 @@ Skills can be activated in two ways:
 - **Explicitly**: invoke the skill by name when your assistant exposes it as a command, such as `/update-xperience 31.2.0`.
 - **By task description**: ask for the work naturally. The assistant selects a matching skill from its description, for example `Create a Page Builder widget from requirements.md`.
 
-The plugin README identifies the recommended activation method and provides copyable examples. The skill itself contains the execution instructions; you do not need to open or paste `SKILL.md` into the conversation.
+The plugin README provides copyable examples for each of its skills. The skill itself contains the execution instructions; you do not need to open or paste `SKILL.md` into the conversation.
 
 Review generated code, configuration, and reports before using them in a production workflow.
 

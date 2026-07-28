@@ -6,14 +6,14 @@ Marketers configure these features using the component types available to them. 
 
 ## Choose a skill
 
-| Skill | Use it to | Activation |
-|---|---|---|
-| `automation-action` | Implement and register a custom automation action, with optional marketer-configurable properties | Invoke by name, or describe the step you need |
+| Skill | Use it to |
+|---|---|
+| `automation-action` | Implement and register a custom automation action, with optional marketer-configurable properties |
 
 For the other kinds of automation customization, see the [customization overview](https://docs.kentico.com/x/automation_custom_xp).
 
 > [!TIP]
-> New to agent skills? The **Activation** column tells you how to reach each one. For what that means in practice, read [Invoke a skill](../../docs/Usage-Guide.md#invoke-a-skill).
+> New to agent skills? Agents activate skills as necessary based on the assigned task. Alternatively, you can use slash commands and other methods depending on your assistant. For what that means in practice, read [Invoke a skill](../../docs/Usage-Guide.md#invoke-a-skill).
 
 ## Requirements
 

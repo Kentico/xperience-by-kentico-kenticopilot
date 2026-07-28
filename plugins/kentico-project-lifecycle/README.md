@@ -6,15 +6,15 @@ The skills in this plugin cover project lifecycle management such as applying [X
 
 ## Choose a skill
 
-| Skill | Use it to | Activation |
-|---|---|---|
-| `update-xperience` | Update an Xperience project to a target version, or to the latest release | Invoke by name, or ask to update the project |
-| `cd-repository-configure` | Build a `repository.config` scoped to the changes you deploy, then export and verify the deployment content | Invoke by name, or describe the changes to deploy |
+| Skill | Use it to |
+|---|---|
+| `update-xperience` | Update an Xperience project to a target version, or to the latest release |
+| `cd-repository-configure` | Build a `repository.config` scoped to the changes you deploy, then export and verify the deployment content |
 
 For enabling the repositories themselves, and for the full filtering reference, see [Configure CI/CD repositories](https://docs.kentico.com/x/ygAcCQ).
 
 > [!TIP]
-> New to agent skills? The **Activation** column tells you how to reach each one. For what that means in practice, read [Invoke a skill](../../docs/Usage-Guide.md#invoke-a-skill).
+> New to agent skills? Agents activate skills as necessary based on the assigned task. Alternatively, you can use slash commands and other methods depending on your assistant. For what that means in practice, read [Invoke a skill](../../docs/Usage-Guide.md#invoke-a-skill).
 
 ## Requirements
 
