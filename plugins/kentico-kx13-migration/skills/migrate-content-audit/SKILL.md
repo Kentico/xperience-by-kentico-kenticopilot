@@ -7,24 +7,19 @@ compatibility: "Requires .NET 8 SDK and access to a Kentico Xperience 13 SQL Ser
 
 # KX13 Content Auditor — Agent Skill
 
-The CLI tool handles the full workflow — querying the database, exporting JSON
-data, and generating a Markdown report. Interpret the user's request, construct
-the right CLI command, run it, and present the results.
+The CLI tool handles the full workflow — querying the database, exporting JSON data, and generating a Markdown report. Interpret the user's request, construct the right CLI command, run it, and present the results.
 
-For full technical details (setup, flags, project structure), see the
-[`kentico-kx13-migration` plugin README](../../README.md).
+For full technical details (setup, flags, project structure), see the [`kentico-kx13-migration` plugin README](../../README.md).
 
 ---
 
 ## User Intent Parsing
 
-Parse the user's natural-language input to determine which export areas and
-filters to use.
+Parse the user's natural-language input to determine which export areas and filters to use.
 
 ### Export Scope
 
-If the user asks for everything, or gives no specific scope, run a **full export**
-(no area flags). Otherwise, combine the relevant flags.
+If the user asks for everything, or gives no specific scope, run a **full export** (no area flags). Otherwise, combine the relevant flags.
 
 | User says (examples)                        | CLI flag                    |
 | ------------------------------------------- | --------------------------- |
@@ -67,33 +62,22 @@ If the user asks for everything, or gives no specific scope, run a **full export
 
 The auditor ships with this plugin. Resolve `<CLI>` to the first path that exists:
 
-1. `${CLAUDE_PLUGIN_ROOT}/src/KX13.ContentAuditor.CLI`, inside the installed plugin.
-2. Otherwise search the workspace for `**/KX13.ContentAuditor.slnx` and use the
-   `KX13.ContentAuditor.CLI` directory beside it. This covers a manual
-   installation, a repository clone, and any assistant that does not expand
-   `${CLAUDE_PLUGIN_ROOT}`.
+1. `<plugin-root>/src/KX13.ContentAuditor.CLI`, where `<plugin-root>` is the directory this plugin is installed in. Read and explore the conventions of your harness.
+2. Otherwise search the workspace for `**/KX13.ContentAuditor.slnx` and use the `KX13.ContentAuditor.CLI` directory beside it. This covers a manual installation, a repository clone, and any assistant that does not expose its plugin directory.
 
-If neither resolves, stop and tell the user the auditor source was not found,
-naming both locations you checked.
+If neither resolves, stop and tell the user the auditor source was not found, naming both locations you checked.
 
-Use the resolved absolute path in every command below. Do **not** assume a
-workspace-relative path: the installed plugin lives outside the workspace.
+Use the resolved absolute path in every command below. Do **not** assume a workspace-relative path: the installed plugin lives outside the workspace.
 
 ### 2. Pre-flight Checks
 
 1. Verify the connection string, in this order:
    - the `ConnectionStrings__ConnectionString` environment variable;
-   - `ConnectionStrings.ConnectionString` in `<CLI>/appsettings.development.json`
-     or `<CLI>/appsettings.json`.
+   - `ConnectionStrings.ConnectionString` in `<CLI>/appsettings.development.json` or `<CLI>/appsettings.json`.
 
-   If neither is set, ask the user to export the environment variable. Prefer it
-   over the JSON files whenever `<CLI>` is inside the installed plugin, because
-   that directory is replaced on every plugin update. Never write a connection
-   string into the installed plugin, and never pass one on the command line,
-   where it lands in shell history.
+   If neither is set, ask the user to export the environment variable. Prefer it over the JSON files whenever `<CLI>` is inside the installed plugin, because that directory is replaced on every plugin update. Never write a connection string into the installed plugin, and never pass one on the command line, where it lands in shell history.
 
-2. Build: `dotnet build <CLI> -c Release -q`
-   If the build fails, report errors and stop.
+2. Build: `dotnet build <CLI> -c Release -q` If the build fails, report errors and stop.
 
 ### 3. Run the CLI
 
@@ -103,10 +87,7 @@ dotnet run --project <CLI> -- [area-flags] [filter-flags] --output <path>
 
 The `--` separator after the project path is required.
 
-Always pass `--output` with a path inside the user's workspace, defaulting to
-`./audit-results/`. The CLI's own default writes beside the project, which for an
-installed plugin means the results land outside the workspace and disappear on
-the next plugin update.
+Always pass `--output` with a path inside the user's workspace, defaulting to `./audit-results/`. The CLI's own default writes beside the project, which for an installed plugin means the results land outside the workspace and disappear on the next plugin update.
 
 ### 4. Present Results
 

@@ -53,7 +53,7 @@ copilot plugin install kentico-web-development@xperience-by-kentico-kenticopilot
 
 ### Claude Code
 
-```bash
+```text
 /plugin marketplace add Kentico/xperience-by-kentico-kenticopilot
 /plugin install kentico-web-development@xperience-by-kentico-kenticopilot
 ```

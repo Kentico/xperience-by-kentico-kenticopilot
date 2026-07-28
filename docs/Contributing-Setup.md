@@ -23,7 +23,7 @@ Keep each document focused on one reader need:
 
 Avoid repeating marketplace setup in every plugin README. Link to the usage guide and provide the plugin name instead. Keep exact task parameters and execution guardrails in `SKILL.md`; plugin READMEs should summarize them and show representative prompts rather than restating the full skill.
 
-Cross-skill workflows belong under the repository `docs/` directory when they span a full user journey, such as the KX13 upgrade workflow.
+Cross-skill workflows belong under the repository `docs/` directory when they span a full user journey.
 
 ## Resource types
 
