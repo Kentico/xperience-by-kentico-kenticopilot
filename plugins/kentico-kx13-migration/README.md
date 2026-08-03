@@ -44,14 +44,14 @@ The stages run in the order below, and each one has its own skill group:
 |---|---|---|---|
 | 1 | [Plan and audit the source content model](#content-model-audit) | `migrate-content-audit`, reading your KX13 source database | [Plan your upgrade approach](https://docs.kentico.com/x/migrate_from_kx13_overview_guides#plan-your-upgrade-approach) |
 | 2 | [Set up your environment](#set-up-your-environment) | No skill. You do this stage by hand | [Set up your environment](https://docs.kentico.com/x/setup_your_environment_guides) |
-| 3 | [Migrate data and binary files](#content-migration) | The content-migration skills, as a plan, configure, codegen, run, and evaluate loop around the Migration Tool | [Migrate data and binary files](https://docs.kentico.com/x/migrate_data_and_binary_files_guides) |
+| 3 | [Migrate data and binary files](#content-migration) | The content migration skills, as a plan, configure, codegen, run, and evaluate loop around the Migration Tool | [Migrate data and binary files](https://docs.kentico.com/x/migrate_data_and_binary_files_guides) |
 | 4 | [Adjust global code](#codebase-migration) | `migrate-code-global` | [Adjust global code on the backend](https://docs.kentico.com/x/adjust_global_code_guides) |
 | 5 | [Display an upgraded page](#codebase-migration) | The page, component, widget, and visual migration skills | [Display an upgraded page](https://docs.kentico.com/x/display_an_upgraded_page_guides) |
 
 [Prep for the upgrade and transfer data](https://docs.kentico.com/x/prep_for_migration_and_transfer_data_guides) covers stages 2 and 3 together, and [Adjust your code and adapt your project](https://docs.kentico.com/x/migrate_your_code_guides) is the conceptual companion to stages 4 and 5.
 
 > [!NOTE]
-> The content-migration stage needs to complete before the codebase stage starts. The codebase-migration skills generate C# entity classes from the migrated XbyK database with `--kxp-codegen`, and the content types need to exist in the target before that command runs.
+> The content migration stage needs to complete before the codebase stage starts. The codebase migration skills generate C# entity classes from the migrated XbyK database with `--kxp-codegen`, and the content types need to exist in the target before that command runs.
 
 ---
 
@@ -59,9 +59,9 @@ The stages run in the order below, and each one has its own skill group:
 
 1. Hotfix KX13 to **Refresh 5 (13.0.64)** or newer. The Migration Tool depends on fields added in this refresh.
 2. Pick an XbyK version compatible with a Kentico Migration Tool release per the [Library Version Matrix](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/blob/master/README.md#library-version-matrix), and install it using the [`kentico-xperience-mvc` project template](https://docs.kentico.com/x/DQKQC).
-3. Clone the [Kentico Migration Tool](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool). The `Migration.Tool.Extensions` project is where the content-migration code-generation skills write `IClassMapping`, `IFieldMigration`, `IWidgetMigration`, and `ContentItemDirectorBase` implementations. See the [Extensions README](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/blob/master/Migration.Tool.Extensions/README.md) for the project layout.
+3. Clone the [Kentico Migration Tool](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool). The `Migration.Tool.Extensions` project is where the content migration code generation skills write `IClassMapping`, `IFieldMigration`, `IWidgetMigration`, and `ContentItemDirectorBase` implementations. See the [Extensions README](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/blob/master/Migration.Tool.Extensions/README.md) for the project layout.
 4. Source instance: rejoin a separated contact-management database if applicable. The source must be running during migration.
-5. Target instance: must **not** be running during migration, and must be empty (or carry only data from prior migration runs). For re-runs, delete contacts, activities, consent agreements, form submissions, and custom-module-class data first per the [target-instance setup](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/blob/master/Migration.Tool.CLI/README.md#set-up-the-target-instance).
+5. Target instance: must **not** be running during migration, and must be empty (or carry only data from prior migration runs). For re-runs, delete contacts, activities, consent agreements, form submissions, and custom module class data first per the [target-instance setup](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/blob/master/Migration.Tool.CLI/README.md#set-up-the-target-instance).
 
 Place the source, target, Migration Tool, and audit output in one workspace:
 
@@ -85,7 +85,7 @@ Place the source, target, Migration Tool, and audit output in one workspace:
 
 `migrate-content-audit` runs the bundled .NET auditor against the KX13 database and exports the source model as JSON plus a Markdown report. Use its output as the input to `migrate-content-plan`. The auditor captures the content model and the references between its parts, and it migrates nothing.
 
-The export covers the content tree, page types, custom tables, custom modules, forms, Page Builder components, page relationships, and content references. `migrate-content-plan` interprets that snapshot to decide content-type strategy and Migration Tool configuration.
+The export covers the content tree, page types, custom tables, custom modules, forms, Page Builder components, page relationships, and content references. `migrate-content-plan` interprets that snapshot to decide content type strategy and Migration Tool configuration.
 
 The auditor does **not** capture KX13 categories, commerce data, or marketing entities, and contacts are excluded as well. See [Scope and limitations](#scope-and-limitations). Review those areas manually using [Plan your strategy for migrating features](https://docs.kentico.com/x/plan_your_strategy_for_migrating_features_guides) and the [commerce features overview](https://docs.kentico.com/x/xperience_upgrade_commerce_features_overview_guides) guides.
 
@@ -103,7 +103,7 @@ Once the setup is complete, continue by describing the audit requirements:
 Audit the DancingGoatMvc site as the starting point for migrating it to Xperience by Kentico. Export the full content model into ./audit-results/
 ```
 
-Narrower requests work too, such as auditing page types and forms for classes matching `DancingGoat.*`, or exporting only the content tree below a given path. By default, the audit exports the full content model and the report.
+More specific requests work too, such as auditing page types and forms for classes matching `DancingGoat.*`, or exporting only the content tree below a given path. By default, the audit exports the full content model and the report.
 
 ### Auditor prerequisites
 
@@ -144,11 +144,11 @@ dotnet run --project src/KX13.ContentAuditor.CLI -- --help
 
 ## Content migration
 
-These skills drive the [Kentico Migration Tool](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool): they turn the audit into a plan, generate configuration and extensions, run the migration, and evaluate the result. They expect the [workspace layout](#set-up-your-environment) from the environment stage.
+These skills drive the [Kentico Migration Tool](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool): they turn the audit into a plan, generate configuration and extensions, run the migration, and evaluate the result. They expect the [workspace layout](#set-up-your-environment) from the environment setup stage.
 
 The skills run in four phases. The configure, generate, run, and evaluate phases form an iterative loop.
 
-### Content-migration skill sequence
+### Content migration skill sequence
 
 | Phase | Skill | Outcome | Guides |
 |---|---|---|---|
@@ -166,7 +166,7 @@ The skills run in four phases. The configure, generate, run, and evaluate phases
 
 Run all four generate-phase skills. Each reads `migration-detail.md`, skips when its extension type is unnecessary, and builds the extensions project after writing code.
 
-`migrate-content-plan` turns the audit output into a Migration Overview and a Migration Detail document. The Migration Detail is the primary input every later skill consumes. The [Speed up remodeling with AI](https://docs.kentico.com/x/speed_up_remodeling_with_ai_guides) guide describes the AI patterns this skill operationalizes for content-type and field-mapping decisions. Concretely, the plan derives:
+`migrate-content-plan` turns the audit output into a Migration Overview and a Migration Detail document. The Migration Detail is the primary input every later skill consumes. The [Speed up remodeling with AI](https://docs.kentico.com/x/speed_up_remodeling_with_ai_guides) guide describes the AI patterns this skill operationalizes for content type and field-mapping decisions. Specifically, the plan derives:
 
 - Which page types to convert to reusable content types → [`ConvertClassesToContentHub`](https://github.com/Kentico/xperience-by-kentico-kentico-migration-tool/blob/master/Migration.Tool.CLI/README.md#convert-pages-or-custom-tables-to-content-hub).
 - Which fields to extract into [reusable field schemas](https://docs.kentico.com/x/D4_OD) → `ReusableSchemaBuilder` / `CreateReusableFieldSchemaForClasses`.
@@ -208,7 +208,7 @@ Evaluate the result against ./migration-detail.md and identify which
 skill or manual step should address each finding.
 ```
 
-### Content-migration rules
+### Content migration rules
 
 - Audit before planning and treat `migration-detail.md` as the source of truth.
 - Review all generated configuration and C# extensions before running the Migration Tool.
@@ -239,7 +239,7 @@ Start the KX13 application or provide an accessible URL. Leave the XbyK applicat
 
 - `migrate-code-global` – sets up the XbyK project foundation (a `{ProjectName}.Entities` class library with the `CMS.AssemblyDiscoverableAttribute` assembly attribute), generates entity classes via [`--kxp-codegen`](https://docs.kentico.com/x/5IbWCQ), copies global code (localization, shared views, styles and scripts, identifiers, service registrations), and configures `Program.cs` for Page Builder and content-tree-based routing.
 - `migrate-code-component` – migrates reusable components (header, footer, navigation) using the content-retrieval API conversion described for `migrate-code-page`.
-- `migrate-code-page-widgets` – migrates Page Builder widgets and sections used by a page. This is the codebase counterpart to the content-migration `migrate-content-widgets` skill, converting KX13 `[EditingComponent(...)]` attributes to the new XbyK [form-component attributes](https://docs.kentico.com/x/8ASiCQ) (`[TextInputComponent]`, `[ContentItemSelectorComponent]`, etc.) per [Transform widget properties](https://docs.kentico.com/x/transform_widget_properties_guides).
+- `migrate-code-page-widgets` – migrates Page Builder widgets and sections used by a page. This is the codebase counterpart to the content migration `migrate-content-widgets` skill, converting KX13 `[EditingComponent(...)]` attributes to the new XbyK [form-component attributes](https://docs.kentico.com/x/8ASiCQ) (`[TextInputComponent]`, `[ContentItemSelectorComponent]`, etc.) per [Transform widget properties](https://docs.kentico.com/x/transform_widget_properties_guides).
 - `migrate-code-page` – migrates a page's controller, views, repositories, and dependencies. Converts KX13 `IPageRetriever` / `DocumentHelper` / `TreeProvider` / `DocumentQuery` patterns to XbyK's [`IContentRetriever`](https://docs.kentico.com/x/content_retriever_api_xp) / [`ContentItemQueryBuilder`](https://docs.kentico.com/x/WhT_Cw) per [Upgrade your content retrieval code](https://docs.kentico.com/x/upgrade_content_retrieval_code_guides).
 - `migrate-code-page-visual` – uses Playwright to align the migrated page visually with the KX13 original.
 
@@ -284,7 +284,7 @@ legacyPageUrl: https://localhost:5001/en-us/home
 newPageUrl: http://localhost:60444/en-us/home
 ```
 
-### Codebase-migration rules
+### Codebase migration rules
 
 - Run page skills in order: widgets when applicable, page implementation, then visual alignment when needed.
 - Keep the KX13 site accessible at the URL supplied to the skills.
@@ -294,12 +294,12 @@ newPageUrl: http://localhost:60444/en-us/home
 
 ## Scope and limitations
 
-The plugin assists with the content and live-site portions of the [upgrade workflow](#upgrade-workflow). The following areas are not automated:
+The plugin assists with the content and live site portions of the [upgrade workflow](#upgrade-workflow). The following areas are not automated:
 
 - **Commerce storefront**: checkout/cart/shipping/payment code, product catalog modeling, and storefront UI. The underlying Migration Tool now migrates customers and orders (added in January 2026 per [Plan your strategy for migrating features](https://docs.kentico.com/x/plan_your_strategy_for_migrating_features_guides#digital-commerce)). `migrate-content-appsettings` can emit the relevant settings when you explicitly opt into commerce migration. Otherwise, the skill omits `CommerceConfiguration` per its content-only default.
 - **Marketing**: marketing automation, contact groups, personas, A/B testing, social marketing, and email marketing. See the [feature matrix](https://docs.kentico.com/x/plan_your_strategy_for_migrating_features_guides#activities-and-digital-marketing) for which entities are out of scope.
 - **Search**: not migrated. Pick one of [Lucene](https://github.com/Kentico/xperience-by-kentico-lucene), [Azure AI Search](https://github.com/Kentico/xperience-by-kentico-azure-ai-search), or [Algolia](https://github.com/Kentico/xperience-by-kentico-algolia) and integrate manually per [Adjust your code and adapt your project](https://docs.kentico.com/x/migrate_your_code_guides#choose-a-search-integration).
-- **Custom-module UI pages**, KX13 alternative-form deltas, and ACLs. `migrate-content-classes` can route custom-table data into reusable content types via `ConvertClassesToContentHub` to skip the UI work entirely. Otherwise, the UI pages must be built manually per [Adjust your code and adapt your project](https://docs.kentico.com/x/migrate_your_code_guides#rehome-custom-tables).
+- **Custom-module UI pages**, KX13 alternative form deltas, and ACLs. `migrate-content-classes` can route custom table data into reusable content types via `ConvertClassesToContentHub` to skip the UI work entirely. Otherwise, the UI pages must be built manually per [Adjust your code and adapt your project](https://docs.kentico.com/x/migrate_your_code_guides#rehome-custom-tables).
 - **External sign-in information** (Facebook/Google/etc.) and the member registration/authentication code path itself. Basic member records migrate via the `--members` parameter. The live-site auth code must be rewritten to work with the new `Member` object type and ASP.NET Identity per [Adjust your code and adapt your project](https://docs.kentico.com/x/migrate_your_code_guides#alter-auth-and-user-management).
 - **Integration bus**, license keys, and `web.config`/`appsettings.json` settings – not migrated.
 - **Custom fields on system objects** such as `cms.user`, `cms.member`, or `cms.role` – outside the auditor's model export. The Migration Tool handles supported system-class fields through its custom-module migration, and anything beyond those needs custom migration logic.

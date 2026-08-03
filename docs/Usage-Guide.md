@@ -100,7 +100,7 @@ Use this alternative only when your assistant cannot install from a marketplace.
 
 2. Follow your assistant's plugin or skill-loading conventions for the selected folder under `plugins/`.
 
-Do not copy every plugin into a project by default. Keeping only the relevant plugin reduces noise and prevents unrelated skills from burdening agent context.
+Do not copy every plugin into a project by default. Keeping only the relevant plugins reduces noise and prevents unrelated skills from burdening agent context.
 
 ## Invoke a skill
 

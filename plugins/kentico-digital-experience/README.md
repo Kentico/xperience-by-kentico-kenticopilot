@@ -2,7 +2,7 @@
 
 Extend the digital marketing features of Xperience by Kentico with custom components, written by your AI coding assistant.
 
-Marketers configure these features using the component types available to them. When they need behavior Xperience doesn't provide out of the box, such as posting to a chat channel, calling an internal service, starting a process the moment an order is paid, or branching a process on data Xperience doesn't track, a developer adds a custom component — a step inside a process, or the trigger that starts it. This plugin hands that work to your coding assistant. You explain what the component does and which settings marketers control, and the agent writes the implementation together with the registration that makes it available in the admin UI.
+Marketers configure these features using the component types available to them. When they need behavior Xperience doesn't provide out of the box, a developer adds a custom component — a step inside a process or the trigger that starts it. For example, such custom behavior can include posting to a chat channel, calling an internal service, starting a process the moment an order is paid, or branching a process on data Xperience doesn't track. This plugin hands over development of custom automation components to your coding assistant. You explain what the component needs to do and which settings marketers control, and the agent writes the implementation together with the registration that makes it available in the admin UI.
 
 ## Choose a skill
 
@@ -10,11 +10,11 @@ Marketers configure these features using the component types available to them. 
 |---|---|
 | `automation-action` | Implement and register a custom automation action, with optional marketer-configurable properties |
 | `automation-condition` | Implement and register a custom automation condition that branches a process, with optional marketer-configurable properties |
-| `automation-trigger` | Implement and register a custom automation trigger, and fire it from your application code |
+| `automation-trigger` | Implement and register a custom automation trigger, with optional marketer-configurable properties, and fire the trigger from your application code |
 
 The three skills meet in one process: A trigger decides when the process starts and what data it carries. An action *does* something for a contact that reaches it. A condition *decides* which of two paths that contact takes, and changes nothing.
 
-For the other kinds of automation customization, see the [customization overview](https://docs.kentico.com/x/automation_custom_xp).
+To learn about the available types of automation customization, see the [customization overview](https://docs.kentico.com/x/automation_custom_xp).
 
 > [!TIP]
 > New to agent skills? Agents activate skills as necessary based on the assigned task. Alternatively, you can use slash commands and other methods depending on your assistant. For what that means in practice, read [Invoke a skill](../../docs/Usage-Guide.md#invoke-a-skill).
@@ -213,19 +213,19 @@ Both of these prompts produce a working output. However, providing the agent wit
 
 Treat generated code the way you'd treat a pull request from someone new to the project. The following things are worth reviewing:
 
-**Form annotation namespace** -- The [form component](https://docs.kentico.com/x/8ASiCQ) attributes that build the configuration dialog need to come from the `Kentico.Xperience.Admin.*.FormAnnotations` namespaces. An obsolete Form Builder namespace, `Kentico.Forms.Web.Mvc`, contains attributes with the same names. Check the `using` directives on the properties class.
+**Form annotation namespace** – The [form component](https://docs.kentico.com/x/8ASiCQ) attributes that build the configuration dialog need to come from the `Kentico.Xperience.Admin.*.FormAnnotations` namespaces. An obsolete Form Builder namespace, `Kentico.Forms.Web.Mvc`, contains attributes with the same names. Check the `using` directives on the properties class.
 
-**Execution time limit** -- Custom steps are cancelled after two minutes, an action's `Execute` and a condition's `Evaluate` alike, so a step calling a slow external service can be cut off mid-run. If the generated code talks to anything outside the application, read [Best practices](https://docs.kentico.com/x/automation_custom_steps_xp) for the timeout behavior and what to do instead. The same limit applies to a trigger's evaluation, and a trigger that runs out of time does not start its process.
+**Execution time limit** – Custom steps are cancelled after two minutes, an action's `Execute` and a condition's `Evaluate` alike, so a step calling a slow external service can be cut off mid-run. If the generated code talks to anything outside the application, read [Best practices](https://docs.kentico.com/x/automation_custom_steps_xp) for the timeout behavior and what to do instead. The same limit applies to a trigger's evaluation, and a trigger that runs out of time does not start its process.
 
-**Side effects in a condition** -- A condition evaluates and returns a result, nothing more. The same contact can be evaluated more than once, so anything the generated `Evaluate` method writes, sends, or stores happens repeatedly. Move that work into an action.
+**Side effects in a condition** – A condition evaluates and returns a result, nothing more. The same contact can be evaluated more than once, so anything the generated `Evaluate` method writes, sends, or stores happens repeatedly. Move that work into an action.
 
-**Failures resolve to `false`** -- An unhandled exception and the two-minute timeout both make the condition return `false`, indistinguishable from a genuine no. Check that the generated `Evaluate` handles the failures it can, logs them, and returns a value it chose deliberately.
+**Failures resolve to `false` for conditions** – An unhandled exception and the two-minute timeout both make the condition return `false`, indistinguishable from a genuine no. Check that the generated `Evaluate` handles the failures it can, logs them, and returns a value it chose deliberately.
 
-**Trigger identifiers** -- The identifier on the registration attribute, and the one on the trigger data class, are permanent. Changing either after marketers have built processes on the trigger breaks those processes. Renaming or removing a data property has the same effect, and the affected steps then receive no data. Check that the generated identifiers are ones you can live with, and that they carry a prefix unique to your project.
+**Trigger identifiers** – The identifier on the registration attribute, and the one on the trigger data class, are permanent. Changing either after marketers have built processes on the trigger breaks those processes. Renaming or removing a data property has the same effect, and the affected steps then receive no data. Check that the generated identifiers are ones you can live with, and that they carry a prefix unique to your project.
 
-**Trigger data** -- Trigger data is serialized and stored with the process. Keep it to identifiers the process can resolve later, and keep personal data such as names and e-mail addresses out of it.
+**Trigger and action data** – Trigger and action data is serialized and stored with the process. Store identifiers the process can resolve later, and keep personal data such as names and email addresses out of it.
 
-**Firing location** -- Confirm the dispatch call sits where the business event actually completes, and that it isn't inside a custom automation step. Firing is fire-and-forget from a bounded queue, so the call returns before the process starts and tells you nothing about whether it did.
+**Firing location** – Confirm the dispatch call sits where the business event actually completes, and that it isn't inside a custom automation step. Firing is fire-and-forget from a bounded queue, so the call returns before the process starts and tells you nothing about whether it did.
 
 Other things to keep an eye on during review:
 

@@ -58,7 +58,7 @@ Pass the version when you need a known target, such as the version another envir
 
 ### Configure a scoped deployment
 
-The skill rebuilds `repository.config` for the changes you select. For restoring the package on the target environment, see [Deploy to the SaaS environment](https://docs.kentico.com/x/IgKQC).
+The skill rebuilds `repository.config` for the changes you select. To learn more about restoring the CD data, see [Restore the CD repository to the database](https://docs.kentico.com/documentation/developers-and-admins/ci-cd/continuous-deployment#restore-the-cd-repository-to-the-database). If preparing a package for restoring in a SaaS environment, see [Deploy to the SaaS environment](https://docs.kentico.com/x/IgKQC).
 
 ```text
 /cd-repository-configure

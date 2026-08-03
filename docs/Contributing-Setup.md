@@ -18,6 +18,7 @@ Keep each document focused on one reader need:
 |---|---|
 | Root `README.md` | Explain the marketplace, help users choose a plugin, and provide a short installation path |
 | Plugin `README.md` | Explain when to use the plugin, how its skills fit together, requirements, examples, and how to review what it produces |
+| Plugin `MCP-setup.md` | Explain what MCP server the plugin requires, and provide a `.mcp.json` snippet to show how to configure them |
 | `SKILL.md` | Instruct the agent how to execute one task; do not use it as the primary user guide |
 | Skill `references/` | Give the agent focused material it loads only when needed |
 

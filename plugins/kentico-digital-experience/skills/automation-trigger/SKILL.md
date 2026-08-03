@@ -20,7 +20,6 @@ This skill points you to Kentico's automation-customization documentation. Use i
 
 ## Gotcha
 
-- Never change a trigger's `identifier` or a trigger data class's `Identifier` after deployment. Adding optional data properties is safe; removing or renaming them breaks deserialization, and steps then receive `null`. Version by registering a new trigger alongside the old one.
 - Trigger classes must be stateless; one instance serves every evaluation.
 - Keep trigger data small and free of personal data — carry identifiers, not names, e-mail addresses, or keys.
 - Don't fire triggers from inside a custom automation step — log a custom activity and let the built-in step do it.
