@@ -81,7 +81,7 @@ Place the source, target, Migration Tool, and audit output in one workspace:
 
 ---
 
-## Content-model audit
+## Content model audit
 
 `migrate-content-audit` runs the bundled .NET auditor against the KX13 database and exports the source model as JSON plus a Markdown report. Use its output as the input to `migrate-content-plan`. The auditor captures the content model and the references between its parts, and it migrates nothing.
 
@@ -227,7 +227,7 @@ These skills migrate the live-site foundation and presentation code, once conten
 
 Start the KX13 application or provide an accessible URL. Leave the XbyK application stopped unless a skill starts it for validation.
 
-### Codebase-migration skill sequence
+### Codebase migration skill sequence
 
 | Order | Skill | Outcome |
 |---|---|---|
