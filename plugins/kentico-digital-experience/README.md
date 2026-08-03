@@ -2,7 +2,7 @@
 
 Extend the digital marketing features of Xperience by Kentico with custom components, written by your AI coding assistant.
 
-Marketers configure these features using the component types available to them. When they need behavior Xperience doesn't provide out of the box, a developer adds a custom component — a step inside a process or the trigger that starts it. For example, such custom behavior can include posting to a chat channel, calling an internal service, starting a process the moment an order is paid, or branching a process on data Xperience doesn't track. This plugin hands over development of custom automation components to your coding assistant. You explain what the component needs to do and which settings marketers control, and the agent writes the implementation together with the registration that makes it available in the admin UI.
+Marketers configure these features using the component types available to them. When they need behavior Xperience doesn't provide out of the box, a developer adds a custom component – a step inside a process or the trigger that starts it. For example, such custom behavior can include posting to a chat channel, calling an internal service, starting a process the moment an order is paid, or branching a process on data Xperience doesn't track. This plugin hands over development of custom automation components to your coding assistant. You explain what the component needs to do and which settings marketers control, and the agent writes the implementation together with the registration that makes it available in the admin UI.
 
 ## Choose a skill
 
@@ -28,12 +28,12 @@ To learn about the available types of automation customization, see the [customi
 
 Additionally, `automation-trigger` requires:
 
-- The code path that should start the process — an event handler, a controller or webhook endpoint, or a scheduled task
+- The code path that should start the process – an event handler, a controller or webhook endpoint, or a scheduled task
 - The contact the process applies to, and any data the trigger passes into it
 
 Additionally, `automation-condition` requires:
 
-- A description of the branch logic — what makes the condition true, what data it reads, and which path each outcome leads to
+- A description of the branch logic – what makes the condition true, what data it reads, and which path each outcome leads to
 
 ## Install
 
@@ -106,7 +106,7 @@ A trigger is two halves: the class marketers select in the Automation Builder, a
 
 4. Build the project and restart the application, then open the **Automation** application and create a process that starts from your trigger.
 
-5. Exercise the code path — place an order, raise the event, or run the scheduled task — and confirm the process starts for the expected contact.
+5. Exercise the code path – place an order, raise the event, or run the scheduled task – and confirm the process starts for the expected contact.
 
 ## Common tasks
 
