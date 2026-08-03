@@ -170,6 +170,7 @@ Describe the condition and the setting. The agent finds the existing classes and
 ```text
 Add a country setting to the HasActiveSubscriptionCondition, editable by
 marketers as a dropdown, so the check can be limited to one market.
+```
 
 ### Pass data from a trigger into the process
 

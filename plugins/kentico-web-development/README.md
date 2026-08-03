@@ -66,7 +66,7 @@ This sequence takes a design through a content model, the components that render
 4. Review the proposal, then ask the agent to apply the approved model and generate the model classes your code binds to.
 
    ```text
-   Create the approved content types, reusable field schemas, and 
+   Create the approved content types, reusable field schemas, and
    taxonomies in my local instance, then generate the model classes.
    Use the Management MCP server.
    ```
